@@ -1,0 +1,20 @@
+SODAPOP Android Bundle
+
+OCO Source Materials
+© Copyright IBM Corp. 2011
+
+I. Included Software
+
+Software developed by IBM within the universAAL project.
+
+
+II. Used Software
+
+This product uses software developed at
+Teleal (http://www.teleal.org).
+Licensed under the GNU Lesser General Public License.
+
+
+III. License Summary
+- Apache License 2.0
+- LGPL

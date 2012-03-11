@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">This application contains broadcast receiver to listen for Installed / Uninstalled packages. Upon this action it tries to extract meta data of those packages!</string>
+    <string name="app_name">MetaDataExtraction</string>
+</resources>
