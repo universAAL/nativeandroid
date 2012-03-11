@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">UPnP Lights Controller</string>
+
+    <string name="search_lan">Search LAN</string>
+    <string name="log_devices">Get Devices</string>
+    <string name="light_on">All Lights OFF!</string>
+</resources>
