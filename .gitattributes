@@ -1,1 +1,13 @@
 * text=auto !eol
+UpnpLights/AndroidManifest.xml -text
+UpnpLights/LICENSE.txt -text
+UpnpLights/README.txt -text
+UpnpLights/default.properties -text
+UpnpLights/pom.xml -text
+UpnpLights/res/drawable-hdpi/icon.png -text
+UpnpLights/res/drawable-ldpi/icon.png -text
+UpnpLights/res/drawable-mdpi/icon.png -text
+UpnpLights/res/layout/main.xml -text
+UpnpLights/res/values/strings.xml -text
+UpnpLights/src/main/java/example/upnp/lights/ButtonCheckBoxContainer.java -text
+UpnpLights/src/main/java/example/upnp/lights/SwitchActivity.java -text
