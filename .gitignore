@@ -5,3 +5,12 @@ UpnpLights/assets
 UpnpLights/default.properties
 UpnpLights/gen
 UpnpLights/target
+acl.upnp.android/.classpath
+acl.upnp.android/.externalToolBuilders
+acl.upnp.android/.settings
+acl.upnp.android/target
+acl.upnp.plainjava/.classpath
+acl.upnp.plainjava/.project
+acl.upnp.plainjava/.settings
+acl.upnp.plainjava/src/test
+acl.upnp.plainjava/target

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello acl.upnp.android!</string>
+    <string name="app_name">acl.upnp.android</string>
+    <string name="publishSodaPopPeer_button">Publish SodaPop Peer!</string>    
+</resources>

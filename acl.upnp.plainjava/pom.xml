@@ -1,0 +1,129 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>org.universAAL.middleware</groupId>
+	<artifactId>acl.upnp.plainjava</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
+
+	<name>acl.upnp.plainjava</name>
+	<url>http://maven.apache.org</url>
+
+	<profiles>
+		<profile> 
+		<!-- Run sigining as a separate goal, because the sigining of Android SDK
+			depends on some Sun Java classes that can be unavailable in other JREs, such as
+			the one of IBM
+		 -->
+			<id>sign</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-jarsigner-plugin</artifactId>
+						<version>1.2</version>
+						<executions>
+							<execution>
+								<id>signing</id>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+								<phase>package</phase>
+								<inherited>true</inherited>
+								<configuration>
+									<archiveDirectory></archiveDirectory>
+									<includes>
+										<include>target/*.apk</include>
+									</includes>
+									<keystore>${user.home}${file.separator}.android${file.separator}debug.keystore</keystore>
+									<storepass>android</storepass>
+									<keypass>android</keypass>
+									<alias>androiddebugkey</alias>
+
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>com.jayway.maven.plugins.android.generation2</groupId>
+						<artifactId>maven-android-plugin</artifactId>
+						<inherited>true</inherited>
+						<configuration>
+							<sign>
+								<debug>false</debug>
+							</sign>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
+	<repositories>
+		<repository>
+			<id>teleal-repo</id>
+			<url>http://teleal.org/m2</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+		</plugins>
+
+
+	</build>
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.teleal.cling</groupId>
+			<artifactId>cling-core</artifactId>
+			<version>1.0.5</version>
+		</dependency>
+		<dependency>
+			<groupId>org.universAAL.middleware</groupId>
+			<artifactId>mw.acl.interfaces</artifactId>
+			<version>0.3.1-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
+</project>
