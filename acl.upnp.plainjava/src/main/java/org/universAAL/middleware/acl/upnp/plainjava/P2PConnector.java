@@ -29,7 +29,8 @@ import org.universAAL.middleware.acl.SodaPopPeer;
 /** 
  * Skeleton implementation of P2P Connector
  * 
- * @author kestutis - <a href="mailto:kestutis@il.ibm.com">Kestutis Dalinkevicius</a> 
+ * @authors <a href="mailto:kestutis@il.ibm.com">Kestutis Dalinkevicius</a>
+ * 			<a href="mailto:noamsh@il.ibm.com">noamsh </a> 
  * 
  */
 

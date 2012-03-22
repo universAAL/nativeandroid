@@ -31,7 +31,8 @@ import android.util.Log;
  * Android binder class for UPnPAndroidService.
  * It is returned when binding to service {@link UPnPAndroidService#}
  * 
- * @author kestutis - <a href="mailto:kestutis@il.ibm.com">Kestutis Dalinkevicius</a> 
+ * @authors <a href="mailto:kestutis@il.ibm.com">Kestutis Dalinkevicius</a>
+ * 			<a href="mailto:noamsh@il.ibm.com">noamsh </a> 
  * 
  */
 public class UPnPAndroidServiceBinder extends android.os.Binder implements AndroidUpnpService {
@@ -73,7 +74,6 @@ public class UPnPAndroidServiceBinder extends android.os.Binder implements Andro
 					try {
 						wait();
 					} catch (InterruptedException e) {
-						// TODO add implementation - most likely to do nothing, because we are waiting for upnp service
 						e.printStackTrace();
 					}
 				}

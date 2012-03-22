@@ -29,7 +29,6 @@ import org.teleal.cling.binding.LocalServiceBindingException;
 import org.teleal.cling.binding.annotations.AnnotationLocalServiceBinder;
 import org.teleal.cling.binding.xml.DescriptorBindingException;
 import org.teleal.cling.binding.xml.UDA10DeviceDescriptorBinderSAXImpl;
-import org.teleal.cling.model.DefaultServiceManager;
 import org.teleal.cling.model.ValidationException;
 import org.teleal.cling.model.meta.DeviceDetails;
 import org.teleal.cling.model.meta.DeviceIdentity;
@@ -40,13 +39,12 @@ import org.teleal.cling.model.meta.ModelDetails;
 import org.teleal.cling.model.types.DeviceType;
 import org.teleal.cling.model.types.UDADeviceType;
 import org.teleal.cling.model.types.UDN;
-import org.universAAL.middleware.acl.SodaPopPeer;
 
 /**
  * Example upnp device creator using Cling library
  * 
- * @author kestutis -<a href="mailto:kestutis@il.ibm.com">Kestutis
- *         Dalinkevicius</a>
+ * @authors <a href="mailto:kestutis@il.ibm.com">Kestutis Dalinkevicius</a>
+ * 			<a href="mailto:noamsh@il.ibm.com">noamsh </a>
  * 
  */
 public class DeviceFactory {
@@ -68,21 +66,14 @@ public class DeviceFactory {
 						"A Sodapop Peer Proxy", "1.0"));
 
 		// Device might have icon associated with it
-		// Icon icon = new Icon("image/png", 48, 48, 8,
-		// getClass().getResource("icon.png"));
+		// Icon icon = new Icon("image/png", 48, 48, 8, getClass().getResource("icon.png"));
 
-		LocalService<SodaPopPeer> sodaPopPeerService = new AnnotationLocalServiceBinder()
-				.read(ExportingSodaPopPeerProxy.class);
+		LocalService<ExportingSodaPopPeerProxy> sodaPopPeerService = 
+				new AnnotationLocalServiceBinder().read(ExportingSodaPopPeerProxy.class);
 
-		sodaPopPeerService.setManager(new DefaultServiceManager(
-				sodaPopPeerService, ExportingSodaPopPeerProxy.class));
-		return new LocalDevice(identity, type, details, sodaPopPeerService); // Different
-																				// LocalDevice
-																				// constructors
-																				// allow
-																				// creating
-																				// various
-																				// devices
+		sodaPopPeerService.setManager(
+				new ExportingSodaPopPeerProxyServiceManager(sodaPopPeerService, new MockSodaPopPeer()));
+		return new LocalDevice(identity, type, details, sodaPopPeerService); 
 	}
 
 	/*
@@ -99,22 +90,21 @@ public class DeviceFactory {
 		DeviceIdentity templateDeviceIdentity = new DeviceIdentity(templateUDN);
 		LocalDevice templateDevice = new LocalDevice(templateDeviceIdentity);
 
-		LocalDevice parcedDevice = null;
+		LocalDevice parsedDevice = null;
 
 		try {
-			parcedDevice = new UDA10DeviceDescriptorBinderSAXImpl().describe(
+			parsedDevice = new UDA10DeviceDescriptorBinderSAXImpl().describe(
 					templateDevice, xml);
 		} catch (DescriptorBindingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		LocalService<SodaPopPeer> sodaPopPeerService = new AnnotationLocalServiceBinder()
-				.read(ExportingSodaPopPeerProxy.class);
+		LocalService<ExportingSodaPopPeerProxy> sodaPopPeerService = 
+				new AnnotationLocalServiceBinder().read(ExportingSodaPopPeerProxy.class);
 
-		sodaPopPeerService.setManager(new DefaultServiceManager(
-				sodaPopPeerService, ExportingSodaPopPeerProxy.class));
-		return new LocalDevice(templateDeviceIdentity, parcedDevice.getType(),
-				parcedDevice.getDetails(), sodaPopPeerService);
+		sodaPopPeerService.setManager(
+				new ExportingSodaPopPeerProxyServiceManager(sodaPopPeerService, new MockSodaPopPeer()));
+		return new LocalDevice(templateDeviceIdentity, parsedDevice.getType(),
+				parsedDevice.getDetails(), sodaPopPeerService);
 	}
 
 	/* Reads given input stream and concatenates all content into single string */

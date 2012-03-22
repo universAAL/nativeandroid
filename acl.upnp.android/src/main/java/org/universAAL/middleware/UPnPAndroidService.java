@@ -29,8 +29,8 @@ import android.util.Log;
  * Extension of original UPnP Cling Service to force initializing in the new
  * thread
  * 
- * @author kestutis - <a href="mailto:kestutis@il.ibm.com">Kestutis
- *         Dalinkevicius</a>
+ * @authors <a href="mailto:kestutis@il.ibm.com">Kestutis Dalinkevicius</a>
+ *          <a href="mailto:noamsh@il.ibm.com">noamsh </a>
  * 
  */
 public class UPnPAndroidService extends AndroidUpnpServiceImpl {

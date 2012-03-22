@@ -21,13 +21,14 @@ package org.universAAL.middleware.acl.upnp.android;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collection;
 
 import org.teleal.cling.android.AndroidUpnpService;
 import org.teleal.cling.binding.LocalServiceBindingException;
 import org.teleal.cling.model.ValidationException;
+import org.teleal.cling.model.meta.Device;
 import org.teleal.cling.registry.RegistrationException;
 import org.universAAL.middleware.UPnPAndroidService;
-import org.universAAL.middleware.UPnPAndroidServiceBinder;
 import org.universAAL.middleware.acl.upnp.plainjava.DeviceFactory;
 
 import android.app.Activity;
@@ -42,8 +43,8 @@ import android.view.View;
 
 /**
  * Demonstration activity to start publish the Soda Pop Peer on Android device
- * @author kestutis - <a href="mailto:kestutis@il.ibm.com">Kestutis
- *         Dalinkevicius</a>
+ * @authors <a href="mailto:kestutis@il.ibm.com">Kestutis Dalinkevicius</a>
+ *          <a href="mailto:noamsh@il.ibm.com">noamsh </a>
  * 
  */
 public class Runner extends Activity {
@@ -51,6 +52,7 @@ public class Runner extends Activity {
 	private static String LOGTAG = "acl.upnp.android";
 	private static AndroidUpnpService upnpService = null;
 	private InputStream deviceDescription;
+	private boolean devicePublished = false;
 
 	private ServiceConnection upnpBindServiceConnection = new ServiceConnection() {
 
@@ -69,6 +71,7 @@ public class Runner extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		Log.i(LOGTAG, "onCreate called");
 		deviceDescription = getResources().openRawResource(
 				R.raw.device_description); // Getting the input stream to read for UPnP device description
 		setContentView(R.layout.main);
@@ -77,8 +80,9 @@ public class Runner extends Activity {
 	@Override
 	public void onStart() {
 		super.onStart();
+		Log.i(LOGTAG, "onStarted called");
 		//On activity start we bind (and by that also create) to upnp service
-		Intent upnpServiceIntent = new Intent(getApplicationContext(),
+		Intent upnpServiceIntent = new Intent(getApplicationContext(), 
 				UPnPAndroidService.class); //Intent to start extended threaded service
 		bindService(upnpServiceIntent, upnpBindServiceConnection,
 				Context.BIND_AUTO_CREATE); //Regular bind to the service
@@ -91,11 +95,13 @@ public class Runner extends Activity {
 		 * by binders #get() method. Because of possible hold method must be
 		 * called in the new thread to avoid ANR dialog on Android
 		 */
-		if(deviceDescription == null){
-			/* Device description becomes null if you already red it all before
+		if(deviceDescription == null || devicePublished){
+			/* Device description becomes null if you already read it all before
 			 * or if there was an exception opening the resource file. Either way
 			 * there is no point to continue, because device is already published or
 			 * can not be published at all
+			 * OR
+			 * The device was already published
 			 */
 			return;
 		}
@@ -103,21 +109,34 @@ public class Runner extends Activity {
 			public void run() {
 				try {
 					Log.i(LOGTAG, "Creating SodaPopPeerLocalDevice");
+					Log.i(LOGTAG, "Description:\n" + deviceDescription);
 					// Publishing of SodaPop Peer. Device is created from xml description
 					upnpService.getRegistry().addDevice(
-							new DeviceFactory()
-									.getParsedDevice(deviceDescription, "some string for UDN"));
+							new DeviceFactory().getParsedDevice(deviceDescription, "some string for UDN"));
+					devicePublished = true;
+					// Force refresh
+					upnpService.getControlPoint().search();
+					Collection<Device> devices = upnpService.getControlPoint()
+							.getRegistry().getDevices();
+					System.out.println("Searching for devices...");
+					while (devices.isEmpty()) {
+						/* This is just a primitive lock in case SodaPop peer is taking some time to
+						 * load. In case if there are other upnp devices list of them will be also displayed
+						 */
+						devices = upnpService.getControlPoint().getRegistry().getDevices();
+					}
+					System.out.println("Something found!");
+					for (Device device : upnpService.getControlPoint().getRegistry()
+							.getDevices()) {
+						System.out.println(device.toString());
+					}
 				} catch (RegistrationException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (LocalServiceBindingException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (ValidationException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}

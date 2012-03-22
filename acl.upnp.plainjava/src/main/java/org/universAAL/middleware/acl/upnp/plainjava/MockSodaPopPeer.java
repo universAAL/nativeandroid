@@ -24,8 +24,8 @@ import org.universAAL.middleware.acl.SodaPopPeer;
 /**
  * Empty implementation of SodaPopPeer for testing purposes.
  * 
- * @author kestutis - <a href="mailto:kestutis@il.ibm.com">Kestutis
- *         Dalinkevicius</a>
+ * @authors <a href="mailto:kestutis@il.ibm.com">Kestutis Dalinkevicius</a>
+ * 			<a href="mailto:noamsh@il.ibm.com">noamsh </a>
  * 
  */
 
@@ -56,7 +56,7 @@ public class MockSodaPopPeer implements SodaPopPeer {
 	}
 
 	public String getID() {
-		System.out.println("#joinBus invoked!");
+		System.out.println("#getID invoked!");
 		return "MockSodaPop_Peer_ID";
 	}
 }
