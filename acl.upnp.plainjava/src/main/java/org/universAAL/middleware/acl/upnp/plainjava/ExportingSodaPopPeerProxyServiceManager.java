@@ -26,8 +26,8 @@ import org.universAAL.middleware.acl.SodaPopPeer;
 /**
  * Proxy service manager for exportingSodaPopPeerProxy
  * 
- * @author kestutis - <a href="mailto:kestutis@il.ibm.com">Kestutis
- *         Dalinkevicius</a>
+ * @authors <a href="mailto:kestutis@il.ibm.com">Kestutis Dalinkevicius</a>
+ * 			<a href="mailto:noamsh@il.ibm.com">noamsh </a>
  * 
  */
 class ExportingSodaPopPeerProxyServiceManager extends
@@ -37,7 +37,7 @@ class ExportingSodaPopPeerProxyServiceManager extends
 	public ExportingSodaPopPeerProxyServiceManager(
 			LocalService<ExportingSodaPopPeerProxy> service,
 			SodaPopPeer realPeer) {
-		super(service);
+		super(service, ExportingSodaPopPeerProxy.class);
 		this.realPeer = realPeer;
 	}
 
@@ -47,10 +47,9 @@ class ExportingSodaPopPeerProxyServiceManager extends
 		try {
 			newProxy = super.createServiceInstance();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		newProxy.setRealPeer(realPeer);
-		return (ExportingSodaPopPeerProxy) realPeer;
+		return newProxy;
 	}
 }

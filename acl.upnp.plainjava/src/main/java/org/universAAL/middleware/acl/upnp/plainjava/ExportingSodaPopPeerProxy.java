@@ -26,12 +26,13 @@ import org.universAAL.middleware.acl.SodaPopPeer;
  * SodaPop Peer Proxy delegates all it's methods to real implementation classes. It is
  * used to avoid duplicate upnp annotations through different implementations 
  * 
- * @author kestutis - <a href="mailto:kestutis@il.ibm.com">Kestutis Dalinkevicius</a> 
+ * @authors <a href="mailto:kestutis@il.ibm.com">Kestutis Dalinkevicius</a>
+ * 		    <a href="mailto:noamsh@il.ibm.com">noamsh </a> 
  * 
  */
 
 @UpnpService(
-        serviceId = @UpnpServiceId("SodaPopPeer"),
+        serviceId = @UpnpServiceId(value = "SodaPopPeer:1"),
         serviceType = @UpnpServiceType(value = "SodaPopPeer", version = 1)
 
 )
@@ -50,20 +51,20 @@ import org.universAAL.middleware.acl.SodaPopPeer;
                 @UpnpStateVariable(
                         name = "PeerID",
                         datatype = "string",
-                        sendEvents = false
-                )                
+                        sendEvents = false,
+                        defaultValue = "MockSodaPopPeer_ID"
+                ),
+                @UpnpStateVariable(
+                        name = "BusNames",
+                        datatype = "string",
+                        sendEvents = false,
+                        defaultValue = "MockSodaPopPeer_BusNames"
+                )
         }
 )
 public class ExportingSodaPopPeerProxy implements SodaPopPeer{
 	
 	SodaPopPeer targetPeer;
-
-	/* Constructor just assigns real SodaPop Peer implementation as a target to delegate methods
-	 * @see org.universAAL.middleware.acl.SodaPopPeer#getID()
-	 */
-	public ExportingSodaPopPeerProxy(SodaPopPeer realPeer) {
-		this.targetPeer = realPeer;
-	}	
 
 	/* Delegates method to SodaPop Peer implementation set through constructor
 	 * @see org.universAAL.middleware.acl.SodaPopPeer#getID()
@@ -85,16 +86,18 @@ public class ExportingSodaPopPeerProxy implements SodaPopPeer{
 	/* Delegates method to SodaPop Peer implementation set through constructor
 	 * @see org.universAAL.middleware.acl.SodaPopPeer#leaveBus(java.lang.String, java.lang.String)
 	 */
-//	@UpnpAction //TODO add input state variables accordingly
-	public void leaveBus(String arg0, String arg1) {
+	@UpnpAction
+	public void leaveBus(@UpnpInputArgument(name = "BusName") String arg0,
+			@UpnpInputArgument(name = "LeavingPeer", stateVariable="PeerID") String arg1) {
 		this.targetPeer.leaveBus(arg0, arg1);
 	}
 
 	/** Delegates method to SodaPop Peer implementation set through constructor
 	 * @see org.universAAL.middleware.acl.SodaPopPeer#noticePeerBusses(java.lang.String, java.lang.String)
 	 */
-//	@UpnpAction //TODO add input state variables accordingly
-	public void noticePeerBusses(String arg0, String arg1) {
+	@UpnpAction
+	public void noticePeerBusses(@UpnpInputArgument(name = "BussesName", stateVariable = "BusNames") String arg0,
+			@UpnpInputArgument(name = "PeerID", stateVariable="PeerID") String arg1) {
 		this.targetPeer.noticePeerBusses(arg0, arg1);
 	}
 
@@ -109,16 +112,18 @@ public class ExportingSodaPopPeerProxy implements SodaPopPeer{
 	/* Delegates method to SodaPop Peer implementation set through constructor
 	 * @see org.universAAL.middleware.acl.SodaPopPeer#processBusMessage(java.lang.String, java.lang.String)
 	 */
-//	@UpnpAction //TODO add input state variables accordingly
-	public void processBusMessage(String arg0, String arg1) {
+	@UpnpAction
+	public void processBusMessage(@UpnpInputArgument(name = "BusName") String arg0,
+			@UpnpInputArgument(name = "Message", stateVariable="Message") String arg1) {
 		this.targetPeer.processBusMessage(arg0, arg1);
 	}
 
 	/* Delegates method to SodaPop Peer implementation set through constructor
 	 * @see org.universAAL.middleware.acl.SodaPopPeer#replyPeerBusses(java.lang.String, java.lang.String)
 	 */
-//	@UpnpAction //TODO add input state variables accordingly
-	public void replyPeerBusses(String arg0, String arg1) {
+	@UpnpAction
+	public void replyPeerBusses(@UpnpInputArgument(name = "PeerID", stateVariable="PeerID") String arg0, 
+			@UpnpInputArgument(name = "BusNames", stateVariable = "BusNames") String arg1) {
 		this.targetPeer.replyPeerBusses(arg0, arg1);
 	}
 

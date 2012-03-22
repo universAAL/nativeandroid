@@ -30,8 +30,8 @@ import org.teleal.cling.model.meta.Device;
 /**
  * Demonstration runner to create and publish SodaPop Peer client
  * 
- * @author kestutis - <a href="mailto:kestutis@il.ibm.com">Kestutis
- *         Dalinkevicius</a>
+ * @authors <a href="mailto:kestutis@il.ibm.com">Kestutis Dalinkevicius</a>
+ * 		    <a href="mailto:noamsh@il.ibm.com">noamsh </a>
  * 
  */
 
@@ -73,8 +73,7 @@ public class Runner implements Runnable {
 			// creating and publishing new SodaPop peer
 			upnpService.getRegistry()
 					.addDevice(
-							new DeviceFactory()
-									.getParsedDevice(descriptionInputStream, "some string for UDN"));
+							new DeviceFactory().getParsedDevice(descriptionInputStream, "some string for UDN"));
 		} catch (Exception ex) {
 			System.err.println("Exception occured: " + ex);
 			ex.printStackTrace(System.err);
@@ -92,8 +91,7 @@ public class Runner implements Runnable {
 			devices = upnpService.getControlPoint().getRegistry().getDevices();
 		}
 		System.out.println("Something found!");
-		for (Device device : upnpService.getControlPoint().getRegistry()
-				.getDevices()) {
+		for (Device device : upnpService.getControlPoint().getRegistry().getDevices()) {
 			System.out.println(device.toString());
 		}
 	}

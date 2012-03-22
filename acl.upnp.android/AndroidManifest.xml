@@ -18,6 +18,7 @@
 		</activity>
 
 		<service android:name="org.universAAL.middleware.UPnPAndroidService" />
+		<!-- <service android:name="org.teleal.cling.android.AndroidUpnpServiceImpl" /> -->
 	</application>
 
 </manifest>
