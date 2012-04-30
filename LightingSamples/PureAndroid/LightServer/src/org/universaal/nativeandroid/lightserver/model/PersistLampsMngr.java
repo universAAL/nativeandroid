@@ -26,11 +26,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.universaal.nativeandroid.lightserver.common.StringUtils;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
-
-import com.ibm.uaal.common.StringUtils;
 
 /**
  * 
