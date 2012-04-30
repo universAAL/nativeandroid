@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Service name="http://ontology.igd.fhg.de/LightingServer.owl#LightingService" superClassInOntology="org.universAAL.ontology.lighting.Lighting" xmlns="http://universAAL.org/AndroidService#"> 
+	<Operations>
+		<!-- android service type can be either "service" or "activity" -->
+		<Operation 	name="http://ontology.igd.fhg.de/LightingServer.owl#turnOn" 
+					androidAction="org.universaal.nativeandroid.lightserver.TURNON" 
+					androidCategory="android.intent.category.DEFAULT">
+			<Inputs>
+				<!-- androidName - according to http://forge.universaal.org/svn/nativeandroid/sandboxes/noamsh/LightServer/src/org/universaal/nativeandroid/lightserver/common/IConstants.java -->
+				<Input 	name="lampURI"
+						androidName="http://ontology.igd.fhg.de/LightingServer.owl#controlledLamp{lamp_number}"> 
+					<Filtering class="org.universAAL.ontology.lighting.LightSource" minCardinality="1" maxCardinality="1"/> 
+					<PropertyPath>
+						<Property uri="http://ontology.igd.fhg.de/LightingServer.owl#controls"/>
+					</PropertyPath>
+				</Input>
+			</Inputs>
+			<ChangeEffects>
+				<ChangeEffect>
+					<PropertyPath>
+						<Property uri="http://ontology.igd.fhg.de/LightingServer.owl#controls"/>
+						<Property uri="http://ontology.igd.fhg.de/LightingServer.owl#brightness"/>
+					</PropertyPath>
+					<Value class="java.lang.Integer">100</Value>
+				</ChangeEffect>
+			</ChangeEffects>
+		</Operation>
+	</Operations>
+</Service>
