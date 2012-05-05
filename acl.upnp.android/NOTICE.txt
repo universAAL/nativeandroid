@@ -13,7 +13,11 @@ II. Used Software
 This product uses software developed at
 Teleal (http://www.teleal.org).
 Licensed under the GNU Lesser General Public License.
+To see about usage of this software on Android - http://mailinglists.945824.n3.nabble.com/Cling-s-LGPL-license-and-Android-APKs-td3266524.html and http://4thline.org/projects/cling/faq.html .
 
+From the last link (retrieved on 05.05.2012):
+
+"You have to allow replacement of the Cling library in your distributed application. This means replacement of the JAR file (e.g. in a WAR or EAR package) or replacement of Cling .class files in the Android APK package (dex2jar). You can not lock your distribution package with any kind of obfuscation or DRM scheme. "
 
 III. License Summary
 - Apache License 2.0
