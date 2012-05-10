@@ -20,9 +20,11 @@
  */
 package org.universaal.nativeandroid.lightserver.model;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.universaal.nativeandroid.lightserver.common.IConstants;
 import org.universaal.nativeandroid.lightserver.controller.listeners.IListener;
 import org.universaal.nativeandroid.lightserver.controller.listeners.ListenerServerType;
 import org.universaal.nativeandroid.lightserver.model.messages.IMessage;
@@ -44,14 +46,17 @@ public class LightServerModel {
 	protected Map<ListenerServerType, IListener> 	listenersMap;
 	protected PersistLampsMngr 						persistLampMngr;
 	
+	private Context context;
+	
 	protected LightServerModel(Context context) {
+		this.context = context;
+		
 		listenersMap = new HashMap<ListenerServerType, IListener>();
 		
 		persistLampMngr = new PersistLampsMngr(context);
 	}
 	
-	public static LightServerModel getInstance(Context context)
-	{
+	public static LightServerModel getInstance(Context context) {
 		if (null == lightServerModel) {
 			synchronized (synchObj) {
 				if (null == lightServerModel) {
@@ -61,6 +66,14 @@ public class LightServerModel {
 		}
 		
 		return lightServerModel;
+	}
+	
+	public static LightServerModel getInstance() {
+		if (null == lightServerModel) {
+			throw new NullPointerException("The instance is not initialized!");
+		}
+		
+		return getInstance(null); // In that case the instance is already initialized, therefore the given parameter is not used
 	}
 	
 	public void addListener(ListenerServerType type, IListener listener) {
@@ -83,5 +96,22 @@ public class LightServerModel {
 	
 	public static PersistLampsMngr getPersistLampMngr() {
 		return lightServerModel.persistLampMngr;
+	}
+
+	public static void responseControlledLampsRequest(String action, String category) {
+		Collection<String> lampsList = getPersistLampMngr().getLamps().keySet();
+		
+		// Convert to string array
+		String[] lampsArr = lampsList.toArray(new String[0]);
+		
+		// Build the intent
+		Intent reply = new Intent(action);
+		//reply.addCategory(category);
+		
+		// Set the lamps
+		reply.putExtra(IConstants.lampNumberArrayArg, lampsArr);
+		
+		// Send it as a broadcast message
+		getInstance().context.sendBroadcast(reply);
 	}
 }

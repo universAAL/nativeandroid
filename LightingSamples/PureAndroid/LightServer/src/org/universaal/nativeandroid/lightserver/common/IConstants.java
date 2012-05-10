@@ -26,5 +26,9 @@ package org.universaal.nativeandroid.lightserver.common;
  *
  */
 public interface IConstants {
-	final String lightNumberArg = "lamp_number";
+	public final String lampNumberArg 		= "lamp_number";
+	public final String lampNumberArrayArg 	= "lamp_number_array";
+	
+	public final String replyToActionArg 	= "reply_to_action";
+	public final String replyToCategoryArg 	= "reply_to_category";
 }

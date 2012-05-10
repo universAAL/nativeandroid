@@ -26,6 +26,8 @@ package org.universaal.nativeandroid.lightserver;
  *
  */
 public enum Action {
-	TURNON,
-	TURNOFF
+	TURN_ON,
+	TURN_OFF,
+	GET_CONTROLLED_LAMPS,
+	GET_LAMP_INFO
 }
