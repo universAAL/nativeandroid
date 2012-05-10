@@ -33,23 +33,21 @@ import android.util.Log;
  *  @author <a href="mailto:noamsh@il.ibm.com">noamsh </a>
  *
  */
-public abstract class BasicMessageOnSingleLamp extends BasicMessage {
+public abstract class TurnOnOffLampMessage extends AbstractMessage {
 	protected int 		lampNumber;
 	protected IListener msgListener;
 	
-	public BasicMessageOnSingleLamp(Intent intent, IListener listener) {
+	public TurnOnOffLampMessage(Intent intent, IListener listener) {
 		lampNumber 		= getLampNumber(intent);
 		msgListener 	= listener;
 		
-		Log.d(getClass().getCanonicalName(), "Create a message for lamp [" +
-				lampNumber + "]");
+		Log.d(getClass().getCanonicalName(), "Create a message for lamp [" + lampNumber + "]");
 	}
 	
 	private int getLampNumber(Intent intent) {
 		// Extract the lamp number
-		Object obj = intent.getExtras().get(IConstants.lightNumberArg);
-		
-		return Integer.parseInt(obj.toString());
+		String lampAsStr = (String) intent.getExtras().get(IConstants.lampNumberArg);
+		return Integer.parseInt(lampAsStr); 
 	}
 
 	@Override

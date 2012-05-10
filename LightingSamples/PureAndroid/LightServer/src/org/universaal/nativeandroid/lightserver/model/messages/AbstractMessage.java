@@ -20,27 +20,11 @@
  */
 package org.universaal.nativeandroid.lightserver.model.messages;
 
-import java.util.Map;
-
-import org.universaal.nativeandroid.lightserver.controller.listeners.IListener;
-import org.universaal.nativeandroid.lightserver.controller.listeners.ListenerServerType;
-
-
-import android.content.Intent;
-
 /**
  * 
  *  @author <a href="mailto:noamsh@il.ibm.com">noamsh </a>
  *
  */
-public class TurnOffMessage extends TurnOnOffLampMessage {
+public abstract class AbstractMessage implements IMessage {
 
-	public TurnOffMessage(Intent pIntent, Map<ListenerServerType, IListener> pListenersMap) {
-		super(pIntent, pListenersMap.get(ListenerServerType.LampTurnOnOff));
-	}
-
-	@Override
-	protected boolean getLampState() {
-		return false;
-	}
 }

@@ -43,10 +43,14 @@ public class PersistLampsMngr
 	private static final String LampsListKey 	= "LampsList";
 	private static final String LampsDelim		= ";";
 	
+	private static final String[] lamps = new String[] {"1", "2", "3", "4"};
+	
 	private SharedPreferences sharedPreferences;
 	
 	public PersistLampsMngr(Context pContext) {
 		sharedPreferences = pContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+		
+		initializeLamps();
 	}
 
 	public void addLamp(String lampID) {
@@ -79,10 +83,16 @@ public class PersistLampsMngr
 		return lamps;
 	}
 	
+	private void initializeLamps() {
+		for (String lamp : lamps) {
+			addLamp(lamp);
+		}
+	}
+	
 	private List<String> getLampList() {
 		String lampsListStr = getPreferences().getString(LampsListKey, "");
 		Log.d(getClass().getCanonicalName(), "Lamp list was extracted [" + lampsListStr + "]");
-		List<String> lampsList;;
+		List<String> lampsList;
 		if (StringUtils.isEmpty(lampsListStr)) {
 			lampsList = new ArrayList<String>();
 		}

@@ -20,5 +20,12 @@ public class LightService extends IntentService {
 	protected void onHandleIntent(Intent pIntent) {
 		// Forward the message to the model
 		LightServerModel.getInstance(this).handleIntent(pIntent);
+		
+//		String replyTo = (String) pIntent.getExtras().get("inReplyToAction");
+//		
+//		Intent response = new Intent(replyTo);
+//		response.addCategory(Intent.CATEGORY_DEFAULT);
+//		
+//		sendBroadcast(response);
 	}
 }
