@@ -99,20 +99,29 @@ public class LightServerActivity extends Activity
 			}
 		}
 
-		private void updateLampStateInUI(String lampID, Boolean lampState) {
-			int lampIDAsInt = 0;
+		private void updateLampStateInUI(String lampID, final Boolean lampState) {
+			int parsedLampIDAsInt = 0;
 			try {
-				lampIDAsInt = Integer.parseInt(lampID);
+				parsedLampIDAsInt = Integer.parseInt(lampID);
 			}
 			catch (NumberFormatException e) {
 				Log.e(getClass().getCanonicalName(), "Illegal lamp ID [" + lampID + "]");
 				return;
 			}
 			
-			int id = getResources().getIdentifier("lamp" + lampIDAsInt, "id", getPackageName());
-			FrameLayout frame = (FrameLayout) findViewById(id);
+			final int lampIDAsInt = parsedLampIDAsInt;
 			
-			lightServerActivity.turnOnOffLamp(frame, lampState);
+			runOnUiThread(new Thread()
+				{
+					@Override
+					public void run() {
+						int id = getResources().getIdentifier("lamp" + lampIDAsInt, "id", getPackageName());
+						FrameLayout frame = (FrameLayout) findViewById(id);
+						
+						lightServerActivity.turnOnOffLamp(frame, lampState);
+					}
+				}
+			);
 		}
 
 		private void populateModel() {

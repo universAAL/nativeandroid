@@ -156,40 +156,36 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
+        public static final int btnGetLamps=0x7f060012;
         public static final int btnOff=0x7f060009;
         public static final int btnOn=0x7f060008;
         public static final int btnScale=0x7f06000e;
         public static final int editTextScalePercents=0x7f06000d;
-        public static final int groupLamps=0x7f06000f;
-        public static final int radioLamp1=0x7f060010;
-        public static final int radioLamp2=0x7f060011;
-        public static final int radioLamp3=0x7f060012;
-        public static final int radioLamp4=0x7f060013;
-        public static final int rowSpan=0x7f06000b;
+        public static final int groupLamps=0x7f060013;
+        public static final int rowSpan1=0x7f06000b;
+        public static final int rowSpan2=0x7f060010;
         public static final int spaceCol1=0x7f060002;
         public static final int spaceCol2=0x7f060003;
         public static final int spaceCol3=0x7f060004;
         public static final int spaceCol4=0x7f060005;
         public static final int spaceCol5=0x7f060006;
+        public static final int tableGetControlledLampsRowButtons=0x7f060011;
         public static final int tableLayout1=0x7f060000;
         public static final int tableRow1=0x7f060001;
-        public static final int tableRowOnOffButtons=0x7f060007;
         public static final int tableRowScale=0x7f06000c;
-        public static final int tableRowSpan=0x7f06000a;
+        public static final int tableRowSpan1=0x7f06000a;
+        public static final int tableRowSpan2=0x7f06000f;
+        public static final int tableTurnOnOffRowButtons=0x7f060007;
     }
     public static final class layout {
         public static final int main=0x7f030000;
     }
     public static final class string {
-        public static final int app_name=0x7f050001;
-        public static final int defaultScale=0x7f050005;
-        public static final int hello=0x7f050000;
-        public static final int lamp1=0x7f050006;
-        public static final int lamp2=0x7f050007;
-        public static final int lamp3=0x7f050008;
-        public static final int lamp4=0x7f050009;
-        public static final int off=0x7f050003;
-        public static final int on=0x7f050002;
-        public static final int scale=0x7f050004;
+        public static final int app_name=0x7f050000;
+        public static final int defaultScale=0x7f050004;
+        public static final int getLamps=0x7f050005;
+        public static final int off=0x7f050002;
+        public static final int on=0x7f050001;
+        public static final int scale=0x7f050003;
     }
 }

@@ -1,15 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <string name="hello">Hello World, LightActivity!</string>
-    <string name="app_name">Light Client</string>
+    <string name="app_name">universAAL Lighting Client</string>
     <string name="on">On</string>
     <string name="off">Off</string>
     <string name="scale">Scale</string>
     <string name="defaultScale">0</string>
-    <string name="lamp1">Lamp 1</string>
-    <string name="lamp2">Lamp 2</string>
-    <string name="lamp3">Lamp 3</string>
-    <string name="lamp4">Lamp 4</string>
-
+    <string name="getLamps">GetLamps</string>
 </resources>

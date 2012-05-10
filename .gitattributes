@@ -22,6 +22,7 @@ LightingSamples/PureAndroid/LightClient/res/drawable-mdpi/ic_launcher.png -text
 LightingSamples/PureAndroid/LightClient/res/layout/main.xml -text
 LightingSamples/PureAndroid/LightClient/res/values/colors.xml -text
 LightingSamples/PureAndroid/LightClient/res/values/strings.xml -text
+LightingSamples/PureAndroid/LightClient/src/org/universaal/nativeandroid/lightclient/IConstants.java -text
 LightingSamples/PureAndroid/LightClient/src/org/universaal/nativeandroid/lightclient/LightClientActivity.java -text
 LightingSamples/PureAndroid/LightServer/.classpath -text
 LightingSamples/PureAndroid/LightServer/.project -text
@@ -68,6 +69,7 @@ LightingSamples/PureAndroid/LightServer/res/values/strings.xml -text
 LightingSamples/PureAndroid/LightServer/src/org/universaal/nativeandroid/lightserver/Action.java -text
 LightingSamples/PureAndroid/LightServer/src/org/universaal/nativeandroid/lightserver/LightServerActivity.java -text
 LightingSamples/PureAndroid/LightServer/src/org/universaal/nativeandroid/lightserver/common/IConstants.java -text
+LightingSamples/PureAndroid/LightServer/src/org/universaal/nativeandroid/lightserver/common/StringUtils.java -text
 LightingSamples/PureAndroid/LightServer/src/org/universaal/nativeandroid/lightserver/controller/listeners/IListener.java -text
 LightingSamples/PureAndroid/LightServer/src/org/universaal/nativeandroid/lightserver/controller/listeners/LampStateChangeListener.java -text
 LightingSamples/PureAndroid/LightServer/src/org/universaal/nativeandroid/lightserver/controller/listeners/ListenerServerType.java -text
@@ -132,12 +134,13 @@ LightingSamples/UniversAALized/LightServer/src/org/universaal/nativeandroid/ligh
 LightingSamples/UniversAALized/LightServer/src/org/universaal/nativeandroid/lightserver/controller/listeners/ListenerServerType.java -text
 LightingSamples/UniversAALized/LightServer/src/org/universaal/nativeandroid/lightserver/model/LightServerModel.java -text
 LightingSamples/UniversAALized/LightServer/src/org/universaal/nativeandroid/lightserver/model/PersistLampsMngr.java -text
-LightingSamples/UniversAALized/LightServer/src/org/universaal/nativeandroid/lightserver/model/messages/BasicMessage.java -text
-LightingSamples/UniversAALized/LightServer/src/org/universaal/nativeandroid/lightserver/model/messages/BasicMessageOnSingleLamp.java -text
+LightingSamples/UniversAALized/LightServer/src/org/universaal/nativeandroid/lightserver/model/messages/AbstractMessage.java -text
+LightingSamples/UniversAALized/LightServer/src/org/universaal/nativeandroid/lightserver/model/messages/GetControlledLampsMessage.java -text
 LightingSamples/UniversAALized/LightServer/src/org/universaal/nativeandroid/lightserver/model/messages/IMessage.java -text
 LightingSamples/UniversAALized/LightServer/src/org/universaal/nativeandroid/lightserver/model/messages/MessagesFactory.java -text
 LightingSamples/UniversAALized/LightServer/src/org/universaal/nativeandroid/lightserver/model/messages/TurnOffMessage.java -text
 LightingSamples/UniversAALized/LightServer/src/org/universaal/nativeandroid/lightserver/model/messages/TurnOnMessage.java -text
+LightingSamples/UniversAALized/LightServer/src/org/universaal/nativeandroid/lightserver/model/messages/TurnOnOffLampMessage.java -text
 LightingSamples/UniversAALized/LightServer/src/org/universaal/nativeandroid/lightserver/service/LightService.java -text
 MetaDataExtraction/AndroidManifest.xml -text
 MetaDataExtraction/LICENSE.txt -text

@@ -20,27 +20,29 @@
  */
 package org.universaal.nativeandroid.lightserver.model.messages;
 
-import java.util.Map;
-
-import org.universaal.nativeandroid.lightserver.controller.listeners.IListener;
-import org.universaal.nativeandroid.lightserver.controller.listeners.ListenerServerType;
-
+import org.universaal.nativeandroid.lightserver.common.IConstants;
+import org.universaal.nativeandroid.lightserver.model.LightServerModel;
 
 import android.content.Intent;
+
 
 /**
  * 
  *  @author <a href="mailto:noamsh@il.ibm.com">noamsh </a>
  *
  */
-public class TurnOffMessage extends TurnOnOffLampMessage {
+public class GetControlledLampsMessage extends AbstractMessage {
 
-	public TurnOffMessage(Intent pIntent, Map<ListenerServerType, IListener> pListenersMap) {
-		super(pIntent, pListenersMap.get(ListenerServerType.LampTurnOnOff));
+	private String replyToAction;
+	private String replyToCategory;
+	
+	public GetControlledLampsMessage(Intent intent) {
+		replyToAction 	= intent.getStringExtra(IConstants.replyToActionArg);
+		//replyToCategory = intent.getStringExtra(IConstants.replyToCategoryArg);
 	}
-
+	
 	@Override
-	protected boolean getLampState() {
-		return false;
+	public void handle() {
+		LightServerModel.responseControlledLampsRequest(replyToAction, replyToCategory);
 	}
 }

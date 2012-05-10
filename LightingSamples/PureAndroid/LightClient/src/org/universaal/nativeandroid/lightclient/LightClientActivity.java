@@ -20,14 +20,21 @@
  */
 package org.universaal.nativeandroid.lightclient;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
-import android.view.MotionEvent;
+import android.util.Log;
 import android.view.View;
-import android.view.View.OnTouchListener;
-import android.widget.Button;
-import android.widget.EditText;
+import android.view.View.OnClickListener;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 /**
@@ -35,105 +42,132 @@ import android.widget.RadioGroup;
  *  @author <a href="mailto:noamsh@il.ibm.com">noamsh </a>
  *
  */
-public class LightClientActivity extends Activity implements OnTouchListener
+public class LightClientActivity extends Activity 
 {
-	private final static boolean serviceMode = true;
+	private final static String 	TAG 				= LightClientActivity.class.getCanonicalName();
+	private final static boolean 	serviceMode 		= true;
+	private final static String 	lightServerPackage 	= "org.universaal.nativeandroid.lightserver";
 	
-	private final static String lightServerPackage = "org.universaal.nativeandroid.lightserver";
+	private String selectedLamp = "";
 	
 	/** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        
-        // Add touch listeners
-        addTouchListeners();
     }
 
-	private void addTouchListeners() {
-		addTouchListener(R.id.btnOn);
-		addTouchListener(R.id.btnOff);
+	public void onButtonOffClicked(View v){
+		Intent lightServerIntent = new Intent(lightServerPackage + ".TURN_OFF");
+		if (!addSelectedLampNumber(lightServerIntent)) {
+			return;
+		}
+		invokeIntent(lightServerIntent);
 	}
 
-	private void addTouchListener(int btn) {
-		Button button = (Button)findViewById(btn);
-        button.setOnTouchListener(this);
-	}
-	
-
-	@Override
-	public boolean onTouch(View v, MotionEvent event) {
-		if (event.getAction() == MotionEvent.ACTION_UP) {
-			switch(v.getId())
-			{
-			case R.id.btnOn:
-				handleOnClicked();
-				break;
-			case R.id.btnOff:
-				handleOffClicked();
-				break;
-			case R.id.btnScale:
-				handleScaleClicked();
-				break;
-			default:
-				break;
-			}
+	public void onButtonOnClicked(View v){
+		Intent lightServerIntent = new Intent(lightServerPackage + ".TURN_ON");
+		if (!addSelectedLampNumber(lightServerIntent)) {
+			return;
 		}
 		
-		return false; // To make the button seen as clicked
+		invokeIntent(lightServerIntent);
 	}
 	
-	private void handleOffClicked() {
-		Intent lightServerIntent = new Intent(lightServerPackage + ".TURNOFF");
-		addSelectedLampNumber(lightServerIntent);
+	public void onButtonGetLampsClicked(View v){
+		// Register for receiver that will wait for the response
+		BroadcastReceiver receiver = new BroadcastReceiver() {
+			
+			@Override
+			public void onReceive(Context context, final Intent intent) {
+				Log.d(TAG, "Got response on GetControlledLamps request");
+				
+				unregisterReceiver(this);
+				
+				runOnUiThread(
+						new Thread() {
+							@Override
+							public void run() {
+								analyzeGetLampsResponse(intent);
+							}
+						}
+				);
+			}
+		};
+		
+		// Action name for the reply
+		String actionNameForReply = receiver.getClass().getName();
+		
+		// Category for the reply
+		//String category = Intent.CATEGORY_DEFAULT;
+		
+		// Add a filter to the receiver
+		IntentFilter filter = new IntentFilter(actionNameForReply);
+		//filter.addCategory(category);
+		registerReceiver(receiver, filter);
+		
+		// Create the intent that will be sent to the server
+		Intent lightServerIntent = new Intent(lightServerPackage + ".GET_CONTROLLED_LAMPS");
+		lightServerIntent.putExtra(IConstants.replyToActionArg, actionNameForReply);
+		//lightServerIntent.putExtra(IConstants.replyToCategoryArg, category);
+		
 		invokeIntent(lightServerIntent);
 	}
-
-	private void handleOnClicked() {
-		Intent lightServerIntent = new Intent(lightServerPackage + ".TURNON");
-		addSelectedLampNumber(lightServerIntent);
-		invokeIntent(lightServerIntent);
+	
+	private void analyzeGetLampsResponse(Intent intent) {
+		// Extract the lamp array from the extras
+		String[] lampsArr = intent.getStringArrayExtra(IConstants.lampNumberArrayArg);
+		
+		// Sort by lamps ids
+		List<String> lampsList = Arrays.asList(lampsArr);
+		Collections.sort(lampsList);
+		
+		// Update the UI
+		RadioGroup lampsGroup = (RadioGroup)findViewById(R.id.groupLamps);
+		clearLampsState(lampsGroup);
+		for (String lamp : lampsList) {
+			RadioButton lampButton = new RadioButton(this);
+			lampButton.setText(lamp);
+			lampButton.setTextColor(R.color.Blue);
+			lampButton.setOnClickListener(new OnClickListener() {			
+				public void onClick(View v) {
+					selectedLamp = ((RadioButton)v).getText().toString();
+				}
+			});
+			lampsGroup.addView(lampButton);
+		}
 	}
 	
 	private void invokeIntent(Intent pIntent) {
 		if (serviceMode) {
 			startService(pIntent); 
-		}
-		else {
+		} else {
 			startActivity(pIntent);
 		}
 	}
 	
-	private void addSelectedLampNumber(Intent pLightServerIntent) {
-		pLightServerIntent.putExtra("lamp_number", getSelectedLamp());
-	}
-	
-	private void handleScaleClicked() {
-		System.out.println("Scale clicked with value [" + 
-				((EditText)findViewById(R.id.editTextScalePercents)).getText() + "]");
-	}
-	
-	private int getSelectedLamp() {
-		int selectedLamp = 1; // By default set it to the first lamp
-		RadioGroup rg = (RadioGroup)findViewById(R.id.groupLamps);
-		int rbId = rg.getCheckedRadioButtonId();
-		switch (rbId)
-		{
-		case R.id.radioLamp1:
-			selectedLamp = 1;
-			break;
-		case R.id.radioLamp2:
-			selectedLamp = 2;
-			break;
-		case R.id.radioLamp3:
-			selectedLamp = 3;
-			break;
-		case R.id.radioLamp4:
-			selectedLamp = 4;
-			break;
+	private boolean addSelectedLampNumber(Intent lightServerIntent) {
+		boolean isValid = false;
+		if (null == selectedLamp || selectedLamp.isEmpty()) {
+			AlertDialog alert = new AlertDialog(getApplicationContext()) {
+
+				@Override
+				public void setMessage(CharSequence message) {
+					super.setMessage("No lamp has been selected");
+				}
+				
+			};
+			alert.show();
+		} else {
+			lightServerIntent.putExtra(IConstants.lampNumberArg, selectedLamp);
+			isValid = true;
 		}
 		
-		return selectedLamp;
+		return isValid;
+	}
+	
+	private void clearLampsState(RadioGroup lampsGroup) {
+		selectedLamp = "";
+		lampsGroup.removeAllViews();
 	}
 }
