@@ -17,11 +17,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
-                <action android:name="org.universaal.nativeandroid.lightserver.TURNON" />
+                <action android:name="org.universaal.nativeandroid.lightserver.TURN_ON" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <intent-filter>
-                <action android:name="org.universaal.nativeandroid.lightserver.TURNOFF" />
+                <action android:name="org.universaal.nativeandroid.lightserver.TURN_OFF" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="org.universaal.nativeandroid.lightserver.GET_CONTROLLED_LAMPS" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -29,11 +33,15 @@
         <service android:name=".service.LightService">
             <meta-data android:name="org.universAAL.middleware.service.android.serviceProfileGrounding" android:resource="@raw/lighting_service_profile_grounding"/> 
             <intent-filter>
-                <action android:name="org.universaal.nativeandroid.lightserver.TURNON" />
+                <action android:name="org.universaal.nativeandroid.lightserver.TURN_ON" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <intent-filter>
-                <action android:name="org.universaal.nativeandroid.lightserver.TURNOFF" />
+                <action android:name="org.universaal.nativeandroid.lightserver.TURN_OFF" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="org.universaal.nativeandroid.lightserver.GET_CONTROLLED_LAMPS" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </service>

@@ -18,13 +18,47 @@
  *      limitations under the License. 
  *
  */
-package org.universaal.nativeandroid.lightserver.model.messages;
+package org.universaal.nativeandroid.lightserver.common;
+
+import java.util.Collection;
+import java.util.Iterator;
+
 
 /**
  * 
  *  @author <a href="mailto:noamsh@il.ibm.com">noamsh </a>
  *
  */
-public abstract class BasicMessage implements IMessage {
+public class StringUtils {
+	public static String toString(Collection array, String prefix, String delimeter) {
+		if (array == null)
+			return "";
+			
+		if (array.size() < 1)
+			return "";
+		
+		StringBuffer sb = new StringBuffer();
+		
+		Iterator<Object> it = array.iterator();
+		while (it.hasNext()) {
+			sb.append(prefix).append(it.next());
+			if (it.hasNext())
+				sb.append(delimeter);			
+		}		
+		
+		return sb.toString();		
+	}
+	
+	public static boolean isEmpty(String str) {
+		if (str == null)			
+			return true;
+		else if (str.trim().length() == 0)	
+			return true;
+		else						
+			return false;
+	}
 
+	public static boolean notEmpty(String str) {
+		return (! isEmpty(str));
+	}
 }

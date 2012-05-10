@@ -36,19 +36,22 @@ import android.content.Intent;
  *
  */
 public class MessagesFactory {
-	public static IMessage createMessage(Intent pIntent, Map<ListenerServerType, IListener> pListenersMap) {
+	public static IMessage createMessage(Intent intent, Map<ListenerServerType, IListener> listenersMap) {
 		IMessage message = null;
 		
-		Action action = getAction(pIntent);
+		Action action = getAction(intent);
 		
 		if (null != action) {
 			switch (action)
 			{
-			case TURNON:
-				message = new TurnOnMessage(pIntent, pListenersMap);
+			case TURN_ON:
+				message = new TurnOnMessage(intent, listenersMap);
 				break;
-			case TURNOFF:
-				message = new TurnOffMessage(pIntent, pListenersMap);
+			case TURN_OFF:
+				message = new TurnOffMessage(intent, listenersMap);
+				break;
+			case GET_CONTROLLED_LAMPS:
+				message = new GetControlledLampsMessage(intent);
 				break;
 			}
 		}
@@ -56,11 +59,11 @@ public class MessagesFactory {
 		return message;
 	}
 	
-	private static Action getAction(Intent pIntent)
+	private static Action getAction(Intent intent)
 	{
 		Action foundAction = null;
 		final String activityPackage 	= LightServerActivity.class.getPackage().getName();
-		final String intentActionName 	= pIntent.getAction();
+		final String intentActionName 	= intent.getAction();
 		
 		for (Action curAction : Action.values()) {
 			if (intentActionName.equals(activityPackage + "." + curAction)) {

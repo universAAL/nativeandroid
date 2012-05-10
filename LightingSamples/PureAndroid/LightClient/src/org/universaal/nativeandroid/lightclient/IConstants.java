@@ -18,29 +18,18 @@
  *      limitations under the License. 
  *
  */
-package org.universaal.nativeandroid.lightserver.model.messages;
+package org.universaal.nativeandroid.lightclient;
 
-import java.util.Map;
-
-import org.universaal.nativeandroid.lightserver.controller.listeners.IListener;
-import org.universaal.nativeandroid.lightserver.controller.listeners.ListenerServerType;
-
-
-import android.content.Intent;
 
 /**
  * 
  *  @author <a href="mailto:noamsh@il.ibm.com">noamsh </a>
  *
  */
-public class TurnOffMessage extends TurnOnOffLampMessage {
-
-	public TurnOffMessage(Intent pIntent, Map<ListenerServerType, IListener> pListenersMap) {
-		super(pIntent, pListenersMap.get(ListenerServerType.LampTurnOnOff));
-	}
-
-	@Override
-	protected boolean getLampState() {
-		return false;
-	}
+public interface IConstants {
+	public final String lampNumberArg 		= "lamp_number";
+	public final String lampNumberArrayArg 	= "lamp_number_array";
+	
+	public final String replyToActionArg 	= "reply_to_action";
+	public final String replyToCategoryArg 	= "reply_to_category";
 }

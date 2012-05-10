@@ -25,7 +25,6 @@ import java.util.Map;
 import org.universaal.nativeandroid.lightserver.controller.listeners.IListener;
 import org.universaal.nativeandroid.lightserver.controller.listeners.ListenerServerType;
 
-
 import android.content.Intent;
 
 /**
@@ -33,7 +32,7 @@ import android.content.Intent;
  *  @author <a href="mailto:noamsh@il.ibm.com">noamsh </a>
  *
  */
-public class TurnOnMessage extends BasicMessageOnSingleLamp {
+public class TurnOnMessage extends TurnOnOffLampMessage {
 
 	public TurnOnMessage(Intent pIntent, Map<ListenerServerType, IListener> pListenersMap) {
 		super(pIntent, pListenersMap.get(ListenerServerType.LampTurnOnOff));
