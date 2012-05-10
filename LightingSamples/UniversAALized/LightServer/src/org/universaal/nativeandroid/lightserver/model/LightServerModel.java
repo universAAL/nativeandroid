@@ -106,7 +106,7 @@ public class LightServerModel {
 		
 		// Build the intent
 		Intent reply = new Intent(action);
-		//reply.addCategory(category);
+		reply.addCategory(category);
 		
 		// Set the lamps
 		reply.putExtra(IConstants.lampNumberArrayArg, lampsArr);
