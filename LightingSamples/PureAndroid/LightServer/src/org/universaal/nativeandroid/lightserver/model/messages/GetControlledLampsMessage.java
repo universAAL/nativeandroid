@@ -38,7 +38,7 @@ public class GetControlledLampsMessage extends AbstractMessage {
 	
 	public GetControlledLampsMessage(Intent intent) {
 		replyToAction 	= intent.getStringExtra(IConstants.replyToActionArg);
-		//replyToCategory = intent.getStringExtra(IConstants.replyToCategoryArg);
+		replyToCategory = intent.getStringExtra(IConstants.replyToCategoryArg);
 	}
 	
 	@Override

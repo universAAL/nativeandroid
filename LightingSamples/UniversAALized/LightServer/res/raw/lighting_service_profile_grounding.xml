@@ -10,7 +10,7 @@
 	</Ontologies>
 	<Operations>
 		<Operation 	name="http://ontology.igd.fhg.de/LightingServer.owl#turnOn" 
-					androidAction="org.universaal.nativeandroid.lightserver.TURNON" 
+					androidAction="org.universaal.nativeandroid.lightserver.TURN_ON" 
 					androidCategory="android.intent.category.DEFAULT">
 			<Inputs>
 				<Input 	name="http://ontology.igd.fhg.de/LightingServer.owl#lampURI"
@@ -35,7 +35,7 @@
 		</Operation>
 		
 		<Operation 	name="http://ontology.igd.fhg.de/LightingServer.owl#getControlledLamps" 
-					androidAction="org.universaal.nativeandroid.lightserver.GETCONTROLLEDLAMPS" 
+					androidAction="org.universaal.nativeandroid.lightserver.GET_CONTROLLED_LAMPS" 
 					androidCategory="android.intent.category.DEFAULT"
 					androidReplyToActionExtaParameter="replyToAction"
 					androidReplyToCategoryExtraParameter="replyToCategory">

@@ -99,7 +99,7 @@ public class LightClientActivity extends Activity
 		String actionNameForReply = receiver.getClass().getName();
 		
 		// Category for the reply
-		//String category = Intent.CATEGORY_DEFAULT;
+		String category = Intent.CATEGORY_DEFAULT;
 		
 		// Add a filter to the receiver
 		IntentFilter filter = new IntentFilter(actionNameForReply);
@@ -109,7 +109,7 @@ public class LightClientActivity extends Activity
 		// Create the intent that will be sent to the server
 		Intent lightServerIntent = new Intent(lightServerPackage + ".GET_CONTROLLED_LAMPS");
 		lightServerIntent.putExtra(IConstants.replyToActionArg, actionNameForReply);
-		//lightServerIntent.putExtra(IConstants.replyToCategoryArg, category);
+		lightServerIntent.putExtra(IConstants.replyToCategoryArg, category);
 		
 		invokeIntent(lightServerIntent);
 	}
