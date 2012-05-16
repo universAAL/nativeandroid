@@ -7,6 +7,7 @@
 		<Ontology value="org.universAAL.ontology.phThing.PhThingOntology"/>
 		<Ontology value="org.universAAL.ontology.space.SpaceOntology"/>
 		<Ontology value="org.universAAL.ontology.lighting.LightingOntology"/>
+		<Ontology value="org.universAAL.ontology.lighting.LightSource"/>	
 	</Ontologies>
 	<Operations>
 		<Operation 	name="http://ontology.igd.fhg.de/LightingServer.owl#turnOn" 
@@ -19,15 +20,15 @@
 					minCardinality="1" 
 					maxCardinality="1"/> 
 					<PropertyPath>
-						<Property uri="http://ontology.igd.fhg.de/LightingServer.owl#controls"/>
+						<Property uri="http://ontology.universaal.org/Lighting.owl#controls"/>
 					</PropertyPath>
 				</Input>
 			</Inputs>
 			<ChangeEffects>
 				<ChangeEffect>
 					<PropertyPath>
-						<Property uri="http://ontology.igd.fhg.de/LightingServer.owl#controls"/>
-						<Property uri="http://ontology.igd.fhg.de/LightingServer.owl#brightness"/>
+						<Property uri="http://ontology.universaal.org/LightingServer.owl#controls"/>
+						<Property uri="http://ontology.universaal.org/LightingServer.owl#srcBrightness"/>
 					</PropertyPath>
 					<Value class="java.lang.Integer">100</Value>
 				</ChangeEffect>
@@ -40,7 +41,6 @@
 					androidReplyToActionExtaParameter="replyToAction"
 					androidReplyToCategoryExtraParameter="replyToCategory">
 			<Outputs>
-			<!-- The android will return an array of numbers - if 0-0 then it is array - use getStringArray. lamp_number_array - its is the android parameter name-->
 				<Output	name="http://ontology.igd.fhg.de/LightingServer.owl#controlledLamps"
 						androidName="http://ontology.igd.fhg.de/LightingServer.owl#controlledLamp{lamp_number_array}" 
 						class= "org.universAAL.ontology.lighting.LightSource" 
@@ -48,7 +48,7 @@
 						minCardinality="0" 
 						maxCardinality="0"> 
 					<PropertyPath>
-						<Property uri="http://ontology.igd.fhg.de/LightingServer.owl#controls"/>
+						<Property uri="http://ontology.universaal.org/Lighting.owl#controls"/>
 					</PropertyPath>
 				</Output>
 			</Outputs>
