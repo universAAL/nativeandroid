@@ -103,7 +103,7 @@ public class LightClientActivity extends Activity
 		
 		// Add a filter to the receiver
 		IntentFilter filter = new IntentFilter(actionNameForReply);
-		//filter.addCategory(category);
+		filter.addCategory(category);
 		registerReceiver(receiver, filter);
 		
 		// Create the intent that will be sent to the server
