@@ -7,7 +7,6 @@
 		<Ontology value="org.universAAL.ontology.phThing.PhThingOntology"/>
 		<Ontology value="org.universAAL.ontology.space.SpaceOntology"/>
 		<Ontology value="org.universAAL.ontology.lighting.LightingOntology"/>
-		<Ontology value="org.universAAL.ontology.lighting.LightSource"/>	
 	</Ontologies>
 	<Operations>
 		<Operation 	name="http://ontology.igd.fhg.de/LightingServer.owl#turnOn" 
@@ -27,10 +26,35 @@
 			<ChangeEffects>
 				<ChangeEffect>
 					<PropertyPath>
-						<Property uri="http://ontology.universaal.org/LightingServer.owl#controls"/>
-						<Property uri="http://ontology.universaal.org/LightingServer.owl#srcBrightness"/>
+						<Property uri="http://ontology.universaal.org/Lighting.owl#controls"/>
+						<Property uri="http://ontology.universaal.org/Lighting.owl#srcBrightness"/>
 					</PropertyPath>
 					<Value class="java.lang.Integer">100</Value>
+				</ChangeEffect>
+			</ChangeEffects>
+		</Operation>
+		
+		<Operation 	name="http://ontology.igd.fhg.de/LightingServer.owl#turnOff" 
+					androidAction="org.universaal.nativeandroid.lightserver.TURN_OFF" 
+					androidCategory="android.intent.category.DEFAULT">
+			<Inputs>
+				<Input 	name="http://ontology.igd.fhg.de/LightingServer.owl#lampURI"
+						androidName="http://ontology.igd.fhg.de/LightingServer.owl#controlledLamp{lamp_number}"> 
+					<Filtering classUri="http://ontology.universaal.org/Lighting.owl#LightSource" 
+					minCardinality="1" 
+					maxCardinality="1"/> 
+					<PropertyPath>
+						<Property uri="http://ontology.universaal.org/Lighting.owl#controls"/>
+					</PropertyPath>
+				</Input>
+			</Inputs>
+			<ChangeEffects>
+				<ChangeEffect>
+					<PropertyPath>
+						<Property uri="http://ontology.universaal.org/Lighting.owl#controls"/>
+						<Property uri="http://ontology.universaal.org/Lighting.owl#srcBrightness"/>
+					</PropertyPath>
+					<Value class="java.lang.Integer">0</Value>
 				</ChangeEffect>
 			</ChangeEffects>
 		</Operation>
