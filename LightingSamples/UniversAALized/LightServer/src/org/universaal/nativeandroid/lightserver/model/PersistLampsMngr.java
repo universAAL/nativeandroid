@@ -43,7 +43,7 @@ public class PersistLampsMngr
 	private static final String LampsListKey 	= "LampsList";
 	private static final String LampsDelim		= ";";
 	
-	private static final String[] lamps = new String[] {"1", "2", "3", "4"};
+	private static final String[] lamps = new String[] {"0", "1", "2", "3"};
 	
 	private SharedPreferences sharedPreferences;
 	
