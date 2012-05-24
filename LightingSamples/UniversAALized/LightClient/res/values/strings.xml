@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">universAAL Lighting Client</string>
+    <string name="on">On</string>
+    <string name="off">Off</string>
+    <string name="scale">Scale</string>
+    <string name="defaultScale">0</string>
+    <string name="getLamps">GetLamps</string>
+</resources>
