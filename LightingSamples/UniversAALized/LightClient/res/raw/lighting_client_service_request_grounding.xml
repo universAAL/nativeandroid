@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ServiceRequestGrounding  xmlns="http://universAAL.org/AndroidService#" version="1.0.0" xmlns:android="http://schemas.android.com/apk/res/android" > 
+	<Ontologies>
+		<Ontology javaClass="org.universAAL.ontology.location.LocationOntology"/>
+		<Ontology javaClass="org.universAAL.ontology.shape.ShapeOntology"/>
+		<Ontology javaClass="org.universAAL.ontology.phThing.PhThingOntology"/>
+		<Ontology javaClass="org.universAAL.ontology.space.SpaceOntology"/>
+		<Ontology javaClass="org.universAAL.ontology.lighting.LightingOntology"/>
+	</Ontologies>
+	<Actions>
+		<Action androidAction="org.universaal.nativeandroid.lightclient.TURN_ON" 
+			    androidCategory="android.intent.category.DEFAULT"
+				serviceJavaClass="org.universAAL.ontology.lighting.Lighting">
+			
+			<ValueFilters>
+				<ValueFilter 	androidExtraParameter="lamp_number"
+								androidExtraParameterJavaClass="java.lang.String"
+								javaClass="org.universAAL.ontology.lighting.LightSource">		
+					<PropertyPath>
+						<Property uri="http://ontology.universaal.org/Lighting.owl#controls"/>
+					</PropertyPath>
+				</ValueFilter>
+			</ValueFilters>
+			<ChangeEffects>
+				<ChangeEffect>
+					<PropertyPath>
+						<Property uri="http://ontology.universaal.org/Lighting.owl#controls"/>
+						<Property uri="http://ontology.universaal.org/Lighting.owl#srcBrightness"/>
+					</PropertyPath>
+					<Value javaClass="java.lang.Integer">100</Value>
+				</ChangeEffect>
+			</ChangeEffects>
+		</Action>
+		
+		<Action androidAction="org.universaal.nativeandroid.lightclient.TURN_OFF" 
+			    androidCategory="android.intent.category.DEFAULT"
+				serviceJavaClass="org.universAAL.ontology.lighting.Lighting">
+			
+			<ValueFilters>
+				<ValueFilter 	androidExtraParameter="lamp_number"
+								androidExtraParameterJavaClass="java.lang.String"
+								javaClass="org.universAAL.ontology.lighting.LightSource">		
+					<PropertyPath>
+						<Property uri="http://ontology.universaal.org/Lighting.owl#controls"/>
+					</PropertyPath>
+				</ValueFilter>
+			</ValueFilters>
+			<ChangeEffects>
+				<ChangeEffect>
+					<PropertyPath>
+						<Property uri="http://ontology.universaal.org/Lighting.owl#controls"/>
+						<Property uri="http://ontology.universaal.org/Lighting.owl#srcBrightness"/>
+					</PropertyPath>
+					<Value javaClass="java.lang.Integer">0</Value>
+				</ChangeEffect>
+			</ChangeEffects>
+		</Action>
+		
+		<Action 	androidAction="org.universaal.nativeandroid.lightclient.GET_CONTROLLED_LAMPS"
+					androidCategory="android.intent.category.DEFAULT"
+					serviceJavaClass="org.universAAL.ontology.lighting.Lighting"
+					androidReplyToActionExtraParameter="replyToAction"
+					androidReplyToCategoryExtraParameter="replyToCategory">
+			<RequiredOutputs>
+				<RequiredOutput	uri="http://ontology.igd.fhg.de/LightingServer.owl#controlledLamps" 
+						androidExtraParameter="lamp_number_array"
+						androidExtraParameterJavaClass="java.util.List"
+						javaClass= "org.universAAL.ontology.lighting.LightSource"> 
+		
+					<PropertyPath>
+						<Property uri="http://ontology.universaal.org/Lighting.owl#controls"/>
+					</PropertyPath>
+				</RequiredOutput>
+			</RequiredOutputs>
+		</Action>
+		
+	</Actions>
+</ServiceRequestGrounding>
