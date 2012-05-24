@@ -156,10 +156,10 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int lamp1=0x7f070009;
+        public static final int lamp0=0x7f070009;
+        public static final int lamp1=0x7f070010;
         public static final int lamp2=0x7f07000b;
-        public static final int lamp3=0x7f070010;
-        public static final int lamp4=0x7f070012;
+        public static final int lamp3=0x7f070012;
         public static final int rowSpan=0x7f07000d;
         public static final int spaceCol1=0x7f070002;
         public static final int spaceCol2=0x7f070003;
@@ -180,7 +180,7 @@ public final class R {
         public static final int main=0x7f030000;
     }
     public static final class raw {
-        public static final int lighting_service_profile_grounding=0x7f040000;
+        public static final int lighting_server_service_grounding=0x7f040000;
     }
     public static final class string {
         public static final int app_name=0x7f060000;

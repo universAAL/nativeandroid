@@ -31,7 +31,7 @@
         </activity>
 
         <service android:name=".service.LightService">
-            <meta-data android:name="org.universAAL.middleware.service.android.serviceProfileGrounding" android:resource="@raw/lighting_service_profile_grounding"/> 
+            <meta-data android:name="org.universAAL.middleware.service.android.serviceGrounding" android:resource="@raw/lighting_server_service_grounding"/> 
             <intent-filter>
                 <action android:name="org.universaal.nativeandroid.lightserver.TURN_ON" />
                 <category android:name="android.intent.category.DEFAULT" />

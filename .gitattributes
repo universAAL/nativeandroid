@@ -67,7 +67,7 @@ LightingSamples/UniversAALized/LightServer/res/drawable-hdpi/ic_launcher.png -te
 LightingSamples/UniversAALized/LightServer/res/drawable-ldpi/ic_launcher.png -text
 LightingSamples/UniversAALized/LightServer/res/drawable-mdpi/ic_launcher.png -text
 LightingSamples/UniversAALized/LightServer/res/layout/main.xml -text
-LightingSamples/UniversAALized/LightServer/res/raw/lighting_service_profile_grounding.xml -text
+LightingSamples/UniversAALized/LightServer/res/raw/lighting_server_service_grounding.xml -text
 LightingSamples/UniversAALized/LightServer/res/values/colors.xml -text
 LightingSamples/UniversAALized/LightServer/res/values/strings.xml -text
 LightingSamples/UniversAALized/LightServer/src/org/universaal/nativeandroid/lightserver/Action.java -text
