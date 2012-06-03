@@ -62,7 +62,7 @@
 					androidReplyToActionExtraParameter="replyToAction"
 					androidReplyToCategoryExtraParameter="replyToCategory">
 			<RequiredOutputs>
-				<RequiredOutput	uri="http://ontology.igd.fhg.de/LightingServer.owl#controlledLamps" 
+				<RequiredOutput	uri="http://lightclient.nativeandroid.universaal.org#controlledLamps"
 						androidExtraParameter="lamp_number_array"
 						androidExtraParameterJavaClass="java.util.List"
 						javaClass= "org.universAAL.ontology.lighting.LightSource"> 
