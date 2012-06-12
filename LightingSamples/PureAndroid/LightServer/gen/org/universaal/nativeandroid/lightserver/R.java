@@ -156,10 +156,10 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int lamp1=0x7f060009;
+        public static final int lamp0=0x7f060009;
+        public static final int lamp1=0x7f060010;
         public static final int lamp2=0x7f06000b;
-        public static final int lamp3=0x7f060010;
-        public static final int lamp4=0x7f060012;
+        public static final int lamp3=0x7f060012;
         public static final int rowSpan=0x7f06000d;
         public static final int spaceCol1=0x7f060002;
         public static final int spaceCol2=0x7f060003;
