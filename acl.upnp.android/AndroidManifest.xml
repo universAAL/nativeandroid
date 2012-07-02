@@ -9,17 +9,24 @@
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<uses-sdk android:minSdkVersion="8"></uses-sdk>
 
+	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+	
 	<application android:icon="@drawable/icon" android:label="@string/app_name" android:debuggable="true">
-		<activity android:name=".Runner">
+		<activity android:name=".RunnerversAAL.middleware.android.acl.upnp.android.RunnerversAAL.middleware.android.acl.upnp.android.Runner">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
-
-		<service android:name="org.universAAL.middleware.UPnPAndroidService" />
-		<!-- <service android:name="org.teleal.cling.android.AndroidUpnpServiceImpl" /> -->
+		
+		<receiver android:name="org.universAAL.middleware.android.acl.upnp.service.UPnPSodaPopBootTimeReceiver" android:enabled="true" android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
+        
+	
 	</application>
-
+	
 </manifest>
 
