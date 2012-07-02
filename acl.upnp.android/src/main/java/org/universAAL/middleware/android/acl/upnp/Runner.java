@@ -17,7 +17,7 @@
         See the License for the specific language governing permissions and 
         limitations under the License. 
  */
-package org.universAAL.middleware.acl.upnp.android;
+package org.universAAL.middleware.android.acl.upnp;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,8 +28,9 @@ import org.teleal.cling.binding.LocalServiceBindingException;
 import org.teleal.cling.model.ValidationException;
 import org.teleal.cling.model.meta.Device;
 import org.teleal.cling.registry.RegistrationException;
-import org.universAAL.middleware.UPnPAndroidService;
+import org.universAAL.middleware.acl.upnp.android.R;
 import org.universAAL.middleware.acl.upnp.plainjava.DeviceFactory;
+import org.universAAL.middleware.android.UPnPAndroidService;
 
 import android.app.Activity;
 import android.content.ComponentName;

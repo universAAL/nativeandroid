@@ -122,7 +122,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.universAAL.middleware</groupId>
-			<!-- <artifactId>mw.acl.interfaces</artifactId> -->
 			  <artifactId>mw.acl.interfaces.core</artifactId>
               <version>1.0.1-SNAPSHOT</version>
 		</dependency>
