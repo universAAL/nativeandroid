@@ -12,6 +12,7 @@ LightingSamples/PureAndroid/LightClient/res/layout/main.xml -text
 LightingSamples/PureAndroid/LightClient/res/values/colors.xml -text
 LightingSamples/PureAndroid/LightClient/res/values/strings.xml -text
 LightingSamples/PureAndroid/LightClient/src/org/universaal/nativeandroid/lightclient/IConstants.java -text
+LightingSamples/PureAndroid/LightClient/src/org/universaal/nativeandroid/lightclient/LampStateChangedBroadCastReceiver.java -text
 LightingSamples/PureAndroid/LightClient/src/org/universaal/nativeandroid/lightclient/LightClientActivity.java -text
 LightingSamples/PureAndroid/LightServer/.classpath -text
 LightingSamples/PureAndroid/LightServer/.project -text

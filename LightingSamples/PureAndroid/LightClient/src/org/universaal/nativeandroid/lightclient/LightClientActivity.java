@@ -148,15 +148,16 @@ public class LightClientActivity extends Activity
 	
 	private boolean addSelectedLampNumber(Intent lightServerIntent) {
 		boolean isValid = false;
-		if (null == selectedLamp || selectedLamp.isEmpty()) {
-			AlertDialog alert = new AlertDialog(getApplicationContext()) {
-
-				@Override
-				public void setMessage(CharSequence message) {
-					super.setMessage("No lamp has been selected");
-				}
-				
-			};
+		if (null == selectedLamp || selectedLamp.length() == 0) {		
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setMessage("No lamp has been selected")
+			       .setCancelable(false).
+			       setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+			           public void onClick(DialogInterface dialog, int id) {
+			                dialog.cancel();
+			           }
+			       });
+			AlertDialog alert = builder.create();
 			alert.show();
 		} else {
 			lightServerIntent.putExtra(IConstants.lampNumberArg, selectedLamp);

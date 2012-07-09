@@ -29,6 +29,7 @@ package org.universaal.nativeandroid.lightclient;
 public interface IConstants {
 	public final String lampNumberArg 		= "lamp_number";
 	public final String lampNumberArrayArg 	= "lamp_number_array";
+	public final String brightnessArg 		= "brightness";
 	
 	public final String replyToActionArg 	= "replyToAction";
 	public final String replyToCategoryArg 	= "replyToCategory";
