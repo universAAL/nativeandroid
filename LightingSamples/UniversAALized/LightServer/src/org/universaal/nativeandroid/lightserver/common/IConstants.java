@@ -28,7 +28,10 @@ package org.universaal.nativeandroid.lightserver.common;
 public interface IConstants {
 	public final String lampNumberArg 		= "lamp_number";
 	public final String lampNumberArrayArg 	= "lamp_number_array";
+	public final String brightnessArg 		= "lamp_brightness";
 	
 	public final String replyToActionArg 	= "replyToAction";
 	public final String replyToCategoryArg 	= "replyToCategory";
+	
+	public final String lampStateChangedAction = "org.universaal.nativeandroid.lighting.LAMP_STATE_CHANGED";
 }

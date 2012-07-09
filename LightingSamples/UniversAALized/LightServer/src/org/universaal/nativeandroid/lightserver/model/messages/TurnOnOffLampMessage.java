@@ -67,6 +67,9 @@ public abstract class TurnOnOffLampMessage extends AbstractMessage {
 		if (null != msgListener) {
 			msgListener.notifyStateChange();
 		}
+		
+		// Send broadcast message about lamp state change
+		LightServerModel.sendLampStateChangeMessage(lampID, lampState);
 	}
 
 	protected abstract boolean getLampState();

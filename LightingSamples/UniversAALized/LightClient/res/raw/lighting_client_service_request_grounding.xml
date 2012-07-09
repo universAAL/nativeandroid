@@ -4,7 +4,6 @@
 		<Ontology javaClass="org.universAAL.ontology.location.LocationOntology"/>
 		<Ontology javaClass="org.universAAL.ontology.shape.ShapeOntology"/>
 		<Ontology javaClass="org.universAAL.ontology.phThing.PhThingOntology"/>
-		<Ontology javaClass="org.universAAL.ontology.space.SpaceOntology"/>
 		<Ontology javaClass="org.universAAL.ontology.lighting.LightingOntology"/>
 	</Ontologies>
 	<Actions>
