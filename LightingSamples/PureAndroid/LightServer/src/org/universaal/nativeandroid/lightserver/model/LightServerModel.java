@@ -114,4 +114,13 @@ public class LightServerModel {
 		// Send it as a broadcast message
 		getInstance().context.sendBroadcast(reply);
 	}
+
+	public static void sendLampStateChangeMessage(String lampID, boolean lampState) {
+		Intent intent = new Intent(IConstants.lampStateChangedAction);
+		intent.addCategory(Intent.CATEGORY_DEFAULT);
+		intent.putExtra(IConstants.lampNumberArg, lampID);
+		intent.putExtra(IConstants.brightnessArg, lampState ? 100 : 0);
+		
+		getInstance().context.sendBroadcast(intent);
+	}
 }
