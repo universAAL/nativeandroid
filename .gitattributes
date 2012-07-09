@@ -53,10 +53,12 @@ LightingSamples/UniversAALized/LightClient/res/drawable-hdpi/ic_launcher.png -te
 LightingSamples/UniversAALized/LightClient/res/drawable-ldpi/ic_launcher.png -text
 LightingSamples/UniversAALized/LightClient/res/drawable-mdpi/ic_launcher.png -text
 LightingSamples/UniversAALized/LightClient/res/layout/main.xml -text
+LightingSamples/UniversAALized/LightClient/res/raw/lighting_client_context_subscriber_grounding.xml -text
 LightingSamples/UniversAALized/LightClient/res/raw/lighting_client_service_request_grounding.xml -text
 LightingSamples/UniversAALized/LightClient/res/values/colors.xml -text
 LightingSamples/UniversAALized/LightClient/res/values/strings.xml -text
 LightingSamples/UniversAALized/LightClient/src/org/universaal/nativeandroid/lightclient/IConstants.java -text
+LightingSamples/UniversAALized/LightClient/src/org/universaal/nativeandroid/lightclient/LampStateChangedBroadCastReceiver.java -text
 LightingSamples/UniversAALized/LightClient/src/org/universaal/nativeandroid/lightclient/LightClientActivity.java -text
 LightingSamples/UniversAALized/LightServer/.classpath -text
 LightingSamples/UniversAALized/LightServer/.project -text
@@ -68,6 +70,7 @@ LightingSamples/UniversAALized/LightServer/res/drawable-hdpi/ic_launcher.png -te
 LightingSamples/UniversAALized/LightServer/res/drawable-ldpi/ic_launcher.png -text
 LightingSamples/UniversAALized/LightServer/res/drawable-mdpi/ic_launcher.png -text
 LightingSamples/UniversAALized/LightServer/res/layout/main.xml -text
+LightingSamples/UniversAALized/LightServer/res/raw/lighting_server_context_publisher_grounding.xml -text
 LightingSamples/UniversAALized/LightServer/res/raw/lighting_server_service_grounding.xml -text
 LightingSamples/UniversAALized/LightServer/res/values/colors.xml -text
 LightingSamples/UniversAALized/LightServer/res/values/strings.xml -text
