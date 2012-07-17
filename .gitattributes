@@ -197,10 +197,6 @@ LightingSamples/UniversAALized/LightServer/src/org/universaal/nativeandroid/ligh
 LightingSamples/UniversAALized/LightServer/src/org/universaal/nativeandroid/lightserver/model/messages/TurnOnMessage.java -text
 LightingSamples/UniversAALized/LightServer/src/org/universaal/nativeandroid/lightserver/model/messages/TurnOnOffLampMessage.java -text
 LightingSamples/UniversAALized/LightServer/src/org/universaal/nativeandroid/lightserver/service/LightService.java -text
-acl.sodapop.android/.classpath -text
-acl.sodapop.android/.project -text
-acl.sodapop.android/.settings/org.eclipse.jdt.core.prefs -text
-acl.sodapop.android/.settings/org.maven.ide.eclipse.prefs -text
 acl.sodapop.android/AndroidManifest.xml -text
 acl.sodapop.android/LICENSE.txt -text
 acl.sodapop.android/NOTICE.txt -text
@@ -213,7 +209,6 @@ acl.sodapop.android/bin/res/drawable-ldpi/uaal.png -text
 acl.sodapop.android/bin/res/drawable-mdpi/icon.png -text
 acl.sodapop.android/bin/res/drawable-mdpi/uaal.png -text
 acl.sodapop.android/bin/resources.ap_ -text
-acl.sodapop.android/gen/org/universAAL/middleware/android/sodapop/R.java -text
 acl.sodapop.android/pom.xml -text
 acl.sodapop.android/project.properties -text
 acl.sodapop.android/res/drawable-hdpi/icon.png -text
