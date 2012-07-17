@@ -487,8 +487,6 @@ acl.sodapop.android/src/main/resources/META-INF/device_description.xml -text
 mw.acl.sodapop.android/AndroidManifest.xml -text
 mw.acl.sodapop.android/LICENSE.txt -text
 mw.acl.sodapop.android/NOTICE.txt -text
-mw.acl.sodapop.android/bin/classes/acl.sodapop.android.apk -text
-mw.acl.sodapop.android/bin/classes/acl.sodapop2.android.apk -text
 mw.acl.sodapop.android/bin/res/drawable-hdpi/icon.png -text
 mw.acl.sodapop.android/bin/res/drawable-hdpi/uaal.png -text
 mw.acl.sodapop.android/bin/res/drawable-ldpi/icon.png -text
