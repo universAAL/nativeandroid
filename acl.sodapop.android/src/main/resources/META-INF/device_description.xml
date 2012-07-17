@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- aaa  -->
+<root xmlns="urn:schemas-upnp-org:device-1-0">
+   <specVersion>
+      <major>1</major>
+      <minor>0</minor>
+   </specVersion>
+   <URLBase>http://10.148.22.182:4004</URLBase>
+   <device>
+      <deviceType>urn:schemas-upnp-org:device:SodaPop-ACL-UPnP:1</deviceType>
+      <friendlyName>SodaPop Peer</friendlyName>
+      <manufacturer>ISTI-CNR (Persona Project)</manufacturer>
+      <manufacturerURL>http://www.isti.cnr.it/ResearchUnits/Labs/wn-lab/</manufacturerURL>
+      <modelDescription>A Sodapop Peer Proxy</modelDescription>
+      <modelName>SodaPop ACL UPnP Connector</modelName>
+      <modelNumber>1.0</modelNumber>
+      <modelURL>http://gforge.aal-persona.org/projects/persona-middlew/</modelURL>
+      <serialNumber>uuid:13280eced67@YIFTACHB-TP+2bd5e927</serialNumber>
+      <UDN>uuid:13280eced67@YIFTACHB-TP+2bd5e927</UDN>
+      <UPC>uuid:13280eced67@YIFTACHB-TP+2bd5e927</UPC>
+      <serviceList>
+         <service>
+            <serviceType>urn:schemas-upnp-org:service:SodaPopPeer:1</serviceType>
+            <serviceId>urn:upnp-org:serviceId:SodaPopPeer:1</serviceId>
+            <SCPDURL>/service/0/gen-desc.xml</SCPDURL>
+            <controlURL>/service/0/ctrl</controlURL>
+            <eventSubURL>/service/0/event</eventSubURL>
+         </service>
+      </serviceList>
+      <presentationURL></presentationURL>
+   </device>
+</root>
