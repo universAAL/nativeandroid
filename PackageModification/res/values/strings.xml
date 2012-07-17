@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="hello">Hello World, PackageModificationActivity!</string>
-    <string name="app_name">PackageModification</string>
-    <string name="uninstallButtonText">Uninstall this application!</string><string name="installButtonText">Install this application!</string>
-</resources>
