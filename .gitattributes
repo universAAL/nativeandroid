@@ -1,6 +1,4 @@
 * text=auto !eol
-LightingSamples/PureAndroid/LightClient/.classpath -text
-LightingSamples/PureAndroid/LightClient/.project -text
 LightingSamples/PureAndroid/LightClient/AndroidManifest.xml -text
 LightingSamples/PureAndroid/LightClient/bin/LightClient.apk -text
 LightingSamples/PureAndroid/LightClient/bin/classes.dex -text
@@ -22,7 +20,6 @@ LightingSamples/PureAndroid/LightClient/bin/res/drawable-hdpi/ic_launcher.png -t
 LightingSamples/PureAndroid/LightClient/bin/res/drawable-ldpi/ic_launcher.png -text
 LightingSamples/PureAndroid/LightClient/bin/res/drawable-mdpi/ic_launcher.png -text
 LightingSamples/PureAndroid/LightClient/bin/resources.ap_ -text
-LightingSamples/PureAndroid/LightClient/gen/org/universaal/nativeandroid/lightclient/R.java -text
 LightingSamples/PureAndroid/LightClient/proguard.cfg -text
 LightingSamples/PureAndroid/LightClient/project.properties -text
 LightingSamples/PureAndroid/LightClient/res/drawable-hdpi/ic_launcher.png -text
@@ -34,8 +31,6 @@ LightingSamples/PureAndroid/LightClient/res/values/strings.xml -text
 LightingSamples/PureAndroid/LightClient/src/org/universaal/nativeandroid/lightclient/IConstants.java -text
 LightingSamples/PureAndroid/LightClient/src/org/universaal/nativeandroid/lightclient/LampStateChangedBroadCastReceiver.java -text
 LightingSamples/PureAndroid/LightClient/src/org/universaal/nativeandroid/lightclient/LightClientActivity.java -text
-LightingSamples/PureAndroid/LightServer/.classpath -text
-LightingSamples/PureAndroid/LightServer/.project -text
 LightingSamples/PureAndroid/LightServer/AndroidManifest.xml -text
 LightingSamples/PureAndroid/LightServer/bin/LightServer.apk -text
 LightingSamples/PureAndroid/LightServer/bin/classes.dex -text
@@ -69,7 +64,6 @@ LightingSamples/PureAndroid/LightServer/bin/res/drawable-hdpi/ic_launcher.png -t
 LightingSamples/PureAndroid/LightServer/bin/res/drawable-ldpi/ic_launcher.png -text
 LightingSamples/PureAndroid/LightServer/bin/res/drawable-mdpi/ic_launcher.png -text
 LightingSamples/PureAndroid/LightServer/bin/resources.ap_ -text
-LightingSamples/PureAndroid/LightServer/gen/org/universaal/nativeandroid/lightserver/R.java -text
 LightingSamples/PureAndroid/LightServer/proguard.cfg -text
 LightingSamples/PureAndroid/LightServer/project.properties -text
 LightingSamples/PureAndroid/LightServer/res/drawable-hdpi/ic_launcher.png -text
@@ -95,8 +89,6 @@ LightingSamples/PureAndroid/LightServer/src/org/universaal/nativeandroid/lightse
 LightingSamples/PureAndroid/LightServer/src/org/universaal/nativeandroid/lightserver/model/messages/TurnOnMessage.java -text
 LightingSamples/PureAndroid/LightServer/src/org/universaal/nativeandroid/lightserver/model/messages/TurnOnOffLampMessage.java -text
 LightingSamples/PureAndroid/LightServer/src/org/universaal/nativeandroid/lightserver/service/LightService.java -text
-LightingSamples/UniversAALized/LightClient/.classpath -text
-LightingSamples/UniversAALized/LightClient/.project -text
 LightingSamples/UniversAALized/LightClient/AndroidManifest.xml -text
 LightingSamples/UniversAALized/LightClient/bin/LightClient.apk -text
 LightingSamples/UniversAALized/LightClient/bin/classes.dex -text
@@ -119,7 +111,6 @@ LightingSamples/UniversAALized/LightClient/bin/res/drawable-hdpi/ic_launcher.png
 LightingSamples/UniversAALized/LightClient/bin/res/drawable-ldpi/ic_launcher.png -text
 LightingSamples/UniversAALized/LightClient/bin/res/drawable-mdpi/ic_launcher.png -text
 LightingSamples/UniversAALized/LightClient/bin/resources.ap_ -text
-LightingSamples/UniversAALized/LightClient/gen/org/universaal/nativeandroid/lightclient/R.java -text
 LightingSamples/UniversAALized/LightClient/proguard.cfg -text
 LightingSamples/UniversAALized/LightClient/project.properties -text
 LightingSamples/UniversAALized/LightClient/res/drawable-hdpi/ic_launcher.png -text
@@ -133,8 +124,6 @@ LightingSamples/UniversAALized/LightClient/res/values/strings.xml -text
 LightingSamples/UniversAALized/LightClient/src/org/universaal/nativeandroid/lightclient/IConstants.java -text
 LightingSamples/UniversAALized/LightClient/src/org/universaal/nativeandroid/lightclient/LampStateChangedBroadCastReceiver.java -text
 LightingSamples/UniversAALized/LightClient/src/org/universaal/nativeandroid/lightclient/LightClientActivity.java -text
-LightingSamples/UniversAALized/LightServer/.classpath -text
-LightingSamples/UniversAALized/LightServer/.project -text
 LightingSamples/UniversAALized/LightServer/AndroidManifest.xml -text
 LightingSamples/UniversAALized/LightServer/bin/LightServer.apk -text
 LightingSamples/UniversAALized/LightServer/bin/classes.dex -text
@@ -169,7 +158,6 @@ LightingSamples/UniversAALized/LightServer/bin/res/drawable-hdpi/ic_launcher.png
 LightingSamples/UniversAALized/LightServer/bin/res/drawable-ldpi/ic_launcher.png -text
 LightingSamples/UniversAALized/LightServer/bin/res/drawable-mdpi/ic_launcher.png -text
 LightingSamples/UniversAALized/LightServer/bin/resources.ap_ -text
-LightingSamples/UniversAALized/LightServer/gen/org/universaal/nativeandroid/lightserver/R.java -text
 LightingSamples/UniversAALized/LightServer/proguard.cfg -text
 LightingSamples/UniversAALized/LightServer/project.properties -text
 LightingSamples/UniversAALized/LightServer/res/drawable-hdpi/ic_launcher.png -text
