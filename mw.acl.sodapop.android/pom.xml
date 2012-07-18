@@ -9,7 +9,7 @@
   </parent>
   <groupId>org.universAAL.middleware</groupId>
   <artifactId>mw.acl.sodapop.android</artifactId>
-  <version>1.2.0</version>
+  <version>1.2.1-SNAPSHOT</version>
   <packaging>apk</packaging>
   <name>uAAL/Android Middleware app</name>
   <properties>
@@ -104,42 +104,47 @@
 	<dependency>
 	  <groupId>org.universAAL.middleware</groupId>
 	  <artifactId>mw.bus.model.core</artifactId>
-	  <version>1.2.0</version> 
+	  <version>1.2.1-SNAPSHOT</version> 
 	</dependency>
 	<dependency>
 	  <groupId>org.universAAL.middleware</groupId>
 	  <artifactId>mw.acl.interfaces.core</artifactId>
-	  <version>1.2.0</version>
+	  <version>1.2.1-SNAPSHOT</version>
 	</dependency>
 	<dependency>
 	  <groupId>org.universAAL.middleware</groupId>
 	  <artifactId>mw.bus.service.core</artifactId>
-	  <version>1.2.0</version>
+	  <version>1.2.1-SNAPSHOT</version>
 	</dependency>
 	<dependency>
 	  <groupId>org.universAAL.middleware</groupId>
 	  <artifactId>mw.bus.context.core</artifactId>
-	  <version>1.2.0</version>
+	  <version>1.2.1-SNAPSHOT</version>
 	</dependency>
 	<dependency>
 	  <groupId>org.universAAL.middleware</groupId>
 	  <artifactId>mw.bus.ui.core</artifactId>
-	  <version>1.2.0</version>
+	  <version>1.2.1-SNAPSHOT</version>
 	</dependency> 
 	<dependency> 
 	  <groupId>org.universAAL.middleware</groupId>
 	  <artifactId>mw.data.serialization.core</artifactId>
-	  <version>1.2.0</version> 
+	  <version>1.2.1-SNAPSHOT</version> 
 	</dependency>
 	<dependency> 
 	  <groupId>org.universAAL.middleware</groupId>
 	  <artifactId>mw.data.representation.core</artifactId>
-	  <version>1.2.0</version> 
+	  <version>1.2.1-SNAPSHOT</version> 
 	</dependency>
 	<dependency> 
 	  <groupId>org.universAAL.ontology</groupId>
 	  <artifactId>ont.lighting</artifactId>
-	  <version>1.2.0</version> 
+	  <version>1.2.1-SNAPSHOT</version> 
+	</dependency>
+	<dependency> 
+	  <groupId>org.universAAL.ontology</groupId>
+	  <artifactId>ont.aalfficiency</artifactId>
+	  <version>0.1.0-SNAPSHOT</version> 
 	</dependency>
 	<dependency>
 	  <groupId>org.teleal.cling</groupId>
