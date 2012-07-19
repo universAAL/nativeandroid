@@ -46,7 +46,7 @@ public class LampStateChangedBroadCastReceiver extends BroadcastReceiver {
 		
 		// Construct a string
 		String formattedStringForNotification = "";
-		if (null != lampNumber && !lampNumber.isEmpty() && -1 != brightness) {
+		if (null != lampNumber && lampNumber.length() > 0 && -1 != brightness) {
 			formattedStringForNotification = String.format("Lamp no.%s state changed to %d brightness", lampNumber, brightness);
 		} else {
 			formattedStringForNotification = "Lamp state was changed, but illegal paramters were received!";
