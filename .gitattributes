@@ -89,6 +89,7 @@ LightingSamples/PureAndroid/LightServer/src/org/universaal/nativeandroid/lightse
 LightingSamples/PureAndroid/LightServer/src/org/universaal/nativeandroid/lightserver/model/messages/TurnOnMessage.java -text
 LightingSamples/PureAndroid/LightServer/src/org/universaal/nativeandroid/lightserver/model/messages/TurnOnOffLampMessage.java -text
 LightingSamples/PureAndroid/LightServer/src/org/universaal/nativeandroid/lightserver/service/LightService.java -text
+LightingSamples/UniversAALized/LightClient/.project -text
 LightingSamples/UniversAALized/LightClient/AndroidManifest.xml -text
 LightingSamples/UniversAALized/LightClient/bin/LightClient.apk -text
 LightingSamples/UniversAALized/LightClient/bin/classes.dex -text
@@ -124,6 +125,7 @@ LightingSamples/UniversAALized/LightClient/res/values/strings.xml -text
 LightingSamples/UniversAALized/LightClient/src/org/universaal/nativeandroid/lightclient/IConstants.java -text
 LightingSamples/UniversAALized/LightClient/src/org/universaal/nativeandroid/lightclient/LampStateChangedBroadCastReceiver.java -text
 LightingSamples/UniversAALized/LightClient/src/org/universaal/nativeandroid/lightclient/LightClientActivity.java -text
+LightingSamples/UniversAALized/LightServer/.project -text
 LightingSamples/UniversAALized/LightServer/AndroidManifest.xml -text
 LightingSamples/UniversAALized/LightServer/bin/LightServer.apk -text
 LightingSamples/UniversAALized/LightServer/bin/classes.dex -text
