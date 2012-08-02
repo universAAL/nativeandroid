@@ -83,17 +83,6 @@
 		</repository>
 	</repositories>
 	
-	<pluginRepositories>
-		<pluginRepository>
-			<id>evgeny-goldin-repo</id>
-			<name>Evgeny Goldin's repository</name>
-			<url>http://evgeny-goldin.org/artifactory/repo/</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-		</pluginRepository>
-	</pluginRepositories>
-	
   <dependencies>
     <dependency>
       <groupId>com.google.android</groupId>
