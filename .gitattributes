@@ -1,6 +1,8 @@
 * text=auto !eol
 LightingSamples/PureAndroid/LightClient/.project -text
+LightingSamples/PureAndroid/LightClient/ASL2.0.txt -text
 LightingSamples/PureAndroid/LightClient/AndroidManifest.xml -text
+LightingSamples/PureAndroid/LightClient/MITX.txt -text
 LightingSamples/PureAndroid/LightClient/bin/LightClient.apk -text
 LightingSamples/PureAndroid/LightClient/bin/classes.dex -text
 LightingSamples/PureAndroid/LightClient/bin/classes/org/universaal/nativeandroid/lightclient/IConstants.class -text
@@ -33,7 +35,9 @@ LightingSamples/PureAndroid/LightClient/src/org/universaal/nativeandroid/lightcl
 LightingSamples/PureAndroid/LightClient/src/org/universaal/nativeandroid/lightclient/LampStateChangedBroadCastReceiver.java -text
 LightingSamples/PureAndroid/LightClient/src/org/universaal/nativeandroid/lightclient/LightClientActivity.java -text
 LightingSamples/PureAndroid/LightServer/.project -text
+LightingSamples/PureAndroid/LightServer/ASL2.0.txt -text
 LightingSamples/PureAndroid/LightServer/AndroidManifest.xml -text
+LightingSamples/PureAndroid/LightServer/MITX.txt -text
 LightingSamples/PureAndroid/LightServer/bin/LightServer.apk -text
 LightingSamples/PureAndroid/LightServer/bin/classes.dex -text
 LightingSamples/PureAndroid/LightServer/bin/classes/org/universaal/nativeandroid/lightserver/Action.class -text
@@ -92,7 +96,9 @@ LightingSamples/PureAndroid/LightServer/src/org/universaal/nativeandroid/lightse
 LightingSamples/PureAndroid/LightServer/src/org/universaal/nativeandroid/lightserver/model/messages/TurnOnOffLampMessage.java -text
 LightingSamples/PureAndroid/LightServer/src/org/universaal/nativeandroid/lightserver/service/LightService.java -text
 LightingSamples/UniversAALized/LightClient/.project -text
+LightingSamples/UniversAALized/LightClient/ASL2.0.txt -text
 LightingSamples/UniversAALized/LightClient/AndroidManifest.xml -text
+LightingSamples/UniversAALized/LightClient/MITX.txt -text
 LightingSamples/UniversAALized/LightClient/bin/LightClient.apk -text
 LightingSamples/UniversAALized/LightClient/bin/classes.dex -text
 LightingSamples/UniversAALized/LightClient/bin/classes/org/universaal/nativeandroid/lightclient/IConstants.class -text
@@ -128,7 +134,9 @@ LightingSamples/UniversAALized/LightClient/src/org/universaal/nativeandroid/ligh
 LightingSamples/UniversAALized/LightClient/src/org/universaal/nativeandroid/lightclient/LampStateChangedBroadCastReceiver.java -text
 LightingSamples/UniversAALized/LightClient/src/org/universaal/nativeandroid/lightclient/LightClientActivity.java -text
 LightingSamples/UniversAALized/LightServer/.project -text
+LightingSamples/UniversAALized/LightServer/ASL2.0.txt -text
 LightingSamples/UniversAALized/LightServer/AndroidManifest.xml -text
+LightingSamples/UniversAALized/LightServer/MITX.txt -text
 LightingSamples/UniversAALized/LightServer/bin/LightServer.apk -text
 LightingSamples/UniversAALized/LightServer/bin/classes.dex -text
 LightingSamples/UniversAALized/LightServer/bin/classes/org/universaal/nativeandroid/lightserver/Action.class -text
@@ -191,7 +199,9 @@ LightingSamples/UniversAALized/LightServer/src/org/universaal/nativeandroid/ligh
 LightingSamples/UniversAALized/LightServer/src/org/universaal/nativeandroid/lightserver/service/LightService.java -text
 ValidateSodaPopKey/.classpath -text
 ValidateSodaPopKey/.project -text
+ValidateSodaPopKey/ASL2.0.txt -text
 ValidateSodaPopKey/AndroidManifest.xml -text
+ValidateSodaPopKey/MITX.txt -text
 ValidateSodaPopKey/proguard.cfg -text
 ValidateSodaPopKey/project.properties -text
 ValidateSodaPopKey/res/drawable-hdpi/ic_launcher.png -text
@@ -200,8 +210,9 @@ ValidateSodaPopKey/res/drawable-mdpi/ic_launcher.png -text
 ValidateSodaPopKey/res/layout/main.xml -text
 ValidateSodaPopKey/res/values/strings.xml -text
 ValidateSodaPopKey/src/org/universAAL/middleware/android/validatesodapopkey/ValidateSodaPopKeyActivity.java -text
+mw.acl.sodapop.android/ASL2.0.txt -text
 mw.acl.sodapop.android/AndroidManifest.xml -text
-mw.acl.sodapop.android/LICENSE.txt -text
+mw.acl.sodapop.android/MITX.txt -text
 mw.acl.sodapop.android/NOTICE.txt -text
 mw.acl.sodapop.android/bin/res/drawable-hdpi/icon.png -text
 mw.acl.sodapop.android/bin/res/drawable-hdpi/uaal.png -text
