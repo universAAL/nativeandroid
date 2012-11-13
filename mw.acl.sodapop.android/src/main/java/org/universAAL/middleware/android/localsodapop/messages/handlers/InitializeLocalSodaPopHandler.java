@@ -50,7 +50,7 @@ public class InitializeLocalSodaPopHandler extends AbstractMessagePersistableHan
 
     private static final String TAG = InitializeLocalSodaPopHandler.class.getCanonicalName();
 
-    private static final long TIME_TO_WAIT_FOR_SCANNING_APPLICATIONS_IN_MILLI_SECONDS = 15 * 1000;
+    private static final long TIME_TO_WAIT_FOR_SCANNING_APPLICATIONS_IN_MILLI_SECONDS = 10 * 1000;
 
     @Override
     protected void privateHandleMessage(IMessage message, AbstractSodaPopAndroidImpl sodaPop) {
@@ -79,7 +79,7 @@ public class InitializeLocalSodaPopHandler extends AbstractMessagePersistableHan
     }
 
     private void scanForInstalledUniversaalApplicationsAndRegister(Context context) {
-
+	Log.d(TAG, "Is about to wait before scanning uAAL packages");
 	try {
 	    Thread.sleep(TIME_TO_WAIT_FOR_SCANNING_APPLICATIONS_IN_MILLI_SECONDS);
 	} catch (InterruptedException e) {
@@ -87,7 +87,7 @@ public class InitializeLocalSodaPopHandler extends AbstractMessagePersistableHan
 	    Log.w(TAG, "Unable to sleep for ["
 		    + TIME_TO_WAIT_FOR_SCANNING_APPLICATIONS_IN_MILLI_SECONDS + "] mili seconds");
 	}
-
+	Log.d(TAG, "Is about to scan uAAL packages");
 	PackageManager pm = context.getPackageManager();
 	List<String> packageNames = new ArrayList<String>();
 	List<PackageInfo> packages = pm.getInstalledPackages(PackageManager.GET_ACTIVITIES
