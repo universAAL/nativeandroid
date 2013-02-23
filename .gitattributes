@@ -38,6 +38,19 @@ LightingSamples/PureAndroid/LightServer/.project -text
 LightingSamples/PureAndroid/LightServer/ASL2.0.txt -text
 LightingSamples/PureAndroid/LightServer/AndroidManifest.xml -text
 LightingSamples/PureAndroid/LightServer/MITX.txt -text
+LightingSamples/PureAndroid/LightServer/android-quickstart/.classpath -text svneol=unset#text/plain
+LightingSamples/PureAndroid/LightServer/android-quickstart/.project -text svneol=unset#text/plain
+LightingSamples/PureAndroid/LightServer/android-quickstart/.settings/org.eclipse.jdt.core.prefs -text svneol=unset#text/plain
+LightingSamples/PureAndroid/LightServer/android-quickstart/.settings/org.eclipse.m2e.core.prefs -text svneol=unset#text/plain
+LightingSamples/PureAndroid/LightServer/android-quickstart/AndroidManifest.xml -text svneol=unset#text/plain
+LightingSamples/PureAndroid/LightServer/android-quickstart/pom.xml -text svneol=unset#text/plain
+LightingSamples/PureAndroid/LightServer/android-quickstart/project.properties -text svneol=unset#text/plain
+LightingSamples/PureAndroid/LightServer/android-quickstart/res/drawable-hdpi/icon.png -text
+LightingSamples/PureAndroid/LightServer/android-quickstart/res/drawable-ldpi/icon.png -text
+LightingSamples/PureAndroid/LightServer/android-quickstart/res/drawable-mdpi/icon.png -text
+LightingSamples/PureAndroid/LightServer/android-quickstart/res/layout/main.xml -text svneol=unset#text/plain
+LightingSamples/PureAndroid/LightServer/android-quickstart/res/values/strings.xml -text svneol=unset#text/plain
+LightingSamples/PureAndroid/LightServer/android-quickstart/src/main/java/foo/HelloAndroidActivity.java -text svneol=unset#text/plain
 LightingSamples/PureAndroid/LightServer/bin/LightServer.apk -text
 LightingSamples/PureAndroid/LightServer/bin/classes.dex -text
 LightingSamples/PureAndroid/LightServer/bin/classes/org/universaal/nativeandroid/lightserver/Action.class -text
