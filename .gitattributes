@@ -227,12 +227,8 @@ mw.acl.sodapop.android/ASL2.0.txt -text
 mw.acl.sodapop.android/AndroidManifest.xml -text
 mw.acl.sodapop.android/MITX.txt -text
 mw.acl.sodapop.android/NOTICE.txt -text
-mw.acl.sodapop.android/bin/res/drawable-hdpi/icon.png -text
-mw.acl.sodapop.android/bin/res/drawable-hdpi/uaal.png -text
-mw.acl.sodapop.android/bin/res/drawable-ldpi/icon.png -text
-mw.acl.sodapop.android/bin/res/drawable-ldpi/uaal.png -text
-mw.acl.sodapop.android/bin/res/drawable-mdpi/icon.png -text
-mw.acl.sodapop.android/bin/res/drawable-mdpi/uaal.png -text
+mw.acl.sodapop.android/bin/AndroidManifest.xml -text
+mw.acl.sodapop.android/bin/jarlist.cache -text
 mw.acl.sodapop.android/bin/resources.ap_ -text
 mw.acl.sodapop.android/pom.xml -text
 mw.acl.sodapop.android/project.properties -text
