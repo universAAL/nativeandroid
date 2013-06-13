@@ -27,7 +27,7 @@ import org.universAAL.middleware.android.buses.servicebus.persistence.AbstractAn
 import org.universAAL.middleware.android.buses.servicebus.persistence.tables.rows.LocalServiceSearchResultRowDB;
 import org.universAAL.middleware.service.data.ILocalServiceSearchResultsData;
 import org.universAAL.middleware.service.owls.profile.ServiceProfile;
-import org.universAAL.serialization.turtle.TurtleParser;
+import org.universAAL.middleware.serialization.turtle.TurtleParser;
 
 import android.content.Context;
 

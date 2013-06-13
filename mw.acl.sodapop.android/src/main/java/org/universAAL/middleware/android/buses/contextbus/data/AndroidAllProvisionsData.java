@@ -27,7 +27,7 @@ import org.universAAL.middleware.android.buses.contextbus.persistence.AbstractAn
 import org.universAAL.middleware.android.buses.contextbus.persistence.tables.rows.AllProvisionsRowDB;
 import org.universAAL.middleware.context.ContextEventPattern;
 import org.universAAL.middleware.context.data.IAllProvisionData;
-import org.universAAL.serialization.turtle.TurtleParser;
+import org.universAAL.middleware.serialization.turtle.TurtleParser;
 
 /**
  * 

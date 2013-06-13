@@ -32,9 +32,9 @@ import org.universAAL.middleware.android.localsodapop.AbstractSodaPopAndroidImpl
 import org.universAAL.middleware.service.ServiceCallee;
 import org.universAAL.middleware.service.ServiceCaller;
 import org.universAAL.middleware.service.impl.ServiceBusImpl;
-import org.universAAL.middleware.sodapop.BusMember;
-import org.universAAL.middleware.sodapop.BusStrategy;
-import org.universAAL.middleware.sodapop.IRegistry;
+import org.universAAL.middleware.bus.member.BusMember;
+import org.universAAL.middleware.bus.model.BusStrategy;
+import org.universAAL.middleware.bus.model.util.IRegistry;
 import org.universAAL.middleware.sodapop.SodaPop;
 import org.universAAL.middleware.util.Constants;
 

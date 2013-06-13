@@ -26,9 +26,9 @@ import org.universAAL.middleware.android.localsodapop.AbstractSodaPopAndroidImpl
 import org.universAAL.middleware.context.ContextSubscriber;
 import org.universAAL.middleware.context.data.factory.IContextStrategyDataFactory;
 import org.universAAL.middleware.context.impl.ContextStrategy;
-import org.universAAL.middleware.sodapop.BusMember;
+import org.universAAL.middleware.bus.member.BusMember;
 import org.universAAL.middleware.sodapop.SodaPop;
-import org.universAAL.middleware.sodapop.msg.Message;
+import org.universAAL.middleware.bus.msg.Message;
 
 import android.content.Context;
 

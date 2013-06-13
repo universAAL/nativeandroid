@@ -23,8 +23,8 @@ package org.universAAL.middleware.android.buses.common;
 import org.universAAL.middleware.android.buses.common.persistence.AbstractCommonBusPersistable;
 import org.universAAL.middleware.android.buses.common.persistence.tables.rows.BusMemberRowDB;
 import org.universAAL.middleware.android.common.IAndroidBus;
-import org.universAAL.middleware.sodapop.BusMember;
-import org.universAAL.middleware.sodapop.IRegistry;
+import org.universAAL.middleware.bus.member.BusMember;
+import org.universAAL.middleware.bus.model.util.IRegistry;
 
 import android.content.Context;
 

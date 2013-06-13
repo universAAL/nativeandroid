@@ -35,12 +35,12 @@ import org.universAAL.middleware.android.localsodapop.persistence.tables.rows.Lo
 import org.universAAL.middleware.android.localsodapop.persistence.tables.rows.LocalPeerInfoRowDB;
 import org.universAAL.middleware.android.localsodapop.persistence.tables.rows.PeerRowDB;
 import org.universAAL.middleware.container.ModuleContext;
-import org.universAAL.middleware.sodapop.AbstractBus;
+import org.universAAL.middleware.bus.model.AbstractBus;
 import org.universAAL.middleware.sodapop.SodaPop;
 import org.universAAL.middleware.sodapop.impl.CryptUtil;
-import org.universAAL.middleware.sodapop.msg.Message;
-import org.universAAL.middleware.sodapop.msg.MessageContentSerializer;
-import org.universAAL.middleware.sodapop.msg.PeerIDGenerator;
+import org.universAAL.middleware.bus.msg.Message;
+import org.universAAL.middleware.serialization.MessageContentSerializer;
+import org.universAAL.middleware.bus.msg.PeerIDGenerator;
 
 import android.content.Context;
 import android.content.Intent;

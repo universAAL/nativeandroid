@@ -30,10 +30,10 @@ import org.universAAL.middleware.datarep.SharedResources;
 import org.universAAL.middleware.service.ServiceBus;
 import org.universAAL.middleware.service.impl.ServiceBusImpl;
 import org.universAAL.middleware.sodapop.impl.SodaPopImpl;
-import org.universAAL.middleware.sodapop.msg.MessageContentSerializer;
-import org.universAAL.middleware.sodapop.msg.MessageContentSerializerEx;
-import org.universAAL.serialization.turtle.TurtleParser;
-import org.universAAL.serialization.turtle.TurtleUtil;
+import org.universAAL.middleware.serialization.MessageContentSerializer;
+import org.universAAL.middleware.serialization.MessageContentSerializerEx;
+import org.universAAL.middleware.serialization.turtle.TurtleParser;
+import org.universAAL.middleware.serialization.turtle.TurtleUtil;
 
 import android.util.Log;
 

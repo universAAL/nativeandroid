@@ -37,9 +37,9 @@ import org.universAAL.middleware.context.ContextEvent;
 import org.universAAL.middleware.context.ContextPublisher;
 import org.universAAL.middleware.context.ContextSubscriber;
 import org.universAAL.middleware.context.impl.ContextBusImpl;
-import org.universAAL.middleware.sodapop.BusMember;
-import org.universAAL.middleware.sodapop.BusStrategy;
-import org.universAAL.middleware.sodapop.IRegistry;
+import org.universAAL.middleware.bus.member.BusMember;
+import org.universAAL.middleware.bus.model.BusStrategy;
+import org.universAAL.middleware.bus.model.util.IRegistry;
 import org.universAAL.middleware.sodapop.SodaPop;
 import org.universAAL.middleware.util.Constants;
 
