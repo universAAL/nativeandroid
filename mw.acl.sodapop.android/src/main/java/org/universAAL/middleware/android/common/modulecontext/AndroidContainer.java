@@ -68,4 +68,9 @@ public class AndroidContainer implements Container {
 	}
 	sharedObjects.put(parameters[0], sharedObject);
     }
+
+	public void removeSharedObjectListener(SharedObjectListener listener) {
+		// TODO Auto-generated method stub
+		
+	}
 }
