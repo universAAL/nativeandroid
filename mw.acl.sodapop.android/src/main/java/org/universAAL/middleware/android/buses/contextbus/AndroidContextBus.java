@@ -33,6 +33,7 @@ import org.universAAL.middleware.android.common.IAndroidBus;
 import org.universAAL.middleware.android.common.ReflectionsUtils;
 import org.universAAL.middleware.android.common.exceptions.IllegalGroundingFormat;
 import org.universAAL.middleware.android.localsodapop.AbstractSodaPopAndroidImpl;
+import org.universAAL.middleware.container.ModuleContext;
 import org.universAAL.middleware.context.ContextEvent;
 import org.universAAL.middleware.context.ContextPublisher;
 import org.universAAL.middleware.context.ContextSubscriber;
@@ -40,7 +41,6 @@ import org.universAAL.middleware.context.impl.ContextBusImpl;
 import org.universAAL.middleware.bus.member.BusMember;
 import org.universAAL.middleware.bus.model.BusStrategy;
 import org.universAAL.middleware.bus.model.util.IRegistry;
-import org.universAAL.middleware.sodapop.SodaPop;
 import org.universAAL.middleware.util.Constants;
 
 import android.content.Context;
@@ -60,8 +60,8 @@ public class AndroidContextBus extends ContextBusImpl implements IAndroidBus {
 
     protected Context context;
 
-    public AndroidContextBus(SodaPop sodaPop, Context context) {
-	super(sodaPop);
+    public AndroidContextBus(ModuleContext mc, Context context) {
+	super(mc);
 
 	this.context = context;
     }

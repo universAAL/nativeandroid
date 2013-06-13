@@ -39,7 +39,7 @@ import org.universAAL.middleware.service.ServiceCallee;
 import org.universAAL.middleware.service.ServiceResponse;
 import org.universAAL.middleware.service.owls.process.ProcessOutput;
 import org.universAAL.middleware.service.owls.profile.ServiceProfile;
-import org.universAAL.middleware.bus.msg.Message;
+import org.universAAL.middleware.bus.msg.BusMessage;
 import org.universAAL.middleware.util.Constants;
 
 import android.content.BroadcastReceiver;
@@ -102,11 +102,11 @@ public class AndroidServiceCalleeProxy extends ServiceCallee {
     }
 
     @Override
-    public void handleRequest(Message m) {
+    public void handleRequest(BusMessage m) {
 	if (null != m && m.getContent() instanceof ServiceCall) {
 	    ServiceResponse sr = handleCall(m);
 	    if (null != sr) {
-		Message reply = m.createReply(sr);
+	    	BusMessage reply = m.createReply(sr);
 		if (null != reply)
 		    bus.sendReply(myID, reply);
 	    }
@@ -232,7 +232,7 @@ public class AndroidServiceCalleeProxy extends ServiceCallee {
 	    }
 
 	    // Create the reply
-	    Message reply = Message.createReply(messageIDInReplyTo, replyTo, sr);
+	    BusMessage reply = BusMessage.createP2PReply(messageIDInReplyTo, replyTo, sr);
 
 	    // Send the response
 	    bus.sendReply(myID, reply);
@@ -279,7 +279,7 @@ public class AndroidServiceCalleeProxy extends ServiceCallee {
 	populateLocalID(myID);
     }
 
-    private void populateIntentWithOutputsAndRegisterRecevier(Message message,
+    private void populateIntentWithOutputsAndRegisterRecevier(BusMessage message,
 	    OperationXmlObj operation, Intent intent) {
 	// The action that is set in the IntentFilter of the broadcast receiver
 	// is the message ID

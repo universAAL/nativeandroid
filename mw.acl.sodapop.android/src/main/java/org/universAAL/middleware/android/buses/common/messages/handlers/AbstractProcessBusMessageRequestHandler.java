@@ -25,7 +25,7 @@ import org.universAAL.middleware.android.common.messages.IMessage;
 import org.universAAL.middleware.android.localsodapop.AbstractSodaPopAndroidImpl;
 import org.universAAL.middleware.android.localsodapop.messages.handlers.AbstractMessagePersistableHandler;
 import org.universAAL.middleware.bus.model.AbstractBus;
-import org.universAAL.middleware.bus.msg.Message;
+import org.universAAL.middleware.bus.msg.BusMessage;
 
 /**
  * 
@@ -46,7 +46,7 @@ public abstract class AbstractProcessBusMessageRequestHandler extends
 	ProcessBusMessage requestMessage = (ProcessBusMessage) message;
 
 	// Initiate a Message object
-	Message msg = new Message(requestMessage.getuAALMessage());
+	BusMessage msg = new BusMessage(requestMessage.getuAALMessage());
 
 	// Handle the given message
 	bus.handleRemoteMessage(msg);

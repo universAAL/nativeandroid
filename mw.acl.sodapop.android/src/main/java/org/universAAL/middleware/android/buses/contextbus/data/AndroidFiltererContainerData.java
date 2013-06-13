@@ -29,7 +29,7 @@ import org.universAAL.middleware.android.buses.contextbus.persistence.tables.row
 import org.universAAL.middleware.context.ContextEventPattern;
 import org.universAAL.middleware.context.ContextSubscriber;
 import org.universAAL.middleware.context.impl.ContextStrategy.ContextFilterer;
-import org.universAAL.middleware.serialization.turtle.TurtleParser;
+import org.universAAL.middleware.serialization.turtle.TurtleSerializer;
 
 import android.content.Context;
 
@@ -121,7 +121,7 @@ public class AndroidFiltererContainerData extends AbstractAndroidContextBusPersi
 
     private String serializeContextEventPattern(ContextEventPattern contextEventPattern) {
 	// Initiate a parser
-	TurtleParser parser = new TurtleParser();
+    	TurtleSerializer parser = new TurtleSerializer();
 
 	return parser.serialize(contextEventPattern);
     }
@@ -133,7 +133,7 @@ public class AndroidFiltererContainerData extends AbstractAndroidContextBusPersi
 	contextFilterer.s = new AndroidContextSubscriberWrapper(contextFiltererRow.getGroundingID());
 
 	// Set the context event pattern
-	contextFilterer.f = (ContextEventPattern) new TurtleParser().deserialize(contextFiltererRow
+	contextFilterer.f = (ContextEventPattern) new TurtleSerializer().deserialize(contextFiltererRow
 		.getContextEventAsString());
 
 	return contextFilterer;

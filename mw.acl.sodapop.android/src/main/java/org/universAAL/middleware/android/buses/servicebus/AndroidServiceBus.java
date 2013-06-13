@@ -35,7 +35,7 @@ import org.universAAL.middleware.service.impl.ServiceBusImpl;
 import org.universAAL.middleware.bus.member.BusMember;
 import org.universAAL.middleware.bus.model.BusStrategy;
 import org.universAAL.middleware.bus.model.util.IRegistry;
-import org.universAAL.middleware.sodapop.SodaPop;
+import org.universAAL.middleware.container.ModuleContext;
 import org.universAAL.middleware.util.Constants;
 
 import android.content.Context;
@@ -52,8 +52,8 @@ public class AndroidServiceBus extends ServiceBusImpl implements IAndroidBus {
 
     protected Context context;
 
-    public AndroidServiceBus(SodaPop sodaPop, Context context) {
-	super(sodaPop);
+    public AndroidServiceBus(ModuleContext mc, Context context) {
+	super(mc);
 
 	this.context = context;
     }

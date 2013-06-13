@@ -27,7 +27,7 @@ import org.universAAL.middleware.android.buses.contextbus.persistence.AbstractAn
 import org.universAAL.middleware.android.buses.contextbus.persistence.tables.rows.AllProvisionsRowDB;
 import org.universAAL.middleware.context.ContextEventPattern;
 import org.universAAL.middleware.context.data.IAllProvisionData;
-import org.universAAL.middleware.serialization.turtle.TurtleParser;
+import org.universAAL.middleware.serialization.turtle.TurtleSerializer;
 
 /**
  * 
@@ -67,7 +67,8 @@ public class AndroidAllProvisionsData extends AbstractAndroidContextBusPersistab
 	    sqliteMngr.close();
 	}
 
-	TurtleParser parser = new TurtleParser();
+//	TurtleParser parser = new TurtleParser();
+	TurtleSerializer parser = new TurtleSerializer();
 
 	for (AllProvisionsRowDB row : allProvisionsRows) {
 	    contextEventPatterns.add(createContextEventPattern(row, parser));
@@ -79,7 +80,8 @@ public class AndroidAllProvisionsData extends AbstractAndroidContextBusPersistab
     private String[] serializeContextEventPatterns(List contextEventPatterns) {
 	String[] contextEventPatternsStrings = new String[contextEventPatterns.size()];
 
-	TurtleParser parser = new TurtleParser();
+//	TurtleParser parser = new TurtleParser();
+	TurtleSerializer parser = new TurtleSerializer();
 
 	for (int i = 0; i < contextEventPatterns.size(); i++) {
 	    contextEventPatternsStrings[i] = parser.serialize(contextEventPatterns.get(i));
@@ -89,7 +91,7 @@ public class AndroidAllProvisionsData extends AbstractAndroidContextBusPersistab
     }
 
     private ContextEventPattern createContextEventPattern(AllProvisionsRowDB row,
-	    TurtleParser parser) {
+    		TurtleSerializer parser) {
 	return (ContextEventPattern) parser.deserialize(row.getContextEventPatternAsString());
     }
 }
