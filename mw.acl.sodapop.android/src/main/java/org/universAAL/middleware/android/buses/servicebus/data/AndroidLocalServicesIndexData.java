@@ -25,7 +25,7 @@ import org.universAAL.middleware.android.buses.servicebus.persistence.tables.row
 import org.universAAL.middleware.rdf.Resource;
 import org.universAAL.middleware.service.data.ILocalServicesIndexData;
 import org.universAAL.middleware.service.impl.ServiceRealization;
-import org.universAAL.middleware.serialization.turtle.TurtleParser;
+import org.universAAL.middleware.serialization.turtle.TurtleSerializer;
 
 import android.content.Context;
 
@@ -47,7 +47,7 @@ public class AndroidLocalServicesIndexData extends AbstractAndroidServiceBusPers
     public void addServiceRealization(String id, ServiceRealization serviceRealization) {
 	// Serialize the ServiceRealization to string (since ServiceRalization
 	// is a reource)
-	String serviceRealizationAsResource = new TurtleParser().serialize(serviceRealization);
+	String serviceRealizationAsResource = new TurtleSerializer().serialize(serviceRealization);
 
 	sqliteMngr.open();
 	try {
@@ -129,7 +129,7 @@ public class AndroidLocalServicesIndexData extends AbstractAndroidServiceBusPers
 	// De-serialize the ServiceRealization
 	String serviceRealizationAsString = localServiceIndexRowDB.getServiceRealization();
 
-	Resource r = (Resource) new TurtleParser().deserialize(serviceRealizationAsString);
+	Resource r = (Resource) new TurtleSerializer().deserialize(serviceRealizationAsString);
 	ServiceRealization serviceRealization = (ServiceRealization) r;
 
 	return serviceRealization;

@@ -101,4 +101,14 @@ public class AndroidModuleContext implements ModuleContext {
     public boolean uninstall(ModuleContext arg0) {
 	return false;
     }
+
+	public Object getProperty(String name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Object getProperty(String name, Object def) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

@@ -28,7 +28,7 @@ import org.universAAL.middleware.android.buses.contextbus.persistence.tables.row
 import org.universAAL.middleware.android.buses.contextbus.persistence.tables.rows.ContextEventPatternRowDB;
 import org.universAAL.middleware.context.ContextEventPattern;
 import org.universAAL.middleware.context.data.ICalledPeers;
-import org.universAAL.middleware.serialization.turtle.TurtleParser;
+import org.universAAL.middleware.serialization.turtle.TurtleSerializer;
 
 import android.content.Context;
 
@@ -130,7 +130,7 @@ public class AndroidCalledPeersData extends AbstractAndroidContextBusPersistable
 	String[] serializedContextEventPatterns = new String[contextEventPatterns.size()];
 
 	// Initiate a parser
-	TurtleParser parser = new TurtleParser();
+	TurtleSerializer parser = new TurtleSerializer();
 
 	for (int i = 0; i < contextEventPatterns.size(); i++) {
 	    ContextEventPattern contextEventPattern = (ContextEventPattern) contextEventPatterns
@@ -146,7 +146,7 @@ public class AndroidCalledPeersData extends AbstractAndroidContextBusPersistable
     private static List deserializeContextEventPatterns(
 	    ContextEventPatternRowDB[] contextEventPatternRows) {
 	// Initiate a parser
-	TurtleParser parser = new TurtleParser();
+    	TurtleSerializer parser = new TurtleSerializer();
 
 	// Set the context event patterns
 	ContextEventPattern[] contextEventPatterns = new ContextEventPattern[contextEventPatternRows.length];

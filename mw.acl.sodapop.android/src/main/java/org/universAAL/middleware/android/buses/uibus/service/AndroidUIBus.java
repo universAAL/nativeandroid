@@ -21,7 +21,7 @@
 package org.universAAL.middleware.android.buses.uibus.service;
 
 import org.universAAL.middleware.android.common.IAndroidBus;
-import org.universAAL.middleware.sodapop.SodaPop;
+import org.universAAL.middleware.container.ModuleContext;
 import org.universAAL.middleware.ui.impl.UIBusImpl;
 
 /**
@@ -33,8 +33,8 @@ import org.universAAL.middleware.ui.impl.UIBusImpl;
  */
 public class AndroidUIBus extends UIBusImpl implements IAndroidBus {
 
-    public AndroidUIBus(SodaPop sodaPop) {
-	super(sodaPop);
+    public AndroidUIBus(ModuleContext mc) {
+	super(mc);
     }
 
     public String getName() {

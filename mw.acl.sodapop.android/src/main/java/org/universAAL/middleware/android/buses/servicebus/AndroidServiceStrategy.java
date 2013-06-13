@@ -26,9 +26,9 @@ import org.universAAL.middleware.android.buses.servicebus.persistence.tables.row
 import org.universAAL.middleware.android.buses.servicebus.servicecallee.AndroidServiceCalleeProxy;
 import org.universAAL.middleware.android.common.StringUtils;
 import org.universAAL.middleware.android.localsodapop.AbstractSodaPopAndroidImpl;
+import org.universAAL.middleware.modules.CommunicationModule;
 import org.universAAL.middleware.service.data.factory.IServiceStrategyDataFactory;
 import org.universAAL.middleware.service.impl.ServiceStrategy;
-import org.universAAL.middleware.sodapop.SodaPop;
 import org.universAAL.middleware.util.Constants;
 
 import android.content.Context;
@@ -46,8 +46,8 @@ public class AndroidServiceStrategy extends ServiceStrategy {
     private static final int INTERVAL_BETWEEN_COORDINATOR_CHECKS_MILI_SECS = 2 * 1000;
     private static final long AMOUNT_OF_COORDINATOR_CHECKS_TRIALS = 60;
 
-    public AndroidServiceStrategy(SodaPop sodapop, Context context) {
-	super(sodapop);
+    public AndroidServiceStrategy(CommunicationModule cm, Context context) {
+	super(cm);
 
 	// Check if the coordinator is known and fill it accordingly
 	theCoordinator = queryForCoordinator();

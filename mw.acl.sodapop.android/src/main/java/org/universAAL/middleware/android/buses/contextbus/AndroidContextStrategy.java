@@ -27,8 +27,8 @@ import org.universAAL.middleware.context.ContextSubscriber;
 import org.universAAL.middleware.context.data.factory.IContextStrategyDataFactory;
 import org.universAAL.middleware.context.impl.ContextStrategy;
 import org.universAAL.middleware.bus.member.BusMember;
-import org.universAAL.middleware.sodapop.SodaPop;
-import org.universAAL.middleware.bus.msg.Message;
+import org.universAAL.middleware.modules.CommunicationModule;
+import org.universAAL.middleware.bus.msg.BusMessage;
 
 import android.content.Context;
 
@@ -41,8 +41,8 @@ import android.content.Context;
  */
 public class AndroidContextStrategy extends ContextStrategy {
 
-    public AndroidContextStrategy(SodaPop sodapop) {
-	super(sodapop);
+    public AndroidContextStrategy(CommunicationModule cm) {
+	super(cm);
     }
 
     @Override
@@ -54,12 +54,12 @@ public class AndroidContextStrategy extends ContextStrategy {
     }
 
     @Override
-    protected void handleEvent(ContextSubscriber contextSubscriber, Message msg) {
+	public void handle(BusMessage msg , String busMemberID) {
 	// Cast to bus member
-	BusMember busMember = (BusMember) contextSubscriber;
+//	BusMember busMember = (BusMember) contextSubscriber;
 
 	// Get the bus member ID
-	String busMemberID = bus.getBusMemberID(busMember);
+//	String busMemberID = bus.getBusMemberID(busMember);
 
 	// Query for the bus member
 	AndroidContextSubscriberProxy androidContextSubscriber = (AndroidContextSubscriberProxy) bus
