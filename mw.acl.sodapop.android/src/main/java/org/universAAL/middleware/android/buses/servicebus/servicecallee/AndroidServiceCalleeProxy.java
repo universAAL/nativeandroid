@@ -39,7 +39,7 @@ import org.universAAL.middleware.service.ServiceCallee;
 import org.universAAL.middleware.service.ServiceResponse;
 import org.universAAL.middleware.service.owls.process.ProcessOutput;
 import org.universAAL.middleware.service.owls.profile.ServiceProfile;
-import org.universAAL.middleware.sodapop.msg.Message;
+import org.universAAL.middleware.bus.msg.Message;
 import org.universAAL.middleware.util.Constants;
 
 import android.content.BroadcastReceiver;

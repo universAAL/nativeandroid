@@ -29,7 +29,7 @@ import org.universAAL.middleware.android.buses.contextbus.persistence.tables.row
 import org.universAAL.middleware.context.ContextEventPattern;
 import org.universAAL.middleware.context.ContextSubscriber;
 import org.universAAL.middleware.context.impl.ContextStrategy.ContextFilterer;
-import org.universAAL.serialization.turtle.TurtleParser;
+import org.universAAL.middleware.serialization.turtle.TurtleParser;
 
 import android.content.Context;
 

@@ -33,8 +33,8 @@ import org.universAAL.middleware.android.common.IAndroidBus;
 import org.universAAL.middleware.context.ContextEventPattern;
 import org.universAAL.middleware.context.owl.ContextProvider;
 import org.universAAL.middleware.context.owl.ContextProviderType;
-import org.universAAL.middleware.sodapop.BusMember;
-import org.universAAL.middleware.sodapop.IRegistryListener;
+import org.universAAL.middleware.bus.member.BusMember;
+import org.universAAL.middleware.bus.model.util.IRegistryListener;
 
 import android.content.Context;
 

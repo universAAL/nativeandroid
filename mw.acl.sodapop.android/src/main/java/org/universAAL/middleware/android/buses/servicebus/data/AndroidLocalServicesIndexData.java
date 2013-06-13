@@ -25,7 +25,7 @@ import org.universAAL.middleware.android.buses.servicebus.persistence.tables.row
 import org.universAAL.middleware.rdf.Resource;
 import org.universAAL.middleware.service.data.ILocalServicesIndexData;
 import org.universAAL.middleware.service.impl.ServiceRealization;
-import org.universAAL.serialization.turtle.TurtleParser;
+import org.universAAL.middleware.serialization.turtle.TurtleParser;
 
 import android.content.Context;
 

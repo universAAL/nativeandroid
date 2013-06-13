@@ -24,8 +24,8 @@ import org.universAAL.middleware.android.buses.common.messages.ProcessBusMessage
 import org.universAAL.middleware.android.common.messages.IMessage;
 import org.universAAL.middleware.android.localsodapop.AbstractSodaPopAndroidImpl;
 import org.universAAL.middleware.android.localsodapop.messages.handlers.AbstractMessagePersistableHandler;
-import org.universAAL.middleware.sodapop.AbstractBus;
-import org.universAAL.middleware.sodapop.msg.Message;
+import org.universAAL.middleware.bus.model.AbstractBus;
+import org.universAAL.middleware.bus.msg.Message;
 
 /**
  * 

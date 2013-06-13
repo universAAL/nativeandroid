@@ -28,7 +28,7 @@ import org.universAAL.middleware.android.buses.contextbus.persistence.tables.row
 import org.universAAL.middleware.android.buses.contextbus.persistence.tables.rows.ContextEventPatternRowDB;
 import org.universAAL.middleware.context.ContextEventPattern;
 import org.universAAL.middleware.context.data.ICalledPeers;
-import org.universAAL.serialization.turtle.TurtleParser;
+import org.universAAL.middleware.serialization.turtle.TurtleParser;
 
 import android.content.Context;
 

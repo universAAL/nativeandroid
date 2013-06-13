@@ -20,7 +20,7 @@
  */
 package org.universAAL.middleware.android.buses.contextbus;
 
-import org.universAAL.middleware.sodapop.BusMember;
+import org.universAAL.middleware.bus.member.BusMember;
 
 /**
  * 

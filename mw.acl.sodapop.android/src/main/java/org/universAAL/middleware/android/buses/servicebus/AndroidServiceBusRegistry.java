@@ -29,8 +29,8 @@ import org.universAAL.middleware.android.buses.servicebus.servicecallee.AndroidS
 import org.universAAL.middleware.android.buses.servicebus.servicecallee.xml.objects.ServiceGroundingXmlObj;
 import org.universAAL.middleware.android.buses.servicebus.servicecaller.AndroidServiceCallerProxy;
 import org.universAAL.middleware.android.buses.servicebus.servicecaller.xml.objects.ServiceRequestGroundingXmlObj;
-import org.universAAL.middleware.sodapop.BusMember;
-import org.universAAL.middleware.sodapop.IRegistryListener;
+import org.universAAL.middleware.bus.member.BusMember;
+import org.universAAL.middleware.bus.model.util.IRegistryListener;
 
 import android.content.Context;
 
