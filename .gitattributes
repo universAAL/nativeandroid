@@ -227,9 +227,6 @@ mw.acl.sodapop.android/ASL2.0.txt -text
 mw.acl.sodapop.android/AndroidManifest.xml -text
 mw.acl.sodapop.android/MITX.txt -text
 mw.acl.sodapop.android/NOTICE.txt -text
-mw.acl.sodapop.android/bin/AndroidManifest.xml -text
-mw.acl.sodapop.android/bin/jarlist.cache -text
-mw.acl.sodapop.android/bin/resources.ap_ -text
 mw.acl.sodapop.android/pom.xml -text
 mw.acl.sodapop.android/project.properties -text
 mw.acl.sodapop.android/res/drawable-hdpi/icon.png -text
