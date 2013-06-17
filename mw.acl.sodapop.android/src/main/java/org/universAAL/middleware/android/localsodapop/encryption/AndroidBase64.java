@@ -20,7 +20,7 @@
  */
 package org.universAAL.middleware.android.localsodapop.encryption;
 
-import org.universAAL.middleware.sodapop.impl.Codec;
+import org.universAAL.middleware.connectors.communication.jgroups.util.Codec;
 
 /**
  * 

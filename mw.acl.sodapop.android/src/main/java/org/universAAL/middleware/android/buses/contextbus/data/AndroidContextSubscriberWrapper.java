@@ -44,7 +44,7 @@ public class AndroidContextSubscriberWrapper extends ContextSubscriber implement
     private String groundingID;
 
     public AndroidContextSubscriberWrapper(String groundingID) {
-	super(null, null, false);
+	super(null,null);
 
 	this.groundingID = groundingID;
     }

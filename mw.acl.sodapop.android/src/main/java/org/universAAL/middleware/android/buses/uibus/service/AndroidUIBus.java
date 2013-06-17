@@ -38,7 +38,7 @@ public class AndroidUIBus extends UIBusImpl implements IAndroidBus {
     }
 
     public String getName() {
-	return getBusName();
+	return getBrokerName();
     }
 
     public String getPackageName() {

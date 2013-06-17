@@ -67,7 +67,7 @@ public class AndroidContextBus extends ContextBusImpl implements IAndroidBus {
     }
 
     public String getName() {
-	return getBusName();
+	return getBrokerName();
     }
 
     public String getPackageName() {
