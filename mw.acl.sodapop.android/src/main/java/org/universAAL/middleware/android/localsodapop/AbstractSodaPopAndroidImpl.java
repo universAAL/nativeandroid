@@ -36,9 +36,9 @@ import org.universAAL.middleware.android.localsodapop.persistence.tables.rows.Lo
 import org.universAAL.middleware.android.localsodapop.persistence.tables.rows.PeerRowDB;
 import org.universAAL.middleware.container.ModuleContext;
 import org.universAAL.middleware.bus.model.AbstractBus;
-import org.universAAL.middleware.sodapop.SodaPop;
-import org.universAAL.middleware.sodapop.impl.CryptUtil;
-import org.universAAL.middleware.bus.msg.Message;
+import org.universAAL.middleware.modules.CommunicationModule;
+import org.universAAL.middleware.connectors.communication.jgroups.util.CryptUtil;
+import org.universAAL.middleware.bus.msg.BusMessage;
 import org.universAAL.middleware.serialization.MessageContentSerializer;
 import org.universAAL.middleware.bus.msg.PeerIDGenerator;
 
@@ -53,7 +53,7 @@ import android.util.Log;
  *         Apr 5, 2012
  * 
  */
-public abstract class AbstractSodaPopAndroidImpl implements SodaPop, SodaPopPeer {
+public abstract class AbstractSodaPopAndroidImpl implements CommunicationModule, SodaPopPeer {
 
     private static Object peersTableSync = new Object();
     private static Object localBusesTableSync = new Object();
@@ -465,7 +465,7 @@ public abstract class AbstractSodaPopAndroidImpl implements SodaPop, SodaPopPeer
      * @see org.universAAL.middleware.sodapop.SodaPop#propagateMessage(AbstractBus,
      *      Message)
      */
-    public int propagateMessage(AbstractBus bus, Message msg) {
+    public int propagateMessage(AbstractBus bus, BusMessage msg) {
 	int numOfReceivers = 0;
 
 	// Get the local ID
@@ -480,13 +480,13 @@ public abstract class AbstractSodaPopAndroidImpl implements SodaPop, SodaPopPeer
 	    return numOfReceivers;
 	}
 
-	Log.d(TAG, "Is about to propagateMessage for bus [" + bus.getBusName() + "]");
+	Log.d(TAG, "Is about to propagateMessage for bus [" + bus.getBrokerName() + "]");
 
 	// Open
 	sqliteMngr.open();
 
 	try {
-	    String busName = bus.getBusName();
+	    String busName = bus.getBrokerName();
 	    String msgAsStr = msg.toString();
 	    String cipher = msgAsStr;
 	    String[] receivers = msg.getReceivers(); // Extract the receivers

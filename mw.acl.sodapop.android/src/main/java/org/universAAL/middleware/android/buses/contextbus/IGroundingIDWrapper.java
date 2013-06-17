@@ -20,7 +20,7 @@
  */
 package org.universAAL.middleware.android.buses.contextbus;
 
-import org.universAAL.middleware.bus.member.BusMember;
+//import org.universAAL.middleware.bus.member.BusMember;
 
 /**
  * 
@@ -29,7 +29,7 @@ import org.universAAL.middleware.bus.member.BusMember;
  *         Jun 27, 2012
  * 
  */
-public interface IGroundingIDWrapper extends BusMember {
+public interface IGroundingIDWrapper /*extends BusMember*/ {
 
     String getGroundingID();
 }

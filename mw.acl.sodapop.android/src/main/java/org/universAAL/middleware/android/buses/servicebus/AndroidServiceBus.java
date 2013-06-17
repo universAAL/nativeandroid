@@ -59,7 +59,7 @@ public class AndroidServiceBus extends ServiceBusImpl implements IAndroidBus {
     }
 
     public String getName() {
-	return getBusName();
+	return getBrokerName();
     }
 
     public String getPackageName() {

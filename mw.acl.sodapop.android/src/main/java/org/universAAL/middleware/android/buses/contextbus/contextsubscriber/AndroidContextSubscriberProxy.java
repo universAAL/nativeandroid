@@ -58,7 +58,7 @@ public class AndroidContextSubscriberProxy extends ContextSubscriber implements 
 	    String contextSubscriberGroundingID, String androidUniqueName,
 	    ContextSubscriberGroundingXmlObj contextSubscriberGrounding, Context context) {
 
-	super(androidContextBus, initialSubscriptions, false);
+	super(androidContextBus, initialSubscriptions);
 
 	this.packageName = packageName;
 	this.contextSubscriberGroundingID = contextSubscriberGroundingID;
