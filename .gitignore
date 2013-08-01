@@ -4,3 +4,9 @@ mw.acl.sodapop.android/.settings
 mw.acl.sodapop.android/assets
 mw.acl.sodapop.android/bin
 mw.acl.sodapop.android/gen
+mw.container.android/.classpath
+mw.container.android/.project
+mw.container.android/.settings
+mw.container.android/bin
+mw.container.android/gen
+mw.container.android/target
