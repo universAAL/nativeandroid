@@ -23,17 +23,10 @@ package org.universAAL.middleware.android.buses.contextbus;
 import org.universAAL.middleware.android.buses.contextbus.messages.ContextBusMessageFactory;
 import org.universAAL.middleware.android.buses.contextbus.messages.handlers.ContextBusHandlerFactory;
 import org.universAAL.middleware.android.common.AbstractAndroidBusService;
-//import org.universAAL.middleware.android.common.buses.service.AbstractAndroidBusService;
 import org.universAAL.middleware.android.common.messages.IMessage;
 import org.universAAL.middleware.android.common.messages.handlers.IMessageHandler;
-import org.universAAL.middleware.android.container.ContextEmulator;
-import org.universAAL.middleware.android.container.uAALBundleContainer;
-import org.universAAL.middleware.android.modules.ModulesCommWrapper;
-import org.universAAL.middleware.container.ModuleContext;
-import org.universAAL.middleware.context.ContextBus;
-import org.universAAL.middleware.context.impl.ContextBusImpl;
 
-import android.app.Notification;
+import org.universAAL.middleware.android.modules.ModulesCommWrapper;
 import android.content.Intent;
 import android.util.Log;
 
@@ -47,37 +40,6 @@ import android.util.Log;
 public class ContextBusService extends AbstractAndroidBusService {
 
 	private static final String TAG = "AndroidContextBusService";
-//	private static final int ONGOING_NOTIFICATION = 22072013;
-//	public static ContextEmulator context;
-//	@Override
-//	public void onCreate() {
-//		super.onCreate();
-//		// TODO Check! Supposedly, this starts as foreground but without
-//		// notification
-//		Notification notif = new Notification(0, null,
-//				System.currentTimeMillis());
-//		notif.flags |= Notification.FLAG_NO_CLEAR;
-//		startForeground(ONGOING_NOTIFICATION, notif);
-//		Log.d(TAG, "Creating the Service");
-//		new Thread(new Runnable() {
-//			public void run() {
-//				// OSGi Bundle Context emulation: tracks instances to share
-//				context = ContextEmulator.createContextEmulator();
-//				Object[] busFetchParams = new Object[] { ContextBus.class.getName() };
-//				ModuleContext modContext10 = uAALBundleContainer.THE_CONTAINER
-//						.registerModule(new Object[] { context,"mw.bus.context.osgi" });
-//				ContextBusImpl.startModule(
-//						uAALBundleContainer.THE_CONTAINER, modContext10,
-//						busFetchParams, busFetchParams);
-//			}
-//		});
-//	}
-//
-//	@Override
-//	public void onDestroy() {
-//		// TODO Auto-generated method stub
-//		super.onDestroy();
-//	}
 
 	@Override
 	protected void privateOnStart(Intent intent, int startId) {
@@ -85,8 +47,8 @@ public class ContextBusService extends AbstractAndroidBusService {
 		IMessage message = ContextBusMessageFactory.createMessage(this, intent);
 
 		// Create the handler
-		IMessageHandler handler = ContextBusHandlerFactory.createHandler(intent
-				.getAction(), new ModulesCommWrapper(this));
+		IMessageHandler handler = ContextBusHandlerFactory.createHandler(
+				intent.getAction(), new ModulesCommWrapper(this));
 
 		if (null == handler || null == message) {
 			Log.w(TAG, "Action is null!");

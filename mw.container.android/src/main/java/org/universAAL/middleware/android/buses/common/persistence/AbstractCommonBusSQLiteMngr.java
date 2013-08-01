@@ -58,7 +58,7 @@ public abstract class AbstractCommonBusSQLiteMngr {
 	}
 
 	protected void open() throws SQLException {
-		// synchronized (sync) {
+
 		database = dbHelper.getWritableDatabase(); // TODO: find another
 		// mechanism for
 		// open/close DB's

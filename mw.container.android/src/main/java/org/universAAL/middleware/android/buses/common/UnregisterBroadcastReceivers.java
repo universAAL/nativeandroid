@@ -20,8 +20,6 @@
  */
 package org.universAAL.middleware.android.buses.common;
 
-//import org.universAAL.middleware.android.common.IAndroidSodaPop;
-
 import org.universAAL.middleware.android.common.StringConstants;
 
 import android.content.Context;

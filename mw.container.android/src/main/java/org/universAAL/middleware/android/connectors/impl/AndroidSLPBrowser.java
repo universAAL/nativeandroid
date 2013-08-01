@@ -24,13 +24,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.universAAL.middleware.connectors.ServiceListener;
-//import org.universAAL.middleware.container.ModuleContext;
-//import org.universAAL.middleware.container.utils.LogUtils;
 import org.universAAL.middleware.interfaces.aalspace.AALSpaceCard;
 
 import android.util.Log;
 
-import ch.ethz.iks.slp.Locator;
 import ch.ethz.iks.slp.ServiceLocationEnumeration;
 import ch.ethz.iks.slp.ServiceType;
 import ch.ethz.iks.slp.ServiceURL;
@@ -53,8 +50,8 @@ public class AndroidSLPBrowser implements Runnable {
 	private static int MAX_RETRY = 3;
 	private Set<AALSpaceCard> aalSpaces;
 
-	public AndroidSLPBrowser(/*Locator locator,*/ String aalSpaceServiceType,
-			String filter, /* ModuleContext context, */
+	public AndroidSLPBrowser( String aalSpaceServiceType,
+			String filter, 
 			List<ServiceListener> listeners) {
 //		this.locator = locator;
 		this.aalSpaceServiceType = aalSpaceServiceType;

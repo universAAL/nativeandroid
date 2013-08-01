@@ -37,8 +37,6 @@ import org.universAAL.middleware.container.ModuleContext;
 import org.universAAL.middleware.context.ContextEventPattern;
 import org.universAAL.middleware.context.owl.ContextProvider;
 import org.universAAL.middleware.context.owl.ContextProviderType;
-//import org.universAAL.middleware.sodapop.BusMember;
-//import org.universAAL.middleware.sodapop.IRegistryListener;
 
 import android.content.Context;
 import android.util.Log;
@@ -112,18 +110,9 @@ public class AndroidContextBusRegistry extends
 				.getContextPublisherGrounding().serialize();
 
 		// Persist this
-		// sqliteMngr.open();
-		// try {
 		sqliteMngr.addBusMember(memberID, packageName,
 				contextPublisherGroundingID, MemberType.CONTEXT_PUBLISHER,
 				androidUniqueName, contextPublisherGroundingXmlAsByteArr);
-		// }catch(Exception ex){
-		// Log.e(TAG, "Failed SQL access at addContextPublisherAsBusMember",
-		// ex);
-		// return;
-		// } finally {
-		// sqliteMngr.close();
-		// }
 	}
 
 	protected void addContextSubscriberAsBusMember(String memberID,
@@ -154,18 +143,9 @@ public class AndroidContextBusRegistry extends
 				.getContextSubscriberGrounding().serialize();
 
 		// Persist this
-		// sqliteMngr.open();
-		// try {
 		sqliteMngr.addBusMember(memberID, packageName,
 				contextPublisherGroundingID, MemberType.CONTEXT_SUBSCRIBER,
 				androidUniqueName, contextPublisherGroundingXmlAsByteArr);
-		// }catch(Exception ex){
-		// Log.e(TAG, "Failed SQL access at addContextPublisherAsBusMember",
-		// ex);
-		// return;
-		// } finally {
-		// sqliteMngr.close();
-		// }
 	}
 
 	protected AndroidContextPublisherProxy createAndroidContextPublisherAsBusMember(
@@ -223,7 +203,6 @@ public class AndroidContextBusRegistry extends
 
 	protected ModuleContext getAndroidContextBusMC() {
 		return ((AndroidContextBusImpl) androidBus).getModuleContex();
-		// return (AndroidContextBusImpl) androidBus;
 	}
 
 	@Override

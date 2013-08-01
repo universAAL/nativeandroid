@@ -20,7 +20,6 @@
  */
 package org.universAAL.middleware.android.buses.contextbus.messages;
 
-//import org.universAAL.middleware.android.buses.common.messages.ProcessBusMessage;
 import org.universAAL.middleware.android.common.Action;
 import org.universAAL.middleware.android.common.messages.IMessage;
 import org.universAAL.middleware.android.common.messages.InitializeMessage;

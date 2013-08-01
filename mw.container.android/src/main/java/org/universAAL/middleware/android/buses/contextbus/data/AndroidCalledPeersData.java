@@ -29,7 +29,6 @@ import org.universAAL.middleware.android.buses.contextbus.persistence.tables.row
 import org.universAAL.middleware.context.ContextEventPattern;
 import org.universAAL.middleware.context.data.ICalledPeers;
 import org.universAAL.middleware.serialization.turtle.TurtleSerializer;
-//import org.universAAL.serialization.turtle.TurtleParser;
 
 import android.content.Context;
 
@@ -54,46 +53,27 @@ public class AndroidCalledPeersData extends
 	}
 
 	public int getNumOfCalledPeers() {
-		// sqliteMngr.open();
-		// try {
 		// Persist
 		CalledPeersRowDB row = queryForCalledPeer();
 		return row.getNumOfCalledPeers();
-		// } finally {
-		// sqliteMngr.close();
-		// }
+
 	}
 
 	public void setNumOfCalledPeers(int numOfCalledPeers) {
-		// sqliteMngr.open();
-		// try {
 		sqliteMngr.updateCalledPeersWithNumOfCalledPeers(messageID,
 				numOfCalledPeers);
-		// } finally {
-		// sqliteMngr.close();
-		// }
 	}
 
 	public void reduceNumOfCalledPeers() {
-		// sqliteMngr.open();
-		// try {
 		// Persist
 		CalledPeersRowDB row = queryForCalledPeer();
 		sqliteMngr.updateCalledPeersWithNumOfCalledPeers(messageID,
 				row.getNumOfCalledPeers() - 1);
-		// } finally {
-		// sqliteMngr.close();
-		// }
 	}
 
 	public void resetCalledPeers() {
-		// sqliteMngr.open();
-		// try {
 		// Persist
 		sqliteMngr.updateCalledPeersWithNumOfCalledPeers(messageID, 0);
-		// } finally {
-		// sqliteMngr.close();
-		// }
 	}
 
 	public boolean gotResponsesFromAllPeers() {
@@ -102,28 +82,17 @@ public class AndroidCalledPeersData extends
 
 	public void addProvisions(List contextEventPatterns) {
 		String[] serializedContextEventPatterns = serializeContextEventPatterns(contextEventPatterns);
-
-		// sqliteMngr.open();
-		// try {
 		// Persist
 		sqliteMngr.addContextEventPatterns(messageID,
 				serializedContextEventPatterns);
-		// } finally {
-		// sqliteMngr.close();
-		// }
 	}
 
 	public List getProvisions() {
 		List provisions = null;
-		// sqliteMngr.open();
-		// try {
 		// Persist
 		ContextEventPatternRowDB[] rows = sqliteMngr
 				.queryForContextEventPatterns(messageID);
 		return deserializeContextEventPatterns(rows);
-		// } finally {
-		// sqliteMngr.close();
-		// }
 	}
 
 	private CalledPeersRowDB queryForCalledPeer() {

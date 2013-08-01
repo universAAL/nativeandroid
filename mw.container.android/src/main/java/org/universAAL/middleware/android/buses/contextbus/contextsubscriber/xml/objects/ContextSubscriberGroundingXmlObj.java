@@ -24,7 +24,6 @@ import org.universAAL.middleware.android.buses.common.xml.objects.OntologiesCont
 import org.universAAL.middleware.android.buses.contextbus.contextsubscriber.xml.IContextSubscriberGroundingXmlConstants;
 import org.universAAL.middleware.android.common.CommonXmlParserUtils;
 import org.universAAL.middleware.android.common.SerializeUtils;
-//import org.universAAL.middleware.android.common.xml.CommonXmlParserUtils;
 import org.w3c.dom.Node;
 
 /**

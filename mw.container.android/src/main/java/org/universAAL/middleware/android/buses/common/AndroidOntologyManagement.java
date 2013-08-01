@@ -68,7 +68,6 @@ public class AndroidOntologyManagement {
 		registerOntology(context, ontology);
 	}
 
-	@SuppressWarnings("unused")
 	private static void logRegisteredOntologies(String lastRegisteredOntology) {
 		StringBuffer sb = new StringBuffer();
 

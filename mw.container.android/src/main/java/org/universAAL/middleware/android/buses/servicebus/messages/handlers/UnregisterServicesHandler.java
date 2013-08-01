@@ -20,15 +20,11 @@
  */
 package org.universAAL.middleware.android.buses.servicebus.messages.handlers;
 
-//import org.universAAL.middleware.android.buses.servicebus.AndroidServiceBus;
 import org.universAAL.middleware.android.buses.servicebus.impl.AndroidServiceBusImpl;
 import org.universAAL.middleware.android.common.messages.IMessage;
 import org.universAAL.middleware.android.common.messages.UnregisterAppsMessage;
 import org.universAAL.middleware.android.common.messages.handlers.AbstractMessagePersistableHandler;
 import org.universAAL.middleware.android.modules.ModulesCommWrapper;
-//import org.universAAL.middleware.android.common.modulecontext.AndroidModuleContextFactory;
-//import org.universAAL.middleware.android.localsodapop.AbstractSodaPopAndroidImpl;
-//import org.universAAL.middleware.android.localsodapop.messages.handlers.AbstractMessagePersistableHandler;
 
 import android.content.Context;
 
@@ -47,11 +43,7 @@ public class UnregisterServicesHandler extends
 	}
 
 	@Override
-	protected void privateHandleMessage(IMessage message/*
-														 * ,
-														 * AbstractSodaPopAndroidImpl
-														 * sodaPop
-														 */) {
+	protected void privateHandleMessage(IMessage message) {
 		// Cast it to UnregisterProfiles message
 		UnregisterAppsMessage unregisterServicesMessage = (UnregisterAppsMessage) message;
 
@@ -62,12 +54,7 @@ public class UnregisterServicesHandler extends
 		Context context = unregisterServicesMessage.getContext();
 
 		// Create AndroidServiceBus
-		AndroidServiceBusImpl androidServiceBus = createServiceBus();/*
-																	 * new
-																	 * AndroidServiceBus
-																	 * (sodaPop,
-																	 * context);
-																	 */
+		AndroidServiceBusImpl androidServiceBus = createServiceBus();
 
 		// Unregister
 		androidServiceBus.unregisterByPackageName(unregisterServicesMessage

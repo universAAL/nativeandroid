@@ -22,7 +22,6 @@ package org.universAAL.middleware.android.buses.contextbus.contextsubscriber;
 
 import org.universAAL.middleware.android.buses.contextbus.ContextBusService;
 import org.universAAL.middleware.android.common.StringConstants;
-//import org.universAAL.middleware.android.common.IAndroidSodaPop;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

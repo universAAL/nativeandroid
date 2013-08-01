@@ -29,7 +29,6 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.universAAL.middleware.android.buses.contextbus.contextsubscriber.xml.objects.ContextSubscriberGroundingXmlObj;
 import org.universAAL.middleware.android.common.CommonXmlParserUtils;
-//import org.universAAL.middleware.android.common.xml.CommonXmlParserUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;

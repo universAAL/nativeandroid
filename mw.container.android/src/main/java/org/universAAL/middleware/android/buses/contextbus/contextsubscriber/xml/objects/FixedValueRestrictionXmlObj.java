@@ -27,7 +27,6 @@ import org.universAAL.middleware.android.buses.contextbus.contextsubscriber.xml.
 import org.universAAL.middleware.android.common.CommonXmlParserUtils;
 import org.universAAL.middleware.android.common.IllegalGroundingFormat;
 import org.universAAL.middleware.android.common.ReflectionsUtils;
-//import org.universAAL.middleware.android.common.xml.CommonXmlParserUtils;
 import org.universAAL.middleware.owl.MergedRestriction;
 import org.w3c.dom.Node;
 

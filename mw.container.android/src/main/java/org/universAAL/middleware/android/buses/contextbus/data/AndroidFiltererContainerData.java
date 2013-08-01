@@ -30,7 +30,6 @@ import org.universAAL.middleware.context.ContextEventPattern;
 import org.universAAL.middleware.context.ContextSubscriber;
 import org.universAAL.middleware.context.impl.ContextStrategy.ContextFilterer;
 import org.universAAL.middleware.serialization.turtle.TurtleSerializer;
-//import org.universAAL.serialization.turtle.TurtleParser;
 
 import android.content.Context;
 
@@ -77,26 +76,16 @@ public class AndroidFiltererContainerData extends
 		// Serialize the context event
 		String serializedContextEvent = serializeContextEventPattern(contextFilterer.f);
 
-		// sqliteMngr.open();
-		// try {
 		// Add the filterer
 		sqliteMngr.addContextFilterer(containerKey, containerType, groundingID,
 				serializedContextEvent);
-		// } finally {
-		// sqliteMngr.close();
-		// }
 	}
 
 	public Vector getFilterers() {
 		ContextFiltererRowDB[] contextFiltererRows = null;
-		// sqliteMngr.open();
-		// try {
 		// Query for the filterers
 		contextFiltererRows = sqliteMngr.queryForContextFilterers(containerKey,
 				containerType);
-		// } finally {
-		// sqliteMngr.close();
-		// }
 
 		// Initiate the results
 		Vector<ContextFilterer> filterers = new Vector<ContextFilterer>();
@@ -112,14 +101,9 @@ public class AndroidFiltererContainerData extends
 		// Cast to the IGroundingIDWrapper interface
 		IGroundingIDWrapper groundingIDWrapper = (IGroundingIDWrapper) subscriber;
 
-		// sqliteMngr.open();
-		// try {
 		// Remove the filterers that are relevant to the given subscriber
 		sqliteMngr.removeContextFilterers(containerKey, containerType,
 				groundingIDWrapper.getGroundingID());
-		// } finally {
-		// sqliteMngr.close();
-		// }
 	}
 
 	private String serializeContextEventPattern(

@@ -23,8 +23,6 @@ package org.universAAL.middleware.android.buses.common.xml.objects;
 import java.io.Serializable;
 
 import org.universAAL.middleware.android.common.CommonXmlParserUtils;
-//import org.universAAL.middleware.android.buses.common.xml.ICommonXmlConstants;
-//import org.universAAL.middleware.android.common.xml.CommonXmlParserUtils;
 import org.w3c.dom.Node;
 
 /**

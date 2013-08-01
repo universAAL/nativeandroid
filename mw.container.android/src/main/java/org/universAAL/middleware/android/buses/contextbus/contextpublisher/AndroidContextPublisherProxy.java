@@ -20,16 +20,13 @@
  */
 package org.universAAL.middleware.android.buses.contextbus.contextpublisher;
 
-//import org.universAAL.middleware.android.buses.contextbus.AndroidContextBusImpl;
 import org.universAAL.middleware.android.buses.contextbus.IGroundingIDWrapper;
 import org.universAAL.middleware.android.buses.contextbus.contextpublisher.xml.objects.ContextPublisherGroundingXmlObj;
 import org.universAAL.middleware.android.buses.contextbus.contextsubscriber.ContextRequestsMngr;
 import org.universAAL.middleware.bus.member.BusMemberType;
 import org.universAAL.middleware.container.ModuleContext;
-//import org.universAAL.middleware.context.ContextEventPattern;
 import org.universAAL.middleware.context.ContextPublisher;
 import org.universAAL.middleware.context.owl.ContextProvider;
-import org.universAAL.middleware.util.Constants;
 
 import android.content.Context;
 
@@ -50,16 +47,13 @@ public class AndroidContextPublisherProxy extends ContextPublisher implements
 	protected Context context;
 	private String myID;
 
-	public AndroidContextPublisherProxy(ModuleContext mc/*
-														 * AndroidContextBusImpl
-														 * androidContextBus
-														 */, boolean register,
+	public AndroidContextPublisherProxy(ModuleContext mc, boolean register,
 			ContextProvider providerInfo, String packageName,
 			String contextPublisherGroundingID, String androidUniqueName,
 			ContextPublisherGroundingXmlObj contextPublisherGrounding,
 			Context context) {
 
-		super(mc/* androidContextBus */, providerInfo/* , false */);
+		super(mc, providerInfo);
 
 		this.packageName = packageName;
 		this.contextPublisherGroundingID = contextPublisherGroundingID;
@@ -88,10 +82,7 @@ public class AndroidContextPublisherProxy extends ContextPublisher implements
 		}
 	}
 
-	public AndroidContextPublisherProxy(ModuleContext mc/*
-														 * AndroidContextBusImpl
-														 * androidContextBus
-														 */,
+	public AndroidContextPublisherProxy(ModuleContext mc,
 			ContextProvider providerInfo, String packageName,
 			String groundingID, String androidUniqueName,
 			ContextPublisherGroundingXmlObj contextPublisherGrounding,

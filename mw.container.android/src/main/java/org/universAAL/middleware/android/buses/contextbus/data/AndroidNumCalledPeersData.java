@@ -59,13 +59,8 @@ public class AndroidNumCalledPeersData extends
 
 	public void addCalledPeers(String messageID, ICalledPeers calledPeers) {
 
-		// sqliteMngr.open();
-		// try {
 		// Persist
 		sqliteMngr.addCalledPeers(messageID, calledPeers.getNumOfCalledPeers());
-		// } finally {
-		// sqliteMngr.close();
-		// }
 
 		// Keep in the cache
 		cache.put(messageID, calledPeers);
@@ -79,8 +74,6 @@ public class AndroidNumCalledPeersData extends
 			calledPeers = cache.get(messageID);
 		} else {
 			// If doesn't exist - query in DB and store in cache
-			// sqliteMngr.open();
-			// try {
 			// Query from DB
 			CalledPeersRowDB calledPeersRow = sqliteMngr
 					.queryForCalledPeers(messageID);
@@ -88,9 +81,6 @@ public class AndroidNumCalledPeersData extends
 
 			// Store in cache
 			cache.put(messageID, calledPeers);
-			// } finally {
-			// sqliteMngr.close();
-			// }
 		}
 
 		return calledPeers;
@@ -98,12 +88,7 @@ public class AndroidNumCalledPeersData extends
 
 	public void removeCalledPeers(String messageID) {
 		// Clear from DB
-		// sqliteMngr.open();
-		// try {
 		sqliteMngr.removeCalledPeers(messageID);
-		// } finally {
-		// sqliteMngr.close();
-		// }
 
 		// Clear from cache
 		cache.remove(messageID);

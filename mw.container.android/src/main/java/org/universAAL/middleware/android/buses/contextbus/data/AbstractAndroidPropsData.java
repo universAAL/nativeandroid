@@ -52,17 +52,11 @@ public abstract class AbstractAndroidPropsData extends
 	public Collection getAllFiltererContainers() {
 		Collection containers = null;
 
-		// sqliteMngr.open();
-		// try {
 		// Query for the container
 		FiltererContainerRowDB[] rowsDB = sqliteMngr
 				.queryForFiltererContainersByContainerType(getContainerType());
 
 		containers = createFiltererContainers(rowsDB);
-
-		// } finally {
-		// sqliteMngr.close();
-		// }
 
 		return containers;
 	}
@@ -70,8 +64,6 @@ public abstract class AbstractAndroidPropsData extends
 	public IAndroidFiltererContainerData getFiltererContainer(String key) {
 		IAndroidFiltererContainerData container = null;
 
-		// sqliteMngr.open();
-		// try {
 		// Query for the container
 		FiltererContainerRowDB rowDB = sqliteMngr.queryForFiltererContainer(
 				key, getContainerType());
@@ -81,10 +73,6 @@ public abstract class AbstractAndroidPropsData extends
 		}
 
 		container = createFiltererContainer(rowDB);
-
-		// } finally {
-		// sqliteMngr.close();
-		// }
 
 		return container;
 	}

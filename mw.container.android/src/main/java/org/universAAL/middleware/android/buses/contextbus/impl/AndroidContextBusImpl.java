@@ -40,7 +40,6 @@ import org.universAAL.middleware.connectors.exception.CommunicationConnectorExce
 import org.universAAL.middleware.connectors.util.ChannelMessage;
 import org.universAAL.middleware.container.Container;
 import org.universAAL.middleware.container.ModuleContext;
-//import org.universAAL.middleware.container.utils.LogUtils;
 import org.universAAL.middleware.context.ContextBus;
 import org.universAAL.middleware.context.ContextEvent;
 import org.universAAL.middleware.context.ContextEventPattern;
@@ -77,7 +76,6 @@ public class AndroidContextBusImpl extends AbstractBus implements ContextBus,
 	public synchronized void assessContentSerialization(Resource content) {
 		if (Constants.debugMode()) {
 			Log.d(TAG, "Assessing message content serialization:");
-			// System.out.println(new RuntimeException().getStackTrace()[1]);
 
 			String str = BusMessage.trySerializationAsContent(content);
 			Log.d(TAG,
@@ -115,13 +113,6 @@ public class AndroidContextBusImpl extends AbstractBus implements ContextBus,
 		super(mc);
 		busStrategy.setBus(this);
 	}
-
-	// public AndroidContextBusImpl(ModuleContext mc/*SodaPop sodaPop*/, Context
-	// ctxt) {
-	// super(mc/*sodaPop*/);
-	//
-	// this.androidContext = ctxt;
-	// }
 
 	protected BusStrategy createBusStrategy(CommunicationModule commModule) {
 		return new AndroidContextStrategy(commModule);
@@ -205,8 +196,6 @@ public class AndroidContextBusImpl extends AbstractBus implements ContextBus,
 	// Added/overridden by port
 	@Override
 	protected IRegistry createRegistry() {
-		// Context context = ((AbstractSodaPopAndroidImpl)
-		// sodapop).getContext();
 
 		return new AndroidContextBusRegistry(this, androidContext);
 	}
@@ -214,11 +203,7 @@ public class AndroidContextBusImpl extends AbstractBus implements ContextBus,
 	public void sendContextPublishMessage(String contextPublisherID,
 			String contextPublisherAction, Bundle extrasSection) {
 		// Extract the member ID
-		String memberID = contextPublisherID;/*
-											 * .substring(Constants.
-											 * uAAL_MIDDLEWARE_LOCAL_ID_PREFIX
-											 * .length());
-											 */
+		String memberID = contextPublisherID;
 		// TODO: move this to some shared method
 		// TODO: Check with/out prefix
 		// Get the AndroidContextPublisher from the DB

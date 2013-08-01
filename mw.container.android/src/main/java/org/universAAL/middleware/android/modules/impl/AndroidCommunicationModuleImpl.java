@@ -73,7 +73,7 @@ import android.util.Log;
  * @author <a href="mailto:francesco.furfari@isti.cnr.it">Francesco Furfari</a>
  */
 public class AndroidCommunicationModuleImpl implements CommunicationModule,
-        ConfigurableCommunicationModule, /*SharedObjectListener,*/
+        ConfigurableCommunicationModule, 
         RejectedExecutionHandler {
 	private static final String TAG = "AndroidCommunicationModuleImpl";
     // Module properties
