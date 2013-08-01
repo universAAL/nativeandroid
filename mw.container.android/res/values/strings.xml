@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">uAAL Android Container</string>
+    <string name="UPnPServiceTitle">universAAL</string>
+    <string name="UPnPServiceDescription">universAAL Service</string>
+</resources>
