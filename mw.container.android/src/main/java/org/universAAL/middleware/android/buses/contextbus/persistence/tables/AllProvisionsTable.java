@@ -46,5 +46,4 @@ public class AllProvisionsTable {
 			+ ISqlConstants.NOT_NULL_COLUMN + ");";
 
 	public static final String[] allColumns = new String[] { COLUMN_CONTEXT_EVENT_PATTERN_CONTENT };
-	//
 }

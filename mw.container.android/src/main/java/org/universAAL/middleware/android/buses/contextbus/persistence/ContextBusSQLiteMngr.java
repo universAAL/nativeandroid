@@ -41,7 +41,6 @@ import org.universAAL.middleware.android.buses.contextbus.persistence.tables.row
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-//import android.database.SQLException;
 import android.util.Log;
 
 /**
@@ -54,8 +53,6 @@ public class ContextBusSQLiteMngr extends AbstractCommonBusSQLiteMngr {
 
 	private static final String TAG = ContextBusSQLiteMngr.class.getName();
 
-	// private static final Object sync = new Object();
-
 	private static final String[] tablesToClearInReset = new String[] {
 			RegistryContextsTable.TABLE_NAME, AllProvisionsTable.TABLE_NAME,
 			CalledPeersTable.TABLE_NAME, ContextEventPatternsTable.TABLE_NAME,
@@ -65,20 +62,6 @@ public class ContextBusSQLiteMngr extends AbstractCommonBusSQLiteMngr {
 	public ContextBusSQLiteMngr(Context context) {
 		super(context, new ContextBusSQLiteHelper(context));
 	}
-
-	// public void open() throws SQLException {
-	// synchronized (sync) {
-	// System.out.println("vvvv     OPEN SQL CONTEXT "+Thread.currentThread().getName());
-	// database = dbHelper.getWritableDatabase(); // TODO: find another
-	// // mechanism for
-	// // open/close DB's
-	// }
-	// }
-	//
-	// public void close() {
-	// System.out.println("    ^^^^ CLOSE SQL CONTEXT "+Thread.currentThread().getName());
-	// dbHelper.close();
-	// }
 
 	/**
 	 * 

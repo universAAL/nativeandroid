@@ -56,12 +56,9 @@ import org.universAAL.middleware.connectors.exception.CommunicationConnectorErro
 import org.universAAL.middleware.connectors.exception.CommunicationConnectorException;
 import org.universAAL.middleware.connectors.util.ChannelMessage;
 import org.universAAL.middleware.connectors.util.ExceptionUtils;
-//import org.universAAL.middleware.container.ModuleContext;
-//import org.universAAL.middleware.container.utils.LogUtils;
 import org.universAAL.middleware.interfaces.ChannelDescriptor;
 import org.universAAL.middleware.interfaces.PeerCard;
 
-import android.content.Context;
 import android.util.Log;
 
 /**

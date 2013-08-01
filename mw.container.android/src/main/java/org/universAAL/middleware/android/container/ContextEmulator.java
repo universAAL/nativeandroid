@@ -11,10 +11,8 @@ import java.util.ListIterator;
 import org.universAAL.middleware.android.container.uAALBundleContainer;
 import org.universAAL.middleware.android.modules.ModulesService;
 
-import android.util.Log;
 
 public class ContextEmulator {
-	private static final String TAG = "ContextEmulator";
 
 	public class ServiceEvent {
 		public static final int MODIFIED = 0;

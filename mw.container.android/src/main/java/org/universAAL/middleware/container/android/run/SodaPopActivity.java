@@ -22,10 +22,7 @@ package org.universAAL.middleware.container.android.run;
 
 import org.universAAL.middleware.android.connectors.ConnectorService;
 import org.universAAL.middleware.android.modules.ModulesIntentFactory;
-import org.universAAL.middleware.android.modules.ModulesService;
 import org.universAAL.middleware.container.android.R;
-//import org.universAAL.middleware.container.android.R.id;
-//import org.universAAL.middleware.container.android.R.layout;
 
 import android.app.Activity;
 import android.content.Intent;

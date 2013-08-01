@@ -21,7 +21,6 @@
 package org.universAAL.middleware.android.buses.contextbus.contextsubscriber;
 
 import org.universAAL.middleware.android.buses.common.AndroidNameParameterParser;
-//import org.universAAL.middleware.android.buses.contextbus.AndroidContextBusImpl;
 import org.universAAL.middleware.android.buses.contextbus.IGroundingIDWrapper;
 import org.universAAL.middleware.android.buses.contextbus.contextsubscriber.xml.objects.ActionXmlObj;
 import org.universAAL.middleware.android.buses.contextbus.contextsubscriber.xml.objects.ContextSubscriberGroundingXmlObj;
@@ -32,7 +31,6 @@ import org.universAAL.middleware.container.ModuleContext;
 import org.universAAL.middleware.context.ContextEvent;
 import org.universAAL.middleware.context.ContextEventPattern;
 import org.universAAL.middleware.context.ContextSubscriber;
-import org.universAAL.middleware.util.Constants;
 
 import android.content.Context;
 import android.content.Intent;
@@ -59,16 +57,13 @@ public class AndroidContextSubscriberProxy extends ContextSubscriber implements
 
 	private String myID;
 
-	public AndroidContextSubscriberProxy(ModuleContext mc/*
-														 * AndroidContextBusImpl
-														 * androidContextBus
-														 */, boolean register,
+	public AndroidContextSubscriberProxy(ModuleContext mc, boolean register,
 			ContextEventPattern[] initialSubscriptions, String packageName,
 			String contextSubscriberGroundingID, String androidUniqueName,
 			ContextSubscriberGroundingXmlObj contextSubscriberGrounding,
 			Context context) {
 
-		super(mc/* androidContextBus */, initialSubscriptions/* , false */);
+		super(mc, initialSubscriptions);
 
 		this.packageName = packageName;
 		this.contextSubscriberGroundingID = contextSubscriberGroundingID;
@@ -98,11 +93,8 @@ public class AndroidContextSubscriberProxy extends ContextSubscriber implements
 		}
 	}
 
-	public AndroidContextSubscriberProxy(ModuleContext mc/*
-														 * AndroidContextBusImpl
-														 * androidContextBus
-														 */,
-			String packageName, String groundingID, String androidUniqueName,
+	public AndroidContextSubscriberProxy(ModuleContext mc, String packageName,
+			String groundingID, String androidUniqueName,
 			ContextSubscriberGroundingXmlObj contextSubscriberGrounding,
 			Context context, String memberID) {
 		this(mc/* androidContextBus */, false, null, packageName, groundingID,

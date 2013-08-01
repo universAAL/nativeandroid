@@ -27,7 +27,6 @@ import java.util.List;
 import org.universAAL.middleware.android.buses.contextbus.contextpublisher.xml.IContextPublisherGroundingXmlConstants;
 import org.universAAL.middleware.android.common.CommonXmlParserUtils;
 import org.universAAL.middleware.android.common.SerializeUtils;
-//import org.universAAL.middleware.android.common.xml.CommonXmlParserUtils;
 import org.w3c.dom.Node;
 
 /**

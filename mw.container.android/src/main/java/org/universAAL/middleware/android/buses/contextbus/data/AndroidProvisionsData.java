@@ -46,26 +46,16 @@ public class AndroidProvisionsData extends AbstractAndroidContextBusPersistable
 		// know if this ContextPublisher was already added
 		String provisionID = extractProvisionID(contextPublisher);
 
-		// sqliteMngr.open();
-		// try {
 		// Persist
 		sqliteMngr.addProvision(provisionID);
-		// } finally {
-		// sqliteMngr.close();
-		// }
 	}
 
 	public boolean exist(ContextPublisher contextPublisher) {
 		// Extract the provision ID
 		String provisionID = extractProvisionID(contextPublisher);
 
-		// sqliteMngr.open();
-		// try {
 		// Persist
 		return sqliteMngr.existProvision(provisionID);
-		// } finally {
-		// sqliteMngr.close();
-		// }
 	}
 
 	private String extractProvisionID(ContextPublisher contextPublisher) {

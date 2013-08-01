@@ -41,7 +41,7 @@ public class AndroidJoiner implements Runnable {
     private boolean stop = false;
 //    private ModuleContext context;
 
-    public AndroidJoiner(AndroidAALSpaceManagerImpl androidAALSpaceManagerImpl/*, ModuleContext context*/) {
+    public AndroidJoiner(AndroidAALSpaceManagerImpl androidAALSpaceManagerImpl) {
         this.spaceManager = androidAALSpaceManagerImpl;
 //        this.context = context;
     }

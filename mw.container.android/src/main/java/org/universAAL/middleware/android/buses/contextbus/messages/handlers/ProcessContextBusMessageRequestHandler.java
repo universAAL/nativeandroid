@@ -20,17 +20,12 @@
  */
 package org.universAAL.middleware.android.buses.contextbus.messages.handlers;
 
-//import org.universAAL.middleware.android.buses.common.messages.handlers.AbstractProcessBusMessageRequestHandler;
+
 import org.universAAL.middleware.android.buses.contextbus.impl.AndroidContextBusImpl;
 import org.universAAL.middleware.android.common.messages.IMessage;
 import org.universAAL.middleware.android.common.messages.ProcessBusMessage;
 import org.universAAL.middleware.android.common.messages.handlers.AbstractMessagePersistableHandler;
 import org.universAAL.middleware.android.modules.ModulesCommWrapper;
-//import org.universAAL.middleware.android.common.messages.handlers.AbstractProcessBusMessageRequestHandler;
-//import org.universAAL.middleware.android.common.messages.handlers.BusMessage;
-//import org.universAAL.middleware.android.common.messages.handlers.ProcessBusMessage;
-//import org.universAAL.middleware.android.localsodapop.AbstractSodaPopAndroidImpl;
-//import org.universAAL.middleware.sodapop.AbstractBus;
 import org.universAAL.middleware.bus.msg.BusMessage;
 
 /**
@@ -45,12 +40,6 @@ import org.universAAL.middleware.bus.msg.BusMessage;
 // or modules)
 public class ProcessContextBusMessageRequestHandler extends
 		AbstractMessagePersistableHandler {
-
-	// @Override
-	// protected AbstractBus createBus(IMessage message/*,
-	// AbstractSodaPopAndroidImpl sodaPop*/) {
-	// return createContextBus(message, sodaPop);
-	// }
 
 	public ProcessContextBusMessageRequestHandler(ModulesCommWrapper wrapper) {
 		super(wrapper);

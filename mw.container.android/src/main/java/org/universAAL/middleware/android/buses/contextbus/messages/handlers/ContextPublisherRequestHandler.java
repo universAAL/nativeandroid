@@ -23,8 +23,6 @@ package org.universAAL.middleware.android.buses.contextbus.messages.handlers;
 import org.universAAL.middleware.android.buses.contextbus.impl.AndroidContextBusImpl;
 import org.universAAL.middleware.android.buses.contextbus.messages.ContextPublisherRequestMessage;
 import org.universAAL.middleware.android.common.messages.IMessage;
-//import org.universAAL.middleware.android.localsodapop.AbstractSodaPopAndroidImpl;
-//import org.universAAL.middleware.android.localsodapop.messages.handlers.AbstractMessagePersistableHandler;
 import org.universAAL.middleware.android.common.messages.handlers.AbstractMessagePersistableHandler;
 import org.universAAL.middleware.android.modules.ModulesCommWrapper;
 
@@ -43,13 +41,9 @@ public class ContextPublisherRequestHandler extends
 	}
 
 	@Override
-	protected void privateHandleMessage(IMessage message/*
-														 * ,
-														 * AbstractSodaPopAndroidImpl
-														 * sodaPop
-														 */) {
+	protected void privateHandleMessage(IMessage message) {
 		// Create the android context bus
-		AndroidContextBusImpl bus = createContextBus(/* message, sodaPop */);
+		AndroidContextBusImpl bus = createContextBus();
 
 		// Cast to Context Publisher request message
 		ContextPublisherRequestMessage contextPublisherMessage = (ContextPublisherRequestMessage) message;

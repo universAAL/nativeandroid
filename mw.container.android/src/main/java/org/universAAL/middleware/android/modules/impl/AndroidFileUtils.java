@@ -38,14 +38,13 @@ public class AndroidFileUtils {
 	
 	private static final String TAG = "AndroidFileUtils";
 
-    public static File createFileFromByte(/*ModuleContext mc,*/ byte[] content,
+    public static File createFileFromByte( byte[] content,
             String dst) {
-        return createFileFromByte(/*mc,*/ content, dst, false);
+        return createFileFromByte( content, dst, false);
     }
 
     public static File createFileFromByte(/*ModuleContext mc,*/ byte[] content,
             String dst, boolean overwrite) {
-        final String METHOD = "createFileFromBytele";
         File file = new File(dst);
         File parent = file.getParentFile();
         if (file.exists() == true && file.isDirectory() == true) {

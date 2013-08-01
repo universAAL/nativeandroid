@@ -25,7 +25,6 @@ import java.util.List;
 
 import org.universAAL.middleware.android.buses.common.AndroidNameParameterParser;
 import org.universAAL.middleware.android.buses.servicebus.impl.AndroidServiceBusImpl;
-//import org.universAAL.middleware.android.buses.servicebus.AndroidServiceBus;
 import org.universAAL.middleware.android.buses.servicebus.persistence.tables.rows.WaitingCallRowDB;
 import org.universAAL.middleware.android.buses.servicebus.servicecaller.xml.objects.ActionXmlObj;
 import org.universAAL.middleware.android.buses.servicebus.servicecaller.xml.objects.RequiredOutputXmlObj;
@@ -43,7 +42,6 @@ import org.universAAL.middleware.service.ServiceCaller;
 import org.universAAL.middleware.service.ServiceRequest;
 import org.universAAL.middleware.service.ServiceResponse;
 import org.universAAL.middleware.service.owl.Service;
-import org.universAAL.middleware.util.Constants;
 
 import android.content.Context;
 import android.content.Intent;
@@ -72,10 +70,7 @@ public class AndroidServiceCallerProxy extends ServiceCaller {
 	protected Context context;
 	private String myID;
 
-	public AndroidServiceCallerProxy(ModuleContext mc/*
-													 * AndroidServiceBusImpl
-													 * androidServiceBus
-													 */,
+	public AndroidServiceCallerProxy(ModuleContext mc,
 			boolean registerService, String packageName,
 			String serviceRequestGroundingID, String androidUniqueName,
 			ServiceRequestGroundingXmlObj serviceRequestGrounding,
@@ -110,10 +105,7 @@ public class AndroidServiceCallerProxy extends ServiceCaller {
 		}
 	}
 
-	public AndroidServiceCallerProxy(ModuleContext mc/*
-													 * AndroidServiceBus
-													 * androidServiceBus
-													 */, String packageName,
+	public AndroidServiceCallerProxy(ModuleContext mc, String packageName,
 			String serviceRequestGroundingID, String androidUniqueName,
 			ServiceRequestGroundingXmlObj serviceRequestGrounding,
 			Context context, String memberID) {

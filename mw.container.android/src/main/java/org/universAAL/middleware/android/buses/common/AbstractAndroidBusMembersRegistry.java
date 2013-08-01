@@ -25,12 +25,8 @@ import org.universAAL.middleware.android.buses.common.persistence.tables.rows.Bu
 import org.universAAL.middleware.android.common.IAndroidBus;
 import org.universAAL.middleware.bus.member.BusMember;
 import org.universAAL.middleware.bus.model.util.IRegistry;
-//import org.universAAL.middleware.sodapop.BusMember;
-//import org.universAAL.middleware.sodapop.IRegistry;
 
 import android.content.Context;
-
-//import android.util.Log;
 
 /**
  * 
@@ -41,7 +37,6 @@ import android.content.Context;
  */
 public abstract class AbstractAndroidBusMembersRegistry extends
 		AbstractCommonBusPersistable implements IRegistry {
-	// private final static String TAG = "AndroidServiceBusRegistry";
 
 	protected IAndroidBus androidBus;
 
@@ -56,12 +51,9 @@ public abstract class AbstractAndroidBusMembersRegistry extends
 
 	public BusMember removeMemberByID(String memberID) {
 		BusMemberRowDB row = null;
-		// sqliteMngr.open();
-		// try {
+
 		row = sqliteMngr.removeBusMemberByMemberID(memberID);
-		// } finally {
-		// sqliteMngr.close();
-		// }
+
 		// This happens due to PATCH at proxy
 		if (row == null)
 			return null;
@@ -73,12 +65,9 @@ public abstract class AbstractAndroidBusMembersRegistry extends
 
 	public BusMember getBusMemberByID(String memberID) {
 		BusMemberRowDB row = null;
-		// sqliteMngr.open();
-		// try {
+
 		row = sqliteMngr.queryBusMemberByID(memberID);
-		// } finally {
-		// sqliteMngr.close();
-		// }
+
 		// This happens due to PATCH at proxy
 		if (row == null)
 			return null;
@@ -91,59 +80,38 @@ public abstract class AbstractAndroidBusMembersRegistry extends
 	public String getBusMemberID(BusMember busMember) {
 		String registryID = getRegistryID(busMember);
 
-		// sqliteMngr.open();
-		// try {
 		String busMemberID = sqliteMngr
 				.queryBusMemberIDByGroundingID(registryID);
 
 		return busMemberID;
-		// }catch(Exception ex){
-		// Log.e(TAG, "Failed SQL access at getBusMemberID", ex);
-		// return null;
-		// } finally {
-		// sqliteMngr.close();
-		// }
 	}
 
 	public BusMember[] getAllBusMembers() {
 		BusMemberRowDB[] rows = null;
-		// sqliteMngr.open();
-		// try {
+
 		rows = sqliteMngr.queryForAllBusMembers();
-		// } finally {
-		// sqliteMngr.close();
-		// }
+
 		BusMember[] busMembers = registryServicesToBusMembers(rows);
 
 		return busMembers;
 	}
 
 	public String[] getAllBusMembersIds() {
-		// sqliteMngr.open();
-		// try {
+
 		return sqliteMngr.queryForAllBusMemberIDs();
-		// } finally {
-		// sqliteMngr.close();
-		// }
+
 	}
 
 	public int getBusMembersCount() {
-		// sqliteMngr.open();
-		// try {
+
 		return sqliteMngr.queryForBusMembersCount();
-		// } finally {
-		// sqliteMngr.close();
-		// }
+
 	}
 
 	public BusMember[] getBusMembersByPackageName(String packageName) {
 		BusMemberRowDB[] rows = null;
-		// sqliteMngr.open();
-		// try {
+
 		rows = sqliteMngr.queryForBusMembersByPackageName(packageName);
-		// } finally {
-		// sqliteMngr.close();
-		// }
 
 		BusMember[] busMembers = registryServicesToBusMembers(rows);
 
@@ -151,12 +119,9 @@ public abstract class AbstractAndroidBusMembersRegistry extends
 	}
 
 	public void reset() {
-		// sqliteMngr.open();
-		// try {
+
 		sqliteMngr.removeAllBusMembers();
-		// } finally {
-		// sqliteMngr.close();
-		// }
+
 	}
 
 	protected BusMember[] registryServicesToBusMembers(BusMemberRowDB[] rows) {

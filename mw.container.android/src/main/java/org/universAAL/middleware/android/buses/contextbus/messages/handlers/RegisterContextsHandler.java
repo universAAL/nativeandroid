@@ -36,9 +36,6 @@ import org.universAAL.middleware.android.common.messages.IMessage;
 import org.universAAL.middleware.android.common.messages.handlers.AbstractMessagePersistableHandler;
 import org.universAAL.middleware.android.modules.ModulesCommWrapper;
 import org.universAAL.middleware.container.ModuleContext;
-//import org.universAAL.middleware.android.common.modulecontext.AndroidModuleContextFactory;
-//import org.universAAL.middleware.android.localsodapop.AbstractSodaPopAndroidImpl;
-//import org.universAAL.middleware.android.localsodapop.messages.handlers.AbstractMessagePersistableHandler;
 import org.universAAL.middleware.context.ContextEventPattern;
 import org.universAAL.middleware.context.owl.ContextBusOntology;
 import org.universAAL.middleware.context.owl.ContextProvider;
@@ -65,11 +62,7 @@ public class RegisterContextsHandler extends AbstractMessagePersistableHandler {
 			.getCanonicalName();
 
 	@Override
-	protected void privateHandleMessage(IMessage message/*
-														 * ,
-														 * AbstractSodaPopAndroidImpl
-														 * sodaPop
-														 */) {
+	protected void privateHandleMessage(IMessage message) {
 		// Cast it to Register Contexts message
 		RegisterContextsMessage registerContextsMessage = (RegisterContextsMessage) message;
 
@@ -91,13 +84,7 @@ public class RegisterContextsHandler extends AbstractMessagePersistableHandler {
 		Context context = registerContextsMessage.getContext();
 
 		// Create AndroidContextBus
-		AndroidContextBusImpl androidContextBus = createContextBus();/*
-																	 * new
-																	 * AndroidContextBusImpl
-																	 * (
-																	 * sodaPop,
-																	 * context);
-																	 */
+		AndroidContextBusImpl androidContextBus = createContextBus();
 
 		// Handle each ContextPublisher registration/unregistration separately
 		for (AndroidContextPublisherDataWrapper contextPublisherRegistration : registerContextsMessage

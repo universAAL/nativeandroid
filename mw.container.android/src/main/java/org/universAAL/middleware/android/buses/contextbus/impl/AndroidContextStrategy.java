@@ -33,7 +33,6 @@ import org.universAAL.middleware.bus.model.AbstractBus;
 import org.universAAL.middleware.bus.model.BusStrategy;
 import org.universAAL.middleware.bus.msg.BusMessage;
 import org.universAAL.middleware.bus.msg.MessageType;
-//import org.universAAL.middleware.container.utils.LogUtils;
 import org.universAAL.middleware.context.ContextEvent;
 import org.universAAL.middleware.context.ContextEventPattern;
 import org.universAAL.middleware.context.ContextPublisher;
@@ -44,7 +43,6 @@ import org.universAAL.middleware.context.data.IFiltererContainer;
 import org.universAAL.middleware.context.data.INumCalledPeersData;
 import org.universAAL.middleware.context.data.IPropsData;
 import org.universAAL.middleware.context.data.IProvisionsData;
-//import org.universAAL.middleware.context.data.factory.ContextStrategyDataFactory;
 import org.universAAL.middleware.context.data.factory.IContextStrategyDataFactory;
 import org.universAAL.middleware.context.impl.ContextStrategy.ContextFilterer;
 import org.universAAL.middleware.modules.CommunicationModule;
@@ -98,9 +96,6 @@ public class AndroidContextStrategy extends BusStrategy {
 
 	// Modified for port
 	protected IContextStrategyDataFactory createContextStrategyDataFactory() {
-		// return new ContextStrategyDataFactory();
-		// Context context = ((AbstractSodaPopAndroidImpl)
-		// sodapop).getContext();
 		Context context = ((AndroidCommunicationModuleImpl) commModule)
 				.getContext();
 		return new AndroidContextStrategyDataFactory(context);
@@ -387,7 +382,6 @@ public class AndroidContextStrategy extends BusStrategy {
 		ContextEvent event = (ContextEvent) message.getContent();
 		Set<ContextSubscriber> subscribers = getAllSubscribersOfEvent(event);
 		for (ContextSubscriber subscriber : subscribers) {
-			// subscriber.handleEvent(message);
 			handleEvent(subscriber, message);
 		}
 	}

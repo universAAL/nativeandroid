@@ -21,12 +21,9 @@
 package org.universAAL.middleware.android.buses.servicebus.data;
 
 import org.universAAL.middleware.android.buses.servicebus.impl.AndroidAbstractServiceStrategyDataFactory;
-import org.universAAL.middleware.android.buses.servicebus.impl.AndroidILocalServicesIndexData;
 import org.universAAL.middleware.service.data.ILocalServiceSearchResultsData;
 import org.universAAL.middleware.service.data.ILocalServicesIndexData;
-//import org.universAAL.middleware.service.data.ILocalServicesIndexData;
 import org.universAAL.middleware.service.data.ILocalWaitingCallersData;
-//import org.universAAL.middleware.service.data.factory.AbstractServiceStrategyDataFactory;
 
 import android.content.Context;
 

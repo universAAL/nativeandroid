@@ -20,8 +20,6 @@
  */
 package org.universAAL.middleware.android.buses.contextbus;
 
-//import org.universAAL.middleware.sodapop.BusMember;
-
 /**
  * 
  * @author <a href="mailto:noamsh@il.ibm.com">noamsh </a>
@@ -29,7 +27,7 @@ package org.universAAL.middleware.android.buses.contextbus;
  *         Jun 27, 2012
  * 
  */
-public interface IGroundingIDWrapper /* extends BusMember */{
+public interface IGroundingIDWrapper {
 
 	String getGroundingID();
 }

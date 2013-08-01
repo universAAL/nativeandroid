@@ -84,7 +84,7 @@ public class AndroidSLPDiscoveryConnector implements DiscoveryConnector,
 	private static final Object DISCOVERY_MUTEX = new Object();
 	private static final int MAX_RETRY = 3;
 
-	public AndroidSLPDiscoveryConnector(/* ModuleContext context */) {
+	public AndroidSLPDiscoveryConnector() {
 		// this.context = context;
 		this.listeners = new ArrayList<ServiceListener>();
 	}
@@ -94,8 +94,8 @@ public class AndroidSLPDiscoveryConnector implements DiscoveryConnector,
 			Log.d(TAG, "Initializing SLP Connector...");
 			if (slpBrowser == null && browser) {
 				Log.d(TAG, "Initializing SLP Browser...");
-				slpBrowser = new AndroidSLPBrowser(/*getSLPLocator(),*/
-						aalSpaceServiceType, Consts.SEARCH_ALL, /* context, */
+				slpBrowser = new AndroidSLPBrowser(
+						aalSpaceServiceType, Consts.SEARCH_ALL, 
 						listeners);
 				scheduler.scheduleAtFixedRate(slpBrowser, initDelay, delay,
 						TimeUnit.SECONDS);

@@ -29,7 +29,6 @@ import org.universAAL.middleware.context.ContextEventPattern;
 import org.universAAL.middleware.context.data.IAllProvisionData;
 import org.universAAL.middleware.serialization.turtle.TurtleSerializer;
 
-//import org.universAAL.serialization.turtle.TurtleParser;
 
 /**
  * 
@@ -45,29 +44,18 @@ public class AndroidAllProvisionsData extends
 		// Serialize the context evnet patterns
 		String[] contextEventPatternsAsStrings = serializeContextEventPatterns(contextEventPatterns);
 
-		// sqliteMngr.open();
-		// try {
 		// Persist
 		for (String contextEventPatternAsString : contextEventPatternsAsStrings) {
 			sqliteMngr.addAllProvision(contextEventPatternAsString);
 		}
-		// } finally {
-		// sqliteMngr.close();
-		// }
 	}
 
 	public Vector getContextEventPatterns() {
 		Vector<ContextEventPattern> contextEventPatterns = new Vector<ContextEventPattern>();
 
 		AllProvisionsRowDB[] allProvisionsRows = null;
-		// sqliteMngr.open();
-		// try {
 		// Query
 		allProvisionsRows = sqliteMngr.queryForAllProvision();
-
-		// } finally {
-		// sqliteMngr.close();
-		// }
 
 		TurtleSerializer parser = new TurtleSerializer();
 
