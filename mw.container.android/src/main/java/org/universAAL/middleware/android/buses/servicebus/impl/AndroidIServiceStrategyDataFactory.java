@@ -22,7 +22,6 @@ package org.universAAL.middleware.android.buses.servicebus.impl;
 
 import org.universAAL.middleware.service.data.ILocalServiceSearchResultsData;
 import org.universAAL.middleware.service.data.ILocalServicesIndexData;
-//import org.universAAL.middleware.service.data.ILocalServicesIndexData;
 import org.universAAL.middleware.service.data.ILocalWaitingCallersData;
 
 /**
@@ -34,7 +33,7 @@ import org.universAAL.middleware.service.data.ILocalWaitingCallersData;
  */
 public interface AndroidIServiceStrategyDataFactory {
 
-	/* Android */ILocalServicesIndexData createLocalServicesIndexData();
+	ILocalServicesIndexData createLocalServicesIndexData();
 
 	ILocalServiceSearchResultsData createLocalServiceSearchResultsData();
 

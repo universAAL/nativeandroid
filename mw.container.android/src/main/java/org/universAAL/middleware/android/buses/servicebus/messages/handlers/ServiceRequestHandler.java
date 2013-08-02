@@ -20,13 +20,10 @@
  */
 package org.universAAL.middleware.android.buses.servicebus.messages.handlers;
 
-//import org.universAAL.middleware.android.buses.servicebus.AndroidServiceBus;
 import org.universAAL.middleware.android.buses.servicebus.impl.AndroidServiceBusImpl;
 import org.universAAL.middleware.android.buses.servicebus.messages.ServiceRequestMessage;
 import org.universAAL.middleware.android.common.messages.IMessage;
 import org.universAAL.middleware.android.common.messages.handlers.AbstractMessagePersistableHandler;
-//import org.universAAL.middleware.android.localsodapop.AbstractSodaPopAndroidImpl;
-//import org.universAAL.middleware.android.localsodapop.messages.handlers.AbstractMessagePersistableHandler;
 import org.universAAL.middleware.android.modules.ModulesCommWrapper;
 
 /**
@@ -43,13 +40,9 @@ public class ServiceRequestHandler extends AbstractMessagePersistableHandler {
 	}
 
 	@Override
-	protected void privateHandleMessage(IMessage message/*
-														 * ,
-														 * AbstractSodaPopAndroidImpl
-														 * sodaPop
-														 */) {
+	protected void privateHandleMessage(IMessage message) {
 		// Create the android service bus
-		AndroidServiceBusImpl bus = createServiceBus(/* message, sodaPop */);
+		AndroidServiceBusImpl bus = createServiceBus();
 
 		// Cast to Service Caller request message
 		ServiceRequestMessage requestMessage = (ServiceRequestMessage) message;

@@ -23,7 +23,6 @@ package org.universAAL.middleware.android.buses.servicebus.servicecallee.xml.obj
 import org.universAAL.middleware.android.buses.servicebus.servicecallee.xml.IServiceGroundingXmlConstants;
 import org.universAAL.middleware.android.buses.servicebus.xml.objects.AbstractPropertiesContainer;
 import org.universAAL.middleware.android.common.CommonXmlParserUtils;
-//import org.universAAL.middleware.android.common.xml.CommonXmlParserUtils;
 import org.w3c.dom.Node;
 
 /**

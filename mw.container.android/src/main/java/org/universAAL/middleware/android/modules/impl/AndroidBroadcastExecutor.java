@@ -21,12 +21,9 @@
 package org.universAAL.middleware.android.modules.impl;
 
 import org.universAAL.middleware.android.connectors.ConnectorCommWrapper;
-//import org.universAAL.middleware.connectors.CommunicationConnector;
 import org.universAAL.middleware.connectors.exception.CommunicationConnectorException;
 import org.universAAL.middleware.connectors.util.ChannelMessage;
 import org.universAAL.middleware.connectors.util.ExceptionUtils;
-//import org.universAAL.middleware.container.ModuleContext;
-//import org.universAAL.middleware.container.utils.LogUtils;
 import org.universAAL.middleware.modules.listener.MessageListener;
 
 /**
@@ -44,8 +41,7 @@ public class AndroidBroadcastExecutor implements Runnable {
     private ConnectorCommWrapper communicationConnector;
 
 	public AndroidBroadcastExecutor(ChannelMessage message,
-	/* CommunicationConnector communicationConnector, */
-	MessageListener listener/* , ModuleContext moduleContext */,
+			MessageListener listener,
 			ConnectorCommWrapper communicationConnector) {
 		this.message = message;
 		// this.communicationConnector = communicationConnector;
@@ -56,11 +52,7 @@ public class AndroidBroadcastExecutor implements Runnable {
 
     public void run() {
         try {
-//            LogUtils.logInfo(mc, BroadcastExecutor.class, "run()",
-//                    new Object[] { "Preparing to BROADCAST the message "
-//                            + message }, null);
         	communicationConnector.multicast(message);
-//            communicationConnector.multicast(message);
         } catch (CommunicationConnectorException e) {
             listener.handleSendError(message, e);
         } catch (Throwable t) {

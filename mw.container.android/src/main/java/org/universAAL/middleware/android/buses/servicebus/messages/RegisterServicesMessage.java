@@ -31,8 +31,6 @@ import org.universAAL.middleware.android.buses.servicebus.servicecaller.xml.obje
 import org.universAAL.middleware.android.common.AbstractGroundingDataWrapper;
 import org.universAAL.middleware.android.common.AndroidServiceType;
 import org.universAAL.middleware.android.common.StringConstants;
-//import org.universAAL.middleware.android.common.IAndroidSodaPop;
-//import org.universAAL.middleware.android.common.buses.AbstractGroundingDataWrapper;
 import org.universAAL.middleware.android.common.messages.AbstractRegisterAppsMessage;
 
 import android.content.Context;

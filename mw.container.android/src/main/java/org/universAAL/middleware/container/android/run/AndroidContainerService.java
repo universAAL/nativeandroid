@@ -32,7 +32,6 @@ import java.util.Properties;
 import org.universAAL.middleware.android.container.BundleConfigHome;
 import org.universAAL.middleware.android.container.ContextEmulator;
 import org.universAAL.middleware.android.container.uAALBundleContainer;
-//import org.universAAL.middleware.android.modules.impl.AndroidControlBroker;
 import org.universAAL.middleware.brokers.control.ControlBroker;
 import org.universAAL.middleware.bus.model.AbstractBus;
 import org.universAAL.middleware.bus.msg.BusMessage;
@@ -97,17 +96,6 @@ public class AndroidContainerService extends Service {
 	private AALSpaceManagerImpl spaceManager;
 	private DeployManagerImpl deployManager;
 	private MulticastLock m_lock;
-
-	// /**
-	// * Class for clients to access. Because we know this service always
-	// * runs in the same process as its clients, we don't need to deal with
-	// * IPC.
-	// */
-	// public class LocalBinder extends Binder {
-	// LocalSodaPopPeerService getService() {
-	// return LocalSodaPopPeerService.this;
-	// }
-	// }
 
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -355,7 +343,6 @@ public class AndroidContainerService extends Service {
 					new Sub(subsContext);
 
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -397,7 +384,6 @@ public class AndroidContainerService extends Service {
 
 		@Override
 		public void communicationChannelBroken() {
-			// TODO Auto-generated method stub
 			Log.d("Subscriber", "Broken");
 		}
 

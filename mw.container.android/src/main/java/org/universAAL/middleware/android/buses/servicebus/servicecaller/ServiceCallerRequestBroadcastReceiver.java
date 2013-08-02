@@ -22,7 +22,6 @@ package org.universAAL.middleware.android.buses.servicebus.servicecaller;
 
 import org.universAAL.middleware.android.buses.servicebus.ServiceBusService;
 import org.universAAL.middleware.android.common.StringConstants;
-//import org.universAAL.middleware.android.common.IAndroidSodaPop;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -80,10 +79,6 @@ public class ServiceCallerRequestBroadcastReceiver extends BroadcastReceiver {
 		// Store the android action (the action that is related to the caller)
 		androidServiceBusIntent.putExtra(
 				StringConstants.EXTRAS_KEY_ACTION_NAME, androidAction);
-
-		// Add protocol // TODO: this should be handled in more generic way
-		// androidServiceBusIntent.putExtra(StringConstants.EXTRAS_KEY_PROTOCOL,
-		// StringConstants.PROTOCOL_UPNP);
 
 		// Start the service
 		context.startService(androidServiceBusIntent);

@@ -32,8 +32,6 @@ import org.universAAL.middleware.android.buses.servicebus.servicecaller.xml.obje
 import org.universAAL.middleware.bus.member.BusMember;
 import org.universAAL.middleware.bus.model.util.IRegistryListener;
 import org.universAAL.middleware.container.ModuleContext;
-//import org.universAAL.middleware.sodapop.BusMember;
-//import org.universAAL.middleware.sodapop.IRegistryListener;
 
 import android.content.Context;
 import android.util.Log;
@@ -109,17 +107,9 @@ public class AndroidServiceBusRegistry extends
 				.getServiceGrounding().serialize();
 
 		// Persist this
-//		sqliteMngr.open();
-//		try {
 			sqliteMngr.addBusMember(memberID, packageName, serviceGroundingID,
 					MemberType.SERVICE_CALLEE, androidServiceName,
 					serviceGroundingXmlAsByteArr);
-//		}catch(Exception ex){
-//			Log.e(TAG, "Failed SQL access at addServiceCalleeAsBusMember", ex);
-//			return;
-//		} finally {
-//			sqliteMngr.close();
-//		}
 	}
 
 	protected void addServiceCallerAsBusMember(String memberID,
@@ -151,17 +141,9 @@ public class AndroidServiceBusRegistry extends
 				.getServiceRequestGrounding().serialize();
 
 		// Persist this
-//		sqliteMngr.open();
-//		try {
 			sqliteMngr.addBusMember(memberID, packageName,
 					serviceRequestGroundingID, MemberType.SERVICE_CALLER,
 					androidUniqueName, serviceRequestGroundingXmlAsByteArr);
-//		}catch(Exception ex){
-//			Log.e(TAG, "Failed SQL access at addServiceCallerAsBusMember", ex);
-//			return;
-//		} finally {
-//			sqliteMngr.close();
-//		}
 	}
 
 	protected AndroidServiceCalleeProxy createAndroidServiceCallee(

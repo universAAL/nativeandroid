@@ -70,14 +70,11 @@ public class AndroidServiceCalleeProxy extends ServiceCallee {
 	protected Context context;
 	private String myID;
 
-	public AndroidServiceCalleeProxy(ModuleContext mc/*
-													 * AndroidServiceBusImpl
-													 * androidServiceBus
-													 */,
+	public AndroidServiceCalleeProxy(ModuleContext mc,
 			ServiceProfile[] realizedServices, String packageName,
 			String serviceGroundingID, String androidServiceName,
 			ServiceGroundingXmlObj serviceGrounding, Context context) {
-		super(mc/* androidServiceBus */, realizedServices);
+		super(mc, realizedServices);
 
 		this.packageName = packageName;
 		this.serviceGroundingID = serviceGroundingID;
@@ -105,14 +102,11 @@ public class AndroidServiceCalleeProxy extends ServiceCallee {
 		}
 	}
 
-	public AndroidServiceCalleeProxy(ModuleContext mc/*
-													 * AndroidServiceBus
-													 * androidServiceBus
-													 */, String packageName,
+	public AndroidServiceCalleeProxy(ModuleContext mc, String packageName,
 			String serviceGroundingID, String androidServiceName,
 			ServiceGroundingXmlObj serviceGrounding, Context context,
 			String memberID) {
-		this(mc/* androidServiceBus */, null, packageName, serviceGroundingID,
+		this(mc, null, packageName, serviceGroundingID,
 				androidServiceName, serviceGrounding, context);
 
 		// In this c'tor, no registration is performed, therefore populate the
@@ -135,7 +129,6 @@ public class AndroidServiceCalleeProxy extends ServiceCallee {
 	@Override
 	public void handleRequest(BusMessage m) {
 		if (null != m && m.getContent() instanceof ServiceCall) {
-			// ServiceResponse sr = handleCall((ServiceCall) m.getContent());
 			ServiceResponse sr = handleCall(m);
 			if (null != sr) {
 				BusMessage reply = m.createReply(sr);

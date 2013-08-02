@@ -21,10 +21,8 @@
  */
 package org.universAAL.middleware.android.modules.impl;
 
-//import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
-//import java.util.Collections;
 import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.List;
@@ -40,7 +38,6 @@ import org.universAAL.middleware.brokers.control.WaitForResponse;
 import org.universAAL.middleware.brokers.message.BrokerMessage;
 import org.universAAL.middleware.brokers.message.BrokerMessage.BrokerMessageTypes;
 import org.universAAL.middleware.brokers.message.BrokerMessageFields;
-//import org.universAAL.middleware.brokers.message.aalspace.AALSpaceMessage;
 import org.universAAL.middleware.brokers.message.control.ControlMessage;
 import org.universAAL.middleware.brokers.message.deploy.DeployMessage;
 import org.universAAL.middleware.brokers.message.deploy.DeployMessage.DeployMessageType;
@@ -48,18 +45,15 @@ import org.universAAL.middleware.brokers.message.deploy.DeployMessageException;
 import org.universAAL.middleware.brokers.message.deploy.DeployMessageFields;
 import org.universAAL.middleware.brokers.message.deploy.DeployNotificationPayload;
 import org.universAAL.middleware.brokers.message.deploy.DeployPayload;
-//import org.universAAL.middleware.connectors.DeployConnector;
 import org.universAAL.middleware.connectors.exception.CommunicationConnectorException;
 import org.universAAL.middleware.connectors.util.ChannelMessage;
 import org.universAAL.middleware.container.ModuleContext;
 import org.universAAL.middleware.container.SharedObjectListener;
-//import org.universAAL.middleware.container.utils.LogUtils;
 import org.universAAL.middleware.interfaces.ChannelDescriptor;
 import org.universAAL.middleware.interfaces.PeerCard;
 import org.universAAL.middleware.interfaces.aalspace.AALSpaceCard;
 import org.universAAL.middleware.interfaces.aalspace.AALSpaceDescriptor;
 import org.universAAL.middleware.interfaces.aalspace.AALSpaceStatus;
-//import org.universAAL.middleware.interfaces.mpa.Pair;
 import org.universAAL.middleware.interfaces.mpa.UAPPCard;
 import org.universAAL.middleware.interfaces.mpa.UAPPPartStatus;
 import org.universAAL.middleware.managers.api.AALSpaceEventHandler;
@@ -548,32 +542,7 @@ public class AndroidControlBroker implements SharedObjectListener, Broker,
      *            within a service to install
      */
     public void requestToUninstallPart(PeerCard target, UAPPCard card) {
-/*        final String METHOD = "requestToUninstallPart";
-        if (!init()) {
-            LogUtils.logWarn(context, AndroidControlBroker.class, METHOD,
-                    new Object[] { "ControlBroker not initialized." }, null);
-            return;
-        }
-
-        // I'm the target node install the part locally
-        if (target.getPeerID().equals(
-                aalSpaceManager.getMyPeerCard().getPeerID())) {
-            // TODO Handle local uninstallation
-            deployConnector.uninstallPart(card);
-        } else {
-            // Send the message to the target node
-
-            DeployPayload payload = new DeployPayload(new byte[] {}, card);
-            DeployMessage deployMessage = new DeployMessage(
-                    DeployMessageType.REQUEST_TO_UNINSTALL_PART, payload);
-
-            // ...and wrap it as ChannelMessage
-            List<String> channelName = new ArrayList<String>();
-            channelName.add(getBrokerName());
-            ChannelMessage channelMessage = new ChannelMessage(getmyPeerCard(),
-                    deployMessage.toString(), channelName);
-            communicationModule.send(channelMessage, this, target);
-        }*/ //TODO Deploy to  be done later
+    	//TODO Deploy to  be done later
     }
 
     /**
@@ -591,42 +560,7 @@ public class AndroidControlBroker implements SharedObjectListener, Broker,
      */
     public void requestToInstallPart(byte[] partAsZip, PeerCard target,
             UAPPCard card) {
-/*        final String METHOD = "requestToInstallPart";
-        if (!init()) {
-            LogUtils.logWarn(context, AndroidControlBroker.class, METHOD,
-                    new Object[] { "ControlBroker not initialized." }, null);
-            return;
-        }
-
-        // I'm the target node install the part locally
-        if (target.getPeerID().equals(
-                aalSpaceManager.getMyPeerCard().getPeerID())) {
-            File file = AndroidFileUtils.createFileFromByte( partAsZip,
-                    TMP_DEPLOY_FOLDER + "part", true);
-            if (file == null) {
-                LogUtils.logError(
-                        context,
-                        AndroidControlBroker.class,
-                        METHOD,
-                        new Object[] { "Error while installing artifact locally: unable to create file" },
-                        null);
-                return;
-            }
-            deployConnector.installPart(file, card);
-        } else {
-            // Send the message to the target node
-
-            DeployPayload payload = new DeployPayload(partAsZip, card);
-            DeployMessage deployMessage = new DeployMessage(
-                    DeployMessageType.REQUEST_TO_INSTALL_PART, payload);
-
-            // ...and wrap it as ChannelMessage
-            List<String> channelName = new ArrayList<String>();
-            channelName.add(getBrokerName());
-            ChannelMessage channelMessage = new ChannelMessage(getmyPeerCard(),
-                    deployMessage.toString(), channelName);
-            communicationModule.send(channelMessage, this, target);
-        }*/ //TODO Deploy to be done later
+    	//TODO Deploy to be done later
     }
 
     /**
@@ -678,13 +612,11 @@ public class AndroidControlBroker implements SharedObjectListener, Broker,
     }
 
     public void messageReceived(ChannelMessage message) {
-//        final String METHOD = "messageReceived";
         if (!init()) {
             Log.w(TAG, "ControlBroker not initialized. Dropping the message" );
             return;
         }
         deployManager = getDeployManager();
-//        deployConnector = getDeployConnector();
         if (message != null) {
             try {
                 JSONObject obj = new JSONObject(message.getContent());
@@ -829,61 +761,11 @@ public class AndroidControlBroker implements SharedObjectListener, Broker,
     }
 
     private void handleDeployMessage(PeerCard sender, DeployMessage msg) {
-   /*     final String METHOD = "handleDeployMessage";
-        switch (msg.getMessageType()) {
-
-        case REQUEST_TO_INSTALL_PART:
-            LogUtils.logDebug(
-                    context,
-                    AndroidControlBroker.class,
-                    "controlBroker",
-                    new Object[] { "Request to install artefact. Passig it to the DeployConnector" },
-                    null);
-            if (msg.getPayload() != null && msg.getPayload().getPart() != null) {
-                File file = AndroidFileUtils.createFileFromByte( msg
-                        .getPayload().getPart(), TMP_DEPLOY_FOLDER + "part", true);
-                if (file == null) {
-                    LogUtils.logError(
-                            context,
-                            AndroidControlBroker.class,
-                            METHOD,
-                            new Object[] { "Error while extracing artifact from message: unable to create file" },
-                            null);
-                }
-                deployConnector.installPart(file, msg.getPayload()
-                        .getuappCard());
-            }
-            break; // TODO Ask michele if it was missing by reason
-
-        case PART_NOTIFICATION:
-            LogUtils.logDebug(
-                    context,
-                    AndroidControlBroker.class,
-                    "controlBroker",
-                    new Object[] { "Notification of mpa appllication part. Notify the DeployManager" },
-                    null);
-            if (msg.getPayload() != null
-                    && msg.getPayload() instanceof DeployNotificationPayload) {
-                DeployNotificationPayload payload = (DeployNotificationPayload) msg
-                        .getPayload();
-                // pass it to the DeployManager
-                if (deployManager instanceof DeployManagerEventHandler) {
-                    ((DeployManagerEventHandler) deployManager)
-                            .installationPartNotification(
-                                    payload.getuappCard(), payload.getPartID(),
-                                    sender, payload.getMpaPartStatus());
-                }
-            }
-
-            break;
-
-        default:
-            break;
-        }*/ //TODO Deploy to be done later
+    	//TODO Deploy to be done later
     }
 
     public void installArtefactLocally(String serializedPart) {
-        // deployConnector.installPart(serializedPart);
+    	//TODO Deploy to be done later
     }
 
     private DeployManager getDeployManager() {
@@ -907,34 +789,9 @@ public class AndroidControlBroker implements SharedObjectListener, Broker,
 
     }
 
- /*   private DeployConnector getDeployConnector() {
-        LogUtils.logDebug(context, AndroidControlBroker.class, "controlBroker",
-                new Object[] { "Fetching the DeployConnector..." }, null);
-        if (deployConnector == null) {
-            Object[] refs = context.getContainer()
-                    .fetchSharedObject(
-                            context,
-                            new Object[] { DeployConnector.class.getName()
-                                    .toString() }, this);
-            if (refs != null) {
-
-                LogUtils.logDebug(context, AndroidControlBroker.class,
-                        "controlBroker",
-                        new Object[] { "DeployConnector found!" }, null);
-                deployConnector = (DeployConnector) refs[0];
-                LogUtils.logDebug(context, AndroidControlBroker.class,
-                        "controlBroker",
-                        new Object[] { "DeployConnector fetched" }, null);
-                return deployConnector;
-            } else {
-                LogUtils.logWarn(context, AndroidControlBroker.class, "controlBroker",
-                        new Object[] { "No DeployConnector found" }, null);
-                return null;
-            }
-        } else
-            return deployConnector;
-
-    }*/ //TODO Deploy to be done later
+	/*
+	 * private DeployConnector getDeployConnector() { }
+	 */// TODO Deploy to be done later
 
     public List<String> getPeersAddress() {
         return aalSpaceModule.getPeersAddress();
@@ -953,7 +810,7 @@ public class AndroidControlBroker implements SharedObjectListener, Broker,
      * public void configureDeployMessage() { if (getCommunicationModule() ==
      * null) { return; } communicationModule.addMessageListener(this,
      * aalSpaceManager .getGroupName(this)); }
-     */
+     */// TODO Deploy to be done later
 
     public void dispose() {
         context.getContainer().removeSharedObjectListener(this);

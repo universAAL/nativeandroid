@@ -22,8 +22,6 @@ package org.universAAL.middleware.android.modules.impl;
 
 import java.util.Iterator;
 
-//import org.universAAL.middleware.container.ModuleContext;
-//import org.universAAL.middleware.container.utils.LogUtils;
 import org.universAAL.middleware.interfaces.aalspace.AALSpaceCard;
 
 import android.util.Log;

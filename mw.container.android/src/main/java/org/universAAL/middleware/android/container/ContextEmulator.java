@@ -85,11 +85,6 @@ public class ContextEmulator {
 		}
 	}
 	
-//	public String getID() {
-//		// TODO what is this for? the channel name??
-//		return "mw.modules.aalspace.osgi";
-//	}
-
 	public Object[] getServices(String className, String filter) {
 		return services.get(className);
 	}

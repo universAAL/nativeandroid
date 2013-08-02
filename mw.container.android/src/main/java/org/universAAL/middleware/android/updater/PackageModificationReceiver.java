@@ -19,7 +19,6 @@
  */
 package org.universAAL.middleware.android.updater;
 
-//import org.universAAL.middleware.android.common.IAndroidSodaPop;
 import org.universAAL.middleware.android.common.StringConstants;
 import org.universAAL.middleware.android.common.StringUtils;
 
@@ -59,8 +58,6 @@ public class PackageModificationReceiver extends BroadcastReceiver {
 		broadcastIntent.setAction(uAALAction);
 
 		// Set the package name - this will be used by the service
-		// broadcastIntent.putExtra(StringConstants.EXTRAS_KEY_PROTOCOL,
-		// StringConstants.PROTOCOL_UPNP);
 		broadcastIntent.putExtra(StringConstants.EXTRAS_KEY_PACKAGE_NAME,
 				packageName);
 

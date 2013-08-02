@@ -23,14 +23,12 @@ public class ModulesCommWrapper implements ServiceConnection {
 	}
 
 	public synchronized void messageReceived(ChannelMessage channelMessage) {
-		Log.d(TAG, "attempring wrap of messageReceived (it is a broadcast)");
 		Intent intent = ModulesIntentFactory
 				.createCommModReceived(channelMessage);
 		context.sendBroadcast(intent);
 	}
 
 	public synchronized AndroidContextBusImpl createContextBus() {
-		Log.d(TAG, "attempting wrap of createContextBus (it is a bind)");
 		waitForBInder();
 		if (binder != null) {
 			return binder.createContextBus();
@@ -41,7 +39,6 @@ public class ModulesCommWrapper implements ServiceConnection {
 	}
 
 	public synchronized AndroidServiceBusImpl createServiceBus() {
-		Log.d(TAG, "attempting wrap of createContextBus (it is a bind)");
 		waitForBInder();
 		if (binder != null) {
 			return binder.createServiceBus();
@@ -52,15 +49,11 @@ public class ModulesCommWrapper implements ServiceConnection {
 	}
 
 	public void onServiceConnected(ComponentName name, IBinder service) {
-		Log.d(TAG, "on bound service: trying " + service);
 		binder = (ModulesBinder) service;
-		Log.d(TAG, "on bound service: result " + (binder != null));
 	}
 
 	public void onServiceDisconnected(ComponentName name) {
-		Log.d(TAG, "on unbound service: trying");
 		binder = null;
-		Log.d(TAG, "on unbound service: result " + (binder != null));
 	}
 
 	private void waitForBInder() {

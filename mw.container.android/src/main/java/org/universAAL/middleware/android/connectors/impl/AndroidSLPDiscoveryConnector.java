@@ -32,13 +32,10 @@ import java.util.concurrent.TimeUnit;
 
 import org.universAAL.middleware.connectors.DiscoveryConnector;
 import org.universAAL.middleware.connectors.ServiceListener;
-//import org.universAAL.middleware.connectors.discovery.slp.SLPBrowser;
 import org.universAAL.middleware.connectors.discovery.slp.util.Consts;
 import org.universAAL.middleware.connectors.exception.DiscoveryConnectorErrorCodes;
 import org.universAAL.middleware.connectors.exception.DiscoveryConnectorException;
-//import org.universAAL.middleware.container.ModuleContext;
 import org.universAAL.middleware.container.SharedObjectListener;
-//import org.universAAL.middleware.container.utils.LogUtils;
 
 import org.universAAL.middleware.interfaces.aalspace.AALSpaceCard;
 
@@ -117,14 +114,6 @@ public class AndroidSLPDiscoveryConnector implements DiscoveryConnector,
 				return advertiser;
 			}
 			Log.d(TAG, "Fetching the SLP Advertiser...");
-			/*
-			 * Object[] advertisers = context.getContainer().fetchSharedObject(
-			 * context, new Object[] { "ch.ethz.iks.slp.Advertiser" }, this); if
-			 * (advertisers != null) { Log.d(TAG, "SLP Advertiser found"); if
-			 * (advertisers[0] instanceof Advertiser) this.advertiser =
-			 * (Advertiser) advertisers[0]; return advertiser; } Log.w(TAG,
-			 * "SLP Locator and Advertiser not found!");
-			 */
 			try {
 				advertiser = ServiceLocationManager.getAdvertiser(new Locale(
 						"en"));
@@ -143,14 +132,6 @@ public class AndroidSLPDiscoveryConnector implements DiscoveryConnector,
 				return locator;
 			}
 			Log.d(TAG, "Fetching the SLP Locator...");
-			/*
-			 * Object[] locators = context.getContainer().fetchSharedObject(
-			 * context, new Object[] { "ch.ethz.iks.slp.Locator" }, this); if
-			 * (locators != null) { Log.d(TAG, "SLP Locator found"); if
-			 * (locators[0] instanceof Locator) this.locator = (Locator)
-			 * locators[0]; return locator; } Log.w(TAG,
-			 * "SLP Locator not found!");
-			 */
 			try {
 				locator = ServiceLocationManager.getLocator(new Locale("en"));
 				return locator;
@@ -191,14 +172,11 @@ public class AndroidSLPDiscoveryConnector implements DiscoveryConnector,
 		Log.v(TAG, "Announcing the AALSpace...");
 		if (init()) {
 			try {
-				System.out.println(">>> REGISTERING: "+aalSpaceServiceType + "://"
-								+ card.getCoordinatorID()+" for "+
-								card.getAalSpaceLifeTime()+" with "+card.serializeCard());
 				getSLPAdvertiser().register(
 						new ServiceURL(aalSpaceServiceType + "://"
 								+ card.getCoordinatorID(),
-								/*card.getAalSpaceLifeTime()*/ServiceURL.LIFETIME_PERMANENT),
-						card.serializeCard());
+								ServiceURL.LIFETIME_PERMANENT),
+						card.serializeCard()); // TODO Get lifetime properly
 				Log.v(TAG, "AALSpace announced");
 			} catch (ServiceLocationException e) {
 				Log.e(TAG, "Error during AALSpace announce for space: "

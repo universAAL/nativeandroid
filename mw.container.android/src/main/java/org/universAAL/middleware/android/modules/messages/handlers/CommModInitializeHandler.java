@@ -28,13 +28,10 @@ import org.universAAL.middleware.android.buses.contextbus.messages.handlers.Regi
 import org.universAAL.middleware.android.buses.servicebus.messages.RegisterServicesMessage;
 import org.universAAL.middleware.android.buses.servicebus.messages.handlers.RegisterServicesHandler;
 import org.universAAL.middleware.android.common.StringConstants;
-//import org.universAAL.middleware.android.common.IAndroidSodaPop;
 import org.universAAL.middleware.android.common.messages.IMessage;
 import org.universAAL.middleware.android.common.messages.InitializeMessage;
 import org.universAAL.middleware.android.common.messages.handlers.AbstractMessagePersistableHandler;
 import org.universAAL.middleware.android.modules.ModulesCommWrapper;
-//import org.universAAL.middleware.android.localsodapop.AbstractSodaPopAndroidImpl;
-//import org.universAAL.middleware.android.localsodapop.intents.LocalSodaPopIntentFactory;
 
 import android.content.Context;
 import android.content.Intent;
@@ -61,30 +58,10 @@ public class CommModInitializeHandler extends AbstractMessagePersistableHandler 
 	private static final long TIME_TO_WAIT_FOR_SCANNING_APPLICATIONS_IN_MILLI_SECONDS = 10 * 1000;
 
 	@Override
-	protected void privateHandleMessage(IMessage message/*
-														 * ,
-														 * AbstractSodaPopAndroidImpl
-														 * sodaPop
-														 */) {
+	protected void privateHandleMessage(IMessage message) {
 
 		// Cast it to initialize message
 		InitializeMessage initializeMessage = (InitializeMessage) message;
-
-		// Empty the DB
-		// sodaPopPeersSQLiteMngr.resetDB();
-
-		// Persist the local peer info
-		// sodaPop.addLocalPeer();
-
-		// Send notice new local SodaPop intent
-		// Intent noticeNewLocalSodaPopIntent = LocalSodaPopIntentFactory
-		// .createNoticeJoiningLocalSodaPopPeer(sodaPop.getID(),
-		// IAndroidSodaPop.PROTOCOL_UPNP);
-		// Log.d(TAG, "Is about to send intent with action ["
-		// + noticeNewLocalSodaPopIntent.getAction() + "] and category ["
-		// + noticeNewLocalSodaPopIntent.getCategories().iterator().next());
-		// initializeMessage.getContext().sendBroadcast(
-		// noticeNewLocalSodaPopIntent);
 
 		// NScan all packages to figure out if there are some packages that are
 		// related to service registrations
@@ -116,8 +93,7 @@ public class CommModInitializeHandler extends AbstractMessagePersistableHandler 
 		// For each package create a register message + handle it
 		for (String packageName : packageNames) {
 			Intent intent = new Intent();
-			// intent.putExtra(StringConstants.EXTRAS_KEY_PROTOCOL,
-			// StringConstants.PROTOCOL_UPNP);
+
 			intent.putExtra(StringConstants.EXTRAS_KEY_PACKAGE_NAME,
 					packageName);
 

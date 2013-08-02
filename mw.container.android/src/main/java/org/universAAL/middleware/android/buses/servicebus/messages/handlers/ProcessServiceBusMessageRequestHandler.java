@@ -20,17 +20,11 @@
  */
 package org.universAAL.middleware.android.buses.servicebus.messages.handlers;
 
-//import org.universAAL.middleware.android.buses.common.messages.handlers.AbstractProcessBusMessageRequestHandler;
-//import org.universAAL.middleware.android.buses.common.messages.ProcessBusMessage;
 import org.universAAL.middleware.android.buses.servicebus.impl.AndroidServiceBusImpl;
 import org.universAAL.middleware.android.common.messages.IMessage;
 import org.universAAL.middleware.android.common.messages.ProcessBusMessage;
 import org.universAAL.middleware.android.common.messages.handlers.AbstractMessagePersistableHandler;
 import org.universAAL.middleware.android.modules.ModulesCommWrapper;
-//import org.universAAL.middleware.android.common.messages.handlers.AbstractProcessBusMessageRequestHandler;
-//import org.universAAL.middleware.android.localsodapop.AbstractSodaPopAndroidImpl;
-//import org.universAAL.middleware.sodapop.AbstractBus;
-//import org.universAAL.middleware.bus.model.AbstractBus;
 import org.universAAL.middleware.bus.msg.BusMessage;
 
 /**
@@ -62,9 +56,4 @@ public class ProcessServiceBusMessageRequestHandler extends
 		bus.handleRemoteMessage(msg);
 	}
 
-	// @Override
-	// protected AbstractBus createBus(IMessage message,
-	// AbstractSodaPopAndroidImpl sodaPop) {
-	// return createServiceBus(message, sodaPop);
-	// }
 }

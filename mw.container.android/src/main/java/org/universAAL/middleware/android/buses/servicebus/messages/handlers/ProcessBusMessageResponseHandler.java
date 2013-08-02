@@ -20,13 +20,10 @@
  */
 package org.universAAL.middleware.android.buses.servicebus.messages.handlers;
 
-//import org.universAAL.middleware.android.buses.servicebus.AndroidServiceBus;
 import org.universAAL.middleware.android.buses.servicebus.impl.AndroidServiceBusImpl;
 import org.universAAL.middleware.android.buses.servicebus.messages.ProcessBusMessageResponse;
 import org.universAAL.middleware.android.common.messages.IMessage;
 import org.universAAL.middleware.android.common.messages.handlers.AbstractMessagePersistableHandler;
-//import org.universAAL.middleware.android.localsodapop.AbstractSodaPopAndroidImpl;
-//import org.universAAL.middleware.android.localsodapop.messages.handlers.AbstractMessagePersistableHandler;
 import org.universAAL.middleware.android.modules.ModulesCommWrapper;
 
 /**
@@ -44,13 +41,9 @@ public class ProcessBusMessageResponseHandler extends
 	}
 
 	@Override
-	protected void privateHandleMessage(IMessage message/*
-														 * ,
-														 * AbstractSodaPopAndroidImpl
-														 * sodaPop
-														 */) {
+	protected void privateHandleMessage(IMessage message) {
 		// Create the android service bus
-		AndroidServiceBusImpl bus = createServiceBus(/* message, sodaPop */);
+		AndroidServiceBusImpl bus = createServiceBus();
 
 		// Cast to ResponseMessage
 		ProcessBusMessageResponse responseMessage = (ProcessBusMessageResponse) message;

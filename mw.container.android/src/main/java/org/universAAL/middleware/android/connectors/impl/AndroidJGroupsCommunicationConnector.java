@@ -91,8 +91,7 @@ public class AndroidJGroupsCommunicationConnector implements CommunicationConnec
     private String enableRemoteChannelURL = null;
 	private ModulesCommWrapper wrapperCommunication;
 
-    public AndroidJGroupsCommunicationConnector(ModulesCommWrapper wrapper)
-            /*throws Exception*/ {
+    public AndroidJGroupsCommunicationConnector(ModulesCommWrapper wrapper) {
         wrapperCommunication = wrapper;
 
         security = Boolean.parseBoolean(System.getProperty(
@@ -148,9 +147,6 @@ public class AndroidJGroupsCommunicationConnector implements CommunicationConnec
     public void configureConnector(List<ChannelDescriptor> channels,
             String peerName) throws CommunicationConnectorException {
     	Log.d(TAG, "Configuring the JChannel and the ReceiverAdapter...");
-/*        communicationModule = (CommunicationModule) context.getContainer()
-                .fetchSharedObject(context,
-                        new Object[] { CommunicationModule.class.getName() });*/
         for (final ChannelDescriptor element : channels) {
             try {
                 JChannel ch = null;
@@ -669,7 +665,6 @@ public class AndroidJGroupsCommunicationConnector implements CommunicationConnec
                 msgBuffer = CryptUtil.decrypt((String) msg.getObject());
             }
             ChannelMessage channelMessage = ChannelMessage.unmarhall(msgBuffer);
-//            communicationModule.messageReceived(channelMessage);
             wrapperCommunication.messageReceived(channelMessage);
         } catch (Exception ex) {
         	Log.e(TAG, "Failed to unmarhall message due to exception ",ex);

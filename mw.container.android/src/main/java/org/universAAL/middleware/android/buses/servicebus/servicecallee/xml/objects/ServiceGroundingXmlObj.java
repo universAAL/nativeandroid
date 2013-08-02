@@ -28,7 +28,6 @@ import org.universAAL.middleware.android.buses.servicebus.servicecallee.xml.ISer
 import org.universAAL.middleware.android.common.AndroidServiceType;
 import org.universAAL.middleware.android.common.CommonXmlParserUtils;
 import org.universAAL.middleware.android.common.SerializeUtils;
-//import org.universAAL.middleware.android.common.xml.CommonXmlParserUtils;
 import org.w3c.dom.Node;
 
 /**

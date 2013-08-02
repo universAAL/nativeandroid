@@ -15,7 +15,6 @@ public class ConnCommMulticastMessage extends AbstractConnectorMessage {
 
 	public ConnCommMulticastMessage(Context context, Intent intent) {
 		super(context, intent);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override

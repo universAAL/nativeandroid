@@ -20,11 +20,9 @@
  */
 package org.universAAL.middleware.android.buses.servicebus.xml.objects;
 
-//import org.universAAL.middleware.android.buses.common.xml.ICommonXmlConstants;
 import org.universAAL.middleware.android.buses.common.xml.objects.ICommonXmlConstants;
 import org.universAAL.middleware.android.buses.common.xml.objects.ValueXmlObj;
 import org.universAAL.middleware.android.common.CommonXmlParserUtils;
-//import org.universAAL.middleware.android.common.xml.CommonXmlParserUtils;
 import org.w3c.dom.Node;
 
 /**
