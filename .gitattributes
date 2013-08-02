@@ -516,6 +516,10 @@ mw.acl.sodapop.android/src/main/java/org/universAAL/middleware/android/upnp/serv
 mw.acl.sodapop.android/src/main/resources/META-INF/device_description.xml -text
 mw.container.android/ASL2.0.txt -text
 mw.container.android/AndroidManifest.xml -text
+mw.container.android/GPL-Exception-istack.txt -text
+mw.container.android/IPA.txt -text
+mw.container.android/JSLP-BSD.txt -text
+mw.container.android/JSON-MIT.txt -text
 mw.container.android/MITX.txt -text
 mw.container.android/NOTICE.txt -text
 mw.container.android/libs/activation.jar -text
