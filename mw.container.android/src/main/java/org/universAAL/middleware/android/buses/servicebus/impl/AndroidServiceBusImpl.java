@@ -37,7 +37,6 @@ import org.universAAL.middleware.connectors.exception.CommunicationConnectorExce
 import org.universAAL.middleware.connectors.util.ChannelMessage;
 import org.universAAL.middleware.container.Container;
 import org.universAAL.middleware.container.ModuleContext;
-//import org.universAAL.middleware.container.utils.LogUtils;
 import org.universAAL.middleware.interfaces.PeerCard;
 import org.universAAL.middleware.interfaces.PeerRole;
 import org.universAAL.middleware.modules.CommunicationModule;
@@ -48,7 +47,6 @@ import org.universAAL.middleware.service.ServiceBus;
 import org.universAAL.middleware.service.ServiceCallee;
 import org.universAAL.middleware.service.ServiceCaller;
 import org.universAAL.middleware.service.ServiceRequest;
-//import org.universAAL.middleware.service.impl.ServiceStrategy;
 import org.universAAL.middleware.service.owl.Service;
 import org.universAAL.middleware.service.owl.ServiceBusOntology;
 import org.universAAL.middleware.service.owls.profile.ServiceProfile;
@@ -114,12 +112,6 @@ public class AndroidServiceBusImpl extends AbstractBus implements ServiceBus,
 		super(mc);
 		busStrategy.setBus(this);
 	}
-
-//	public AndroidServiceBusImpl(ModuleContext mc/* SodaPop sodaPop */, Context ctxt) {
-//		super(mc/* sodaPop */);
-//
-//		this.androidContext = ctxt;
-//	}
 
 	public static ModuleContext getModuleContext() {
 		return mc;

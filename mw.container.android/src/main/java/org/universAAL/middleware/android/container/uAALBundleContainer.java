@@ -174,7 +174,6 @@ public class uAALBundleContainer implements Container {
 	 * @see org.universAAL.middleware.container.Container#logListeners()
 	 */
 	public Iterator logListeners() {
-//		return Activator.logListeners();
 		ArrayList empty=new ArrayList();
 		return empty.iterator();//TODO Not implemented for now
 	}

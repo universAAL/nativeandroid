@@ -3,8 +3,6 @@ package org.universAAL.middleware.android.connectors;
 import java.lang.ref.WeakReference;
 import java.util.Dictionary;
 import java.util.List;
-//import org.universAAL.middleware.connectors.CommunicationConnector;
-//import org.universAAL.middleware.connectors.DiscoveryConnector;
 import org.universAAL.middleware.connectors.ServiceListener;
 import org.universAAL.middleware.connectors.exception.CommunicationConnectorException;
 import org.universAAL.middleware.connectors.exception.DiscoveryConnectorException;
@@ -62,8 +60,6 @@ public class ConnectorBinder extends Binder {
 
 	public void announceAALSpace(AALSpaceCard arg0)
 			throws DiscoveryConnectorException {
-		System.out.println(":::::CONNECTOR BINDER announces: "
-				+ arg0.getAalSpaceLifeTime() + " ; " + arg0.getRetry());
 		mService.get().getSlpDiscoveryConnector().announceAALSpace(arg0);
 	}
 

@@ -28,7 +28,6 @@ import org.universAAL.middleware.android.buses.servicebus.persistence.tables.row
 import org.universAAL.middleware.serialization.turtle.TurtleSerializer;
 import org.universAAL.middleware.service.data.ILocalServiceSearchResultsData;
 import org.universAAL.middleware.service.owls.profile.ServiceProfile;
-//import org.universAAL.serialization.turtle.TurtleParser;
 
 import android.content.Context;
 
@@ -52,14 +51,9 @@ public class AndroidLocalServiceSearchResultsData extends
 		// Serialize the Service Profiles
 		String[] serializedProfiles = serializeServiceProfiles(profiles);
 
-		// sqliteMngr.open();
-		// try {
 		// Persist the service profiles
 		sqliteMngr.addLocalServicesSearchResultsWithProfiles(id,
 				serializedProfiles);
-		// } finally {
-		// sqliteMngr.close();
-		// }
 	}
 
 	public List getProfiles(String id) {
@@ -82,12 +76,7 @@ public class AndroidLocalServiceSearchResultsData extends
 	}
 
 	public boolean exist(String id) {
-		// sqliteMngr.open();
-		// try {
 		return null != sqliteMngr.queryForLocalServiceSearchResults(id);
-		// } finally {
-		// sqliteMngr.close();
-		// }
 	}
 
 	private String[] serializeServiceProfiles(List profiles) {

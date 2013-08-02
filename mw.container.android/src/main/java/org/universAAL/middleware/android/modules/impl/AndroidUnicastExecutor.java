@@ -23,12 +23,9 @@ package org.universAAL.middleware.android.modules.impl;
 import java.util.List;
 
 import org.universAAL.middleware.android.connectors.ConnectorCommWrapper;
-//import org.universAAL.middleware.connectors.CommunicationConnector;
 import org.universAAL.middleware.connectors.exception.CommunicationConnectorException;
 import org.universAAL.middleware.connectors.util.ChannelMessage;
 import org.universAAL.middleware.connectors.util.ExceptionUtils;
-//import org.universAAL.middleware.container.ModuleContext;
-//import org.universAAL.middleware.container.utils.LogUtils;
 import org.universAAL.middleware.interfaces.PeerCard;
 import org.universAAL.middleware.modules.listener.MessageListener;
 
@@ -50,9 +47,9 @@ public class AndroidUnicastExecutor implements Runnable {
 //    private ModuleContext mc;
     private ConnectorCommWrapper communicationConnector;
 
-    public AndroidUnicastExecutor(ChannelMessage message,
-            /*CommunicationConnector communicationConnector,*/ PeerCard receiver,
-            List<MessageListener> listeners/*, ModuleContext moduleContext*/,ConnectorCommWrapper communicationConnector) {
+	public AndroidUnicastExecutor(ChannelMessage message, PeerCard receiver,
+			List<MessageListener> listeners,
+			ConnectorCommWrapper communicationConnector) {
         super();
         this.message = message;
 //        this.communicationConnector = communicationConnector;
@@ -65,15 +62,7 @@ public class AndroidUnicastExecutor implements Runnable {
     public void run() {
 
         try {
-//            LogUtils.logInfo(
-//                    mc,
-//                    UnicastExecutor.class,
-//                    "run()",
-//                    new Object[] { "Preparing to send data to "
-//                            + receiver.getPeerID()
-//                            + " the message to deliver is " + message }, null);
         	communicationConnector.unicast(message, receiver.getPeerID());
-//            communicationConnector.unicast(message, receiver.getPeerID());
         } catch (CommunicationConnectorException e) {
             for (MessageListener listener : listeners)
                 listener.handleSendError(message, e);

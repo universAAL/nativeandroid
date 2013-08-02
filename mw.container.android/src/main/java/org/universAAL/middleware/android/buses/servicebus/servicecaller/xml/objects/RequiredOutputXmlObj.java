@@ -27,7 +27,6 @@ import org.universAAL.middleware.android.buses.servicebus.servicecaller.xml.ISer
 import org.universAAL.middleware.android.buses.servicebus.xml.objects.BundlePropertyXmlObj;
 import org.universAAL.middleware.android.buses.servicebus.xml.objects.ICommonServiceBusXmlConstants;
 import org.universAAL.middleware.android.common.CommonXmlParserUtils;
-//import org.universAAL.middleware.android.common.xml.CommonXmlParserUtils;
 import org.w3c.dom.Node;
 
 import android.os.Bundle;

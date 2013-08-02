@@ -30,6 +30,8 @@ import android.util.Log;
  * @author <a href="mailto:noamsh@il.ibm.com">noamsh </a>
  * 
  */
+
+// Not yet used
 public class UPnPSodaPopBootTimeReceiver extends BroadcastReceiver {
 
 	private final static String TAG = UPnPSodaPopBootTimeReceiver.class

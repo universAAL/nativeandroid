@@ -61,12 +61,6 @@ public class ConnectorMessageFactory {
 		case CONNECTOR_DISC_DEREGISTER:
 			message = new ConnDiscDeregisterMessage(context, intent);
 			break;
-		// case CONNECTOR_DISC_ADDLISTENER:
-		// message = new ConnDiscAddListenerMessage(context,intent);
-		// break;
-		// case CONNECTOR_DISC_REMLISTENER:
-		// message = new ConnDiscRemListenerMessage(context,intent);
-		// break;
 		default:
 			break;
 		}

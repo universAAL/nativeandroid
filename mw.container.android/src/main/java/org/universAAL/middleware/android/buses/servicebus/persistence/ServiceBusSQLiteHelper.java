@@ -38,8 +38,7 @@ import android.util.Log;
  * 
  *         Apr 22, 2012
  */
-public class ServiceBusSQLiteHelper extends AbstractCommonBusSQLiteHelper { // SQLiteOpenHelper
-	// {
+public class ServiceBusSQLiteHelper extends AbstractCommonBusSQLiteHelper { 
 
 	// DB name and version
 	private static final String DATABASE_NAME = "SERVICE_BUS.DB";

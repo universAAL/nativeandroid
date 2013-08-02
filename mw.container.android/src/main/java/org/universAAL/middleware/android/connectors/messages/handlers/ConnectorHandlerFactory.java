@@ -58,12 +58,6 @@ public class ConnectorHandlerFactory {
 			case CONNECTOR_DISC_DEREGISTER:
 				handler = new ConnDiscDeregisterHandler(serv);
 				break;
-			// case CONNECTOR_DISC_ADDLISTENER:
-			// handler = new ConnDiscAddListenerHandler(serv);
-			// break;
-			// case CONNECTOR_DISC_REMLISTENER:
-			// handler = new ConnDiscRemListenerHandler(serv);
-			// break;
 			default:
 				break;
 			}

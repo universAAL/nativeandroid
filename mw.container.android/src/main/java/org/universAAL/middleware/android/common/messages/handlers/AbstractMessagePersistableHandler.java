@@ -20,17 +20,11 @@
  */
 package org.universAAL.middleware.android.common.messages.handlers;
 
-//import org.universAAL.middleware.android.buses.contextbus.AndroidContextBus;
 import org.universAAL.middleware.android.buses.contextbus.impl.AndroidContextBusImpl;
-//import org.universAAL.middleware.android.buses.servicebus.AndroidServiceBus;
 import org.universAAL.middleware.android.buses.servicebus.impl.AndroidServiceBusImpl;
 import org.universAAL.middleware.android.common.messages.IMessage;
 import org.universAAL.middleware.android.common.messages.handlers.AbstractMessageHandler;
 import org.universAAL.middleware.android.modules.ModulesCommWrapper;
-//import org.universAAL.middleware.android.common.modulecontext.AndroidModuleContextFactory;
-//import org.universAAL.middleware.android.localsodapop.AbstractSodaPopAndroidImpl;
-//import org.universAAL.middleware.android.localsodapop.SodaPopAndroidFactory;
-//import org.universAAL.middleware.android.localsodapop.persistence.SodaPopPeersSQLiteMngr;
 
 import android.content.Context;
 
@@ -50,12 +44,8 @@ public abstract class AbstractMessagePersistableHandler extends
 		this.wrapperModules=wrapper;
 	}
 
-//	protected SodaPopPeersSQLiteMngr sodaPopPeersSQLiteMngr;
-
 	private void populateSqliteMngr(Context context) {
-//		if (null == sodaPopPeersSQLiteMngr) {
-//			sodaPopPeersSQLiteMngr = new SodaPopPeersSQLiteMngr(context);
-//		}
+
 	}
 
 	public void handleMessage(IMessage message) {
@@ -63,42 +53,19 @@ public abstract class AbstractMessagePersistableHandler extends
 
 		// Create the implementation class + the c'tor itself will persist the
 		// required data
-//		AbstractSodaPopAndroidImpl sodaPop = SodaPopAndroidFactory
-//				.createAndroidSodaPop(message.getContext(),
-//						message.getProtocol(), sodaPopPeersSQLiteMngr);
 
-		privateHandleMessage(message/*, sodaPop*/);
+		privateHandleMessage(message);
 	}
 
-	protected abstract void privateHandleMessage(IMessage message/*,
-			AbstractSodaPopAndroidImpl sodaPop*/);
+	protected abstract void privateHandleMessage(IMessage message);
 
 	// TODO: add another middle class that will have service bus related methods
 	// and another class for context bus ones
-	protected AndroidServiceBusImpl createServiceBus(/*IMessage message,
-			AbstractSodaPopAndroidImpl sodaPop*/) {
-//		// Get the context
-//		Context context = message.getContext();
-//
-//		// Create the android service bus
-//		AndroidServiceBus bus = new AndroidServiceBus(sodaPop, context);
-//
-//		// Share the bus
-//		ModuleContext mc = AndroidModuleContextFactory.createModuleContext();
-//		AndroidModuleContextFactory.shareServiceBus(mc, bus);
+	protected AndroidServiceBusImpl createServiceBus() {
 		return wrapperModules.createServiceBus();
 	}
 
-	protected AndroidContextBusImpl createContextBus(/*IMessage message,
-			AbstractSodaPopAndroidImpl sodaPop*/) {
-//		// Get the context
-//		Context context = message.getContext();
-//		// Create the android context bus
-//		AndroidContextBus bus = new AndroidContextBus(sodaPop, context);
-//		// Share the bus
-//		ModuleContext mc = AndroidModuleContextFactory.createModuleContext();
-//		AndroidModuleContextFactory.shareContextBus(mc, bus);
-//		context = ContextEmulator.createContextEmulator();
+	protected AndroidContextBusImpl createContextBus() {
 		return wrapperModules.createContextBus();
 	}
 }

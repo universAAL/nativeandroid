@@ -84,17 +84,13 @@ public class AndroidSLPBrowser implements Runnable {
 		ServiceLocationEnumeration attribs = null;
 		if (!stop) {
 			try {
-				System.out.println(">>>>> FINDING: "+new ServiceType(
-						aalSpaceServiceType).toString()+" with "+filter);
 				slenum = AndroidSLPDiscoveryConnector.getSLPLocator().findServices(new ServiceType(
 						aalSpaceServiceType), null, filter);
-				System.out.println(">>>>> SLENUMS: "+slenum.hasMoreElements());
 				while (slenum.hasMoreElements()) {
 					ServiceURL serviceURL = (ServiceURL) slenum.next();
 					attribs = AndroidSLPDiscoveryConnector.getSLPLocator().findAttributes(serviceURL, null,
 							AALSpaceCard.getSpaceAttributes());
 					// FIX JSLP sometimes returns null attributes
-					System.out.println(">>>>>> ATTRIBS: "+attribs.hasMoreElements());
 					// attribs = locator.findAttributes(new ServiceType(
 					// aalSpaceServiceType), null, AALSpaceCard
 					// .getSpaceAttributes());
@@ -113,7 +109,6 @@ public class AndroidSLPBrowser implements Runnable {
 					}
 				}
 				// Calling all the ServiceListeners
-				System.out.println(">>>>>> LISTENERS: "+listeners.size());
 				for (ServiceListener listener : listeners) {
 					Log.v(TAG, "Calling the AALSpaceModule listeners...");
 					listener.newAALSpacesFound(aalSpaces);

@@ -28,7 +28,6 @@ import org.universAAL.middleware.android.buses.servicebus.servicecallee.xml.ISer
 import org.universAAL.middleware.android.buses.servicebus.xml.objects.ChangeEffectXmlObj;
 import org.universAAL.middleware.android.buses.servicebus.xml.objects.ICommonServiceBusXmlConstants;
 import org.universAAL.middleware.android.common.CommonXmlParserUtils;
-//import org.universAAL.middleware.android.common.xml.CommonXmlParserUtils;
 import org.w3c.dom.Node;
 
 /**

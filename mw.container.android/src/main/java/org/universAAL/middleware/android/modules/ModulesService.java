@@ -23,22 +23,16 @@ import org.universAAL.middleware.android.modules.impl.AndroidCommunicationModule
 import org.universAAL.middleware.android.modules.impl.AndroidControlBroker;
 import org.universAAL.middleware.android.modules.messages.ModulesMessageFactory;
 import org.universAAL.middleware.android.modules.messages.handlers.ModulesHandlerFactory;
-//import org.universAAL.middleware.brokers.control.ControlBroker;
 import org.universAAL.middleware.bus.model.AbstractBus;
 import org.universAAL.middleware.bus.msg.BusMessage;
 import org.universAAL.middleware.container.ModuleContext;
 import org.universAAL.middleware.context.ContextBus;
 import org.universAAL.middleware.context.impl.ContextBusImpl;
 import org.universAAL.middleware.datarep.SharedResources;
-//import org.universAAL.middleware.managers.aalspace.AALSpaceManagerImpl;
 import org.universAAL.middleware.managers.api.AALSpaceEventHandler;
 import org.universAAL.middleware.managers.api.AALSpaceManager;
-//import org.universAAL.middleware.managers.api.DeployManager;
-//import org.universAAL.middleware.managers.deploy.DeployManagerImpl;
 import org.universAAL.middleware.modules.AALSpaceModule;
 import org.universAAL.middleware.modules.CommunicationModule;
-//import org.universAAL.middleware.modules.aalspace.AALSpaceModuleImpl;
-//import org.universAAL.middleware.modules.communication.CommunicationModuleImpl;
 import org.universAAL.middleware.serialization.MessageContentSerializer;
 import org.universAAL.middleware.serialization.MessageContentSerializerEx;
 import org.universAAL.middleware.serialization.turtle.TurtleSerializer;
@@ -108,8 +102,7 @@ public class ModulesService extends Service {
 				// OSGi Bundle Context emulation: tracks instances to share
 				context = ContextEmulator.createContextEmulator();
 
-				// //////////////////COMMUNICATION
-				// MODULE//////////////////////////
+				// //////////////////COMMUNICATION MODULE///////////////////
 				ModuleContext modContext3 = uAALBundleContainer.THE_CONTAINER
 						.registerModule(new Object[] { context,
 								"mw.modules.communication.osgi" });
@@ -122,8 +115,7 @@ public class ModulesService extends Service {
 						new Object[] { CommunicationModule.class.getName() });
 				Log.d(TAG, "Started the CommunicationModule...");
 
-				// ///////////////////AALSPACE
-				// MODULE////////////////////////////
+				// ///////////////////AALSPACE MODULE//////////////////////
 				ModuleContext modContext4 = uAALBundleContainer.THE_CONTAINER
 						.registerModule(new Object[] { context,
 								"mw.modules.aalspace.osgi" });
@@ -142,8 +134,7 @@ public class ModulesService extends Service {
 						new Object[] { AALSpaceModule.class.getName() });
 				Log.d(TAG, "AALSpaceModule registered");
 
-				// ///////////////////CONTROL
-				// BROKER//////////////////////////////
+				// ///////////////////CONTROL BROKER///////////////////////
 				ModuleContext modContext5 = uAALBundleContainer.THE_CONTAINER
 						.registerModule(new Object[] { context,
 								"mw.brokers.control.osgi" });
@@ -153,8 +144,7 @@ public class ModulesService extends Service {
 						new Object[] { AndroidControlBroker.class.getName() });
 				Log.d(TAG, "Started ControlBroker!");
 
-				// //////////////////AALSPACE
-				// MANAGER/////////////////////////////
+				// //////////////////AALSPACE MANAGER//////////////////////
 				ModuleContext modContext6 = uAALBundleContainer.THE_CONTAINER
 						.registerModule(new Object[] { context,
 								"mw.managers.aalspace.osgi" });
@@ -193,8 +183,7 @@ public class ModulesService extends Service {
 				 * });
 				 */
 
-				// ///////////////////DATA
-				// REPRESENTATION////////////////////////
+				// ///////////////////DATA REPRESENTATION/////////////////
 				SharedResources.moduleContext = uAALBundleContainer.THE_CONTAINER
 						.registerModule(new Object[] { context,
 								"mw.data.representation.osgi" });
@@ -205,9 +194,8 @@ public class ModulesService extends Service {
 					e.printStackTrace();
 				}
 				SharedResources.setDefaults();
-				// ///////////////////DATA
-				// SERIALIZATION/////////////////////////
-
+				
+				// ///////////////////DATA SERIALIZATION//////////////////
 				TurtleUtil.moduleContext = uAALBundleContainer.THE_CONTAINER
 						.registerModule(new Object[] { context,
 								"mw.data.serialization.osgi" });
@@ -221,8 +209,7 @@ public class ModulesService extends Service {
 						new Object[] { MessageContentSerializerEx.class
 								.getName() });
 
-				// //////////////////BUS
-				// MODEL////////////////////////////////////
+				// //////////////////BUS MODEL///////////////////////////
 				ModuleContext modContext8 = uAALBundleContainer.THE_CONTAINER
 						.registerModule(new Object[] { context,
 								"mw.bus.model.osgi" });
@@ -395,7 +382,6 @@ public class ModulesService extends Service {
 			synchronized (this) {
 				if (started == false) {
 					try {
-						System.out.println("TICK: " + (i++));
 						wait(WAIT_PERIOD_MS);
 					} catch (InterruptedException e) {
 						e.printStackTrace();

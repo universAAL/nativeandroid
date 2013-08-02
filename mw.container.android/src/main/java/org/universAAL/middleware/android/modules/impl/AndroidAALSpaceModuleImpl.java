@@ -31,9 +31,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.universAAL.middleware.android.connectors.ConnectorDiscWrapper;
-//import org.universAAL.middleware.android.modules.ModulesService;
 import org.universAAL.middleware.brokers.Broker;
-//import org.universAAL.middleware.brokers.control.ControlBroker;
 import org.universAAL.middleware.brokers.message.BrokerMessage;
 import org.universAAL.middleware.brokers.message.BrokerMessage.BrokerMessageTypes;
 import org.universAAL.middleware.brokers.message.BrokerMessageFields;
@@ -42,20 +40,17 @@ import org.universAAL.middleware.brokers.message.aalspace.AALSpaceMessage.AALSpa
 import org.universAAL.middleware.brokers.message.aalspace.AALSpaceMessageException;
 import org.universAAL.middleware.brokers.message.aalspace.AALSpaceMessageFields;
 import org.universAAL.middleware.connectors.DiscoveryConnector;
-//import org.universAAL.middleware.connectors.DiscoveryConnector;
 import org.universAAL.middleware.connectors.ServiceListener;
 import org.universAAL.middleware.connectors.exception.CommunicationConnectorException;
 import org.universAAL.middleware.connectors.exception.DiscoveryConnectorException;
 import org.universAAL.middleware.connectors.util.ChannelMessage;
 import org.universAAL.middleware.container.ModuleContext;
 import org.universAAL.middleware.container.SharedObjectListener;
-//import org.universAAL.middleware.container.utils.LogUtils;
 import org.universAAL.middleware.interfaces.ChannelDescriptor;
 import org.universAAL.middleware.interfaces.PeerCard;
 import org.universAAL.middleware.interfaces.PeerRole;
 import org.universAAL.middleware.interfaces.aalspace.AALSpaceCard;
 import org.universAAL.middleware.interfaces.aalspace.AALSpaceDescriptor;
-//import org.universAAL.middleware.interfaces.aalspace.AALSpaceType;
 import org.universAAL.middleware.modules.AALSpaceModule;
 import org.universAAL.middleware.modules.CommunicationModule;
 import org.universAAL.middleware.modules.ConfigurableCommunicationModule;
@@ -98,104 +93,66 @@ public class AndroidAALSpaceModuleImpl implements AALSpaceModule, MessageListene
      * @return true if initialized with the connectors and the module, false
      *         otherwise
      */
-    public boolean init() {
-        if (!initialized) {
-            try {
-                /*if (discoveryConnectors == null
-                        || discoveryConnectors.isEmpty()) {
+	public boolean init() {
+		if (!initialized) {
+			try {
 
-                    LogUtils.logDebug(
-                            context,
-                            AndroidAALSpaceModuleImpl.class,
-                            "AALSpaceModuleImpl",
-                            new Object[] { "Fetching the DiscoveryConnector..." },
-                            null);
-                    Object[] dConnectors = context.getContainer()
-                            .fetchSharedObject(
-                                    context,
-                                    new Object[] { DiscoveryConnector.class
-                                            .getName() }, this);
-                    if (dConnectors != null && dConnectors.length > 0) {
-                        LogUtils.logDebug(context, AndroidAALSpaceModuleImpl.class,
-                                "AALSpaceModuleImpl", new Object[] { "Found: "
-                                        + dConnectors.length
-                                        + " DiscoveryConnector" }, null);
-                        // clear or init the list of connectors
+				wrapDiscovery.addAALSpaceListener(this);
+				if (communicationModule == null) {
+					Log.d(TAG, "Fetching the CommunicationModule...");
+					Object cModule = context.getContainer().fetchSharedObject(
+							context,
+							new Object[] { CommunicationModule.class.getName()
+									.toString() });
+					if (cModule != null) {
+						communicationModule = (CommunicationModule) cModule;
+						Log.d(TAG, "CommunicationModule fetched");
+					} else {
+						Log.w(TAG, "No CommunicationModule found");
+						initialized = false;
+						return initialized;
+					}
+				}
 
-                        discoveryConnectors = new ArrayList<DiscoveryConnector>();
-                        for (Object ref : dConnectors) {
-                            DiscoveryConnector dConnector = (DiscoveryConnector) ref;*/
-                            wrapDiscovery.addAALSpaceListener(this);
-//                            dConnector.addAALSpaceListener(this);
-                        /*    discoveryConnectors.add((DiscoveryConnector) ref);
-                        }
-                        LogUtils.logDebug(context, AndroidAALSpaceModuleImpl.class,
-                                "AALSpaceModuleImpl",
-                                new Object[] { "DiscoveryConnectors fetched" },
-                                null);
-                    } else {
-                        LogUtils.logWarn(context, AndroidAALSpaceModuleImpl.class,
-                                "AALSpaceModuleImpl",
-                                new Object[] { "No DiscoveryConnector found" },
-                                null);
-                        initialized = false;
-                        return initialized;
-                    }
-                }*/
-                if (communicationModule == null) {
-                    Log.d(TAG, "Fetching the CommunicationModule..." );
-                    Object cModule = context.getContainer().fetchSharedObject(
-                            context,
-                            new Object[] { CommunicationModule.class.getName()
-                                    .toString() });
-                    if (cModule != null) {
-                        communicationModule = (CommunicationModule) cModule;
-                        Log.d(TAG, "CommunicationModule fetched" );
-                    } else {
-                        Log.w(TAG, "No CommunicationModule found" );
-                        initialized = false;
-                        return initialized;
-                    }
-                }
+				if (controlBoker == null) {
+					Log.d(TAG, "Fetching the ControlBroker...");
+					Object cBroker = context.getContainer().fetchSharedObject(
+							context,
+							new Object[] { AndroidControlBroker.class.getName()
+									.toString() });
+					if (cBroker != null) {
+						Log.d(TAG, "Found a ControlBroker");
+						controlBoker = (AndroidControlBroker) cBroker;
+						Log.d(TAG, "ControlBroker fetched");
+					} else {
+						Log.w(TAG, "No ControlBroker found");
+						initialized = false;
+						return initialized;
+					}
+					Log.d(TAG, "ControlBroker found");
+					// DiscoveryConnector, CommunicationModule and ControlBroker
+					// have been found
 
-                if (controlBoker == null) {
-                    Log.d(TAG,"Fetching the ControlBroker...");
-                    Object cBroker = context.getContainer().fetchSharedObject(
-                            context,
-                            new Object[] { AndroidControlBroker.class.getName()
-                                    .toString() });
-                    if (cBroker != null) {
-                        Log.d(TAG,"Found a ControlBroker" );
-                        controlBoker = (AndroidControlBroker) cBroker;
-                        Log.d(TAG, "ControlBroker fetched" );
-                    } else {
-                        Log.w(TAG, "No ControlBroker found" );
-                        initialized = false;
-                        return initialized;
-                    }
-                    Log.d(TAG,"ControlBroker found");
-                    // DiscoveryConnector, CommunicationModule and ControlBroker
-                    // have been found
-
-                }
-                initialized = true;
-            } catch (NullPointerException e) {
-                Log.e(TAG,"Error while initializing the AALSpaceModule:" ,e);
-                initialized = false;
-            } catch (ClassCastException e) {
-                Log.e(TAG, "Error while casting CommunicationConnector and CommunicationModule: ",e);
-                initialized = false;
-            }
-        }
-        if (initialized)
-            Log.d(TAG, "AALSpaceModule initialized" );
-        return initialized;
-    }
+				}
+				initialized = true;
+			} catch (NullPointerException e) {
+				Log.e(TAG, "Error while initializing the AALSpaceModule:", e);
+				initialized = false;
+			} catch (ClassCastException e) {
+				Log.e(TAG,
+						"Error while casting CommunicationConnector and CommunicationModule: ",
+						e);
+				initialized = false;
+			}
+		}
+		if (initialized)
+			Log.d(TAG, "AALSpaceModule initialized");
+		return initialized;
+	}
 
     public AndroidAALSpaceModuleImpl(ConnectorDiscWrapper wrapDiscovery, ModuleContext context) {
         this.context = context;
         this.wrapDiscovery=wrapDiscovery;
-        /*discoveryConnectors = new ArrayList<DiscoveryConnector>();*/
     }
 
     public List<AALSpaceCard> getAALSpaces() {
@@ -208,42 +165,36 @@ public class AndroidAALSpaceModuleImpl implements AALSpaceModule, MessageListene
         if (init()) {
             Log.d(TAG, "Searching for the AALSpace with filters: "
                             + filters.toString() + "..." );
+			try {
+				if (filters != null && filters.size() > 0) {
+					spaces.addAll(wrapDiscovery.findAALSpace(filters));
+				} else {
+					spaces.addAll(wrapDiscovery.findAALSpace());
+				}
+			} catch (DiscoveryConnectorException e) {
+				Log.e(TAG, "Error during the AALSPace search:", e);
+				throw new AALSpaceModuleException(
+						AALSpaceModuleErrorCode.ERROR_INTERACTING_DISCOVERY_CONNECTORS,
+						e.toString());
+			}
+			Log.d(TAG, " AALSpaces.");
 
-            try {
-                /*for (DiscoveryConnector dConnector : discoveryConnectors) {*/
-                    if (filters != null && filters.size() > 0){
-                        spaces.addAll(wrapDiscovery.findAALSpace(filters));
-//                    spaces.addAll(dConnector.findAALSpace(filters));
-                    } else{
-                        spaces.addAll(wrapDiscovery.findAALSpace());
-//                        spaces.addAll(dConnector.findAALSpace());
-                    }
-                /*}*/
-            } catch (DiscoveryConnectorException e) {
-                Log.e(TAG, "Error during the AALSPace search:",e);
-                throw new AALSpaceModuleException(
-                        AALSpaceModuleErrorCode.ERROR_INTERACTING_DISCOVERY_CONNECTORS,
-                        e.toString());
-            }
-            Log.d(TAG, " AALSpaces." );
-
-        } else {
-            Log.w(TAG, "AALSpaceModule cannot be initialized. Returning no AALSpaces" );
-            throw new AALSpaceModuleException(
-                    AALSpaceModuleErrorCode.NO_DISCOVERY_CONNECTORS,
-                    "AALSpaceModule cannot be initialized. Returning no AALSpaces");
-        }
-        return spaces;
-    }
+		} else {
+			Log.w(TAG,
+					"AALSpaceModule cannot be initialized. Returning no AALSpaces");
+			throw new AALSpaceModuleException(
+					AALSpaceModuleErrorCode.NO_DISCOVERY_CONNECTORS,
+					"AALSpaceModule cannot be initialized. Returning no AALSpaces");
+		}
+		return spaces;
+	}
 
     public synchronized void newAALSpace(AALSpaceCard aalSpaceCard)
             throws AALSpaceModuleException {
         if (init()) {
             Log.d(TAG,"Creating a new AALSpace..." );
-            /*for (DiscoveryConnector connector : discoveryConnectors) {*/
                 try {
                 	wrapDiscovery.announceAALSpace(aalSpaceCard);
-//                    connector.announceAALSpace(aalSpaceCard);
                 } catch (DiscoveryConnectorException e) {
                     Log.e(TAG, "Error creating the AALSpace: "
                                     + aalSpaceCard.toString() + " due to: "
@@ -804,16 +755,12 @@ public class AndroidAALSpaceModuleImpl implements AALSpaceModule, MessageListene
         Log.d(TAG, "Destroy the AALSpace: "
                         + spaceCard.toString() );
         // to de-register the AALSpace
-        /*for (DiscoveryConnector dConnector : discoveryConnectors) {*/
             try {
             	wrapDiscovery.deregisterAALSpace(spaceCard);
-//                dConnector.deregisterAALSpace(spaceCard);
             } catch (Exception e) {
                 Log.e(TAG, "Error during destroy AALSpace: "
                                 + e.toString() );
             }
-        /*}*/
-
     }
 
     public void aalSpaceLost(AALSpaceCard spaceCard) {
@@ -824,13 +771,7 @@ public class AndroidAALSpaceModuleImpl implements AALSpaceModule, MessageListene
     public void sharedObjectAdded(Object arg0, Object arg1) {
         if (arg0 != null) {
             if (arg0 instanceof DiscoveryConnector) {// TODO Not really going to happen
-                /*DiscoveryConnector connector = (DiscoveryConnector) arg0;
-                // check if I already have the same connector
-                if (!discoveryConnectors.contains(connector)) {*/
-//                    connector.addAALSpaceListener(this);
                     wrapDiscovery.addAALSpaceListener(this);
-                /*    discoveryConnectors.add(connector);
-                }*/
             } else if (arg0 instanceof CommunicationModule) {
                 Log.d(TAG, "New CommunicationModule added..." );
                 communicationModule = (CommunicationModule) arg0;
@@ -843,17 +784,7 @@ public class AndroidAALSpaceModuleImpl implements AALSpaceModule, MessageListene
 
     public void sharedObjectRemoved(Object arg0) {
         if (arg0 != null) {
-            /*if (arg0 instanceof DiscoveryConnector) {
-                DiscoveryConnector connector = (DiscoveryConnector) arg0;
-                LogUtils.logDebug(context, AndroidAALSpaceModuleImpl.class,
-                        "AALSpaceModuleImpl",
-                        new Object[] { "Removing the DiscoveryConnector" },
-                        null);
-                discoveryConnectors.remove(connector);
-                if (discoveryConnectors.size() == 0) {
-                    initialized = false;
-                }
-            } else*/ if (arg0 instanceof CommunicationModule) {
+        	if (arg0 instanceof CommunicationModule) {
                 Log.d(TAG, "CommunicationModule removed..." );
                 communicationModule = null;
                 initialized = false;
@@ -875,19 +806,12 @@ public class AndroidAALSpaceModuleImpl implements AALSpaceModule, MessageListene
         context.getContainer().removeSharedObjectListener(this);
         if (communicationModule != null)
             communicationModule.removeMessageListener(this, brokerName);
-        /*if (discoveryConnectors != null && discoveryConnectors.size() > 0) {
-            for (DiscoveryConnector dConnector : discoveryConnectors) {*/
         wrapDiscovery.removeAALSpaceListener(this);
-//                dConnector.removeAALSpaceListener(this);
-        /*    }
-        }*/
-
     }
 
     public List<String> getPeersAddress() {
         if (communicationModule instanceof ConfigurableCommunicationModule) {
             ConfigurableCommunicationModule cCommMode = (ConfigurableCommunicationModule) communicationModule;
-//            Map<String, PeerCard> checkedPeer = new HashMap<String, PeerCard>();
             List<String> members = cCommMode.getGroupMembers(brokerName);
             return members;
         }
@@ -896,17 +820,13 @@ public class AndroidAALSpaceModuleImpl implements AALSpaceModule, MessageListene
 
     public void renewAALSpace(AALSpaceCard spaceCard) {
         if (spaceCard != null) {
-            /*for (DiscoveryConnector discoveryConnector : discoveryConnectors) {*/
                 try {
                 	wrapDiscovery.announceAALSpace(spaceCard);
-//                    discoveryConnector.announceAALSpace(spaceCard);
                 } catch (DiscoveryConnectorException e) {
                     Log.e(TAG, "error during AALSpace renew: "
                                     + spaceCard.toString(),e);
                 }
-            /*}*/
         }
-
     }
 
     public BrokerMessage unmarshall(String message) {

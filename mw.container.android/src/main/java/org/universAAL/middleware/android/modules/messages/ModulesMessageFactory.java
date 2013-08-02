@@ -50,33 +50,18 @@ public class ModulesMessageFactory {
 		case INITIALIZE:
 			message = new InitializeMessage(context, intent);
 			break;
-		// case MODULE_COMM_ADD_LISTENER:
-		// message = new CommModAddListenerMessage(context,intent);
-		// break;
 		case MODULE_COMM_RECEIVED:
 			message = new CommModReceivedMessage(context, intent);
 			break;
-		// case MODULE_COMM_REM_LISTENER:
-		// message = new CommModRemListenerMessage(context,intent);
-		// break;
 		case MODULE_COMM_SEND_R:
 			message = new CommModSendRMessage(context, intent);
 			break;
-		// case MODULE_COMM_SEND_RL:
-		// message = new CommModSendRLMessage(context,intent);
-		// break;
 		case MODULE_COMM_SENDALL:
 			message = new CommModSendAllMessage(context, intent);
 			break;
-		// case MODULE_COMM_SENDALL_L:
-		// message = new CommModSendAllLMessage(context,intent);
-		// break;
 		case MODULE_COMM_SENDALL_R:
 			message = new CommModSendAllRMessage(context, intent);
 			break;
-		// case MODULE_COMM_SENDALL_RL:
-		// message = new CommModSendAllRLMessage(context,intent);
-		// break;
 		default:
 			break;
 		}

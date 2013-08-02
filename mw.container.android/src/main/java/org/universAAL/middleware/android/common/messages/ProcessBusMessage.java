@@ -20,7 +20,6 @@
  */
 package org.universAAL.middleware.android.common.messages;
 
-//import org.universAAL.middleware.android.common.IAndroidSodaPop;
 import org.universAAL.middleware.android.common.StringConstants;
 import org.universAAL.middleware.android.common.messages.AbstractMessage;
 

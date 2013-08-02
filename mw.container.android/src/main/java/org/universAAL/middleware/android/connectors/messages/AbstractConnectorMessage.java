@@ -44,12 +44,6 @@ public class AbstractConnectorMessage extends AbstractMessage {
 		return intent.getStringExtra(StringConstants.EXTRAS_CONN_RECEIVER);
 	}
 
-	// protected ServiceListener extractListenerFromExtras() {
-	// // TODO Auto-generated method stub I´m not going to waste time trying to
-	// // parse a ServiceListener. You have the binder for this.
-	// return null;
-	// }
-
 	protected AALSpaceCard extractCardFromExtras() {
 		Dictionary<String, String> props = new Hashtable<String, String>();
 		props.put(Consts.AALSPaceName,

@@ -15,7 +15,6 @@ public class CommModReceivedMessage extends AbstractModulesMessage {
 
 	public CommModReceivedMessage(Context context, Intent intent) {
 		super(context, intent);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override

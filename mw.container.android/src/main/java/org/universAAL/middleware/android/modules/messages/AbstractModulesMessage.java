@@ -36,12 +36,6 @@ public class AbstractModulesMessage extends AbstractMessage {
 		return list;
 	}
 
-	// protected MessageListener extractListenerFromExtras() {
-	// // TODO Auto-generated method stub I´m not going to waste time trying to
-	// // parse a MessageListener. You have the binder for this.
-	// return null;
-	// }
-
 	protected PeerCard extractPeerFromExtras() {
 		String receiver = intent
 				.getStringExtra(StringConstants.EXTRAS_CONN_RECEIVER);

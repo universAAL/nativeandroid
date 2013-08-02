@@ -47,33 +47,18 @@ public class ModulesHandlerFactory {
 				handler = new CommModInitializeHandler(new ModulesCommWrapper(
 						serv));
 				break;
-			// case MODULE_COMM_ADD_LISTENER:
-			// handler = new CommModAddListenerHandler(serv);
-			// break;
 			case MODULE_COMM_RECEIVED:
 				handler = new CommModReceivedHandler(serv);
 				break;
-			// case MODULE_COMM_REM_LISTENER:
-			// handler = new CommModRemListenerHandler(serv);
-			// break;
 			case MODULE_COMM_SEND_R:
 				handler = new CommModSendRHandler(serv);
 				break;
-			// case MODULE_COMM_SEND_RL:
-			// handler = new CommModSendRLHandler(serv);
-			// break;
 			case MODULE_COMM_SENDALL:
 				handler = new CommModSendAllHandler(serv);
 				break;
-			// case MODULE_COMM_SENDALL_L:
-			// handler = new CommModSendAllLHandler(serv);
-			// break;
 			case MODULE_COMM_SENDALL_R:
 				handler = new CommModSendAllRHandler(serv);
 				break;
-			// case MODULE_COMM_SENDALL_RL:
-			// handler = new CommModSendAllRLMessage(serv);
-			// break;
 			default:
 				break;
 			}

@@ -65,7 +65,6 @@ public class uAALBundleContext implements ModuleContext {
 	 */
 	public boolean canBeStarted(ModuleContext requester) {
 		// TODO check permissions
-//		return bundle.getBundle().getState() == Bundle.RESOLVED;
 		return true; //TODO Disabled for now
 	}
 
@@ -74,7 +73,6 @@ public class uAALBundleContext implements ModuleContext {
 	 */
 	public boolean canBeStopped(ModuleContext requester) {
 		// TODO check permissions
-//		return bundle.getBundle().getState() == Bundle.ACTIVE;
 		return true; //TODO Disabled for now
 	}
 
@@ -83,30 +81,14 @@ public class uAALBundleContext implements ModuleContext {
 	 */
 	public boolean canBeUninstalled(ModuleContext requester) {
 		// TODO check permissions
-//		int state = bundle.getBundle().getState();
-//		return state == Bundle.RESOLVED || state == Bundle.INSTALLED;
 		return true; //TODO Disabled for now
 	}
 
 	public Object fetchObject(String className) {
-//		ServiceReference sr = bundle.getServiceReference(className);
 		return (className == null) ? null : bundle.getService(className);
 	}
 
 	public Object[] fetchObject(String className, String filter) {
-//		ServiceReference[] srs = null;
-//		try {
-//			srs = bundle.getServiceReferences(className, filter);
-//		} catch (Exception e) {
-//		}
-//		if (srs == null || srs.length == 0)
-//			return null;
-//		else {
-//			Object[] result = new Object[srs.length];
-//			for (int i = 0; i < srs.length; i++)
-//				result[i] = bundle.getService(srs[i]);
-//			return result;
-//		}
 		return (className == null) ? null : bundle.getServices(className, filter);
 	}
 
@@ -129,26 +111,10 @@ public class uAALBundleContext implements ModuleContext {
 	}
 
 	public uAALBundleContext installBundle(String location) {
-//		try {
-//			Bundle b = bundle.installBundle(location);
-//			return new uAALBundleContext(b.getBundleContext());
-//		} catch (Exception e) {
-//			logError(this.getClass().getName() + "installBundle",
-//					"Exception while installing bundle at " + location, e);
-//			return null;
-//		}
 		return null; //TODO Deploy management disabled for now
 	}
 
 	public uAALBundleContext installBundle(String location, InputStream is) {
-//		try {
-//			Bundle b = bundle.installBundle(location, is);
-//			return new uAALBundleContext(b.getBundleContext());
-//		} catch (Exception e) {
-//			logError(this.getClass().getName() + "installBundle",
-//					"Exception while installing bundle at " + location, e);
-//			return null;
-//		}
 		return null; //TODO Disabled for now
 	}
 
@@ -245,15 +211,6 @@ public class uAALBundleContext implements ModuleContext {
 	 * @see org.universAAL.middleware.container.ModuleContext#start(org.universAAL.middleware.container.ModuleContext)
 	 */
 	public boolean start(ModuleContext requester) {
-//		if (canBeStarted(requester)) {
-//			try {
-//				bundle.getBundle().start();
-//				return true;
-//			} catch (Exception e) {
-//				// TODO: log
-//			}
-//		}
-//		return false;
 		return false; //TODO Deploy management disabled for now
 	}
 
@@ -261,15 +218,6 @@ public class uAALBundleContext implements ModuleContext {
 	 * @see org.universAAL.middleware.container.ModuleContext#stop(org.universAAL.middleware.container.ModuleContext)
 	 */
 	public boolean stop(ModuleContext requester) {
-//		if (canBeStopped(requester)) {
-//			try {
-//				bundle.getBundle().stop();
-//				return true;
-//			} catch (Exception e) {
-//				// TODO: log
-//			}
-//		}
-//		return false;
 		return false; //TODO Deploy management disabled for now
 	}
 
@@ -277,27 +225,8 @@ public class uAALBundleContext implements ModuleContext {
 	 * @see org.universAAL.middleware.container.ModuleContext#uninstall(org.universAAL.middleware.container.ModuleContext)
 	 */
 	public boolean uninstall(ModuleContext requester) {
-//		if (canBeUninstalled(requester)) {
-//			try {
-//				bundle.getBundle().uninstall();
-//				return true;
-//			} catch (Exception e) {
-//				// TODO: log
-//			}
-//		}
-//		return false;
 		return false; //TODO Deploy management disabled for now
 	}
-
-//	private String[] getBundleList() {
-//		Bundle[] bundles = bundle.getBundles();
-//		String[] values = new String[bundles.length];
-//		for (int i = 0; i < bundles.length; i++) {
-//			values[i] = bundles[i].getSymbolicName() + "-"
-//					+ bundles[i].getHeaders(Constants.BUNDLE_VERSION);
-//		}
-//		return values;
-//	}
 
 	public Object getProperty(String name) {
 

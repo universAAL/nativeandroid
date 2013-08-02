@@ -26,7 +26,6 @@ import java.util.List;
 import org.universAAL.middleware.android.buses.common.AndroidOntologyManagement;
 import org.universAAL.middleware.android.buses.common.xml.objects.ValueXmlObj;
 import org.universAAL.middleware.android.buses.servicebus.impl.AndroidServiceBusImpl;
-//import org.universAAL.middleware.android.buses.servicebus.AndroidServiceBus;
 import org.universAAL.middleware.android.buses.servicebus.messages.RegisterServicesMessage;
 import org.universAAL.middleware.android.buses.servicebus.messages.RegisterServicesMessage.AndroidServiceCalleeDataWrapper;
 import org.universAAL.middleware.android.buses.servicebus.messages.RegisterServicesMessage.AndroidServiceCallerDataWrapper;
@@ -43,14 +42,10 @@ import org.universAAL.middleware.android.common.messages.IMessage;
 import org.universAAL.middleware.android.common.messages.handlers.AbstractMessagePersistableHandler;
 import org.universAAL.middleware.android.modules.ModulesCommWrapper;
 import org.universAAL.middleware.container.ModuleContext;
-//import org.universAAL.middleware.android.common.modulecontext.AndroidModuleContextFactory;
-//import org.universAAL.middleware.android.localsodapop.AbstractSodaPopAndroidImpl;
-//import org.universAAL.middleware.android.localsodapop.messages.handlers.AbstractMessagePersistableHandler;
 import org.universAAL.middleware.owl.SimpleOntology;
 import org.universAAL.middleware.rdf.Resource;
 import org.universAAL.middleware.rdf.ResourceFactory;
 import org.universAAL.middleware.rdf.TypeMapper;
-//import org.universAAL.middleware.rdf.impl.ResourceFactoryImpl;
 import org.universAAL.middleware.service.owl.Service;
 import org.universAAL.middleware.service.owl.ServiceBusOntology;
 import org.universAAL.middleware.service.owls.process.ProcessOutput;
@@ -76,11 +71,7 @@ public class RegisterServicesHandler extends AbstractMessagePersistableHandler {
 			.getCanonicalName();
 
 	@Override
-	protected void privateHandleMessage(IMessage message/*
-														 * ,
-														 * AbstractSodaPopAndroidImpl
-														 * sodaPop
-														 */) {
+	protected void privateHandleMessage(IMessage message) {
 		// Cast it to RegisterProfiles message
 		RegisterServicesMessage registerServicesMessage = (RegisterServicesMessage) message;
 
@@ -102,12 +93,7 @@ public class RegisterServicesHandler extends AbstractMessagePersistableHandler {
 		Context context = registerServicesMessage.getContext();
 
 		// Create AndroidServiceBus
-		AndroidServiceBusImpl androidServiceBus = createServiceBus();/*
-																	 * new
-																	 * AndroidServiceBus
-																	 * (sodaPop,
-																	 * context);
-																	 */
+		AndroidServiceBusImpl androidServiceBus = createServiceBus();
 
 		// Handle each ServiceCallee registration/unregistration separately
 		for (AndroidServiceCalleeDataWrapper serviceCalleeRegistration : registerServicesMessage

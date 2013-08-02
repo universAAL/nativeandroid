@@ -20,9 +20,7 @@
  */
 package org.universAAL.middleware.android.modules.impl;
 
-//import org.universAAL.middleware.brokers.control.ControlBroker;
 import org.universAAL.middleware.container.ModuleContext;
-//import org.universAAL.middleware.container.utils.LogUtils;
 import org.universAAL.middleware.managers.api.AALSpaceManager;
 
 import android.util.Log;

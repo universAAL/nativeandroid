@@ -22,7 +22,6 @@ package org.universAAL.middleware.android.buses.servicebus.servicecallee;
 
 import org.universAAL.middleware.android.buses.servicebus.ServiceBusService;
 import org.universAAL.middleware.android.common.StringConstants;
-//import org.universAAL.middleware.android.common.IAndroidSodaPop;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -84,10 +83,6 @@ public class ServiceCalleeResponsesBroadcastReceiver extends BroadcastReceiver {
 		androidServiceBusIntent.putExtra(
 				StringConstants.EXTRAS_KEY_MESSAGE_ID_IN_REPLY,
 				messageIDInReplyTo);
-
-		// Add protocol
-		// androidServiceBusIntent.putExtra(StringConstants.EXTRAS_KEY_PROTOCOL,
-		// StringConstants.PROTOCOL_UPNP);
 
 		// Start the service
 		context.startService(androidServiceBusIntent);

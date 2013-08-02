@@ -141,14 +141,14 @@ public class AndroidServiceStrategy extends BusStrategy {
 	// request.msgID -> callerID
 	protected ILocalWaitingCallersData localWaitingCallers;
 	// processURI -> ServiceRealization
-	protected /*Android*/ILocalServicesIndexData localServicesIndex;
+	protected ILocalServicesIndexData localServicesIndex;
 	// serviceURI -> List(ServiceRealization) (was replaced with the new
 	// mechanism)
 	protected ILocalServiceSearchResultsData localServiceSearchResults;
 	private boolean isCoordinator;
 	protected PeerCard theCoordinator = null;
 
-	public AndroidServiceStrategy(CommunicationModule commModule/* , ModuleContext mc */) {
+	public AndroidServiceStrategy(CommunicationModule commModule) {
 		super(commModule);
 
 		// Initiated the factory
@@ -180,7 +180,6 @@ public class AndroidServiceStrategy extends BusStrategy {
 	}
 
 	protected AndroidIServiceStrategyDataFactory createServiceStrategyDataFactory() {
-		// return new ServiceStrategyDataFactory();
 		// TODO: consider how get context in other way (not via the sodapop)
 		Context context = ((AndroidCommunicationModuleImpl) commModule)
 				.getContext();
@@ -1858,7 +1857,6 @@ public class AndroidServiceStrategy extends BusStrategy {
 	//TODO Check coordinator coreography
 	protected PeerCard queryForCoordinator() {
 		// Cast to Android SodaPop
-//		AbstractSodaPopAndroidImpl androidSodapop = (AbstractSodaPopAndroidImpl) sodapop;
 		if (bus != null) {
 			return ((AndroidServiceBusImpl) bus).getCoordinator();
 		} else {

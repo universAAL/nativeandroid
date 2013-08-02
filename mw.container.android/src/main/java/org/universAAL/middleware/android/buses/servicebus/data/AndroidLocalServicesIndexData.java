@@ -20,17 +20,12 @@
  */
 package org.universAAL.middleware.android.buses.servicebus.data;
 
-//import org.universAAL.middleware.android.buses.servicebus.impl.AndroidILocalServicesIndexData;
-//import org.universAAL.middleware.android.buses.servicebus.impl.AndroidServiceRealization;
 import org.universAAL.middleware.android.buses.servicebus.persistence.AbstractAndroidServiceBusPersistable;
 import org.universAAL.middleware.android.buses.servicebus.persistence.tables.rows.LocalServiceIndexRowDB;
 import org.universAAL.middleware.rdf.Resource;
 import org.universAAL.middleware.serialization.turtle.TurtleSerializer;
 import org.universAAL.middleware.service.data.ILocalServicesIndexData;
 import org.universAAL.middleware.service.impl.ServiceRealization;
-//import org.universAAL.middleware.service.data.ILocalServicesIndexData;
-//import org.universAAL.middleware.service.impl.ServiceRealization;
-//import org.universAAL.serialization.turtle.TurtleParser;
 
 import android.content.Context;
 
@@ -42,8 +37,7 @@ import android.content.Context;
  * 
  */
 public class AndroidLocalServicesIndexData extends
-		AbstractAndroidServiceBusPersistable implements
-/* Android */ILocalServicesIndexData {
+		AbstractAndroidServiceBusPersistable implements ILocalServicesIndexData {
 
 	public AndroidLocalServicesIndexData(Context context) {
 		super(context); // TODO: need to close the DB ... consider how to do
@@ -57,24 +51,14 @@ public class AndroidLocalServicesIndexData extends
 		String serviceRealizationAsResource = new TurtleSerializer()
 				.serialize(serviceRealization);
 
-		// sqliteMngr.open();
-		// try {
 		// Persist
 		sqliteMngr.addLocalServiceIndex(id, serviceRealizationAsResource);
-		// } finally {
-		// sqliteMngr.close();
-		// }
 	}
 
 	public ServiceRealization removeServiceRealization(String id) {
 		LocalServiceIndexRowDB localServiceIndexRowDB = null;
-		// sqliteMngr.open();
-		// try {
 		localServiceIndexRowDB = sqliteMngr
 				.removeLocalServiceIndexByProcessURI(id);
-		// } finally {
-		// sqliteMngr.close();
-		// }
 
 		// De-serialize the ServiceRealization
 		ServiceRealization serviceRealization = extractServiceRealization(localServiceIndexRowDB);
@@ -84,13 +68,8 @@ public class AndroidLocalServicesIndexData extends
 
 	public ServiceRealization getServiceRealizationByID(String id) {
 		LocalServiceIndexRowDB localServiceIndexRowDB = null;
-		// sqliteMngr.open();
-		// try {
 		localServiceIndexRowDB = sqliteMngr
 				.queryLocalServiceIndexByProcessURI(id);
-		// } finally {
-		// sqliteMngr.close();
-		// }
 
 		// De-serialize the ServiceRealization
 		ServiceRealization serviceRealization = extractServiceRealization(localServiceIndexRowDB);
@@ -100,12 +79,7 @@ public class AndroidLocalServicesIndexData extends
 
 	public ServiceRealization[] getAllServiceRealizations() {
 		LocalServiceIndexRowDB[] localServiceIndexRowsDB = null;
-		// sqliteMngr.open();
-		// try {
 		localServiceIndexRowsDB = sqliteMngr.queryForAllLocalServiceIndexes();
-		// } finally {
-		// sqliteMngr.close();
-		// }
 
 		ServiceRealization[] serviceRealizations = new ServiceRealization[localServiceIndexRowsDB.length];
 
@@ -118,12 +92,7 @@ public class AndroidLocalServicesIndexData extends
 
 	public String[] getServiceRealizationIds() {
 		LocalServiceIndexRowDB[] localServiceIndexRowsDB = null;
-		// sqliteMngr.open();
-		// try {
 		localServiceIndexRowsDB = sqliteMngr.queryForAllLocalServiceIndexes();
-		// } finally {
-		// sqliteMngr.close();
-		// }
 
 		String[] serviceRealizationIds = new String[localServiceIndexRowsDB.length];
 

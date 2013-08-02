@@ -23,7 +23,6 @@ package org.universAAL.middleware.android.buses.servicebus;
 import org.universAAL.middleware.android.buses.servicebus.messages.ServiceBusMessageFactory;
 import org.universAAL.middleware.android.buses.servicebus.messages.handlers.ServiceBusHandlerFactory;
 import org.universAAL.middleware.android.common.AbstractAndroidBusService;
-//import org.universAAL.middleware.android.common.buses.service.AbstractAndroidBusService;
 import org.universAAL.middleware.android.common.messages.IMessage;
 import org.universAAL.middleware.android.common.messages.handlers.IMessageHandler;
 import org.universAAL.middleware.android.modules.ModulesCommWrapper;

@@ -31,32 +31,11 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadPoolExecutor;
-//import java.io.DataInputStream;
-//import java.io.File;
-//import java.io.FileInputStream;
-//import java.io.FileOutputStream;
-//import java.security.KeyPair;
-//import java.security.KeyPairGenerator;
-//import java.security.PrivateKey;
-//import java.security.PublicKey;
-//import java.security.SecureRandom;
-//import java.util.Vector;
-
-//import javax.crypto.Cipher;
-//import javax.crypto.KeyGenerator;
-//import javax.crypto.SecretKey;
-//import javax.crypto.SecretKeyFactory;
-//import javax.crypto.spec.DESKeySpec;
 
 import org.universAAL.middleware.android.connectors.ConnectorCommWrapper;
-//import org.universAAL.middleware.connectors.CommunicationConnector;
 import org.universAAL.middleware.connectors.util.ChannelMessage;
-//import org.universAAL.middleware.container.ModuleContext;
-//import org.universAAL.middleware.container.SharedObjectListener;
-//import org.universAAL.middleware.container.utils.LogUtils;
 import org.universAAL.middleware.interfaces.ChannelDescriptor;
 import org.universAAL.middleware.interfaces.PeerCard;
-//import org.universAAL.middleware.modules.AALSpaceModule;
 import org.universAAL.middleware.modules.CommunicationModule;
 import org.universAAL.middleware.modules.ConfigurableCommunicationModule;
 import org.universAAL.middleware.modules.exception.CommunicationModuleErrorCode;
@@ -114,49 +93,6 @@ public class AndroidCommunicationModuleImpl implements CommunicationModule,
             Log.d(TAG,  "Configuring the CommunicationModule...");
             try {
             	Log.d(TAG,  "Fetching the CommunicationConnector...");
-                /*Object[] connectors = context.getContainer()
-                        .fetchSharedObject(
-                                context,
-                                new Object[] { CommunicationConnector.class
-                                        .getName() }, this);
-                if (connectors != null && connectors.length > 0) {
-                    // we use only the first communication connector... to patch
-                    communicationConnector = (CommunicationConnector) connectors[0];
-//                    LogUtils.logDebug(context, AndroidCommunicationModuleImpl.class,
-//                            "CommunicationModuleImpl",
-//                            new Object[] { "CommunicationConnector: "
-//                                    + communicationConnector.toString() }, null);
-                    initialized = true;
-                } else {
-//                    LogUtils.logWarn(context, AndroidCommunicationModuleImpl.class,
-//                            "CommunicationModuleImpl",
-//                            new Object[] { "No CommunicationConnector found" },
-//                            null);
-                    initialized = false;
-                    return initialized;
-                }*/
-
-                // AALSpace Module
-                /*Object[] aalSpaceModules = context
-                        .getContainer()
-                        .fetchSharedObject(
-                                context,
-                                new Object[] { AALSpaceModule.class.getName() },
-                                this);
-
-                if (aalSpaceModules != null && aalSpaceModules.length > 0) {
-                    // we use only the first communication connector... to patch
-                    aalSpaceModule = (AALSpaceModule) aalSpaceModules[0];
-//                    LogUtils.logDebug(context, AndroidCommunicationModuleImpl.class,
-//                            "CommunicationModuleImpl",
-//                            new Object[] { "AALSpaceModule found " }, null);
-                    initialized = true;
-                } else {
-//                    LogUtils.logWarn(context, AndroidCommunicationModuleImpl.class,
-//                            "CommunicationModuleImpl",
-//                            new Object[] { "No AALSpaceModule found" }, null);
-                }*/
-
             } catch (NullPointerException e) {
             	Log.e(TAG,  "Error while fetching the CommunicationConnector",e);
                 initialized = false;
@@ -169,15 +105,12 @@ public class AndroidCommunicationModuleImpl implements CommunicationModule,
 
     public void dispose(List<ChannelDescriptor> channels) {
     	wrapperConnector.dispose(channels);
-//        communicationConnector.dispose(channels);
     }
 
     public void dispose() {
-//        context.getContainer().removeSharedObjectListener(this);
     }
 
-    public AndroidCommunicationModuleImpl(ConnectorCommWrapper wrapper/*ModuleContext context*/, Context ctxt) {
-//        this.context = context;
+    public AndroidCommunicationModuleImpl(ConnectorCommWrapper wrapper, Context ctxt) {
     	wrapperConnector=wrapper;
     	androidContext=ctxt;
     	//Added androidContext for a cheat workaround for the buses
@@ -288,13 +221,7 @@ public class AndroidCommunicationModuleImpl implements CommunicationModule,
 
     public void configureChannels(List<ChannelDescriptor> channels,
             String peerName) {
-        /*if (communicationConnector != null)*/
     	wrapperConnector.configureConnector(channels, peerName);
-//            communicationConnector.configureConnector(channels, peerName);
-        /*else
-            LogUtils.logWarn(context, AndroidCommunicationModuleImpl.class,
-                    "CommunicationModuleImpl",
-                    new Object[] { "No CommunicationConnector found" }, null);*/
     }
 
     /**
@@ -309,8 +236,8 @@ public class AndroidCommunicationModuleImpl implements CommunicationModule,
              */
             List<MessageListener> listeners = new ArrayList<MessageListener>();
             listeners.add(listener);
-            Thread t = new Thread(new AndroidUnicastExecutor(message,
-                    /*communicationConnector,*/ receiver, listeners/*, context*/,wrapperConnector));
+			Thread t = new Thread(new AndroidUnicastExecutor(message, receiver,
+					listeners, wrapperConnector));
             t.start();
         } catch (Throwable e) {
         	Log.e(TAG,  "Error during message handling: ",e);
@@ -330,8 +257,8 @@ public class AndroidCommunicationModuleImpl implements CommunicationModule,
             // fetch the listeners associated to the broker
             List<MessageListener> listeners = getMessageListeners(message
                     .getChannelNames());
-            Thread t = new Thread(new AndroidUnicastExecutor(message,
-                    /*communicationConnector,*/ receiver, listeners/*, context*/,wrapperConnector));
+			Thread t = new Thread(new AndroidUnicastExecutor(message, receiver,
+					listeners, wrapperConnector));
             t.start();
 
         } catch (NullPointerException e) {
@@ -396,39 +323,12 @@ public class AndroidCommunicationModuleImpl implements CommunicationModule,
         }
     }
 
-/*    public void sharedObjectAdded(Object sharedObj, Object removeHook) {
-        if (sharedObj != null) {
-            if (sharedObj instanceof CommunicationConnector) {
-                LogUtils.logDebug(context, AndroidCommunicationModuleImpl.class,
-                        "CommunicationModuleImpl",
-                        new Object[] { "New CommunicationConnector added..." },
-                        null);
-                communicationConnector = (CommunicationConnector) sharedObj;
-
-            }
-        }
-
-    }*/
-
-/*    public void sharedObjectRemoved(Object removeHook) {
-        if (removeHook instanceof CommunicationConnector) {
-            LogUtils.logDebug(context, AndroidCommunicationModuleImpl.class,
-                    "CommunicationModuleImpl",
-                    new Object[] { "CommunicationConnector removed..." }, null);
-            communicationConnector = null;
-            initialized = false;
-        }
-
-    }*/
-
     public List<String> getGroupMembers(String group) {
         return wrapperConnector.getGroupMembers(group);
-//        return communicationConnector.getGroupMembers(group);
     }
 
     public boolean hasChannel(String channelName) {
         return wrapperConnector.hasChannel(channelName);
-//        return communicationConnector.hasChannel(channelName);
     }
 
     // Cheat workaround for the buses

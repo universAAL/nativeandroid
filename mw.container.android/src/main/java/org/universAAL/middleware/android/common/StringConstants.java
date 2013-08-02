@@ -31,37 +31,17 @@ public interface StringConstants {
 
 	public final String prefix = StringConstants.class.getCanonicalName();
 
-	// Protocols
-	// public final String PROTOCOL_UPNP = prefix + ".UPnP";
-	// public final String PROTOCOL_BLUETOOTH = prefix + ".Bluetooth";
-
-	// Actions
+	/* ACTIONS */
+	// General actions
 	public final String ACTION_INITIALIZE = prefix + "." + Action.INITIALIZE;
 	public final String ACTION_GET_ID = prefix + "." + Action.GET_ID;
-
-	// public final String ACTION_NOTICE_JOINING_PEER = prefix + "." +
-	// Action.NOTICE_JOINING_PEER;
-	// public final String ACTION_NOTICE_LEAVING_PEER = prefix + "." +
-	// Action.NOTICE_LEAVING_PEER;
-	// public final String ACTION_NOTICE_JOINING_BUS = prefix + "." +
-	// Action.NOTICE_JOINING_BUS;
-	// public final String ACTION_NOTICE_LEAVING_BUS = prefix + "." +
-	// Action.NOTICE_LEAVING_BUS;
-	// public final String ACTION_NOTICE_PEER_BUSSES = prefix + "." +
-	// Action.NOTICE_PEER_BUSSES;
-	// public final String ACTION_REPLY_PEER_BUSSES = prefix + "." +
-	// Action.REPLY_PEER_BUSSES;
-	// public final String ACTION_PRINT_STATUS = prefix + "." +
-	// Action.PRINT_STATUS;
-
+	// Bus actions
 	public final String ACTION_PROCESS_BUS_MESSAGE = prefix + "."
 			+ Action.PROCESS_BUS_MESSAGE;
 	public final String ACTION_PROPAGAGE_MESSAGE = prefix + "."
 			+ Action.PROPAGATE_MESSAGE;
-
 	public final String ACTION_SEND_MESSAGE = prefix + "."
 			+ Action.SEND_MESSAGE;
-
 	public final String ACTION_REGISTER = prefix + "." + Action.REGISTER;
 	public final String ACTION_UNREGISTER = prefix + "." + Action.UNREGISTER;
 	public final String ACTION_PROCESS_BUS_MESSAGE_RSP = prefix + "."
@@ -72,7 +52,7 @@ public interface StringConstants {
 			+ Action.SERVICE_RESPONSE;
 	public final String ACTION_CONTEXT_PUBLISHER_REQUEST = prefix + "."
 			+ Action.CONTEXT_PUBLISHER_REQUEST;
-	// Actions NEW
+	// Connector actions
 	public final String ACTION_CONN_COMM_MULTICASTSOME = prefix + "."
 			+ Action.CONNECTOR_COMM_MULTICASTSOME;
 	public final String ACTION_CONN_COMM_MULTICAST = prefix + "."
@@ -87,6 +67,7 @@ public interface StringConstants {
 			+ Action.CONNECTOR_DISC_ADDLISTENER;
 	public final String ACTION_CONN_DISC_REMLISTENER = prefix + "."
 			+ Action.CONNECTOR_DISC_REMLISTENER;
+	// Modules actions
 	public final String ACTION_COMM_MOD_ADDLISTENER = prefix + "."
 			+ Action.MODULE_COMM_ADD_LISTENER;
 	public final String ACTION_COMM_MOD_REMLISTENER = prefix + "."
@@ -106,16 +87,11 @@ public interface StringConstants {
 	public final String ACTION_COMM_MOD_SENDRL = prefix + "."
 			+ Action.MODULE_COMM_SENDALL_RL;
 
-	// Categories
-	// public final String CATEGORY_LOCAL_SODAPOP = prefix +
-	// ".LOCAL_SODAPOP_CATEGORY";
-	// public final String CATEGORY_UPNP_SODAPOP = prefix +
-	// ".UPNP_SODAPOP_CATEGORY";
-	// Categories NEW
+	/* CATEGORIES */
 	public final String CATEGORY_CONNECTOR = prefix + ".CONNECTOR_CATEGORY";
 	public final String CATEGORY_MODULES = prefix + ".MODULES_CATEGORY";
 
-	// Keys (in intent extras)
+	/* EXTRAS KEYS */
 	public final String EXTRAS_KEY_PROTOCOL = prefix + ".key.protocol";
 	public final String EXTRAS_KEY_REMOTE_PEER_ID_RSP = prefix
 			+ ".key.remotepeerid.for.response";
@@ -146,7 +122,6 @@ public interface StringConstants {
 			+ ".key.unregisterBroadcastReceiver";
 	public final String EXTRAS_KEY_CONTEXT_PUBLISHER_ID = prefix
 			+ ".key.contextPublisherID";
-	// Keys (in intent extras) NEW
 	public final String EXTRAS_CONN_MESSAGE = prefix + ".key.connMessage";
 	public final String EXTRAS_CONN_RECEIVERS = prefix + ".key.connReceivers";
 	public final String EXTRAS_CONN_RECEIVER = prefix + ".key.connReceiver";
@@ -158,25 +133,10 @@ public interface StringConstants {
 	public final String EXTRAS_SPACE_CHNNAME = prefix + ".key.spaceChnname";
 	public final String EXTRAS_SPACE_PROFILE = prefix + ".key.spaceProfile";
 
-	// Service grounding metadata tag
+	/* GROUNDING */
 	public final String META_DATA_TAG_SERVICE_GROUNDING = "org.universAAL.middleware.service.android.serviceGrounding";
-
-	// Service Request metadata tag
 	public final String META_DATA_TAG_SERVICE_REQUEST_GROUNDING = "org.universAAL.middleware.service.android.serviceRequestGrounding";
-
-	// Context Publisher grounding metadata tag
 	public final String META_DATA_TAG_CONTEXT_PUBLISHER_GROUNDING = "org.universAAL.middleware.service.android.contextPublisherGrounding";
-
-	// Context Subscriber grounding metadata tag
 	public final String META_DATA_TAG_CONTEXT_SUBSCRIBER_GROUNDING = "org.universAAL.middleware.service.android.contextSubcsriberGrounding";
-
-	// Inputs (in UPnP actions)
-	// public final String UPNP_ACTION_INPUT_BUSSES_NAME = "BussesName";
-	// public final String UPNP_ACTION_INPUT_BUS_NAME = "BusName";
-	// public final String UPNP_ACTION_INPUT_BUS_NAMES = "BusNames";
-	// public final String UPNP_ACTION_INPUT_PEER_ID = "PeerID";
-	// public final String UPNP_ACTION_INPUT_JOINING_PEER = "JoiningPeer";
-	// public final String UPNP_ACTION_INPUT_LEAVING_PEER = "LeavingPeer";
-	// public final String UPNP_ACTION_INPUT_MESSAGE = "Message";
 
 }

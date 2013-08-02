@@ -43,7 +43,6 @@ import org.universAAL.middleware.android.common.StringUtils;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-//import android.database.SQLException;
 import android.util.Log;
 
 /**
@@ -56,8 +55,6 @@ public class ServiceBusSQLiteMngr extends AbstractCommonBusSQLiteMngr {
 
 	private static final String TAG = ServiceBusSQLiteMngr.class.getName();
 
-	// private static final Object sync = new Object();
-
 	private static final String[] tablesToClearInReset = new String[] {
 			RegistryServicesTable.TABLE_NAME,
 			LocalServiceSearchResultsTable.TABLE_NAME,
@@ -69,27 +66,7 @@ public class ServiceBusSQLiteMngr extends AbstractCommonBusSQLiteMngr {
 		super(context, new ServiceBusSQLiteHelper(context));
 	}
 
-	// public void open() throws SQLException {
-	// synchronized (sync) {
-	// System.out.println("vvvv     OPEN SQL SERV "+Thread.currentThread().getName());
-	// database = dbHelper.getWritableDatabase(); // TODO: find another
-	// // mechanism for
-	// // open/close DB's
-	// }
-	// }
-	//
-	// public void close() {
-	// System.out.println("    ^^^^ CLOSE SQL SERV "+Thread.currentThread().getName());
-	// dbHelper.close();
-	// }
-
-	/**
-	 * 
-	 * 
-	 * 'LocalServices' table Methods
-	 * 
-	 * 
-	 */
+	/* 'LocalServices' table Methods */
 
 	public void addLocalServiceIndex(String processURI,
 			String serviceRealizationAsResource) {
@@ -491,13 +468,7 @@ public class ServiceBusSQLiteMngr extends AbstractCommonBusSQLiteMngr {
 		return waitingCallRowDB;
 	}
 
-	/**
-	 * 
-	 * 
-	 * Common Methods
-	 * 
-	 * 
-	 */
+	/* Common Methods */
 
 	public void resetDB() {
 		synchronized (sync) {
