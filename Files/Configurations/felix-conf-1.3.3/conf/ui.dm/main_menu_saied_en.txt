@@ -1,0 +1,5 @@
+/Nutritional Advisor|http://www.tsb.upv.es/|http://ontology.universAAL.org/Nutrition.owl#NutritionService
+/Agenda|http://www.anco.gr|http://ontology.universAAL.org/PersonalAgenda.owl#CalendarUIService
+/PS Panic Button|http://www.upm.es|http://ontology.universAAL.org/panic.owl#SW_BUTTON
+/Help when Outdoor|http://www.tsb.upv.es|http://ontology.universAAL.org/hwo.owl#TakeHome
+/Long Term Behaviour Analyzer|http://www.tsbtecnologias.es|http://ontologies.universAAL.com/LTBAUI.owl#LTBAUIProvider
