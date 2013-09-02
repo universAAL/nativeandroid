@@ -64,6 +64,7 @@ Files/Configurations/felix/configurations/etc/mw.managers.aalspace.core.properti
 Files/Configurations/felix/configurations/etc/mw.managers.deploy.core.properties -text
 Files/Configurations/felix/configurations/etc/mw.modules.aalspace.core.properties -text
 Files/Configurations/felix/configurations/etc/org.universAAL.mw.data.representation.properties -text
+Files/Configurations/felix/ontologies/ont.lighting-2.0.1-SNAPSHOT.jar -text
 Files/mw.cotainer.android.apk -text
 LightingSamples/PureAndroid/LightClient/.project -text
 LightingSamples/PureAndroid/LightClient/ASL2.0.txt -text
