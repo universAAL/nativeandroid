@@ -216,10 +216,9 @@ public class RegisterServicesHandler extends AbstractMessagePersistableHandler {
 					} catch (ClassNotFoundException e) {
 						String errMsg = "Unable to populate change effect due to ["
 								+ e.getMessage() + "]";
-						throw new Exception(errMsg); // TODO: throw a better
-						// exception
+						Log.e(TAG, errMsg);
+						throw new Exception(errMsg); // TODO better exception
 					}
-
 					getServiceProfile().addChangeEffect(
 							changeEffectXml.getPropertiesAsStringArr(), value);
 				}
@@ -294,7 +293,6 @@ public class RegisterServicesHandler extends AbstractMessagePersistableHandler {
 
 		ServiceBusOntology serviceOntology = new ServiceBusOntology();
 		AndroidOntologyManagement.registerOntology(mc, serviceOntology);
-
 		// Register the ontologies that the service grounding uses
 		for (String ontologyClass : ontologies) {
 			try {
