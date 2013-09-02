@@ -24,6 +24,7 @@ import java.lang.reflect.Constructor;
 import java.util.List;
 
 import org.universAAL.middleware.android.buses.common.AndroidNameParameterParser;
+import org.universAAL.middleware.android.buses.common.AndroidOntologyManagement;
 import org.universAAL.middleware.android.buses.servicebus.impl.AndroidServiceBusImpl;
 import org.universAAL.middleware.android.buses.servicebus.persistence.tables.rows.WaitingCallRowDB;
 import org.universAAL.middleware.android.buses.servicebus.servicecaller.xml.objects.ActionXmlObj;
@@ -42,6 +43,8 @@ import org.universAAL.middleware.service.ServiceCaller;
 import org.universAAL.middleware.service.ServiceRequest;
 import org.universAAL.middleware.service.ServiceResponse;
 import org.universAAL.middleware.service.owl.Service;
+
+import dalvik.system.DexClassLoader;
 
 import android.content.Context;
 import android.content.Intent;
@@ -354,6 +357,23 @@ public class AndroidServiceCallerProxy extends ServiceCaller {
 			Class serviceJavaClass = Class.forName(actionXml
 					.getServiceJavaClass());
 			service = (Service) serviceJavaClass.newInstance();
+		} catch (ClassNotFoundException ex) {
+			// Try with ontology jars
+			try {
+				DexClassLoader cl = AndroidOntologyManagement
+						.getOntLoader(actionXml
+								.getServiceJavaClass());
+				// reflection from ont jar
+				service = (Service) Class.forName(actionXml
+						.getServiceJavaClass(), true, cl)
+						.newInstance();
+			} catch (Exception e) {
+				String errMsg = "Unable to create java class (again) ["
+						+ actionXml.getServiceJavaClass() + "] due to ["
+						+ e.getMessage() + "]";
+				Log.e(TAG, errMsg);
+				throw new Exception(errMsg);
+			}
 		} catch (Throwable th) {
 			String errMsg = "Unable to create java class ["
 					+ actionXml.getServiceJavaClass() + "] due to ["
@@ -424,6 +444,7 @@ public class AndroidServiceCallerProxy extends ServiceCaller {
 				String errMsg = "Unable to create java class ["
 						+ changeFilter.getValue().getJavaClass() + "] due to ["
 						+ e.getMessage() + "]";
+				Log.e(TAG, errMsg);
 				throw new Exception(errMsg);
 			}
 

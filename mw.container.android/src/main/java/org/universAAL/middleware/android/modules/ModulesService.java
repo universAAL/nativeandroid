@@ -65,6 +65,7 @@ import ae.com.sun.xml.bind.v2.model.annotation.RuntimeInlineAnnotationReader;
 import ae.com.sun.xml.bind.v2.model.annotation.XmlSchemaMine;
 import android.app.Notification;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Environment;
 import android.os.IBinder;
@@ -77,7 +78,8 @@ public class ModulesService extends Service {
 	private static final int ONGOING_NOTIFICATION = 16072013;
 	private static final int WAIT_TICKS = 200;
 	private static final long WAIT_PERIOD_MS = 500;
-
+	public static File ontCacheFile=null;
+	
 	public static ContextEmulator context;
 
 	private AndroidCommunicationModuleImpl communicationModule;
@@ -93,6 +95,8 @@ public class ModulesService extends Service {
 	public void onCreate() {
 		super.onCreate();
 
+		ontCacheFile=getDir("outdex", Context.MODE_PRIVATE);
+		
 		RuntimeInlineAnnotationReader
 				.cachePackageAnnotation(
 						org.universAAL.middleware.connectors.deploy.karaf.model.ObjectFactory.class
@@ -429,5 +433,4 @@ public class ModulesService extends Service {
 		}
 		return prop;
 	}
-
 }

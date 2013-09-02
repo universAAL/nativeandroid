@@ -20,10 +20,16 @@
  */
 package org.universAAL.middleware.android.buses.common;
 
+import java.io.File;
+
+import org.universAAL.middleware.android.modules.ModulesService;
 import org.universAAL.middleware.container.ModuleContext;
 import org.universAAL.middleware.owl.Ontology;
 import org.universAAL.middleware.owl.OntologyManagement;
 
+import dalvik.system.DexClassLoader;
+
+import android.os.Environment;
 import android.util.Log;
 
 /**
@@ -40,6 +46,10 @@ public class AndroidOntologyManagement {
 
 	private final static OntologyManagement ontologyManagement = OntologyManagement
 			.getInstance();
+	
+	//TODO: specify folder another way?
+	private final static File ontFolder = new File(Environment.getExternalStorageDirectory()
+			.getPath(), "/data/felix/ontologies/");
 
 	synchronized public static void registerOntology(ModuleContext context,
 			Ontology ontology) {
@@ -52,19 +62,16 @@ public class AndroidOntologyManagement {
 			String ontologyClass) {
 		Ontology ontology;
 		try {
-			ontology = (Ontology) Class.forName(ontologyClass).newInstance();
+			// ontology = (Ontology) Class.forName(ontologyClass).newInstance();
+			// reflection from external ont jar instead
+			DexClassLoader cl=getOntLoader(ontologyClass);
+			ontology = (Ontology) Class.forName(ontologyClass, true, cl)
+					.newInstance();
 		} catch (Throwable th) {
 			Log.e(TAG, "Unable to instantiate ontology class [" + ontologyClass
-					+ "] due to :" + th);
+					+ "] due to :" + th,th);
 			return;
 		}
-		registerOntology(context, ontology);
-	}
-
-	public static void testRegisterOntology(ModuleContext context,
-			String ontologyClass) throws Exception {
-		Ontology ontology;
-		ontology = (Ontology) Class.forName(ontologyClass).newInstance();
 		registerOntology(context, ontology);
 	}
 
@@ -83,5 +90,26 @@ public class AndroidOntologyManagement {
 		}
 
 		Log.w(TAG, sb.toString());
+	}
+	
+	//TODO Move this method to another class? ReflectionUtils?
+	public static DexClassLoader getOntLoader(String ontClass) {
+		// With this new classloading strategy we can reflect ontology
+		// classes from a dexed jar in a folder in sdcard
+		File[] files = ontFolder.listFiles(); // folder where onts are
+		StringBuilder names = new StringBuilder();
+		for (int i = 0; i < files.length; i++) {
+			names.append(ontFolder.getAbsolutePath() + "/" + files[i].getName());
+			if (i + 1 < files.length) {
+				names.append(File.pathSeparator);
+			}// avoid : in the end
+		}
+		// cache folder in internal storage
+		final File optimizedDexOutputPath = ModulesService.ontCacheFile;
+		// class loader that can load ont jars
+		DexClassLoader cl = new DexClassLoader(names.toString(),
+				optimizedDexOutputPath.getAbsolutePath(), null,
+				AndroidOntologyManagement.class.getClassLoader());
+		return cl;
 	}
 }

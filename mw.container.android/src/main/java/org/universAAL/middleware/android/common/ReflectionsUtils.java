@@ -23,6 +23,13 @@ package org.universAAL.middleware.android.common;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 
+import org.universAAL.middleware.android.buses.common.AndroidOntologyManagement;
+import org.universAAL.middleware.owl.ManagedIndividual;
+
+import android.util.Log;
+
+import dalvik.system.DexClassLoader;
+
 /**
  * 
  * @author <a href="mailto:noamsh@il.ibm.com">noamsh </a>
@@ -31,6 +38,9 @@ import java.lang.reflect.Field;
  * 
  */
 public class ReflectionsUtils {
+	
+	private final static String TAG = ReflectionsUtils.class
+			.getCanonicalName();
 
 	public static String extractMYURIFieldFromClass(String ontologyClass)
 			throws Exception {
@@ -40,11 +50,27 @@ public class ReflectionsUtils {
 			Class superClassOnt = Class.forName(ontologyClass);
 			Field field = superClassOnt.getField("MY_URI");
 			myURI = (String) field.get(superClassOnt);
+		} catch (ClassNotFoundException ex) {
+			// Try with ontology jars
+			try {
+				DexClassLoader cl = AndroidOntologyManagement
+						.getOntLoader(ontologyClass);
+				// reflection from ont jar
+				ManagedIndividual superClassOnt = (ManagedIndividual) Class.forName(ontologyClass, true, cl)
+						.newInstance();
+//				Field field = superClassOnt.getField("MY_URI");
+//				myURI = (String) field.get(superClassOnt);
+				myURI = superClassOnt.getClassURI();
+			} catch (Exception e) {
+				String errMsg = "Unable to extract MY_URI field from class ["
+						+ ontologyClass + "] due to [" + e.getMessage() + "]";
+				Log.e(TAG, errMsg);
+				throw new Exception(errMsg); //TODO another exception
+			}
 		} catch (Throwable th) {
 			String errMsg = "Unable to extract MY_URI field from class ["
 					+ ontologyClass + "] due to [" + th.getMessage() + "]";
-			throw new Exception(errMsg); // TODO change this to another
-			// exception!
+			throw new Exception(errMsg); //TODO another exception
 		}
 
 		return myURI;
@@ -55,13 +81,26 @@ public class ReflectionsUtils {
 		Constructor ctor = null;
 		try {
 			Class theClass = Class.forName(javaClass);
-
 			ctor = theClass.getConstructor(new Class[] { String.class });
+		} catch (ClassNotFoundException ex) {
+			// Try with ontology jars
+			try {
+				DexClassLoader cl = AndroidOntologyManagement
+						.getOntLoader(javaClass);
+				// reflection from ont jar
+				ManagedIndividual theClass = (ManagedIndividual) Class.forName(javaClass, true, cl)
+						.newInstance();
+				ctor = theClass.getClass().getConstructor(new Class[] { String.class });
+			} catch (Exception e) {
+				String errMsg = "Error when populating (again) output object ["
+						+ javaClass + "] due to [" + e.getMessage() + "]";
+				Log.e(TAG, errMsg);
+				throw new Exception(errMsg); //TODO another exception
+			}
 		} catch (Throwable th) {
 			String errMsg = "Error when populating output object [" + javaClass
 					+ "] due to [" + th.getMessage() + "]";
-			throw new Exception(errMsg); // TODO: change this to another
-			// exception!
+			throw new Exception(errMsg); //TODO another exception
 		}
 
 		return ctor;
