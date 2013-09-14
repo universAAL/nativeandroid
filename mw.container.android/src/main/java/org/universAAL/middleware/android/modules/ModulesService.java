@@ -60,6 +60,16 @@ import org.universAAL.middleware.serialization.turtle.TurtleSerializer;
 import org.universAAL.middleware.serialization.turtle.TurtleUtil;
 import org.universAAL.middleware.service.ServiceBus;
 import org.universAAL.middleware.service.impl.ServiceBusImpl;
+import org.universAAL.middleware.tracker.IBusMemberRegistry;
+import org.universAAL.ri.gateway.communicator.service.impl.CommunicatorStarter;
+import org.universAAL.ri.gateway.eimanager.ExportOperationInterceptor;
+import org.universAAL.ri.gateway.eimanager.ImportOperationInterceptor;
+import org.universAAL.ri.gateway.eimanager.impl.EIManagerRegistryListener;
+import org.universAAL.ri.gateway.eimanager.impl.EIOperationManager;
+import org.universAAL.ri.gateway.eimanager.impl.ExportManagerImpl;
+import org.universAAL.ri.gateway.eimanager.impl.ImportManagerImpl;
+import org.universAAL.ri.gateway.eimanager.impl.security.ExportSecurityOperationInterceptor;
+import org.universAAL.ri.gateway.eimanager.impl.security.ImportSecurityOperationInterceptor;
 
 import ae.com.sun.xml.bind.v2.model.annotation.RuntimeInlineAnnotationReader;
 import ae.com.sun.xml.bind.v2.model.annotation.XmlSchemaMine;
@@ -250,6 +260,58 @@ public class ModulesService extends Service {
 
 				started = true;
 				Log.d(TAG, "All the Modules have been STARTED");
+				
+				// //////////////////GATEWAY///////////////////////////
+				ModuleContext modContext9 = uAALBundleContainer.THE_CONTAINER
+						.registerModule(new Object[] { context,
+								"ri.gateway.communicator" });
+				Properties gatewayProps = getProperties("ri.gateway.communicator.core");
+				if (gatewayProps == null) {
+					gatewayProps = new Properties();
+				}
+				try {
+					CommunicatorStarter inst;
+
+					inst = new CommunicatorStarter(modContext9, gatewayProps);
+					ExportManagerImpl exportManager = new ExportManagerImpl(
+							inst.getCommunicator());
+					ImportManagerImpl importManager = new ImportManagerImpl(
+							inst.getCommunicator());
+
+					inst.setManagers(importManager, exportManager);
+
+					IBusMemberRegistry reg = (IBusMemberRegistry) uAALBundleContainer.THE_CONTAINER
+							.fetchSharedObject(modContext9,
+									IBusMemberRegistry.busRegistryShareParams);
+
+					EIManagerRegistryListener expRegListener = new EIManagerRegistryListener(
+							exportManager);
+
+					EIManagerRegistryListener impRegListener = new EIManagerRegistryListener(
+							importManager);
+
+					reg.addBusRegistryListener(expRegListener, true);
+					reg.addBusRegistryListener(impRegListener, true);
+
+					uAALBundleContainer.THE_CONTAINER.fetchSharedObject(
+							modContext9,
+							new Object[] { ImportOperationInterceptor.class
+									.getName() }, EIOperationManager.Instance);
+					uAALBundleContainer.THE_CONTAINER.fetchSharedObject(
+							modContext9,
+							new Object[] { ExportOperationInterceptor.class
+									.getName() }, EIOperationManager.Instance);
+					uAALBundleContainer.THE_CONTAINER.shareObject(modContext9,
+							new ImportSecurityOperationInterceptor(),
+							new Object[] { ImportOperationInterceptor.class
+									.getName() });
+					uAALBundleContainer.THE_CONTAINER.shareObject(modContext9,
+							new ExportSecurityOperationInterceptor(),
+							new Object[] { ExportOperationInterceptor.class
+									.getName() });
+				} catch (Exception e) {
+					Log.e(TAG, "Could not start the Communicator Gateway", e);
+				}
 			}
 		}).start();
 	}
