@@ -664,7 +664,7 @@ public class AndroidJGroupsCommunicationConnector implements CommunicationConnec
             if (security) {
                 msgBuffer = CryptUtil.decrypt((String) msg.getObject());
             }
-            ChannelMessage channelMessage = ChannelMessage.unmarhall(msgBuffer);
+            ChannelMessage channelMessage = ChannelMessage.unmarshall(msgBuffer);
             wrapperCommunication.messageReceived(channelMessage);
         } catch (Exception ex) {
         	Log.e(TAG, "Failed to unmarhall message due to exception ",ex);
@@ -706,7 +706,7 @@ public class AndroidJGroupsCommunicationConnector implements CommunicationConnec
     }
 
     public Object handle(Message msg) throws Exception {
-        ChannelMessage channelMessage = ChannelMessage.unmarhall(new String(msg
+        ChannelMessage channelMessage = ChannelMessage.unmarshall(new String(msg
                 .getBuffer()));
         wrapperCommunication.messageReceived(channelMessage);
         return null;
