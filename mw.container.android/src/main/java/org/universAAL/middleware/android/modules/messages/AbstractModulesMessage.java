@@ -41,7 +41,7 @@ public class AbstractModulesMessage extends AbstractMessage {
 	protected ChannelMessage extractMessageFromExtras() {
 		String msg = intent.getStringExtra(StringConstants.EXTRAS_CONN_MESSAGE);
 		try {
-			return ChannelMessage.unmarhall(msg);
+			return ChannelMessage.unmarshall(msg);
 		} catch (Exception e) {
 			return null;
 		}
