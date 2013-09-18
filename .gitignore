@@ -1,11 +1,5 @@
 LightingSamples/UniversAALized/LightClient/bin
 LightingSamples/UniversAALized/LightServer/bin
-mw.acl.sodapop.android/.classpath
-mw.acl.sodapop.android/.project
-mw.acl.sodapop.android/.settings
-mw.acl.sodapop.android/assets
-mw.acl.sodapop.android/bin
-mw.acl.sodapop.android/gen
 mw.container.android/.classpath
 mw.container.android/.project
 mw.container.android/.settings
