@@ -140,6 +140,11 @@
 	  <artifactId>cling-core</artifactId>
 	  <version>1.0.5</version>
 	</dependency>
+	<dependency>
+	  <groupId>com.sun</groupId>
+	  <artifactId>tools</artifactId>
+	  <version>1.6.0</version>
+	</dependency>
   </dependencies>
 
   <build>

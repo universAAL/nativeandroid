@@ -34,6 +34,7 @@ import org.universAAL.middleware.context.ContextEventPattern;
 import org.universAAL.middleware.context.owl.ContextProvider;
 import org.universAAL.middleware.context.owl.ContextProviderType;
 import org.universAAL.middleware.sodapop.BusMember;
+import org.universAAL.middleware.sodapop.IRegistryListener;
 
 import android.content.Context;
 
@@ -184,4 +185,14 @@ public class AndroidContextBusRegistry extends AbstractAndroidBusMembersRegistry
     protected AbstractCommonBusSQLiteMngr createSQLiteMngr(Context context) {
 	return new ContextBusSQLiteMngr(context);
     }
+
+	public boolean addRegistryListener(IRegistryListener listener) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean removeRegistryListener(IRegistryListener listener) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }
