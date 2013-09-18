@@ -30,6 +30,7 @@ import org.universAAL.middleware.android.buses.servicebus.servicecallee.xml.obje
 import org.universAAL.middleware.android.buses.servicebus.servicecaller.AndroidServiceCallerProxy;
 import org.universAAL.middleware.android.buses.servicebus.servicecaller.xml.objects.ServiceRequestGroundingXmlObj;
 import org.universAAL.middleware.sodapop.BusMember;
+import org.universAAL.middleware.sodapop.IRegistryListener;
 
 import android.content.Context;
 
@@ -170,4 +171,14 @@ public class AndroidServiceBusRegistry extends AbstractAndroidBusMembersRegistry
     protected AbstractCommonBusSQLiteMngr createSQLiteMngr(Context context) {
 	return new ServiceBusSQLiteMngr(context);
     }
+
+	public boolean addRegistryListener(IRegistryListener listener) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean removeRegistryListener(IRegistryListener listener) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }
