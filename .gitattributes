@@ -1,4 +1,89 @@
 * text=auto !eol
+AALfficiency/AALfficiencyClient/.classpath -text svneol=unset#text/plain
+AALfficiency/AALfficiencyClient/.project -text svneol=unset#text/plain
+AALfficiency/AALfficiencyClient/.settings/org.eclipse.jdt.core.prefs -text svneol=unset#text/plain
+AALfficiency/AALfficiencyClient/AndroidManifest.xml -text svneol=unset#text/plain
+AALfficiency/AALfficiencyClient/NOTICE -text
+AALfficiency/AALfficiencyClient/bin/AALfficiencyClient.apk -text
+AALfficiency/AALfficiencyClient/bin/AndroidManifest.xml -text svneol=unset#text/plain
+AALfficiency/AALfficiencyClient/bin/R.txt -text svneol=unset#text/plain
+AALfficiency/AALfficiencyClient/bin/classes.dex -text
+AALfficiency/AALfficiencyClient/bin/dexedLibs/annotations-62bab95d6948a2db17bbc7976160b014.jar -text
+AALfficiency/AALfficiencyClient/bin/dexedLibs/com_facebook_android-a48636b772aa78de8edaffe6bf4b315c.jar -text
+AALfficiency/AALfficiencyClient/bin/jarlist.cache -text
+AALfficiency/AALfficiencyClient/bin/res/drawable-hdpi/activity.png -text
+AALfficiency/AALfficiencyClient/bin/res/drawable-hdpi/ic_launcher.png -text
+AALfficiency/AALfficiencyClient/bin/res/drawable-hdpi/icon.png -text
+AALfficiency/AALfficiencyClient/bin/res/drawable-hdpi/sep.png -text
+AALfficiency/AALfficiencyClient/bin/res/drawable-ldpi/activity.png -text
+AALfficiency/AALfficiencyClient/bin/res/drawable-ldpi/ic_launcher.png -text
+AALfficiency/AALfficiencyClient/bin/res/drawable-ldpi/icon.png -text
+AALfficiency/AALfficiencyClient/bin/res/drawable-ldpi/sep.png -text
+AALfficiency/AALfficiencyClient/bin/res/drawable-mdpi/activity.png -text
+AALfficiency/AALfficiencyClient/bin/res/drawable-mdpi/grafica.png -text
+AALfficiency/AALfficiencyClient/bin/res/drawable-mdpi/ic_launcher.png -text
+AALfficiency/AALfficiencyClient/bin/res/drawable-mdpi/icon.png -text
+AALfficiency/AALfficiencyClient/bin/res/drawable-mdpi/navigationnextitem.png -text
+AALfficiency/AALfficiencyClient/bin/res/drawable-mdpi/navigationpreviousitem.png -text
+AALfficiency/AALfficiencyClient/bin/res/drawable-mdpi/postear.png -text
+AALfficiency/AALfficiencyClient/bin/res/drawable-mdpi/sep.png -text
+AALfficiency/AALfficiencyClient/bin/res/drawable-mdpi/vertical.png -text
+AALfficiency/AALfficiencyClient/bin/res/drawable-xhdpi/activity.png -text
+AALfficiency/AALfficiencyClient/bin/res/drawable-xhdpi/ic_launcher.png -text
+AALfficiency/AALfficiencyClient/bin/res/drawable-xhdpi/icon.png -text
+AALfficiency/AALfficiencyClient/bin/res/drawable-xhdpi/sep.png -text
+AALfficiency/AALfficiencyClient/bin/resources.ap_ -text
+AALfficiency/AALfficiencyClient/lib/gson-2.1.jar -text
+AALfficiency/AALfficiencyClient/lib/org.eclipse.osgi_3.6.0.v20100517.jar -text
+AALfficiency/AALfficiencyClient/proguard-project.txt -text svneol=unset#text/plain
+AALfficiency/AALfficiencyClient/project.properties -text svneol=unset#text/plain
+AALfficiency/AALfficiencyClient/res/drawable-hdpi/activity.png -text
+AALfficiency/AALfficiencyClient/res/drawable-hdpi/electricity.jpg -text
+AALfficiency/AALfficiencyClient/res/drawable-hdpi/ic_launcher.png -text
+AALfficiency/AALfficiencyClient/res/drawable-hdpi/icon.png -text
+AALfficiency/AALfficiencyClient/res/drawable-hdpi/sep.png -text
+AALfficiency/AALfficiencyClient/res/drawable-ldpi/activity.png -text
+AALfficiency/AALfficiencyClient/res/drawable-ldpi/electricity.jpg -text
+AALfficiency/AALfficiencyClient/res/drawable-ldpi/ic_launcher.png -text
+AALfficiency/AALfficiencyClient/res/drawable-ldpi/icon.png -text
+AALfficiency/AALfficiencyClient/res/drawable-ldpi/sep.png -text
+AALfficiency/AALfficiencyClient/res/drawable-mdpi/activity.png -text
+AALfficiency/AALfficiencyClient/res/drawable-mdpi/electricity.jpg -text
+AALfficiency/AALfficiencyClient/res/drawable-mdpi/grafica.png -text
+AALfficiency/AALfficiencyClient/res/drawable-mdpi/ic_launcher.png -text
+AALfficiency/AALfficiencyClient/res/drawable-mdpi/icon.png -text
+AALfficiency/AALfficiencyClient/res/drawable-mdpi/navigationnextitem.png -text
+AALfficiency/AALfficiencyClient/res/drawable-mdpi/navigationpreviousitem.png -text
+AALfficiency/AALfficiencyClient/res/drawable-mdpi/postear.png -text
+AALfficiency/AALfficiencyClient/res/drawable-mdpi/publishfb.gif -text
+AALfficiency/AALfficiencyClient/res/drawable-mdpi/sep.png -text
+AALfficiency/AALfficiencyClient/res/drawable-mdpi/vertical.png -text
+AALfficiency/AALfficiencyClient/res/drawable-xhdpi/activity.png -text
+AALfficiency/AALfficiencyClient/res/drawable-xhdpi/electricity.jpg -text
+AALfficiency/AALfficiencyClient/res/drawable-xhdpi/ic_launcher.png -text
+AALfficiency/AALfficiencyClient/res/drawable-xhdpi/icon.png -text
+AALfficiency/AALfficiencyClient/res/drawable-xhdpi/sep.png -text
+AALfficiency/AALfficiencyClient/res/layout/action_bar_tab_content.xml -text svneol=unset#text/plain
+AALfficiency/AALfficiencyClient/res/layout/activityscore.xml -text svneol=unset#text/plain
+AALfficiency/AALfficiencyClient/res/layout/challenge.xml -text svneol=unset#text/plain
+AALfficiency/AALfficiencyClient/res/layout/electricscore.xml -text svneol=unset#text/plain
+AALfficiency/AALfficiencyClient/res/layout/list_item_layout.xml -text svneol=unset#text/plain
+AALfficiency/AALfficiencyClient/res/layout/main.xml -text svneol=unset#text/plain
+AALfficiency/AALfficiencyClient/res/layout/tips.xml -text svneol=unset#text/plain
+AALfficiency/AALfficiencyClient/res/layout/totalscore.xml -text svneol=unset#text/plain
+AALfficiency/AALfficiencyClient/res/raw/aalfficiency_client_service_request_grounding.xml -text svneol=unset#text/plain
+AALfficiency/AALfficiencyClient/res/values-es/strings.xml -text svneol=unset#text/plain
+AALfficiency/AALfficiencyClient/res/values/strings.xml -text svneol=unset#text/plain
+AALfficiency/AALfficiencyClient/src/org/universaal/nativeandroid/aalfficiencyclient/AALfficiencyClientActivity.java -text svneol=unset#text/plain
+AALfficiency/AALfficiencyClient/src/org/universaal/nativeandroid/aalfficiencyclient/ActivityScoreActivity.java -text svneol=unset#text/plain
+AALfficiency/AALfficiencyClient/src/org/universaal/nativeandroid/aalfficiencyclient/Challenge.java -text svneol=unset#text/plain
+AALfficiency/AALfficiencyClient/src/org/universaal/nativeandroid/aalfficiencyclient/ElectricScoreActivity.java -text svneol=unset#text/plain
+AALfficiency/AALfficiencyClient/src/org/universaal/nativeandroid/aalfficiencyclient/TipsActivity.java -text svneol=unset#text/plain
+AALfficiency/AALfficiencyClient/src/org/universaal/nativeandroid/aalfficiencyclient/TotalScoreActivity.java -text svneol=unset#text/plain
+AALfficiency/AALfficiencyClient/src/org/universaal/nativeandroid/aalfficiencyclient/utils/Constants.java -text svneol=unset#text/plain
+AALfficiency/AALfficiencyClient/src/org/universaal/nativeandroid/aalfficiencyclient/utils/Scores.java -text svneol=unset#text/plain
+AALfficiency/AALfficiencyClient/src/org/universaal/nativeandroid/aalfficiencyclient/utils/Tip.java -text svneol=unset#text/plain
+AALfficiency/AALfficiencyClient/src/org/universaal/nativeandroid/aalfficiencyclient/utils/TipsListAdapter.java -text svneol=unset#text/plain
 Files/Configurations/felix-conf-1.3.3/conf/ctxt.che.mobile/Mobile-Events.txt -text
 Files/Configurations/felix-conf-1.3.3/conf/etc/Home.space -text
 Files/Configurations/felix-conf-1.3.3/conf/etc/aalspace.xsd -text

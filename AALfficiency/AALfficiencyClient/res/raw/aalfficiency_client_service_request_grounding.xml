@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+	Copyright 2011-2012 TSB, http://www.tsbtecnologias.es
+	TSB - Tecnologías para la Salud y el Bienestar
+	
+	See the NOTICE file distributed with this work for additional 
+	information regarding copyright ownership
+	
+	Licensed under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
+	
+	  http://www.apache.org/licenses/LICENSE-2.0
+	
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
+-->
+<ServiceRequestGrounding version="1.0.0" xmlns="http://universAAL.org/AndroidService#"> 
+	<Ontologies>
+	    <Ontology javaClass="org.universAAL.ontology.aalfficiency.scores.AalfficiencyScoresOntology"/>
+	</Ontologies>
+	<Actions>
+		<Action 	androidAction="org.universaal.nativeandroid.aalfficiencyclient.GET_ACTIVITY_SCORE"
+					androidCategory="android.intent.category.DEFAULT"
+					serviceJavaClass="org.universAAL.ontology.aalfficiency.scores.AalfficiencyScores"
+					androidReplyToActionExtraParameter="replyToAction"
+					androidReplyToCategoryExtraParameter="replyToCategory">
+			<RequiredOutputs>
+				<RequiredOutput	uri="http://www.tsbtecnologias.es/AALfficiency.owl#ActivityData"
+								androidExtraParameter="activityscores"
+								androidExtraParameterJavaClass="android.os.Bundle"
+								javaClass= "org.universAAL.ontology.aalfficiency.scores.ActivityScore"> 
+		
+					<PropertyPath>
+						<Property uri="http://ontology.universAAL.org/AalfficiencyScores.owl#activityScore"/>
+					</PropertyPath>
+					<BundleProperties>
+							<BundleProperty uri="http://ontology.universAAL.org/AalfficiencyScores.owl#todayActivityScore"
+											androidName="{todayActivityScore}"/>
+							<BundleProperty uri="http://ontology.universAAL.org/AalfficiencyScores.owl#totalActivityScore"
+											androidName="{totalActivityScore}"/>
+							<BundleProperty uri="http://ontology.universAAL.org/AalfficiencyScores.owl#steps"
+											androidName="{steps}"/>
+							<BundleProperty uri="http://ontology.universAAL.org/AalfficiencyScores.owl#kcal"
+											androidName="{kcal}"/>
+							<BundleProperty uri="http://ontology.universAAL.org/AalfficiencyScores.owl#challenge"
+											androidName="{challenge}"/>
+						</BundleProperties>
+				</RequiredOutput>
+			</RequiredOutputs>
+		</Action>
+		<Action 	androidAction="org.universaal.nativeandroid.aalfficiencyclient.GET_ACTIVITY_CHALLENGE"
+					androidCategory="android.intent.category.DEFAULT"
+					serviceJavaClass="org.universAAL.ontology.aalfficiency.scores.AalfficiencyScores"
+					androidReplyToActionExtraParameter="replyToAction"
+					androidReplyToCategoryExtraParameter="replyToCategory">
+			<RequiredOutputs>
+				<RequiredOutput	uri="http://www.tsbtecnologias.es/AALfficiency.owl#ActivityChallenge"
+								androidExtraParameter="activitychallenge"
+								androidExtraParameterJavaClass="android.os.Bundle"
+								javaClass= "org.universAAL.ontology.aalfficiency.scores.Challenge"> 
+		
+					<PropertyPath>
+						<Property uri="http://ontology.universAAL.org/AalfficiencyScores.owl#activityChallenge"/>
+					</PropertyPath>
+					<BundleProperties>
+							<BundleProperty uri="http://ontology.universAAL.org/AalfficiencyScores.owl#Description"
+											androidName="{Description}"/>
+							<BundleProperty uri="http://ontology.universAAL.org/AalfficiencyScores.owl#Goal"
+											androidName="{Goal}"/>
+					</BundleProperties>
+				</RequiredOutput>
+			</RequiredOutputs>
+		</Action>
+		
+		
+		<Action 	androidAction="org.universaal.nativeandroid.aalfficiencyclient.GET_ELECTRICITY_SCORE"
+					androidCategory="android.intent.category.DEFAULT"
+					serviceJavaClass="org.universAAL.ontology.aalfficiency.scores.AalfficiencyScores"
+					androidReplyToActionExtraParameter="replyToAction"
+					androidReplyToCategoryExtraParameter="replyToCategory">
+			<RequiredOutputs>
+				<RequiredOutput	uri="http://www.tsbtecnologias.es/AALfficiency.owl#ElectricityData"
+								androidExtraParameter="electricityscores"
+								androidExtraParameterJavaClass="android.os.Bundle"
+								javaClass= "org.universAAL.ontology.aalfficiency.scores.ElectricityScore"> 
+		
+					<PropertyPath>
+						<Property uri="http://ontology.universAAL.org/AalfficiencyScores.owl#electricityScore"/>
+					</PropertyPath>
+					<BundleProperties>
+							<BundleProperty uri="http://ontology.universAAL.org/AalfficiencyScores.owl#todayElectricityScore"
+											androidName="{todayElectricityScore}"/>
+							<BundleProperty uri="http://ontology.universAAL.org/AalfficiencyScores.owl#totalElectricityScore"
+											androidName="{totalElectricityScore}"/>
+							<BundleProperty uri="http://ontology.universAAL.org/AalfficiencyScores.owl#saving"
+											androidName="{saving}"/>
+							<BundleProperty uri="http://ontology.universAAL.org/AalfficiencyScores.owl#challenge"
+											androidName="{challenge}"/>
+						</BundleProperties>
+				</RequiredOutput>
+			</RequiredOutputs>
+		</Action>
+		
+		<Action 	androidAction="org.universaal.nativeandroid.aalfficiencyclient.GET_ELECTRICITY_CHALLENGE"
+					androidCategory="android.intent.category.DEFAULT"
+					serviceJavaClass="org.universAAL.ontology.aalfficiency.scores.AalfficiencyScores"
+					androidReplyToActionExtraParameter="replyToAction"
+					androidReplyToCategoryExtraParameter="replyToCategory">
+			<RequiredOutputs>
+				<RequiredOutput	uri="http://www.tsbtecnologias.es/AALfficiency.owl#ElectricityChallenge"
+								androidExtraParameter="electricitychallenge"
+								androidExtraParameterJavaClass="android.os.Bundle"
+								javaClass= "org.universAAL.ontology.aalfficiency.scores.Challenge"> 
+		
+					<PropertyPath>
+						<Property uri="http://ontology.universAAL.org/AalfficiencyScores.owl#electricityChallenge"/>
+					</PropertyPath>
+					<BundleProperties>
+							<BundleProperty uri="http://ontology.universAAL.org/AalfficiencyScores.owl#Description"
+											androidName="{Description}"/>
+							<BundleProperty uri="http://ontology.universAAL.org/AalfficiencyScores.owl#Goal"
+											androidName="{Goal}"/>
+					</BundleProperties>
+				</RequiredOutput>
+			</RequiredOutputs>
+		</Action>
+			
+		<Action 	androidAction="org.universaal.nativeandroid.aalfficiencyclient.GET_ADVICES"
+					androidCategory="android.intent.category.DEFAULT"
+					serviceJavaClass="org.universAAL.ontology.aalfficiency.scores.AalfficiencyScores"
+					androidReplyToActionExtraParameter="replyToAction"
+					androidReplyToCategoryExtraParameter="replyToCategory">
+			<RequiredOutputs>
+				<RequiredOutput	uri="http://www.tsbtecnologias.es/AALfficiency.owl#Advices"
+								androidExtraParameter="tips"
+								androidExtraParameterJavaClass="java.util.List"
+								javaClass= "org.universAAL.ontology.aalfficiency.scores.AalfficiencyAdvices"> 
+		
+					<PropertyPath>
+						<Property uri="http://ontology.universAAL.org/AalfficiencyScores.owl#aalfficiencyAdvices"/>
+					</PropertyPath>
+				</RequiredOutput>
+				
+			</RequiredOutputs>
+		</Action>
+		<Action androidAction="org.universaal.nativeandroid.aalfficiencyclient.GET_ADVICE_INFO" 
+			    androidCategory="android.intent.category.DEFAULT"
+				serviceJavaClass="org.universAAL.ontology.aalfficiency.scores.AalfficiencyScores"
+				androidReplyToActionExtraParameter="replyToAction"
+				androidReplyToCategoryExtraParameter="replyToCategory">
+			
+			<ValueFilters>
+				<ValueFilter 	androidExtraParameter="advice_uri"
+								androidExtraParameterJavaClass="java.lang.String"
+								javaClass="org.universAAL.ontology.aalfficiency.scores.Advice">		
+					<PropertyPath>
+						<Property uri="http://ontology.universAAL.org/AalfficiencyScores.owl#advice"/>
+					</PropertyPath>
+				</ValueFilter>
+			</ValueFilters>
+			<RequiredOutputs>
+				<RequiredOutput	uri="http://www.tsbtecnologias.es/AALfficiency.owl#AdviceInfo"
+								androidExtraParameter="advice"
+								androidExtraParameterJavaClass="android.os.Bundle"
+								javaClass= "org.universAAL.ontology.aalfficiency.scores.Advice"> 
+		
+					<PropertyPath>
+						<Property uri="http://ontology.universAAL.org/AalfficiencyScores.owl#advice"/>
+					</PropertyPath>
+					<BundleProperties>
+							<BundleProperty uri="http://ontology.universAAL.org/AalfficiencyScores.owl#type"
+											androidName="{type}"/>
+							<BundleProperty uri="http://ontology.universAAL.org/AalfficiencyScores.owl#text"
+											androidName="{text}"/>
+						</BundleProperties>
+				</RequiredOutput>
+			</RequiredOutputs>
+		</Action>
+		
+		<Action androidAction="org.universaal.nativeandroid.aalfficiencyclient.GET_CHALLENGE_INFO" 
+			    androidCategory="android.intent.category.DEFAULT"
+				serviceJavaClass="org.universAAL.ontology.aalfficiency.scores.AalfficiencyScores">
+			
+			<ValueFilters>
+				<ValueFilter 	androidExtraParameter="challenge_uri"
+								androidExtraParameterJavaClass="java.lang.String"
+								javaClass="org.universAAL.ontology.aalfficiency.scores.Challenge">		
+					<PropertyPath>
+						<Property uri="http://ontology.universAAL.org/AalfficiencyScores.owl#Challenge"/>
+					</PropertyPath>
+				</ValueFilter>
+			</ValueFilters>
+			<RequiredOutputs>
+				<RequiredOutput	uri="http://www.tsbtecnologias.es/AALfficiency.owl#Challenge"
+								androidExtraParameter="challenge"
+								androidExtraParameterJavaClass="android.os.Bundle"
+								javaClass= "org.universAAL.ontology.aalfficiency.scores.Challenge"> 
+		
+					<PropertyPath>
+						<Property uri="http://ontology.universAAL.org/AalfficiencyScores.owl#advice"/>
+					</PropertyPath>
+					<BundleProperties>
+							<BundleProperty uri="http://ontology.universAAL.org/AalfficiencyScores.owl#description"
+											androidName="{description}"/>
+						</BundleProperties>
+				</RequiredOutput>
+			</RequiredOutputs>
+		</Action>
+		
+	</Actions>
+</ServiceRequestGrounding>
