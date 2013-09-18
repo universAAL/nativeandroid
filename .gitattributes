@@ -84,6 +84,41 @@ AALfficiency/AALfficiencyClient/src/org/universaal/nativeandroid/aalfficiencycli
 AALfficiency/AALfficiencyClient/src/org/universaal/nativeandroid/aalfficiencyclient/utils/Scores.java -text svneol=unset#text/plain
 AALfficiency/AALfficiencyClient/src/org/universaal/nativeandroid/aalfficiencyclient/utils/Tip.java -text svneol=unset#text/plain
 AALfficiency/AALfficiencyClient/src/org/universaal/nativeandroid/aalfficiencyclient/utils/TipsListAdapter.java -text svneol=unset#text/plain
+AALfficiency/com_facebook_android/.classpath -text svneol=unset#text/plain
+AALfficiency/com_facebook_android/.project -text svneol=unset#text/plain
+AALfficiency/com_facebook_android/.settings/org.eclipse.jdt.core.prefs -text svneol=unset#text/plain
+AALfficiency/com_facebook_android/AndroidManifest.xml -text svneol=unset#text/plain
+AALfficiency/com_facebook_android/bin/AndroidManifest.xml -text svneol=unset#text/plain
+AALfficiency/com_facebook_android/bin/R.txt -text svneol=unset#text/plain
+AALfficiency/com_facebook_android/bin/com_facebook_android.jar -text
+AALfficiency/com_facebook_android/bin/jarlist.cache -text
+AALfficiency/com_facebook_android/bin/res/drawable-hdpi/close.png -text
+AALfficiency/com_facebook_android/bin/res/drawable-hdpi/facebook_icon.png -text
+AALfficiency/com_facebook_android/bin/res/drawable-ldpi/close.png -text
+AALfficiency/com_facebook_android/bin/res/drawable-ldpi/facebook_icon.png -text
+AALfficiency/com_facebook_android/bin/res/drawable-xhdpi/close.png -text
+AALfficiency/com_facebook_android/bin/res/drawable/close.png -text
+AALfficiency/com_facebook_android/bin/res/drawable/facebook_icon.png -text
+AALfficiency/com_facebook_android/build.xml -text svneol=unset#text/plain
+AALfficiency/com_facebook_android/proguard-project.txt -text svneol=unset#text/plain
+AALfficiency/com_facebook_android/project.properties -text svneol=unset#text/plain
+AALfficiency/com_facebook_android/res/drawable-hdpi/close.png -text
+AALfficiency/com_facebook_android/res/drawable-hdpi/facebook_icon.png -text
+AALfficiency/com_facebook_android/res/drawable-ldpi/close.png -text
+AALfficiency/com_facebook_android/res/drawable-ldpi/facebook_icon.png -text
+AALfficiency/com_facebook_android/res/drawable-xhdpi/close.png -text
+AALfficiency/com_facebook_android/res/drawable/close.png -text
+AALfficiency/com_facebook_android/res/drawable/facebook_icon.png -text
+AALfficiency/com_facebook_android/src/com/facebook/android/AsyncFacebookRunner.java -text svneol=unset#text/plain
+AALfficiency/com_facebook_android/src/com/facebook/android/BaseDialogListener.java -text svneol=unset#text/plain
+AALfficiency/com_facebook_android/src/com/facebook/android/BaseRequestListener.java -text svneol=unset#text/plain
+AALfficiency/com_facebook_android/src/com/facebook/android/DialogError.java -text svneol=unset#text/plain
+AALfficiency/com_facebook_android/src/com/facebook/android/Facebook.java -text svneol=unset#text/plain
+AALfficiency/com_facebook_android/src/com/facebook/android/FacebookError.java -text svneol=unset#text/plain
+AALfficiency/com_facebook_android/src/com/facebook/android/FbDialog.java -text svneol=unset#text/plain
+AALfficiency/com_facebook_android/src/com/facebook/android/SessionEvents.java -text svneol=unset#text/plain
+AALfficiency/com_facebook_android/src/com/facebook/android/SessionStore.java -text svneol=unset#text/plain
+AALfficiency/com_facebook_android/src/com/facebook/android/Util.java -text svneol=unset#text/plain
 Files/Configurations/felix-conf-1.3.3/conf/ctxt.che.mobile/Mobile-Events.txt -text
 Files/Configurations/felix-conf-1.3.3/conf/etc/Home.space -text
 Files/Configurations/felix-conf-1.3.3/conf/etc/aalspace.xsd -text
