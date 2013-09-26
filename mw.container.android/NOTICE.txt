@@ -29,10 +29,6 @@ Copyright 2000 Software Research Associates, Inc., Tokyo, Japan.
 Licensed under specific by IPA.
 
 This product uses software developed at
-JavaScript Object Notation (http://www.json.org/)
-Licensed under modified MIT license.
-
-This product uses software developed at
 JGroups (http://www.jgroups.org)
 Licensed under the Apache License 2.0.
 
@@ -45,15 +41,9 @@ The Legion Of The Bouncy Castle (http://www.bouncycastle.org)
 Copyright (c) 2000 - 2009 The Legion Of The Bouncy Castle
 Licensed under modified MIT X11 License.
 
-This product uses software developed at
-Sun Microsystems Inc.(http://www.oracle.com/index.html)
-Licensed under the GNU General Public License (GPL),
-version 2, with the CLASSPATH exception.
-
 III. License Summary
 - Apache License 2.0
 - Modified MIT license
 - BSD License
 - INFORMATION-TECHNOLOGY PROMOTION AGENCY (IPA) License
-- GPL with Classpath Exception
 

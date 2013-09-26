@@ -71,8 +71,8 @@ import org.universAAL.ri.gateway.eimanager.impl.ImportManagerImpl;
 import org.universAAL.ri.gateway.eimanager.impl.security.ExportSecurityOperationInterceptor;
 import org.universAAL.ri.gateway.eimanager.impl.security.ImportSecurityOperationInterceptor;
 
-import ae.com.sun.xml.bind.v2.model.annotation.RuntimeInlineAnnotationReader;
-import ae.com.sun.xml.bind.v2.model.annotation.XmlSchemaMine;
+//import ae.com.sun.xml.bind.v2.model.annotation.RuntimeInlineAnnotationReader;
+//import ae.com.sun.xml.bind.v2.model.annotation.XmlSchemaMine;
 import android.app.Notification;
 import android.app.Service;
 import android.content.Context;
@@ -107,23 +107,23 @@ public class ModulesService extends Service {
 
 		ontCacheFile=getDir("outdex", Context.MODE_PRIVATE);
 		
-		RuntimeInlineAnnotationReader
-				.cachePackageAnnotation(
-						org.universAAL.middleware.connectors.deploy.karaf.model.ObjectFactory.class
-								.getPackage(),
-						new XmlSchemaMine(
-								"http://karaf.apache.org/xmlns/features/v1.0.0"));
-		RuntimeInlineAnnotationReader
-				.cachePackageAnnotation(
-						org.universAAL.middleware.deploymanager.uapp.model.ObjectFactory.class
-								.getPackage(), new XmlSchemaMine(
-								"http://www.universaal.org/aal-uapp/v1.0.0"));
-		RuntimeInlineAnnotationReader
-				.cachePackageAnnotation(
-						org.universAAL.middleware.interfaces.aalspace.model.ObjectFactory.class
-								.getPackage(),
-						new XmlSchemaMine(
-								"http://universaal.org/aalspace-channel/v1.0.0"));
+//		RuntimeInlineAnnotationReader
+//				.cachePackageAnnotation(
+//						org.universAAL.middleware.connectors.deploy.karaf.model.ObjectFactory.class
+//								.getPackage(),
+//						new XmlSchemaMine(
+//								"http://karaf.apache.org/xmlns/features/v1.0.0"));
+//		RuntimeInlineAnnotationReader
+//				.cachePackageAnnotation(
+//						org.universAAL.middleware.deploymanager.uapp.model.ObjectFactory.class
+//								.getPackage(), new XmlSchemaMine(
+//								"http://www.universaal.org/aal-uapp/v1.0.0"));
+//		RuntimeInlineAnnotationReader
+//				.cachePackageAnnotation(
+//						org.universAAL.middleware.interfaces.aalspace.model.ObjectFactory.class
+//								.getPackage(),
+//						new XmlSchemaMine(
+//								"http://universaal.org/aalspace-channel/v1.0.0"));
 
 		// TODO Check! Supposedly, this starts as foreground but without
 		// notification

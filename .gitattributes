@@ -358,17 +358,12 @@ ValidateSodaPopKey/res/values/strings.xml -text
 ValidateSodaPopKey/src/org/universAAL/middleware/android/validatesodapopkey/ValidateSodaPopKeyActivity.java -text
 mw.container.android/ASL2.0.txt -text
 mw.container.android/AndroidManifest.xml -text
-mw.container.android/GPL-Exception-istack.txt -text
 mw.container.android/IPA.txt -text
 mw.container.android/JSLP-BSD.txt -text
-mw.container.android/JSON-MIT.txt -text
 mw.container.android/MITX.txt -text
 mw.container.android/NOTICE.txt -text
-mw.container.android/libs/activation.jar -text
-mw.container.android/libs/additionnal.jar -text
 mw.container.android/libs/jgroups-3.3.1.Android.jar -text
 mw.container.android/libs/jslp-1.0.0.RC5.jar -text
-mw.container.android/libs/txw2-20110809.jar -text
 mw.container.android/pom.xml -text
 mw.container.android/project.properties -text
 mw.container.android/res/drawable-hdpi/ic_launcher.png -text

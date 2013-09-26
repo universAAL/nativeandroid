@@ -39,13 +39,11 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import javax.xml.XMLConstants;
-import ae.javax.xml.bind.JAXBContext;
-import ae.javax.xml.bind.JAXBException;
-import ae.javax.xml.bind.Unmarshaller;
 import android.util.Log;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
+import org.universAAL.middleware.aalspace.json.model.AALSpace;
 import org.universAAL.middleware.container.ModuleContext;
 import org.universAAL.middleware.container.SharedObjectListener;
 import org.universAAL.middleware.interfaces.ChannelDescriptor;
@@ -55,12 +53,13 @@ import org.universAAL.middleware.interfaces.aalspace.AALSpaceCard;
 import org.universAAL.middleware.interfaces.aalspace.AALSpaceDescriptor;
 import org.universAAL.middleware.interfaces.aalspace.AALSpaceStatus;
 import org.universAAL.middleware.interfaces.aalspace.Consts;
-import org.universAAL.middleware.interfaces.aalspace.model.Aalspace;
-import org.universAAL.middleware.interfaces.aalspace.model.Aalspace.CommunicationChannels;
-import org.universAAL.middleware.interfaces.aalspace.model.Aalspace.PeeringChannel;
-import org.universAAL.middleware.interfaces.aalspace.model.Aalspace.SpaceDescriptor;
+import org.universAAL.middleware.interfaces.aalspace.model.IAALSpace;
+import org.universAAL.middleware.interfaces.aalspace.model.IChannelDescriptor;
+import org.universAAL.middleware.interfaces.aalspace.model.ICommunicationChannels;
+import org.universAAL.middleware.interfaces.aalspace.model.IPeeringChannel;
+import org.universAAL.middleware.interfaces.aalspace.model.ISpaceDescriptor;
 import org.universAAL.middleware.managers.aalspace.MatchingResultImpl;
-import org.universAAL.middleware.managers.aalspace.util.AALSpaceSchemaEventHandler;
+//import org.universAAL.middleware.managers.aalspace.util.AALSpaceSchemaEventHandler;
 import org.universAAL.middleware.managers.api.AALSpaceEventHandler;
 import org.universAAL.middleware.managers.api.AALSpaceListener;
 import org.universAAL.middleware.managers.api.AALSpaceManager;
@@ -106,7 +105,7 @@ public class AndroidAALSpaceManagerImpl implements AALSpaceEventHandler,
     private Map<String, AALSpaceDescriptor> managedAALspaces;
     private Boolean pendingAALSpace = new Boolean(false);
     private String spaceExtension;
-    private Aalspace aalSpaceDefaultConfiguration;
+    private IAALSpace aalSpaceDefaultConfiguration;
 
     // thread
     private AndroidJoiner joiner;
@@ -119,8 +118,8 @@ public class AndroidAALSpaceManagerImpl implements AALSpaceEventHandler,
     private ScheduledFuture refreshFuture;
 
     private String aalSpaceConfigurationPath;
-    private JAXBContext jc;
-    private Unmarshaller unmarshaller;
+//    private JAXBContext jc;
+//    private Unmarshaller unmarshaller;
     private boolean aalSpaceValidation;
     private String aalSpaceSchemaURL;
     private String aalSpaceSchemaName;
@@ -140,17 +139,17 @@ public class AndroidAALSpaceManagerImpl implements AALSpaceEventHandler,
 	public AndroidAALSpaceManagerImpl(ModuleContext context, String altConfigDir) {
 		this.context = context;
 		this.altConfigDir = altConfigDir;
-		try {
-			jc = JAXBContext.newInstance("org.universAAL.middleware.interfaces.aalspace.model", this.getClass().getClassLoader());
-			unmarshaller = jc.createUnmarshaller();
+//		try {
+//			jc = JAXBContext.newInstance("org.universAAL.middleware.interfaces.aalspace.model", this.getClass().getClassLoader());
+//			unmarshaller = jc.createUnmarshaller();
 			managedAALspaces = new Hashtable<String, AALSpaceDescriptor>();
 			foundAALSpaces = Collections
 					.synchronizedSet(new HashSet<AALSpaceCard>());
 			peers = new HashMap<String, PeerCard>();
 			listeners = new ArrayList<AALSpaceListener>();
-		} catch (JAXBException e) {
-            Log.e(TAG,  "Error during AALSpace parser intialization: ",e);
-        }
+//		} catch (JAXBException e) {
+//            Log.e(TAG,  "Error during AALSpace parser intialization: ",e);
+//        }
         try {
             TIMEOUT = Long.parseLong(System.getProperty(
                     AALSpaceManager.COMUNICATION_TIMEOUT_KEY,
@@ -171,7 +170,7 @@ public class AndroidAALSpaceManagerImpl implements AALSpaceEventHandler,
         return peers;
     }
 
-    public Aalspace getAalSpaceDefaultConfiguration() {
+    public IAALSpace getAalSpaceDefaultConfiguration() {
         return aalSpaceDefaultConfiguration;
     }
 
@@ -227,35 +226,35 @@ public class AndroidAALSpaceManagerImpl implements AALSpaceEventHandler,
                 return initialized;
             }
 
-            // XML Schema validation
-            if (aalSpaceValidation && aalSpaceConfigurationPath != null
-                    && aalSpaceSchemaName != null) {
-                Log.d(TAG,  "Initialize AALSpace schema validation" );
-                SchemaFactory sf = SchemaFactory
-                        .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-                try {
-                    File aalSpaceSchemaFile = new File(aalSpaceSchemaURL
-                            + File.separatorChar + aalSpaceSchemaName);
-                    Schema aalSpaceSchema = null;
-                    if (aalSpaceSchemaFile.canRead()) {
-                        aalSpaceSchema = sf.newSchema(aalSpaceSchemaFile);
-                        unmarshaller.setSchema(aalSpaceSchema);
-                        unmarshaller
-                                .setEventHandler(new AALSpaceSchemaEventHandler(
-                                        context));
-                    } else
-                        Log.w(TAG,  "Unable to read AALSpace Scham from path: "
-                                        + aalSpaceSchemaFile.getAbsolutePath() );
-
-                } catch (SAXException e) {
-                    Log.e(TAG,  "Error during AALSpace schema initialization: ",e);
-                } catch (NullPointerException e) {
-                    Log.e(TAG, "Error during AALSpace schema initialization: ",e);
-                } catch (JAXBException e) {
-                    Log.e(TAG,  "Error during AALSpace Schema Event handler initialization: ",e );
-                }
-                initialized = true;
-            }
+//            // XML Schema validation
+//            if (aalSpaceValidation && aalSpaceConfigurationPath != null
+//                    && aalSpaceSchemaName != null) {
+//                Log.d(TAG,  "Initialize AALSpace schema validation" );
+//                SchemaFactory sf = SchemaFactory
+//                        .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+//                try {
+//                    File aalSpaceSchemaFile = new File(aalSpaceSchemaURL
+//                            + File.separatorChar + aalSpaceSchemaName);
+//                    Schema aalSpaceSchema = null;
+//                    if (aalSpaceSchemaFile.canRead()) {
+//                        aalSpaceSchema = sf.newSchema(aalSpaceSchemaFile);
+//                        unmarshaller.setSchema(aalSpaceSchema);
+//                        unmarshaller
+//                                .setEventHandler((ValidationEventHandler) new AALSpaceSchemaEventHandler(
+//                                        context));
+//                    } else
+//                        Log.w(TAG,  "Unable to read AALSpace Scham from path: "
+//                                        + aalSpaceSchemaFile.getAbsolutePath() );
+//
+//                } catch (SAXException e) {
+//                    Log.e(TAG,  "Error during AALSpace schema initialization: ",e);
+//                } catch (NullPointerException e) {
+//                    Log.e(TAG, "Error during AALSpace schema initialization: ",e);
+//                } catch (JAXBException e) {
+//                    Log.e(TAG,  "Error during AALSpace Schema Event handler initialization: ",e );
+//                }
+//                initialized = true;
+//            }
 
             // start the threads
             // Joiner -> AALSapce joiner
@@ -286,7 +285,7 @@ public class AndroidAALSpaceManagerImpl implements AALSpaceEventHandler,
      *            Default AAL Space configurations
      * @return true if the creation succeeded, false otherwise
      */
-    public synchronized void initAALSpace(Aalspace aalSpaceDefaultConfiguration) {
+    public synchronized void initAALSpace(IAALSpace aalSpaceDefaultConfiguration) {
         // configure the MW with the space configurations
         try {
             if (currentAALSpace == null && aalSpaceDefaultConfiguration != null) {
@@ -507,7 +506,7 @@ public class AndroidAALSpaceManagerImpl implements AALSpaceEventHandler,
 
     }
 
-    private Dictionary<String, String> buildAALSpaceFilter(Aalspace space) {
+    private Dictionary<String, String> buildAALSpaceFilter(IAALSpace space) {
         Dictionary<String, String> filters = new Hashtable<String, String>();
         if (space != null) {
             try {
@@ -526,10 +525,10 @@ public class AndroidAALSpaceManagerImpl implements AALSpaceEventHandler,
     }
 
     private List<ChannelDescriptor> getChannels(
-            List<org.universAAL.middleware.interfaces.aalspace.model.ChannelDescriptor> channels) {
+            List<IChannelDescriptor> channels) {
         List<ChannelDescriptor> theChannels = new ArrayList<ChannelDescriptor>();
 
-        for (org.universAAL.middleware.interfaces.aalspace.model.ChannelDescriptor channel : channels) {
+        for (IChannelDescriptor channel : channels) {
             ChannelDescriptor singleChannel = new ChannelDescriptor(
                     channel.getChannelName(), channel.getChannelURL(),
                     channel.getChannelValue());
@@ -540,7 +539,7 @@ public class AndroidAALSpaceManagerImpl implements AALSpaceEventHandler,
     }
 
     private ChannelDescriptor getChannel(
-            org.universAAL.middleware.interfaces.aalspace.model.ChannelDescriptor channel) {
+            IChannelDescriptor channel) {
         ChannelDescriptor singleChannel = new ChannelDescriptor(
                 channel.getChannelName(), channel.getChannelURL(),
                 channel.getChannelValue());
@@ -558,7 +557,7 @@ public class AndroidAALSpaceManagerImpl implements AALSpaceEventHandler,
      * @param space
      * @return
      */
-    private Dictionary<String, String> getAALSpaceProperties(Aalspace space) {
+    private Dictionary<String, String> getAALSpaceProperties(IAALSpace space) {
         Dictionary<String, String> properties = new Hashtable<String, String>();
         try {
 
@@ -605,9 +604,9 @@ public class AndroidAALSpaceManagerImpl implements AALSpaceEventHandler,
         return spaces;
     }
 
-    public Aalspace readAALSpaceDefaultConfigurations() {
+    public IAALSpace readAALSpaceDefaultConfigurations() {
 	Log.d(TAG,  "Reading AALSpace configuration." );
-	try {
+//	try {
 	    String aalSpaceConfigurationPath = this.aalSpaceConfigurationPath;
 	    File spaceConfigDirectory = new File(aalSpaceConfigurationPath);
 
@@ -633,8 +632,10 @@ public class AndroidAALSpaceManagerImpl implements AALSpaceEventHandler,
                 spaces = getFileList(aalSpaceConfigurationPath);
 	    }
 
-	    String value = "<![CDATA[<config xmlns=\"urn:org:jgroups\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"urn:org:jgroups http://www.jgroups.org/schema/JGroups-3.0.xsd\"> <UDP mcast_port=\"${jgroups.udp.mcast_port:45588}\" tos=\"8\" ucast_recv_buf_size=\"20M\" ucast_send_buf_size=\"640K\" mcast_recv_buf_size=\"25M\" mcast_send_buf_size=\"640K\" loopback=\"true\" discard_incompatible_packets=\"true\" max_bundle_size=\"64K\" max_bundle_timeout=\"30\" ip_ttl=\"${jgroups.udp.ip_ttl:8}\" enable_bundling=\"true\" enable_diagnostics=\"false\" thread_naming_pattern=\"cl\" timer_type=\"new\" timer.min_threads=\"4\" timer.max_threads=\"10\" timer.keep_alive_time=\"3000\" timer.queue_max_size=\"500\" thread_pool.enabled=\"true\" thread_pool.min_threads=\"2\" thread_pool.max_threads=\"8\" thread_pool.keep_alive_time=\"5000\" thread_pool.queue_enabled=\"true\" thread_pool.queue_max_size=\"10000\" thread_pool.rejection_policy=\"discard\" oob_thread_pool.enabled=\"true\" oob_thread_pool.min_threads=\"1\" oob_thread_pool.max_threads=\"8\" oob_thread_pool.keep_alive_time=\"5000\" oob_thread_pool.queue_enabled=\"false\" oob_thread_pool.queue_max_size=\"100\" oob_thread_pool.rejection_policy=\"Run\"/> <PING timeout=\"2000\" num_initial_members=\"3\"/> <MERGE2 max_interval=\"30000\" min_interval=\"10000\"/> <FD_SOCK/> <FD_ALL/> <VERIFY_SUSPECT timeout=\"1500\" /> <BARRIER /> <pbcast.NAKACK exponential_backoff=\"300\" xmit_stagger_timeout=\"200\" use_mcast_xmit=\"false\" discard_delivered_msgs=\"true\"/> <UNICAST /> <pbcast.STABLE stability_delay=\"1000\" desired_avg_gossip=\"50000\" max_bytes=\"4M\"/> <pbcast.GMS print_local_addr=\"true\" join_timeout=\"3000\" view_bundling=\"true\"/> <UFC max_credits=\"2M\" min_threshold=\"0.4\"/> <MFC max_credits=\"2M\" min_threshold=\"0.4\"/> <FRAG2 frag_size=\"60K\" /> <pbcast.STATE_TRANSFER /> <pbcast.FLUSH /> </config>]]>";
-	    String url="file:/mnt/sdcard/data/felix-conf-1.3.3/conf/etc/udp.xml";
+//	    String value = "<![CDATA[<config xmlns=\"urn:org:jgroups\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"urn:org:jgroups http://www.jgroups.org/schema/JGroups-3.0.xsd\"> <UDP mcast_port=\"${jgroups.udp.mcast_port:45588}\" tos=\"8\" ucast_recv_buf_size=\"20M\" ucast_send_buf_size=\"640K\" mcast_recv_buf_size=\"25M\" mcast_send_buf_size=\"640K\" loopback=\"true\" discard_incompatible_packets=\"true\" max_bundle_size=\"64K\" max_bundle_timeout=\"30\" ip_ttl=\"${jgroups.udp.ip_ttl:8}\" enable_bundling=\"true\" enable_diagnostics=\"false\" thread_naming_pattern=\"cl\" timer_type=\"new\" timer.min_threads=\"4\" timer.max_threads=\"10\" timer.keep_alive_time=\"3000\" timer.queue_max_size=\"500\" thread_pool.enabled=\"true\" thread_pool.min_threads=\"2\" thread_pool.max_threads=\"8\" thread_pool.keep_alive_time=\"5000\" thread_pool.queue_enabled=\"true\" thread_pool.queue_max_size=\"10000\" thread_pool.rejection_policy=\"discard\" oob_thread_pool.enabled=\"true\" oob_thread_pool.min_threads=\"1\" oob_thread_pool.max_threads=\"8\" oob_thread_pool.keep_alive_time=\"5000\" oob_thread_pool.queue_enabled=\"false\" oob_thread_pool.queue_max_size=\"100\" oob_thread_pool.rejection_policy=\"Run\"/> <PING timeout=\"2000\" num_initial_members=\"3\"/> <MERGE2 max_interval=\"30000\" min_interval=\"10000\"/> <FD_SOCK/> <FD_ALL/> <VERIFY_SUSPECT timeout=\"1500\" /> <BARRIER /> <pbcast.NAKACK exponential_backoff=\"300\" xmit_stagger_timeout=\"200\" use_mcast_xmit=\"false\" discard_delivered_msgs=\"true\"/> <UNICAST /> <pbcast.STABLE stability_delay=\"1000\" desired_avg_gossip=\"50000\" max_bytes=\"4M\"/> <pbcast.GMS print_local_addr=\"true\" join_timeout=\"3000\" view_bundling=\"true\"/> <UFC max_credits=\"2M\" min_threshold=\"0.4\"/> <MFC max_credits=\"2M\" min_threshold=\"0.4\"/> <FRAG2 frag_size=\"60K\" /> <pbcast.STATE_TRANSFER /> <pbcast.FLUSH /> </config>]]>";
+//	    String url="file:/mnt/sdcard/data/felix-conf-1.3.3/conf/etc/udp.xml";
+	    String value2 = "<![CDATA[<config xmlns=\"urn:org:jgroups\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"urn:org:jgroups http://www.jgroups.org/schema/JGroups-3.0.xsd\"> <UDP mcast_port=\"${jgroups.udp.mcast_port:45588}\" tos=\"8\" ucast_recv_buf_size=\"20M\" ucast_send_buf_size=\"640K\" mcast_recv_buf_size=\"25M\" mcast_send_buf_size=\"640K\" loopback=\"true\" discard_incompatible_packets=\"true\" max_bundle_size=\"64K\" max_bundle_timeout=\"30\" ip_ttl=\"${jgroups.udp.ip_ttl:8}\" enable_bundling=\"true\" enable_diagnostics=\"false\" thread_naming_pattern=\"cl\" timer_type=\"new\" timer.min_threads=\"4\" timer.max_threads=\"10\" timer.keep_alive_time=\"3000\" timer.queue_max_size=\"500\" thread_pool.enabled=\"true\" thread_pool.min_threads=\"2\" thread_pool.max_threads=\"8\" thread_pool.keep_alive_time=\"5000\"   thread_pool.queue_enabled=\"true\" thread_pool.queue_max_size=\"10000\" thread_pool.rejection_policy=\"discard\" oob_thread_pool.enabled=\"true\" oob_thread_pool.min_threads=\"1\" oob_thread_pool.max_threads=\"8\" oob_thread_pool.keep_alive_time=\"5000\" oob_thread_pool.queue_enabled=\"true\" oob_thread_pool.queue_max_size=\"100\" oob_thread_pool.rejection_policy=\"discard\"/><PING timeout=\"2000\" num_initial_members=\"3\"/><MERGE2 max_interval=\"30000\" min_interval=\"10000\"/><FD_SOCK/><FD_ALL/><VERIFY_SUSPECT timeout=\"1500\"  /><BARRIER /><pbcast.NAKACK exponential_backoff=\"300\" xmit_stagger_timeout=\"200\" use_mcast_xmit=\"false\" discard_delivered_msgs=\"true\"/><UNICAST /><pbcast.STABLE stability_delay=\"1000\" desired_avg_gossip=\"50000\" max_bytes=\"4M\"/> <pbcast.GMS print_local_addr=\"true\" join_timeout=\"3000\" view_bundling=\"true\"/> <UFC max_credits=\"2M\" min_threshold=\"0.4\"/><MFC max_credits=\"2M\" min_threshold=\"0.4\"/><FRAG2 frag_size=\"60K\"  /><pbcast.STATE_TRANSFER /><pbcast.FLUSH /></config>]]>";
+	    String url2="http://aaloa.isti.cnr.it/udp.xml";
 	    //TODO Locate url elsehow
 	    // evaluate the list of config files
 	    if (spaces != null && spaces.length > 0) {
@@ -646,48 +647,52 @@ public class AndroidAALSpaceManagerImpl implements AALSpaceEventHandler,
 			aalSpaceConfigurationPath + File.separatorChar
 				+ spaces[0]);
 		if (defaultSpaceConfiguration.canRead()) {
-		    Aalspace space = (Aalspace) unmarshaller
-			    .unmarshal(defaultSpaceConfiguration);
+//		    Aalspace space = (Aalspace) unmarshaller
+//			    .unmarshal(defaultSpaceConfiguration);
 		    // PATCH: HARDCODED CONFIGURATION (unmarshaller dont work)
-		    space=new Aalspace();
+		    AALSpace space = new AALSpace();
 		    space.setAdmin("admin");
 		    space.setOwner("owner");
 		    space.setSecurity("security");
-		    SpaceDescriptor sd = new SpaceDescriptor();
+		    ISpaceDescriptor sd = new AALSpace.SpaceDescriptor();
 		    sd.setSpaceName("myHome3");
 		    sd.setProfile("HomeSpace");
 		    sd.setSpaceId("8888");
 		    sd.setSpaceDescription("Super Domestic Home");
 		    space.setSpaceDescriptor(sd);
-		    PeeringChannel pc = new PeeringChannel();
-		    org.universAAL.middleware.interfaces.aalspace.model.ChannelDescriptor cd = new org.universAAL.middleware.interfaces.aalspace.model.ChannelDescriptor();
+		    IPeeringChannel pc = new AALSpace.PeeringChannel();
+		    IChannelDescriptor cd = new org.universAAL.middleware.aalspace.json.model.ChannelDescriptor();
 		    cd.setChannelName("mw.modules.aalspace.osgi");
-		    cd.setChannelURL(url);
-		    cd.setChannelValue(value);
+		    cd.setChannelURL(url2);
+		    cd.setChannelValue(value2);
 		    pc.setChannelDescriptor(cd);
 		    space.setPeeringChannel(pc);
-		    CommunicationChannels ccs = new CommunicationChannels();
-		    org.universAAL.middleware.interfaces.aalspace.model.ChannelDescriptor cd1 = new org.universAAL.middleware.interfaces.aalspace.model.ChannelDescriptor();
+		    ICommunicationChannels ccs = new AALSpace.CommunicationChannels();
+		    IChannelDescriptor cd1 = new org.universAAL.middleware.aalspace.json.model.ChannelDescriptor();
 		    cd1.setChannelName("mw.brokers.control.osgi"); // ONLY NAMES
 								   // ARE NEEDED
-		    cd1.setChannelURL(url);
-		    cd1.setChannelValue(value);
-		    org.universAAL.middleware.interfaces.aalspace.model.ChannelDescriptor cd2 = new org.universAAL.middleware.interfaces.aalspace.model.ChannelDescriptor();
+		    cd1.setChannelURL(url2);
+		    cd1.setChannelValue(value2);
+		    IChannelDescriptor cd2 = new org.universAAL.middleware.aalspace.json.model.ChannelDescriptor();
 		    cd2.setChannelName("mw.bus.context.osgi");
-		    cd2.setChannelURL(url);
-		    cd2.setChannelValue(value);
-		    org.universAAL.middleware.interfaces.aalspace.model.ChannelDescriptor cd3 = new org.universAAL.middleware.interfaces.aalspace.model.ChannelDescriptor();
+		    cd2.setChannelURL(url2);
+		    cd2.setChannelValue(value2);
+		    IChannelDescriptor cd3 = new org.universAAL.middleware.aalspace.json.model.ChannelDescriptor();
 		    cd3.setChannelName("mw.bus.service.osgi");
-		    cd3.setChannelURL(url);
-		    cd3.setChannelValue(value);
-		    org.universAAL.middleware.interfaces.aalspace.model.ChannelDescriptor cd4 = new org.universAAL.middleware.interfaces.aalspace.model.ChannelDescriptor();
+		    cd3.setChannelURL(url2);
+		    cd3.setChannelValue(value2);
+		    IChannelDescriptor cd4 = new org.universAAL.middleware.aalspace.json.model.ChannelDescriptor();
 		    cd4.setChannelName("mw.bus.ui.osgi");
-		    cd4.setChannelURL(url);
-		    cd.setChannelValue(value);
-		    ccs.getChannelDescriptor().add(cd1);
-		    ccs.getChannelDescriptor().add(cd2);
-		    ccs.getChannelDescriptor().add(cd3);
-		    ccs.getChannelDescriptor().add(cd4);
+		    cd4.setChannelURL(url2);
+		    cd4.setChannelValue(value2);
+//		    ccs.getChannelDescriptor().add(cd1);
+//		    ccs.getChannelDescriptor().add(cd2);
+//		    ccs.getChannelDescriptor().add(cd3);
+//		    ccs.getChannelDescriptor().add(cd4);
+		    ccs.addChannelDescriptor(cd1);
+		    ccs.addChannelDescriptor(cd2);
+		    ccs.addChannelDescriptor(cd3);
+		    ccs.addChannelDescriptor(cd4);
 		    space.setCommunicationChannels(ccs);
 		    if (space != null) {
 			return space;
@@ -703,10 +708,10 @@ public class AndroidAALSpaceManagerImpl implements AALSpaceEventHandler,
 		Log.w(TAG, "No default AALSpaces found");
 		return null;
 	    }
-	} catch (JAXBException e) {
-	    Log.e(TAG,  "Error during JAXB initialization: ",e);
-	    return null;
-	}
+//	} catch (JAXBException e) {
+//	    Log.e(TAG,  "Error during JAXB initialization: ",e);
+//	    return null;
+//	}
 
     }
 

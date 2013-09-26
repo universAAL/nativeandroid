@@ -29,9 +29,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.universAAL.middleware.brokers.Broker;
 import org.universAAL.middleware.brokers.control.ExceptionUtils;
 import org.universAAL.middleware.brokers.control.WaitForResponse;
@@ -39,12 +36,13 @@ import org.universAAL.middleware.brokers.message.BrokerMessage;
 import org.universAAL.middleware.brokers.message.BrokerMessage.BrokerMessageTypes;
 import org.universAAL.middleware.brokers.message.BrokerMessageFields;
 import org.universAAL.middleware.brokers.message.control.ControlMessage;
-import org.universAAL.middleware.brokers.message.deploy.DeployMessage;
-import org.universAAL.middleware.brokers.message.deploy.DeployMessage.DeployMessageType;
-import org.universAAL.middleware.brokers.message.deploy.DeployMessageException;
-import org.universAAL.middleware.brokers.message.deploy.DeployMessageFields;
-import org.universAAL.middleware.brokers.message.deploy.DeployNotificationPayload;
-import org.universAAL.middleware.brokers.message.deploy.DeployPayload;
+import org.universAAL.middleware.brokers.message.gson.GsonParserBuilder;
+//import org.universAAL.middleware.brokers.message.deploy.DeployMessage;
+//import org.universAAL.middleware.brokers.message.deploy.DeployMessage.DeployMessageType;
+//import org.universAAL.middleware.brokers.message.deploy.DeployMessageException;
+//import org.universAAL.middleware.brokers.message.deploy.DeployMessageFields;
+//import org.universAAL.middleware.brokers.message.deploy.DeployNotificationPayload;
+//import org.universAAL.middleware.brokers.message.deploy.DeployPayload;
 import org.universAAL.middleware.connectors.exception.CommunicationConnectorException;
 import org.universAAL.middleware.connectors.util.ChannelMessage;
 import org.universAAL.middleware.container.ModuleContext;
@@ -54,16 +52,18 @@ import org.universAAL.middleware.interfaces.PeerCard;
 import org.universAAL.middleware.interfaces.aalspace.AALSpaceCard;
 import org.universAAL.middleware.interfaces.aalspace.AALSpaceDescriptor;
 import org.universAAL.middleware.interfaces.aalspace.AALSpaceStatus;
-import org.universAAL.middleware.interfaces.mpa.UAPPCard;
+//import org.universAAL.middleware.interfaces.mpa.UAPPCard;
 import org.universAAL.middleware.interfaces.mpa.UAPPPartStatus;
 import org.universAAL.middleware.managers.api.AALSpaceEventHandler;
 import org.universAAL.middleware.managers.api.AALSpaceManager;
-import org.universAAL.middleware.managers.api.DeployManager;
+//import org.universAAL.middleware.managers.api.DeployManager;
 import org.universAAL.middleware.managers.api.DeployManagerEventHandler;
 import org.universAAL.middleware.modules.AALSpaceModule;
 import org.universAAL.middleware.modules.CommunicationModule;
 import org.universAAL.middleware.modules.ConfigurableCommunicationModule;
 import org.universAAL.middleware.modules.listener.MessageListener;
+
+import com.google.gson.Gson;
 
 import android.util.Log;
 
@@ -82,7 +82,7 @@ public class AndroidControlBroker implements SharedObjectListener, Broker,
     private ConfigurableCommunicationModule communicationModule;
     private AALSpaceEventHandler aalSpaceEventHandler;
     private AALSpaceManager aalSpaceManager;
-    private DeployManager deployManager;
+//    private DeployManager deployManager;
 //    private DeployConnector deployConnector;
     private boolean initialized = false;
     private HashMap<String, WaitForResponse> openTransaction = new HashMap<String, WaitForResponse>();
@@ -233,18 +233,18 @@ public class AndroidControlBroker implements SharedObjectListener, Broker,
                 initialized = false;
                 return initialized;
             }
-            Log.d(TAG, "Fetching the DeployManager..." );
-            refs = context.getContainer().fetchSharedObject(context,
-                    new Object[] { DeployManager.class.getName().toString() },
-                    this);
-            if (refs != null) {
-
-                Log.d(TAG, "DeployManager found!" );
-                deployManager = (DeployManager) refs[0];
-                Log.d(TAG, "DeployManager fetched" );
-            } else {
-                Log.d(TAG,"No DeployManager found" );
-            }
+//            Log.d(TAG, "Fetching the DeployManager..." );
+//            refs = context.getContainer().fetchSharedObject(context,
+//                    new Object[] { DeployManager.class.getName().toString() },
+//                    this);
+//            if (refs != null) {
+//
+//                Log.d(TAG, "DeployManager found!" );
+//                deployManager = (DeployManager) refs[0];
+//                Log.d(TAG, "DeployManager fetched" );
+//            } else {
+//                Log.d(TAG,"No DeployManager found" );
+//            }
 /*
             LogUtils.logDebug(context, AndroidControlBroker.class, "controlBroker",
                     new Object[] { "Fetching the DeployConnector..." }, null);
@@ -313,10 +313,10 @@ public class AndroidControlBroker implements SharedObjectListener, Broker,
             Log.d(TAG, "AALSpaceEventHandler registered..." );
             aalSpaceEventHandler = (AALSpaceEventHandler) arg0;
         }
-        if (arg0 != null && arg0 instanceof DeployManager) {
-            Log.d(TAG, "DeployManager registered..." );
-            deployManager = (DeployManager) arg0;
-        }
+//        if (arg0 != null && arg0 instanceof DeployManager) {
+//            Log.d(TAG, "DeployManager registered..." );
+//            deployManager = (DeployManager) arg0;
+//        }
         /*if (arg0 != null && arg0 instanceof DeployConnector) {
             Log.d(TAG,context, AndroidControlBroker.class, "controlBroker",
                     new Object[] { "DeployConnector registered..." }, null);
@@ -333,10 +333,10 @@ public class AndroidControlBroker implements SharedObjectListener, Broker,
             Log.i(TAG, "AALSpaceManager unregistered!" );
             aalSpaceManager = null;
             initialized = false;
-        } else if (arg0 instanceof DeployManager) {
-            Log.i(TAG, "DeployManager unregistered!");
-            deployManager = null;
-            initialized = false;
+//        } else if (arg0 instanceof DeployManager) {
+//            Log.i(TAG, "DeployManager unregistered!");
+//            deployManager = null;
+//            initialized = false;
 
         } else if (arg0 instanceof AALSpaceModule) {
             Log.i(TAG,  "AALSpaceModule unregistered!");
@@ -531,75 +531,75 @@ public class AndroidControlBroker implements SharedObjectListener, Broker,
         aalSpaceModule.announceNewPeer(spaceCard, peer);
     }
 
-    /**
-     * This method allows to request the installation of an uApp part to a
-     * target node
-     *
-     * @param target
-     *            The node into which to install the part
-     * @param card
-     *            The reference information of the part of the application
-     *            within a service to install
-     */
-    public void requestToUninstallPart(PeerCard target, UAPPCard card) {
-    	//TODO Deploy to  be done later
-    }
+//    /**
+//     * This method allows to request the installation of an uApp part to a
+//     * target node
+//     *
+//     * @param target
+//     *            The node into which to install the part
+//     * @param card
+//     *            The reference information of the part of the application
+//     *            within a service to install
+//     */
+//    public void requestToUninstallPart(PeerCard target, UAPPCard card) {
+//    	//TODO Deploy to  be done later
+//    }
 
-    /**
-     * This method allows to request the installation of an uApp part to a
-     * target node
-     *
-     * @param partAsZip
-     *            The part serialized as a String. The payload of the
-     *            DeployMessage has to be a string
-     * @param target
-     *            The node into which to install the part
-     * @param card
-     *            The reference information of the part of the application
-     *            within a service to install
-     */
-    public void requestToInstallPart(byte[] partAsZip, PeerCard target,
-            UAPPCard card) {
-    	//TODO Deploy to be done later
-    }
+//    /**
+//     * This method allows to request the installation of an uApp part to a
+//     * target node
+//     *
+//     * @param partAsZip
+//     *            The part serialized as a String. The payload of the
+//     *            DeployMessage has to be a string
+//     * @param target
+//     *            The node into which to install the part
+//     * @param card
+//     *            The reference information of the part of the application
+//     *            within a service to install
+//     */
+//    public void requestToInstallPart(byte[] partAsZip, PeerCard target,
+//            UAPPCard card) {
+//    	//TODO Deploy to be done later
+//    }
 
-    /**
-     *
-     * @param mpaCard
-     * @param partID
-     * @param peer
-     *            The peer notifying the staus of the part
-     * @param partStatus
-     */
-    public void notifyRequestToInstallPart(UAPPCard mpaCard, String partID,
-            UAPPPartStatus partStatus) {
-        if (!init()) {
-            Log.w(TAG, "ControlBroker not initialized.");
-            return;
-        }
-        if (deployManager.isDeployCoordinator()) {
-            // notify the local deploy manager
-            if (deployManager instanceof DeployManagerEventHandler)
-                ((DeployManagerEventHandler) deployManager)
-                        .installationPartNotification(mpaCard, partID,
-                                aalSpaceManager.getMyPeerCard(), partStatus);
-
-        } else {
-            // send the message to the remote DeployManager
-            DeployNotificationPayload notificationPayload = new DeployNotificationPayload(
-                    null, mpaCard, partID, partStatus);
-            DeployMessage deployMessage = new DeployMessage(
-                    DeployMessageType.PART_NOTIFICATION, notificationPayload);
-
-            // ...and wrap it as ChannelMessage
-            List<String> channelName = new ArrayList<String>();
-            channelName.add(getBrokerName());
-            ChannelMessage channelMessage = new ChannelMessage(getmyPeerCard(),
-                    deployMessage.toString(), channelName);
-            communicationModule.send(channelMessage, this, aalSpaceManager
-                    .getAALSpaceDescriptor().getDeployManager());
-        }
-    }
+//    /**
+//     *
+//     * @param mpaCard
+//     * @param partID
+//     * @param peer
+//     *            The peer notifying the staus of the part
+//     * @param partStatus
+//     */
+//    public void notifyRequestToInstallPart(UAPPCard mpaCard, String partID,
+//            UAPPPartStatus partStatus) {
+//        if (!init()) {
+//            Log.w(TAG, "ControlBroker not initialized.");
+//            return;
+//        }
+//        if (deployManager.isDeployCoordinator()) {
+//            // notify the local deploy manager
+//            if (deployManager instanceof DeployManagerEventHandler)
+//                ((DeployManagerEventHandler) deployManager)
+//                        .installationPartNotification(mpaCard, partID,
+//                                aalSpaceManager.getMyPeerCard(), partStatus);
+//
+//        } else {
+//            // send the message to the remote DeployManager
+//            DeployNotificationPayload notificationPayload = new DeployNotificationPayload(
+//                    null, mpaCard, partID, partStatus);
+//            DeployMessage deployMessage = new DeployMessage(
+//                    DeployMessageType.PART_NOTIFICATION, notificationPayload);
+//
+//            // ...and wrap it as ChannelMessage
+//            List<String> channelName = new ArrayList<String>();
+//            channelName.add(getBrokerName());
+//            ChannelMessage channelMessage = new ChannelMessage(getmyPeerCard(),
+//                    deployMessage.toString(), channelName);
+//            communicationModule.send(channelMessage, this, aalSpaceManager
+//                    .getAALSpaceDescriptor().getDeployManager());
+//        }
+//    }
 
     public String getBrokerName() {
         return context.getID();
@@ -611,42 +611,29 @@ public class AndroidControlBroker implements SharedObjectListener, Broker,
                         + message.toString() + " error: " ,e);
     }
 
-    public void messageReceived(ChannelMessage message) {
-        if (!init()) {
-            Log.w(TAG, "ControlBroker not initialized. Dropping the message" );
-            return;
-        }
-        deployManager = getDeployManager();
-        if (message != null) {
-            try {
-                JSONObject obj = new JSONObject(message.getContent());
-                BrokerMessageTypes mtype = BrokerMessageTypes.valueOf(obj
-                        .getString(BrokerMessageFields.BROKER_MESSAGE_TYPE));
-                BrokerMessage msg = (BrokerMessage) unmarshall(message
-                        .getContent());
+	public void messageReceived(ChannelMessage message) {
+		if (!init()) {
+			Log.w(TAG, "ControlBroker not initialized. Dropping the message");
+			return;
+		}
+		// deployManager = getDeployManager();
+		BrokerMessage cm = null;
+		if (message != null) {
+			try {
+				Gson gson = GsonParserBuilder.getInstance().buildGson();
+				cm = gson.fromJson(message.getContent(), BrokerMessage.class);
+			} catch (Exception e) {
+				Log.e(TAG, "Error during message receive: ", e);
+			}
 
-                switch (mtype) {
-                case DeployMessage:
-                    handleDeployMessage(message.getSender(),
-                            (DeployMessage) msg);
-                    break;
-
-                case ControlMessage:
-                    handleControlMessage(message.getSender(),
-                            (ControlMessage) msg);
-                    break;
-
-                default:
-                    break;
-                }
-
-            } catch (JSONException e) {
-                Log.e(TAG, "Error during message receive: ",e);
-            }
-
-        }
-
-    }
+		}
+		if (cm instanceof ControlMessage) {
+			handleControlMessage(message.getSender(), (ControlMessage) cm);
+		} /*
+		 * else if (cm instanceof DeployMessage) {
+		 * handleDeployMessage(message.getSender(), (DeployMessage) cm); }
+		 */
+	}
 
     private void handleControlMessage(PeerCard sender, ControlMessage msg) {
         switch (msg.getMessageType()) {
@@ -760,34 +747,34 @@ public class AndroidControlBroker implements SharedObjectListener, Broker,
 
     }
 
-    private void handleDeployMessage(PeerCard sender, DeployMessage msg) {
-    	//TODO Deploy to be done later
-    }
+//    private void handleDeployMessage(PeerCard sender, DeployMessage msg) {
+//    	//TODO Deploy to be done later
+//    }
 
     public void installArtefactLocally(String serializedPart) {
     	//TODO Deploy to be done later
     }
 
-    private DeployManager getDeployManager() {
-        Log.d(TAG, "Fetching the DeployManager..." );
-        if (deployManager == null) {
-            Object[] refs = context.getContainer().fetchSharedObject(context,
-                    new Object[] { DeployManager.class.getName().toString() },
-                    this);
-            if (refs != null) {
-
-                Log.d(TAG, "DeployManager found!" );
-                deployManager = (DeployManager) refs[0];
-                Log.d(TAG, "DeployManager fetched" );
-                return deployManager;
-            } else {
-                Log.w(TAG, "No DeployManager found" );
-                return null;
-            }
-        } else
-            return deployManager;
-
-    }
+//    private DeployManager getDeployManager() {
+//        Log.d(TAG, "Fetching the DeployManager..." );
+//        if (deployManager == null) {
+//            Object[] refs = context.getContainer().fetchSharedObject(context,
+//                    new Object[] { DeployManager.class.getName().toString() },
+//                    this);
+//            if (refs != null) {
+//
+//                Log.d(TAG, "DeployManager found!" );
+//                deployManager = (DeployManager) refs[0];
+//                Log.d(TAG, "DeployManager fetched" );
+//                return deployManager;
+//            } else {
+//                Log.w(TAG, "No DeployManager found" );
+//                return null;
+//            }
+//        } else
+//            return deployManager;
+//
+//    }
 
 	/*
 	 * private DeployConnector getDeployConnector() { }
@@ -835,97 +822,18 @@ public class AndroidControlBroker implements SharedObjectListener, Broker,
         // communicationModule.sendAll(message, this);
     }
 
-    private BrokerMessage unmarshallDeployMessage(JSONObject obj,
-            String original) {
-        DeployMessage deployMessage = null;
-        try {
-
-            DeployPayload deployPayload = null;
-
-            // unmarshall the message type
-            DeployMessageType deployMessageType = DeployMessageType.valueOf(obj
-                    .getString(DeployMessageFields.DEPLOY_MTYPE));
-
-            // unmarhsall MPACard
-            String uappCardServiceId = obj
-                    .getString(DeployMessageFields.UAPP_CARD_SERVICE_ID);
-            String uappCardPartId = obj
-                    .getString(DeployMessageFields.UAPP_CARD_PART_ID);
-
-            String uappCardName = obj.getString(DeployMessageFields.UAPP_NAME);
-            String uappCardID = obj.getString(DeployMessageFields.UAPP_ID);
-            String uappCardDescr = obj.getString(DeployMessageFields.UAPP_DESC);
-            UAPPCard mpaCard = new UAPPCard(uappCardServiceId, uappCardID,
-                    uappCardPartId, uappCardName, uappCardDescr);
-
-            int payloadType = obj.getInt(DeployMessageFields.DEPLOY_PAYLOAD);
-            if (payloadType == 1) {
-
-                // unmarhall DeployPayload
-                // byte[] thePart =
-                // obj.getString(DeployMessageFields.PART).getBytes();
-                JSONArray bytes = obj.getJSONArray(DeployMessageFields.PART)
-                        .getJSONArray(0);
-                byte[] thePart = new byte[bytes.length()];
-                for (int i = 0; i < thePart.length; i++) {
-                    thePart[i] = (byte) bytes.getInt(i);
-                }
-                deployPayload = new DeployPayload(thePart, mpaCard);
-
-            } else if (payloadType == 2) {
-
-                // unmarhsall DeployNotificationPayload
-                String mpaPartID = obj.getString(DeployMessageFields.PART_ID);
-                UAPPPartStatus mpaPartStatus = UAPPPartStatus.valueOf(obj
-                        .getString(DeployMessageFields.PART_STATUS));
-
-                deployPayload = new DeployNotificationPayload(null, mpaCard,
-                        mpaPartID, mpaPartStatus);
-            }
-            deployMessage = new DeployMessage(deployMessageType, deployPayload);
-
-        } catch (JSONException e) {
-            final String MSG = "Unable to unmarshall message due to JSON parsing issue:";
-            Log.d(TAG, MSG , e);
-            Log.d(TAG, MSG + ExceptionUtils.stackTraceAsString(e) );
-            new DeployMessageException(MSG + e.toString(), e);
-        } catch (Exception e) {
-            final String MSG = "Unable to unmarshall message due to generic error: ";
-            Log.d(TAG, MSG , e);
-            Log.d(TAG, MSG + ExceptionUtils.stackTraceAsString(e) );
-            new DeployMessageException(MSG + e.toString(), e);
-        }
-        return deployMessage;
-    }
-
     public BrokerMessage unmarshall(String message) {
-        JSONObject obj = null;
-        BrokerMessageTypes mtype = null;
         try {
-            obj = new JSONObject(message);
-            // check if the message can be serialized
-            mtype = BrokerMessageTypes.valueOf(obj
-                    .getString(BrokerMessageFields.BROKER_MESSAGE_TYPE));
-            switch (mtype) {
-            case DeployMessage:
-                return unmarshallDeployMessage(obj, message);
-            case ControlMessage:
-                return unmarshallControlMessage(obj, message);
-            }
+        	Gson gson = GsonParserBuilder.getInstance().buildGson();
+     	    return gson.fromJson(message, ControlMessage.class);
         } catch (Exception e) {
-            final String MSG = "Unable to unmarshall message due to JSON parsing issue, while retriving file "
+            final String MSG = "Unable to unmarshall message due to GSON parsing issue, while retriving file "
                     + BrokerMessageFields.BROKER_MESSAGE_TYPE + ":";
             Log.d(TAG, MSG , e);
             Log.d(TAG, MSG + ExceptionUtils.stackTraceAsString(e) );
-            new DeployMessageException(MSG + e.toString(), e);
+            new /*DeployMessage*/Exception(MSG + e.toString(), e);
         }
         return null;
-
-    }
-
-    private BrokerMessage unmarshallControlMessage(JSONObject obj,
-            String original) throws Exception {
-        return ControlMessage.unmarshall(original);
     }
 
     public Map<String, Serializable> requestPeerAttributes(
