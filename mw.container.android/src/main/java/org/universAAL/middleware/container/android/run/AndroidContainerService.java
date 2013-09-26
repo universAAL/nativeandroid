@@ -49,8 +49,8 @@ import org.universAAL.middleware.datarep.SharedResources;
 import org.universAAL.middleware.managers.aalspace.AALSpaceManagerImpl;
 import org.universAAL.middleware.managers.api.AALSpaceEventHandler;
 import org.universAAL.middleware.managers.api.AALSpaceManager;
-import org.universAAL.middleware.managers.api.DeployManager;
-import org.universAAL.middleware.managers.deploy.DeployManagerImpl;
+//import org.universAAL.middleware.managers.api.DeployManager;
+//import org.universAAL.middleware.managers.deploy.DeployManagerImpl;
 import org.universAAL.middleware.modules.AALSpaceModule;
 import org.universAAL.middleware.modules.CommunicationModule;
 import org.universAAL.middleware.modules.aalspace.AALSpaceModuleImpl;
@@ -65,8 +65,8 @@ import ch.ethz.iks.slp.Advertiser;
 import ch.ethz.iks.slp.Locator;
 import ch.ethz.iks.slp.ServiceLocationManager;
 
-import ae.com.sun.xml.bind.v2.model.annotation.RuntimeInlineAnnotationReader;
-import ae.com.sun.xml.bind.v2.model.annotation.XmlSchemaMine;
+//import ae.com.sun.xml.bind.v2.model.annotation.RuntimeInlineAnnotationReader;
+//import ae.com.sun.xml.bind.v2.model.annotation.XmlSchemaMine;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -94,7 +94,7 @@ public class AndroidContainerService extends Service {
 	private AALSpaceModuleImpl aalSpaceModule;
 	private ControlBroker controlBroker;
 	private AALSpaceManagerImpl spaceManager;
-	private DeployManagerImpl deployManager;
+//	private DeployManagerImpl deployManager;
 	private MulticastLock m_lock;
 
 	@Override
@@ -105,23 +105,23 @@ public class AndroidContainerService extends Service {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		RuntimeInlineAnnotationReader
-				.cachePackageAnnotation(
-						org.universAAL.middleware.connectors.deploy.karaf.model.ObjectFactory.class
-								.getPackage(),
-						new XmlSchemaMine(
-								"http://karaf.apache.org/xmlns/features/v1.0.0"));
-		RuntimeInlineAnnotationReader
-				.cachePackageAnnotation(
-						org.universAAL.middleware.deploymanager.uapp.model.ObjectFactory.class
-								.getPackage(), new XmlSchemaMine(
-								"http://www.universaal.org/aal-uapp/v1.0.0"));
-		RuntimeInlineAnnotationReader
-				.cachePackageAnnotation(
-						org.universAAL.middleware.interfaces.aalspace.model.ObjectFactory.class
-								.getPackage(),
-						new XmlSchemaMine(
-								"http://universaal.org/aalspace-channel/v1.0.0"));
+//		RuntimeInlineAnnotationReader
+//				.cachePackageAnnotation(
+//						org.universAAL.middleware.connectors.deploy.karaf.model.ObjectFactory.class
+//								.getPackage(),
+//						new XmlSchemaMine(
+//								"http://karaf.apache.org/xmlns/features/v1.0.0"));
+//		RuntimeInlineAnnotationReader
+//				.cachePackageAnnotation(
+//						org.universAAL.middleware.deploymanager.uapp.model.ObjectFactory.class
+//								.getPackage(), new XmlSchemaMine(
+//								"http://www.universaal.org/aal-uapp/v1.0.0"));
+//		RuntimeInlineAnnotationReader
+//				.cachePackageAnnotation(
+//						org.universAAL.middleware.interfaces.aalspace.model.ObjectFactory.class
+//								.getPackage(),
+//						new XmlSchemaMine(
+//								"http://universaal.org/aalspace-channel/v1.0.0"));
 
 		System.setProperty("java.net.preferIPv4Stack", "true");
 		System.setProperty("java.net.preferIPv6Stack", "false");
@@ -267,20 +267,20 @@ public class AndroidContainerService extends Service {
 					Log.d("Activator", "Registered");
 					// //////////////////////////////////////////////////////////////////ç
 
-					ModuleContext modContext7 = uAALBundleContainer.THE_CONTAINER
-							.registerModule(new Object[] { context,
-									"mw.managers.deploy.osgi" });
-					deployManager = new DeployManagerImpl(modContext7, confHome);
-					Dictionary deployManagerProps = getProperties("mw.managers.deploy.core");
-					if (deployManagerProps == null) {
-						deployManagerProps = new Hashtable<String, String>();
-					} else {
-						deployManager.loadConfigurations(deployManagerProps);
-					}
-					deployManager.init();
-					uAALBundleContainer.THE_CONTAINER.shareObject(modContext7,
-							deployManager,
-							new Object[] { DeployManager.class.getName() });
+//					ModuleContext modContext7 = uAALBundleContainer.THE_CONTAINER
+//							.registerModule(new Object[] { context,
+//									"mw.managers.deploy.osgi" });
+//					deployManager = new DeployManagerImpl(modContext7, confHome);
+//					Dictionary deployManagerProps = getProperties("mw.managers.deploy.core");
+//					if (deployManagerProps == null) {
+//						deployManagerProps = new Hashtable<String, String>();
+//					} else {
+//						deployManager.loadConfigurations(deployManagerProps);
+//					}
+//					deployManager.init();
+//					uAALBundleContainer.THE_CONTAINER.shareObject(modContext7,
+//							deployManager,
+//							new Object[] { DeployManager.class.getName() });
 					// ////////////////////////////////////////////////////////////////////
 
 					SharedResources.moduleContext = uAALBundleContainer.THE_CONTAINER

@@ -8,8 +8,8 @@
 		<version>2.0.0</version>
 	</parent>
 	<groupId>org.universAAL.middleware</groupId>
-	<artifactId>mw.cotainer.android</artifactId>
-	<version>2.0.0</version>
+	<artifactId>mw.container.android</artifactId>
+	<version>2.0.1-SNAPSHOT</version>
 	<packaging>apk</packaging>
 	<name>universAAL Android Container</name>
 	<properties>
@@ -79,23 +79,11 @@
 			<version>2.3.3</version>
 			<scope>provided</scope>
 		</dependency>
-		
-		<dependency>
-			<groupId>com.sun.istack</groupId>
-			<artifactId>istack-commons-runtime</artifactId>
-			<version>2.16</version>
-		</dependency>
-		
+
 		<dependency>
 			<groupId>org.universAAL.middleware</groupId>
 			<artifactId>mw.schemas</artifactId>
 			<version>2.0.1-SNAPSHOT</version>
-			<exclusions><!-- for manually adding jaxb android port -->
-			    <exclusion>
-			        <groupId>javax.xml.bind</groupId>
-					<artifactId>jaxb-api</artifactId>
-			    </exclusion>
-			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.universAAL.middleware</groupId>
@@ -131,10 +119,10 @@
 			<groupId>org.universAAL.middleware</groupId>
 			<artifactId>mw.connectors.discovery.slp.core</artifactId>
 			<version>2.0.1-SNAPSHOT</version>
-			<exclusions><!-- remove this when no longer depends on osgi jslp -->
+			<exclusions><!-- for manually adding official jslp, not android -->
 			    <exclusion>
-			        <groupId>ch.ethz.iks.slp</groupId>
-					<artifactId>jslp-osgi</artifactId>
+			        <groupId>org.universAAL.thirdparty</groupId>
+					<artifactId>jslp.core</artifactId>
 			    </exclusion>
 			</exclusions>
 		</dependency>
