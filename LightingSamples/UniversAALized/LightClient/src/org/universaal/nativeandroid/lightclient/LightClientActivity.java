@@ -152,7 +152,7 @@ public class LightClientActivity extends Activity
 		for (String lamp : lampsList) {
 			RadioButton lampButton = new RadioButton(this);
 			lampButton.setText(lamp);
-			lampButton.setTextColor(R.color.Blue);
+			lampButton.setTextColor(getResources().getColor(R.color.Blue));
 			lampButton.setOnClickListener(new OnClickListener() {			
 				public void onClick(View v) {
 					selectedLamp = ((RadioButton)v).getText().toString();

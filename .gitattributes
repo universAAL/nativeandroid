@@ -305,8 +305,11 @@ LightingSamples/UniversAALized/LightClient/res/drawable-hdpi/ic_launcher.png -te
 LightingSamples/UniversAALized/LightClient/res/drawable-ldpi/ic_launcher.png -text
 LightingSamples/UniversAALized/LightClient/res/drawable-mdpi/ic_launcher.png -text
 LightingSamples/UniversAALized/LightClient/res/layout/main.xml -text
+LightingSamples/UniversAALized/LightClient/res/raw/csubscriber.xml -text
 LightingSamples/UniversAALized/LightClient/res/raw/lighting_client_context_subscriber_grounding.xml -text
 LightingSamples/UniversAALized/LightClient/res/raw/lighting_client_service_request_grounding.xml -text
+LightingSamples/UniversAALized/LightClient/res/raw/scaller.xml -text
+LightingSamples/UniversAALized/LightClient/res/raw/uaal.xml -text
 LightingSamples/UniversAALized/LightClient/res/values/colors.xml -text
 LightingSamples/UniversAALized/LightClient/res/values/strings.xml -text
 LightingSamples/UniversAALized/LightClient/src/org/universaal/nativeandroid/lightclient/IConstants.java -text

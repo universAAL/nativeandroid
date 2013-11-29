@@ -11,11 +11,14 @@
         android:label="@string/app_name" >
         
         <meta-data android:name="org.universAAL.middleware.service.android.contextSubcsriberGrounding" android:resource="@raw/lighting_client_context_subscriber_grounding"/>
+        <meta-data android:name="org.universAAL.android.meta.contextSubscriber" android:resource="@raw/csubscriber"/>
+        <meta-data android:name="org.universAAL.android.metadata" android:resource="@raw/uaal"/>
         
         <activity
             android:name=".LightClientActivity"
             android:label="@string/app_name" >
 			<meta-data android:name="org.universAAL.middleware.service.android.serviceRequestGrounding"  android:resource="@raw/lighting_client_service_request_grounding"/>
+			<meta-data android:name="org.universAAL.android.meta.serviceCaller"  android:resource="@raw/scaller"/>
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
