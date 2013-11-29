@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Light source brightness</comment>
+<entry key="action">org.universaal.nativeandroid.lighting.LAMP_STATE_CHANGED</entry>
+<entry key="category">android.intent.category.DEFAULT</entry>
+<entry key="grounding">
+@prefix ns: &lt;http://ontology.igd.fhg.de/LightingServer.owl#&gt; .
+@prefix ns1: &lt;http://ontology.universaal.org/PhThing.owl#&gt; .
+@prefix ns2: &lt;http://ontology.universAAL.org/Location.owl#&gt; .
+@prefix ns3: &lt;urn:aal_space:myHome#&gt; .
+@prefix ns4: &lt;http://ontology.universaal.org/Lighting.owl#&gt; .
+@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .
+@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
+@prefix : &lt;http://www.w3.org/2002/07/owl#&gt; .
+_:BN000000 a &lt;http://ontology.universAAL.org/Context.owl#ContextEventPattern&gt; ;
+  &lt;http://www.w3.org/2000/01/rdf-schema#subClassOf&gt; [
+      a :Restriction ;
+      :cardinality "1"^^xsd:nonNegativeInteger ;
+      :onProperty rdf:subject
+    ] ,
+    [
+      a :Restriction ;
+      :allValuesFrom [
+        a :Class ;
+        :oneOf ns:controlledLamp0 ,
+          ns:controlledLamp1 ,
+          ns:controlledLamp2 ,
+          ns:controlledLamp3
+      ] ;
+      :onProperty rdf:subject
+    ] ,
+    [
+      :hasValue ns4:srcBrightness ;
+      a :Restriction ;
+      :onProperty rdf:predicate
+    ] ,
+    [
+      a :Restriction ;
+      :cardinality "1"^^xsd:nonNegativeInteger ;
+      :onProperty rdf:object
+    ] ,
+    [
+      a :Restriction ;
+      :allValuesFrom [
+        a :DataRange ;
+        :oneOf "0"^^xsd:int ,
+          "100"^^xsd:int
+      ] ;
+      :onProperty rdf:object
+    ] .
+ns3:loc4 a ns2:Room ,
+    ns2:HomeArea ,
+    ns2:Place ,
+    ns2:Location .
+ns3:loc3 a ns2:Room ,
+    ns2:HomeArea ,
+    ns2:Place ,
+    ns2:Location .
+ns3:loc2 a ns2:Room ,
+    ns2:HomeArea ,
+    ns2:Place ,
+    ns2:Location .
+ns3:loc1 a ns2:Room ,
+    ns2:HomeArea ,
+    ns2:Place ,
+    ns2:Location .
+ns4:light_bulb a ns4:ElectricLight .
+ns:controlledLamp3 ns4:hasType ns4:light_bulb ;
+  a ns4:LightSource ,
+    ns1:Device ,
+    ns1:PhysicalThing ;
+  ns1:hasLocation ns3:loc4 ;
+  ns4:srcBrightness "0"^^xsd:int .
+ns:controlledLamp2 ns4:hasType ns4:light_bulb ;
+  a ns4:LightSource ,
+    ns1:Device ,
+    ns1:PhysicalThing ;
+  ns1:hasLocation ns3:loc3 ;
+  ns4:srcBrightness "0"^^xsd:int .
+ns:controlledLamp1 ns4:hasType ns4:light_bulb ;
+  a ns4:LightSource ,
+    ns1:Device ,
+    ns1:PhysicalThing ;
+  ns1:hasLocation ns3:loc2 ;
+  ns4:srcBrightness "0"^^xsd:int .
+ns:controlledLamp0 ns4:hasType ns4:light_bulb ;
+  a ns4:LightSource ,
+    ns1:Device ,
+    ns1:PhysicalThing ;
+  ns1:hasLocation ns3:loc1 ;
+  ns4:srcBrightness "0"^^xsd:int .
+</entry>
+</properties>

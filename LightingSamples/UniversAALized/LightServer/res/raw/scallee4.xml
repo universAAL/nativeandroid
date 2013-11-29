@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Turn light on</comment>
+<entry key="action">org.universaal.nativeandroid.lightserver.TURN_ON</entry>
+<entry key="category">android.intent.category.DEFAULT</entry>
+<entry key="grounding">
+@prefix ns: &lt;http://www.daml.org/services/owl-s/1.1/Profile.owl#&gt; .
+@prefix pvn: &lt;http://ontology.universAAL.org/uAAL.owl#&gt; .
+@prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .
+@prefix ns1: &lt;http://ontology.igd.fhg.de/LightingServer.owl#&gt; .
+@prefix ns2: &lt;http://www.daml.org/services/owl-s/1.1/Service.owl#&gt; .
+@prefix ns3: &lt;http://ontology.universaal.org/Lighting.owl#&gt; .
+@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .
+@prefix psn: &lt;http://ontology.universAAL.org/Service.owl#&gt; .
+@prefix : &lt;http://www.daml.org/services/owl-s/1.1/Process.owl#&gt; .
+_:BN000000 ns2:presentedBy ns1:turnOn ;
+  a ns:Profile ;
+  ns:has_process ns1:turnOnProcess ;
+  ns:hasResult [
+    a :Result ;
+    :hasEffect [
+        psn:affectedProperty [
+          a psn:PropertyPath ;
+          psn:thePath (
+            ns3:controls
+            ns3:srcBrightness
+          )
+        ] ;
+        a psn:ChangeEffect ;
+        psn:propertyValue "100"^^xsd:int
+      ]
+  ] ;
+  ns:hasInput ns1:lampURI .
+ns1:turnOn a ns1:LightingService ,
+    ns3:Lighting ;
+  pvn:instanceLevelRestrictions [
+      owl:hasValue [
+        :fromProcess :ThisPerform ;
+        a :ValueOf ;
+        :theVar ns1:lampURI
+      ] ;
+      a owl:Restriction ;
+      owl:onProperty ns3:controls
+    ] ;
+  ns2:presents _:BN000000 ;
+  pvn:numberOfValueRestrictions "1"^^xsd:int .
+ns1:lampURI psn:parameterCardinality "1"^^xsd:int ;
+  a :Input ;
+  :parameterType "http://ontology.universaal.org/Lighting.owl#LightSource"^^xsd:anyURI .
+:ThisPerform a :Perform .
+</entry>
+</properties>
