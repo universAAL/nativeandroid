@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Get controlled lamps</comment>
+<entry key="action">org.universaal.nativeandroid.lightserver.GET_CONTROLLED_LAMPS</entry>
+<entry key="category">android.intent.category.DEFAULT</entry>
+<entry key="http://ontology.igd.fhg.de/LightingServer.owl#controlledLamps">http://ontology.igd.fhg.de/LightingServer.owl#controlledLamp{lamp_number_array}</entry>
+<entry key="grounding">
+@prefix ns: &lt;http://www.daml.org/services/owl-s/1.1/Service.owl#&gt; .
+@prefix ns1: &lt;http://www.daml.org/services/owl-s/1.1/Process.owl#&gt; .
+@prefix ns2: &lt;http://www.daml.org/services/owl-s/1.1/Profile.owl#&gt; .
+@prefix : &lt;http://ontology.igd.fhg.de/LightingServer.owl#&gt; .
+_:BN000000 ns:presentedBy :getControlledLamps ;
+  a ns2:Profile ;
+  ns2:has_process :getControlledLampsProcess ;
+  ns2:hasResult [
+    ns1:withOutput [
+        a ns1:OutputBinding ;
+        ns1:toParam :controlledLamps ;
+        ns1:valueForm """
+          @prefix : &lt;http://ontology.universAAL.org/Service.owl#&gt; .
+          _:BN000000 a :PropertyPath ;
+            :thePath (
+              &lt;http://ontology.universaal.org/Lighting.owl#controls&gt;
+            ) .
+          """^^&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral&gt;
+      ] ;
+    a ns1:Result
+  ] ;
+  ns2:hasOutput :controlledLamps .
+:controlledLamps a ns1:Output ;
+  ns1:parameterType "http://ontology.universaal.org/Lighting.owl#LightSource"^^&lt;http://www.w3.org/2001/XMLSchema#anyURI&gt; .
+:getControlledLamps a :LightingService ,
+    &lt;http://ontology.universaal.org/Lighting.owl#Lighting&gt; ;
+  ns:presents _:BN000000 .
+</entry>
+</properties>
