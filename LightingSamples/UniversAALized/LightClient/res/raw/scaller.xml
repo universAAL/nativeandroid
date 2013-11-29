@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Any comment</comment>
+<entry key="action">org.universaal.nativeandroid.lightclient.TURN_ON</entry>
+<entry key="category">android.intent.category.DEFAULT</entry>
+<entry key="grounding">
+@prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .
+@prefix ns: &lt;http://ontology.universaal.org/PhThing.owl#&gt; .
+@prefix ns1: &lt;http://ontology.igd.fhg.de/LightingServer.owl#&gt; .
+@prefix ns2: &lt;http://ontology.universaal.org/Lighting.owl#&gt; .
+@prefix pvn: &lt;http://ontology.universAAL.org/uAAL.owl#&gt; .
+@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .
+@prefix ns3: &lt;http://www.daml.org/services/owl-s/1.1/Process.owl#&gt; .
+@prefix : &lt;http://ontology.universAAL.org/Service.owl#&gt; .
+_:BN000000 a pvn:ServiceRequest ;
+  pvn:requiredResult [
+    a ns3:Result ;
+    ns3:hasEffect [
+        :affectedProperty [
+          a :PropertyPath ;
+          :thePath (
+            ns2:controls
+            ns2:srcBrightness
+          )
+        ] ;
+        a :ChangeEffect ;
+        :propertyValue "100"^^xsd:int
+      ]
+  ] ;
+  pvn:requestedService [
+    a ns2:Lighting ;
+    pvn:instanceLevelRestrictions [
+        owl:hasValue ns1:lamp0 ;
+        a owl:Restriction ;
+        owl:onProperty ns2:controls
+      ] ;
+    pvn:numberOfValueRestrictions "1"^^xsd:int
+  ] .
+ns1:lamp0 a ns2:LightSource ,
+    ns:Device ,
+    ns:PhysicalThing .
+</entry>
+</properties>

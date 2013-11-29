@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Any comment</comment>
+<entry key="action">org.universaal.nativeandroid.lighting.LAMP_STATE_CHANGED</entry>
+<entry key="category">android.intent.category.DEFAULT</entry>
+<entry key="grounding">
+@prefix ns: &lt;http://ontology.universaal.org/Lighting.owl#&gt; .
+@prefix : &lt;http://www.w3.org/2002/07/owl#&gt; .
+_:BN000000 a &lt;http://ontology.universAAL.org/Context.owl#ContextEventPattern&gt; ;
+  &lt;http://www.w3.org/2000/01/rdf-schema#subClassOf&gt; [
+      a :Restriction ;
+      :allValuesFrom ns:LightSource ;
+      :onProperty &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#subject&gt;
+    ] .
+ns:LightSource a :Class .
+</entry>
+</properties>
