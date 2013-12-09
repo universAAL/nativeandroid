@@ -7,6 +7,8 @@
             <description>SERVICE CALLEE PROFILE: Get controlled lamps</description>
             <action>org.universaal.nativeandroid.lightserver.GET_CONTROLLED_LAMPS</action>
             <category>android.intent.category.DEFAULT</category>
+            <replyAction>org.universaal.nativeandroid.lightserver.REPLY_GET_CONTROLLED_LAMPS</replyAction>
+            <replyCategory>android.intent.category.DEFAULT</replyCategory>
             <output>
                 <key>http://ontology.igd.fhg.de/LightingServer.owl#controlledLamps</key>
                 <value>http://ontology.igd.fhg.de/LightingServer.owl#controlledLamp{lamp_number_array}@http://ontology.universaal.org/Lighting.owl#LightSource</value>
