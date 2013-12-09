@@ -1,0 +1,78 @@
+embedded universAAL middleware on Android
+
+OCO Source Materials
+© Copyright IBM Corp. 2012
+
+I. Included Software
+
+Software developed by IBM within the universAAL project.
+
+
+II. Used Software
+
+This product uses software developed at
+The Apace Xerces(TM) Project (http://xerces.apache.org/)
+Licensed under the Apache License 2.0.
+
+NOTE: The code is embedded AS IS, with only package names changed,
+in org.universAAL.middleware.android.impl.datatypefactory
+
+This product uses software developed at
+The Android Open Source Project (http://source.android.com/)
+Licensed under the Apache License 2.0.
+
+This product uses Cling UPnP library for Android, developed at
+Teleal GmbH (http://www.teleal.org), 
+4th Line GmbH (http://seamless.org/projects/cling/)
+Licensed under the GNU Lesser General Public License.
+
+This product uses software developed at 
+JUnit http://junit.source.net
+Licensed under Common Public License - v 1.0
+
+This product uses software developed at
+Java3D (https://java3d.java.net/)
+Licensed under the GNU General Public License (GPL),
+version 2, with the CLASSPATH exception.
+
+This product uses software developed at
+IPA: INFORMATION-TECHNOLOGY PROMOTION AGENCY, JAPAN (http://www.ipa.go.jp)
+
+ Copyright 2000 by Information-technology Promotion Agency, Japan
+ Copyright 2000 by Precision Modeling Laboratory, Inc., Tokyo, Japan
+ Copyright 2000 by Software Research Associates, Inc., Tokyo, Japan
+
+ Permission to use, copy, modify, and distribute this software
+ and its documentation for any purpose and without fee is hereby
+ granted, provided that the above copyright notice appear in all
+ copies and that both that copyright notice and this permission
+ notice appear in supporting documentation, and that the name of
+ Software Research Associates and Information-technology
+ Promotion Agency not be used in advertising or publicity
+ pertaining to distribution of the software without specific,
+ written prior permission. Information-technology Promotion 
+ Agency make no representations about the suitability of this software
+ for any purpose. It is provided "as is" without express or implied warranty.
+
+
+III. License Summary
+- Apache License 2.0
+- Common Public License - v 1.0
+- GPL Genaral Public License (GPL) version 2, with the CLASSPATH exception.
+- License of the package jp.go.ipa.jgcl:
+
+ Copyright 2000 by Information-technology Promotion Agency, Japan
+ Copyright 2000 by Precision Modeling Laboratory, Inc., Tokyo, Japan
+ Copyright 2000 by Software Research Associates, Inc., Tokyo, Japan
+
+ Permission to use, copy, modify, and distribute this software
+ and its documentation for any purpose and without fee is hereby
+ granted, provided that the above copyright notice appear in all
+ copies and that both that copyright notice and this permission
+ notice appear in supporting documentation, and that the name of
+ Software Research Associates and Information-technology
+ Promotion Agency not be used in advertising or publicity
+ pertaining to distribution of the software without specific,
+ written prior permission. Information-technology Promotion 
+ Agency make no representations about the suitability of this software
+ for any purpose. It is provided "as is" without express or implied warranty.
