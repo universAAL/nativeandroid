@@ -325,12 +325,8 @@ LightingSamples/UniversAALized/LightServer/res/drawable-hdpi/ic_launcher.png -te
 LightingSamples/UniversAALized/LightServer/res/drawable-ldpi/ic_launcher.png -text
 LightingSamples/UniversAALized/LightServer/res/drawable-mdpi/ic_launcher.png -text
 LightingSamples/UniversAALized/LightServer/res/layout/main.xml -text
-LightingSamples/UniversAALized/LightServer/res/raw/cpublisher.xml -text
 LightingSamples/UniversAALized/LightServer/res/raw/lighting_server_context_publisher_grounding.xml -text
 LightingSamples/UniversAALized/LightServer/res/raw/lighting_server_service_grounding.xml -text
-LightingSamples/UniversAALized/LightServer/res/raw/scallee1.xml -text
-LightingSamples/UniversAALized/LightServer/res/raw/scallee3.xml -text
-LightingSamples/UniversAALized/LightServer/res/raw/scallee4.xml -text
 LightingSamples/UniversAALized/LightServer/res/raw/uaal.xml -text
 LightingSamples/UniversAALized/LightServer/res/values/colors.xml -text
 LightingSamples/UniversAALized/LightServer/res/values/strings.xml -text
