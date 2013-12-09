@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">uAAL</string>
+    <string name="test_title">universAAL</string>
+    <string name="test_button">Start Middleware</string>
+    <string name="stop_button">Stop Middleware</string>
+    <string name="UPnPServiceTitle">universAAL</string>
+    <string name="UPnPServiceDescription">universAAL Service</string>
+</resources>
