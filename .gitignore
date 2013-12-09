@@ -1,5 +1,11 @@
+LightingSamples/UniversAALized/LightClient/.classpath
+LightingSamples/UniversAALized/LightClient/assets
 LightingSamples/UniversAALized/LightClient/bin
+LightingSamples/UniversAALized/LightClient/gen
+LightingSamples/UniversAALized/LightServer/.classpath
+LightingSamples/UniversAALized/LightServer/assets
 LightingSamples/UniversAALized/LightServer/bin
+LightingSamples/UniversAALized/LightServer/gen
 mw.container.android/.classpath
 mw.container.android/.project
 mw.container.android/.settings
