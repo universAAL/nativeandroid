@@ -72,14 +72,14 @@
 	<dependencies>
 	<!-- The dependencies listed here must be taken care of manually, especially when changing versions of MW.
 	These are modified for android and must be excluded from the transient dependencies, and put in libs:
-	JGroups-3.4.1.Final (modified to run on Android)
-	jSLP.core (from uAAL MW 3rd parties, modified to run on android and fix bugs)
-	managers.aalspace (modified to run on android with hardcoded config)
-	mw.schemas (modified to run with modified managers.aalspace)
-	bus.tracker (modified to get rid of UI)
-	GW.communicator (modified to run on android)
-	bcprov-jdk13-140 (if not added by maven transient deps, put it manuallly)
-	data.serialization (modified to fix bug - if > 2.0.1)
+	JGroups-3.4.1.Final (modified to run on Android) - find it in Native Android SVN: sandboxes/alfiva
+	jSLP.core (from uAAL MW 3rd parties, modified to run on android and fix bugs) - find it in MW SVN: branches/android
+	managers.aalspace (modified to run on android with hardcoded config) - find it in MW SVN: branches/android
+	mw.schemas (modified to run with modified managers.aalspace) - find it in MW SVN: branches/android
+	bus.tracker (modified to get rid of UI) - find it in MW SVN: branches/android
+	data.serialization (modified to fix bug - if > 2.0.1) - find it in MW SVN: branches/android
+	GW.communicator (modified to run on android) - find it in RI SVN: branches/android
+	bcprov-jdk13-140 (if not added by maven transient deps, put it manuallly) - find it maven repository
 	 -->
 		<dependency>
 			<groupId>com.google.android</groupId>
