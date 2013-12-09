@@ -360,6 +360,7 @@ ValidateSodaPopKey/res/values/strings.xml -text
 ValidateSodaPopKey/src/org/universAAL/middleware/android/validatesodapopkey/ValidateSodaPopKeyActivity.java -text
 mw.container.android/ASL2.0.txt -text
 mw.container.android/AndroidManifest.xml -text
+mw.container.android/BSD-JSLP.txt -text
 mw.container.android/MITX.txt -text
 mw.container.android/NOTICE.txt -text
 mw.container.android/libs/jgroups-3.4.1.Final.jar -text
