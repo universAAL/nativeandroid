@@ -198,6 +198,7 @@ Files/HelpWhenOutdoor.apk -text
 Files/LightClient.apk -text
 Files/LightServer.apk -text
 Files/mw.container.android.apk -text
+Files/udp.xml -text
 LightingSamples/PureAndroid/LightClient/.project -text
 LightingSamples/PureAndroid/LightClient/ASL2.0.txt -text
 LightingSamples/PureAndroid/LightClient/AndroidManifest.xml -text
