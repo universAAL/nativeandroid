@@ -194,6 +194,9 @@ Files/Configurations/felix/configurations/etc/ri.gateway.communicator.core.prope
 Files/Configurations/felix/ontologies/ont.continuahealthmanager-2.0.4-SNAPSHOT.jar -text
 Files/Configurations/felix/ontologies/ont.lighting-2.0.1-SNAPSHOT.jar -text
 Files/Configurations/felix/ontologies/ont.personalhealthdevice-2.0.4-SNAPSHOT.jar -text
+Files/HelpWhenOutdoor.apk -text
+Files/LightClient.apk -text
+Files/LightServer.apk -text
 Files/mw.container.android.apk -text
 LightingSamples/PureAndroid/LightClient/.project -text
 LightingSamples/PureAndroid/LightClient/ASL2.0.txt -text
