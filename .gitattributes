@@ -119,6 +119,7 @@ AALfficiency/com_facebook_android/src/com/facebook/android/FbDialog.java -text s
 AALfficiency/com_facebook_android/src/com/facebook/android/SessionEvents.java -text svneol=unset#text/plain
 AALfficiency/com_facebook_android/src/com/facebook/android/SessionStore.java -text svneol=unset#text/plain
 AALfficiency/com_facebook_android/src/com/facebook/android/Util.java -text svneol=unset#text/plain
+Files/BluetoothHDPManager.apk -text
 Files/Configurations/felix-conf-1.3.3/conf/ctxt.che.mobile/Mobile-Events.txt -text
 Files/Configurations/felix-conf-1.3.3/conf/etc/Home.space -text
 Files/Configurations/felix-conf-1.3.3/conf/etc/aalspace.xsd -text
