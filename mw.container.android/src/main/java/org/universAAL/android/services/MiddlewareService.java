@@ -33,6 +33,7 @@ import java.util.Properties;
 import org.universAAL.android.container.AndroidContainer;
 import org.universAAL.android.container.AndroidContext;
 import org.universAAL.android.container.AndroidRegistry;
+import org.universAAL.android.handler.AndroidHandler;
 import org.universAAL.android.utils.GroundingParcel;
 import org.universAAL.android.utils.IntentConstants;
 import org.universAAL.android.wrappers.CommunicationConnectorWrapper;
@@ -66,6 +67,8 @@ import org.universAAL.middleware.serialization.turtle.TurtleUtil;
 import org.universAAL.middleware.service.impl.ServiceBusImpl;
 import org.universAAL.middleware.tracker.IBusMemberRegistry;
 import org.universAAL.middleware.tracker.impl.BusMemberRegistryImpl;
+import org.universAAL.middleware.ui.IUIBus;
+import org.universAAL.middleware.ui.impl.UIBusImpl;
 import org.universAAL.ri.gateway.communicator.service.impl.CommunicatorStarter;
 import org.universAAL.ri.gateway.communicator.service.impl.GatewayAddress;
 import org.universAAL.ri.gateway.communicator.service.impl.GatewayCommunicatorImpl;
@@ -125,6 +128,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 	private GatewayCommunicatorImpl mModGATEWAY;
 	private ExportManagerImpl mModEXPORT;
 	private ImportManagerImpl mModIMPORT;
+	private AndroidHandler mModHANDLER;
 	
 	@Override
 	public void onCreate() {
@@ -487,7 +491,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 			AndroidContext c4=new AndroidContext("mw.managers.aalspace.osgi");
 //			mModSPACEMANAGER = new AALSpaceManagerImpl(c4, new ModuleConfigHome(Environment.getExternalStorageDirectory()
 //					.getPath()+uAAL_CONF_ROOT_DIR, "mw.managers.aalspace.osgi"));//TODO check if works
-			mModSPACEMANAGER = new AALSpaceManagerImpl(c4, Environment.getExternalStorageDirectory().getPath()+uAAL_CONF_ROOT_DIR+"/mw.managers.aalspace.osgi");
+			mModSPACEMANAGER = new AALSpaceManagerImpl(c4, Environment.getExternalStorageDirectory().getPath()+uAAL_CONF_ROOT_DIR+"mw.managers.aalspace.osgi");
 			Dictionary aalSpaceManagerProps = getProperties("mw.managers.aalspace.core");
 			if (aalSpaceManagerProps == null) {
 				aalSpaceManagerProps = new Hashtable<String, String>();
@@ -540,12 +544,38 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 					c7, busFetchParams,
 					busFetchParams);
 			Log.d(TAG, "Started CONTEXT BUS");
+			// _________________UI BUS_________________________
+			AndroidContext c8 = new AndroidContext("mw.bus.ui.osgi");
+			busFetchParams = new Object[] { IUIBus.class.getName() };
+			UIBusImpl.startModule(AndroidContainer.THE_CONTAINER, c8,
+					busFetchParams, busFetchParams);
+			Log.d(TAG, "Started UI BUS");
+			// _________________UI HANDLER_________________________
+			new Thread(new Runnable() {
+				public void run() {
+			mModHANDLER = new AndroidHandler(AndroidContext.THE_CONTEXT);
+			AndroidContainer.THE_CONTAINER.shareObject(
+					AndroidContext.THE_CONTEXT, mModHANDLER, new String[] {
+							AndroidHandler.class.getName(),
+							AndroidHandler.class.getName() });
+			mModHANDLER.render();
+				}
+			},CREATE_THREAD_TAG+"ui").start();//TODO change name
+			Log.d(TAG, "Started UI HANDLER");
 		} catch (Exception e) {
 			Log.e(TAG, "Error while initializing MW", e);
 		}
 	}
 	
 	private synchronized void stopMiddleware(){		
+		// _________________UI HANDLER_________________________
+		if(mModHANDLER!=null){
+			mModHANDLER.close();//TODO Close better
+			AndroidContainer.THE_CONTAINER.unshareObject(AndroidHandler.class.getName(), mModHANDLER);
+			mModHANDLER=null;
+		}
+		// _________________UI BUS_________________________
+		UIBusImpl.stopModule();
 		// _________________CONTEXT BUS_________________________
 		ContextBusImpl.stopModule();
 		// _________________SERVICE BUS_________________________
