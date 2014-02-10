@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">uAAL</string>
     <string name="test_title">universAAL</string>
     <string name="test_button">Start Middleware</string>
     <string name="stop_button">Stop Middleware</string>
     <string name="UPnPServiceTitle">universAAL</string>
     <string name="UPnPServiceDescription">universAAL Service</string>
+    <string name="title_activity_handler">HandlerActivity</string>
+    <string name="action_start">Start</string>
+    <string name="action_stop">Stop</string>
+    <string name="action_settings">Settings</string>
+
 </resources>
