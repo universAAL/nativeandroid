@@ -44,8 +44,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 
+/**
+ * Class that acts as a connection between an Android component and a universAAL
+ * wrapper. In this case, between a receiver, a Service Caller, and an intent
+ * for the response. The translation is made thanks to metadata grounding.
+ * 
+ * @author alfiva
+ * 
+ */
 public class ServiceCallerProxy extends ServiceCaller implements SharedObjectListener {
-	private WeakReference<Context> context; //TODO memory issues?
+	private WeakReference<Context> context;
 	private String action=null;
 	private String category=null;
 	private String replyAction=null;
@@ -57,6 +65,14 @@ public class ServiceCallerProxy extends ServiceCaller implements SharedObjectLis
 	private Hashtable<String,String> outputURItoExtraKEY;
 	private ImportEntry entry=null;
 	
+	/**
+	 * Constructor for the proxy.
+	 * 
+	 * @param parcel
+	 *            The parcelable from of the grounding of the metadata.
+	 * @param context
+	 *            The Android context.
+	 */
 	public ServiceCallerProxy(GroundingParcel parcel, Context context) {
 		super(AndroidContext.THE_CONTEXT);
 		this.context=new WeakReference<Context>(context);
@@ -89,6 +105,17 @@ public class ServiceCallerProxy extends ServiceCaller implements SharedObjectLis
 		}
 	}
 
+	/**
+	 * Extract the table of mappings between extras and inputs from the
+	 * grounding.
+	 * 
+	 * @param length
+	 *            Amount of entries.
+	 * @param keys
+	 *            Extras keys.
+	 * @param values
+	 *            Input values.
+	 */
 	private void fillTable1(int length, String[] keys, String[] values) {
 		if (length == 0) {
 			extraKEYtoInputURI = null;
@@ -100,6 +127,17 @@ public class ServiceCallerProxy extends ServiceCaller implements SharedObjectLis
 		}
 	}
 
+	/**
+	 * Extract the table of mappings between outputs and extras from the
+	 * grounding.
+	 * 
+	 * @param length
+	 *            Amount of entries.
+	 * @param keys
+	 *            Output keys.
+	 * @param values
+	 *            Extras values.
+	 */
 	private void fillTable2(int length, String[] keys, String[] values) {
 		if (length == 0) {
 			outputURItoExtraKEY = null;
@@ -111,6 +149,9 @@ public class ServiceCallerProxy extends ServiceCaller implements SharedObjectLis
 		}
 	}
 	
+	/** Get the dynamically registered broadcast receiver.
+	 * @return the dynamically registered broadcast receiver.
+	 */
 	public ServiceCallerProxyReceiver getReceiver() {
 		return receiver;
 	}
@@ -136,6 +177,14 @@ public class ServiceCallerProxy extends ServiceCaller implements SharedObjectLis
 		}
 	}
 	
+	/**
+	 * Auxiliary class representing the Broadcast Receiver registered by the
+	 * middleware where apps will send intents when they want to issue a service
+	 * request to uAAL.
+	 * 
+	 * @author alfiva
+	 * 
+	 */
 	public class ServiceCallerProxyReceiver extends BroadcastReceiver {
 		@Override
 		public void onReceive(Context context, Intent intent) {
@@ -152,7 +201,7 @@ public class ServiceCallerProxy extends ServiceCaller implements SharedObjectLis
 				sr=(ServiceRequest)parser.deserialize(grounding);
 			}
 			// This is for identifying the origin of the request, to avoid duplications in callee later
-			// TODO I have to make this hack to convert the SR into an AAPI SR in order to inject metadata.
+			// I have to make this hack to convert the SR into an AAPI SR in order to inject metadata.
 			// It would be soooo much easier if ServiceRequest allowed setProperty of AAPI metadata directly...
 			AapiServiceRequest srmeta=new AapiServiceRequest(sr.getURI());
 			srmeta.setProperty(ServiceRequest.PROP_AGGREGATING_FILTER, sr.getProperty(ServiceRequest.PROP_AGGREGATING_FILTER));
@@ -165,7 +214,7 @@ public class ServiceCallerProxy extends ServiceCaller implements SharedObjectLis
 			Resource[] outputs=sr.getRequiredOutputs();
 			if(outputs.length>0){
 				srmeta.addInput(IntentConstants.UAAL_META_PROP_NEEDSOUTPUTS, Boolean.TRUE);
-				//TODO  I have to add this flag metadata because otherwise callee doesnt know if an output is really needed
+				// I have to add this flag metadata because otherwise callee doesnt know if an output is really needed
 			}
 			sendRequest(srmeta);
 		}

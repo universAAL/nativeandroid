@@ -35,6 +35,12 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
 
+/**
+ * User interface activity for simply launching the middleware.
+ * 
+ * @author alfiva
+ * 
+ */
 public class TestActivity extends Activity implements OnTouchListener {
 	private static String TAG = "TestActivity";
 

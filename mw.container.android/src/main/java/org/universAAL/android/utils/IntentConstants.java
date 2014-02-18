@@ -21,7 +21,12 @@
  */
 package org.universAAL.android.utils;
 
-// TODO Relocate these into each Service class?
+/**
+ * Helper class containing useful constant values used across the entire app.
+ * 
+ * @author alfiva
+ * 
+ */
 public class IntentConstants {
 
 	private static final String ACTION_PREFIX = "org.universAAL.android.action";
@@ -31,7 +36,7 @@ public class IntentConstants {
 	public static final String ACTION_PCK_REG = ACTION_PREFIX + "PCK_REGISTER";
 	public static final String ACTION_PCK_UNREG = ACTION_PREFIX	+ "PCK_UNREGISTER";
 	// Extras
-	public static final String ACTION_PCK_REG_X_PARCEL = ACTION_PREFIX + "parsedParcel";// TODO Change name
+	public static final String ACTION_PCK_REG_X_PARCEL = ACTION_PREFIX + "parsedParcel";
 	public static final String ACTION_PCK_REG_X_ID = ACTION_PREFIX + "wrapperID";
 	public static final String ACTION_PCK_REG_X_TYPE = ACTION_PREFIX + "parsedType";
 	public static final String ACTION_PCK_UNREG_X_ID = ACTION_PCK_REG_X_ID;

@@ -99,22 +99,33 @@ import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+/**
+ * Central class and service of the application. It takes care of starting and
+ * stopping the middleware, while maintaining in memory, as local variables,
+ * each module of the middleware. It handles the different messages, sent as
+ * intents, that are received to identify the different operations and stages of
+ * the middleware.
+ * 
+ * @author alfiva
+ * 
+ */
 public class MiddlewareService extends Service implements AALSpaceListener{
 
 	private static final String TAG = "MiddlewareService";
 	private static final String CREATE_THREAD_TAG = "MW Service Create";
 	private static final String START_THREAD_TAG = "MW Service Start";
+	private static final String UI_THREAD_TAG = "UI Handler Create";
 	private static final int ONGOING_NOTIFICATION = 3948234; // TODO Random one?
-	public static final String uAAL_CONF_ROOT_DIR = "/data/felix/configurations/etc/"; // TODO config better
 	private static final String MY_WIFI = "home_wifi";
 	private static final String NO_WIFI = "uAALGhostWifi";
 	private static final int WIFI_HOME = 0;
 	private static final int WIFI_NOT_SET = 1;
 	private static final int WIFI_STRANGER = 2;
 	private static final int WIFI_NOT_ON = 3;
+	public static final String uAAL_CONF_ROOT_DIR = "/data/felix/configurations/etc/"; // TODO config better
 
 	private MulticastLock mLock;
-	// These modules stay in memory in this service class (Container holds only WeakRefs)
+	// MW modules stay in memory in this service class (Container holds only WeakRefs)
 	private Advertiser mJSLPadvertiser;
 	private Locator mJSLPlocator;
 	private CommunicationConnector mModJGROUPS;
@@ -132,13 +143,11 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 	
 	@Override
 	public void onCreate() {
-		// This is where MW is created as it is called once when
-		// service is instantiated. Make sure it runs forever.
+		// This is where MW is created as it is called once when service is instantiated. Make sure it runs forever.
 		super.onCreate();
 		Log.v(TAG, "Create");
 
-		// TODO Check! Supposedly, this starts as foreground but without
-		// notification. Not on 4.0 anymore
+		// TODO Check! Supposedly, this starts as foreground but without notification. Not on 4.0 anymore
 		Notification notif = new Notification(0, null,
 				System.currentTimeMillis());
 		notif.flags |= Notification.FLAG_NO_CLEAR;
@@ -191,7 +200,6 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 					startGateway();
 				}
 				// 5. Register the apps
-				//TODO Place call to scan better?
 				Intent scan = new Intent(IntentConstants.ACTION_PCK_REG_ALL);
 				scan.setClass(MiddlewareService.this, ScanService.class);
 				startService(scan);
@@ -203,12 +211,10 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 
 	@Override
 	public void onDestroy() {
-		// This would only be called when low on memory: stop and release
-		// everything instantiated in onCreate an die. unshare
+		// This would only be called when low on memory: stop and release everything instantiated in onCreate an die. unshare
 		super.onDestroy();
 		Log.v(TAG, "Destroy");
-		//TODO Call to unreg onts? really?
-		//TODO Place call to scan better?
+		//TODO Call to unreg onts? really? Place call to scan better?
 		Intent scan = new Intent(IntentConstants.ACTION_PCK_UNREG_ALL);
 		scan.setClass(this, ScanService.class);
 		startService(scan);
@@ -220,8 +226,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 
 	@Override
 	public int onStartCommand(final Intent intent, int flags, int startId) {
-		// This will be called each time someone (scan/boot/wifi) sends
-		// an intent to this service. Analyze and react accordingly.
+		// This will be called each time someone (scan/boot/wifi) sends an intent to this service. Analyze and react accordingly.
 		Log.v(TAG, "Start command: ");
 		new Thread(new Runnable() {
 			public void run() {
@@ -230,7 +235,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 					Log.v(TAG, "Intent: " + action);
 					if (action != null) {
 						if (action.equals(Intent.ACTION_BOOT_COMPLETED)) {
-							// TODO Do we really have to do anything here? The MW is running by now...
+							// Do we really have to do anything here? The MW is running by now...
 							Log.v(TAG, "Action is BOOT");
 						} else if (action.equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
 							// Change in Wifi TODO Can we get ON after ON?
@@ -257,7 +262,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 								break;
 							default:
 								break;
-							}// TODO I know, this switch can be refactored better, but this way it is easier to read and tweak
+							}// I know, this switch can be refactored better, but this way it is easier to read and tweak
 						} else if (action.equals(IntentConstants.ACTION_PCK_REG)) {
 							// REGISTER message from scan service
 							Log.v(TAG, "Action is REGISTER");
@@ -277,7 +282,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 							Log.v(TAG, "Action is... Not the right action yet");
 						}
 					} else {
-						// TODO If (action=null) who?
+						// If (action=null) who?
 						Log.v(TAG, "Action is none");
 					}
 				}
@@ -288,11 +293,20 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 
 	@Override
 	public IBinder onBind(Intent arg0) {
-		// TODO This will be called each time someone asks for our binder to
-		// perform operations. Give it. - NO! no more binders...
+		// This will be called each time someone asks for our binder to perform operations. Give it. - NO! no more binders...
 		return null;
 	}
 	
+	/**
+	 * This makes the connector modules start (And also restarts the AAL Space
+	 * Manager). Depending on the parameter passed, it can either start the real
+	 * jSLP+jGroups connectors or the fake ones.
+	 * 
+	 * @param connect
+	 *            Set to true if there is an actual WiFi connection where th
+	 *            real connectors should be started. Set to false to start the
+	 *            fake connectors.
+	 */
 	private synchronized void restartConnector(boolean connect) {
 		boolean aalspaceflag=false;
 		// First stop everything related to connector: JSLP, JGroups, Advertiser and Locator
@@ -422,6 +436,9 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 		}
 	}
 	
+	/**
+	 * Stops the communication connectors, either real or fake.
+	 */
 	private synchronized void stopConnector() {
 		// _____________________JSLP_________________________
 		if (mModJSLP != null) {
@@ -458,6 +475,10 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 		mLock.release();
 	}
 	
+	/**
+	 * Starts the middleware modules in the right order with the appropriate
+	 * sequence for each. Does not include the connectors.
+	 */
 	private synchronized void startMiddleware(){
 		try {
 			// _________________COMMUNICATION MODULE_________________
@@ -560,13 +581,17 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 							AndroidHandler.class.getName() });
 			mModHANDLER.render();
 				}
-			},CREATE_THREAD_TAG+"ui").start();//TODO change name
+			},UI_THREAD_TAG).start();
 			Log.d(TAG, "Started UI HANDLER");
 		} catch (Exception e) {
 			Log.e(TAG, "Error while initializing MW", e);
 		}
 	}
 	
+	/**
+	 * Stops the middleware modules in order, with the appropriate sequence for
+	 * each. Does not include the connectors.
+	 */
 	private synchronized void stopMiddleware(){		
 		// _________________UI HANDLER_________________________
 		if(mModHANDLER!=null){
@@ -622,8 +647,10 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 		}
 	}
 	
+	/**
+	 * Start the modules needed for the RI AAL Space Gateway to start.
+	 */
 	private synchronized void startGateway(){
-		Log.d(TAG, "Starting GATEWAY");//TODO remove this log
 		// _________________BUS TRACKER_________________ TODO Allow ON/OFF
 		mModTRACKER = new BusMemberRegistryImpl(AndroidContext.THE_CONTEXT);
 		AndroidContainer.THE_CONTAINER.shareObject(
@@ -664,8 +691,10 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 		}
 	}
 	
+	/**
+	 * Stops the modules needed for the RI AAL Space Gateway to stop.
+	 */
 	private synchronized void stopGateway(){	
-		Log.d(TAG, "Stopping GATEWAY");//TODO remove this log
 		// _________________GATEWAY_________________________
 		if (mModTRACKER!= null){
 			mModTRACKER.removeBusRegistryListener(mModEXPORT);
@@ -693,9 +722,17 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 			AndroidContainer.THE_CONTAINER.unshareObject(IBusMemberRegistry.class.getName(), mModTRACKER);
 			mModTRACKER = null;
 		}
+		Log.d(TAG, "Stopped GATEWAY");
 	}
 
 	// TODO find another method
+	/**
+	 * Gets the properties of a property file located in the config folder.
+	 * 
+	 * @param file
+	 *            The name of the file (without path nor extension).
+	 * @return The Properties
+	 */
 	private Dictionary getProperties(String file) {
 		Properties prop = new Properties();
 		try {
@@ -713,6 +750,11 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 		return prop;
 	}
 	
+	/**
+	 * Helper method to determine if there is a WiFi data connection.
+	 * 
+	 * @return True if there is one.
+	 */
 	private boolean isWifiOn(){
 		ConnectivityManager connectivityManager = (ConnectivityManager) MiddlewareService.this
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -720,8 +762,12 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 		return (netInfo != null && netInfo.getType() == ConnectivityManager.TYPE_WIFI);
 	}
 	
-	//TODO All this "isOurWifi" thing is for knowing when to start the GW or connector. Still to be tested
+	//All this "isOurWifi" thing is for knowing when to start the GW or connector.
 	
+	/**
+	 * Sets the current active WiFi connection as the network where "our" AAL
+	 * Space is located.
+	 */
 	private void thisIsOurWifi() {
 		if (isWifiOn()) {
 			WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
@@ -732,8 +778,13 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 		}
 	}
 	
+	/**
+	 * Check whether we are now connected to "our" AAL Space WiFi Network.
+	 * 
+	 * @return Constant representing the status.
+	 */
 	private int checkWifi(){
-		if (isWifiOn()) {//TODO Remove logs
+		if (isWifiOn()) {
 			WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 			WifiInfo wifiInfo = wifiManager.getConnectionInfo();
 			String networkId = wifiInfo.getSSID();

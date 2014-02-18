@@ -28,12 +28,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-public class BootReceiver extends BroadcastReceiver{
+/**
+ * Broadcast receiver that gets called with BOOT_COMPLETED system actions. It
+ * relays this information to the Middleware Service.
+ * 
+ * @author alfiva
+ * 
+ */
+public class BootReceiver extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		// TODO Device has booted. Launch the MW service forever (scan packages is called from MWService)
-		Log.v("BootReceiver", "Received Broadcast: "+intent.getAction());
+		// TODO Activate in manifest! Device has booted. Launch the MW service forever (scan packages is called from MWService)
+		Log.v("BootReceiver", "Received Broadcast: " + intent.getAction());
 		Intent start = new Intent(context, MiddlewareService.class);
 		context.startService(start);
 	}

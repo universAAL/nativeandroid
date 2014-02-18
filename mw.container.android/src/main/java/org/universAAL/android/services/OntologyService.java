@@ -55,6 +55,13 @@ import android.os.Environment;
 import android.os.IBinder;
 import android.util.Log;
 
+/**
+ * This service class is used when loading one or all (currently only all) the
+ * ontologies into the middleware data representation.
+ * 
+ * @author alfiva
+ * 
+ */
 public class OntologyService extends Service{
 	private static final String TAG = "OntologyService";
 	// TODO: specify folder another way?
@@ -80,7 +87,7 @@ public class OntologyService extends Service{
 					Log.v(TAG, "Not the right action");
 				}
 			} else {
-				// TODO If (action=null) who?
+				// If (action=null) who?
 				Log.v(TAG, "Action is none");
 			}
 		}
@@ -94,6 +101,9 @@ public class OntologyService extends Service{
 		return null;
 	}
 	
+	/**
+	 * Load ALL the ontologies available. Called at startup.
+	 */
 	private void registerOntologies() {
 		// PATCH !!! The current way of registering ontologies in uAAL scans
 		// them at an arbitrary order, so it may happen that some start before
@@ -133,7 +143,7 @@ public class OntologyService extends Service{
 				while (classes.hasMoreElements()) {
 					//For each class check if its the activator and add it to list
 					JarEntry entry = (JarEntry) classes.nextElement();
-					String name = entry.getName();//TODO CAUTION!!! Activator classes must all have different names!!!!
+					String name = entry.getName();//CAUTION!!! Activator classes must all have different names!!!!
 					if (name.startsWith("org/universAAL/ontology/") && name.contains("Activator") && name.endsWith(".class")) {
 						activators.add(name.substring(0, name.length()-6).replace("/","."));
 						break;
@@ -174,6 +184,9 @@ public class OntologyService extends Service{
 		registerOntologiesFromJARS(activators, cl);
 	}
 	
+	/**
+	 * Inner method to load all ontologies included in the app libraries.
+	 */
 	private static void registerOntologiesFromAPK(){
 		// First of all, register the phWorld ont, which is included in the apk. TODO move outside too? Include other basic ones?
 		OntologyManagement.getInstance().register(AndroidContext.THE_CONTEXT, new LocationOntology());
@@ -186,6 +199,16 @@ public class OntologyService extends Service{
 	    OntologyManagement.getInstance().register(AndroidContext.THE_CONTEXT, new MeasurementOntology());
 	}
 	
+	/**
+	 * Inner method to load all ontologies included in the ontologies folder,
+	 * following the list of activators described in activators.cfg.
+	 * 
+	 * @param ontFolder
+	 *            The folder where the dexed jar files of the ontologies are
+	 *            found.
+	 * @param cl
+	 *            Class loader to use to access the jar files.
+	 */
 	private static void registerOntologiesFromActList(File ontFolder, ClassLoader cl){
 		// Comma separated list of the names of the activator class, with or without org.universAAL.ontology pckg prefix
 		File manualList=new File(ontFolder, ONT_ACTIVATOR_LIST_FILE);
@@ -217,6 +240,16 @@ public class OntologyService extends Service{
 		}
 	}
 	
+	/**
+	 * Inner method to load all ontologies included in the ontologies folder,
+	 * following the list described of ont classes in ontologies.cfg.
+	 * 
+	 * @param ontFolder
+	 *            The folder where the dexed jar files of the ontologies are
+	 *            found.
+	 * @param cl
+	 *            Class loader to use to access the jar files.
+	 */
 	private static void registerOntologiesFromOntList(File ontFolder, ClassLoader cl){
 		// Comma separated list of the names of the ontology class, WITH the fully qualified package name
 		File manualList = new File(ontFolder, ONT_ONTOLOGY_LIST_FILE);
@@ -244,6 +277,15 @@ public class OntologyService extends Service{
 		}
 	}
 	
+	/**
+	 * Inner method to load all ontologies included in the ontologies folder,
+	 * automagically scanning their activators.
+	 * 
+	 * @param activators
+	 *            List of the activators that were identified.
+	 * @param cl
+	 *            Class loader to use to access the jar files.
+	 */
 	private static void registerOntologiesFromJARS(ArrayList<String> activators, ClassLoader cl){
 		for(String activator:activators){
 			ModuleActivator modActivator;
@@ -256,6 +298,12 @@ public class OntologyService extends Service{
 		}
 	}
 	
+	/**
+	 * File filter to identify jar files.
+	 * 
+	 * @author alfiva
+	 * 
+	 */
 	static class ArchiveFilter implements FileFilter {
 		public boolean accept(File file) {
 			if (file.getName().toLowerCase(Locale.US).endsWith(".jar")) {

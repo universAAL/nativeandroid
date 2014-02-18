@@ -38,6 +38,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 
+/**
+ * Class that acts as a connection between an Android component and a universAAL
+ * wrapper. In this case, between a receiver and a context publisher. The
+ * translation is made thanks to metadata grounding.
+ * 
+ * @author alfiva
+ * 
+ */
 public class ContextPublisherProxy extends ContextPublisher {
 	private String action=null;
 	private String category=null;
@@ -45,6 +53,14 @@ public class ContextPublisherProxy extends ContextPublisher {
 	private ContextPublisherProxyReceiver receiver=null;
 	private Hashtable<String,String> extraKEYtoEventVAL;
 	
+	/**
+	 * Constructor for the proxy.
+	 * 
+	 * @param parcel
+	 *            The parcelable from of the grounding of the metadata.
+	 * @param context
+	 *            The Android context.
+	 */
 	public ContextPublisherProxy(GroundingParcel parcel,
 			Context context) {
 		super(AndroidContext.THE_CONTEXT, prepareProvider(parcel));
@@ -58,6 +74,13 @@ public class ContextPublisherProxy extends ContextPublisher {
 		context.registerReceiver(receiver, filter);//TODO use the other longer register method
 	}
 
+	/**
+	 * Extract the Context Provider information from the grounding.
+	 * 
+	 * @param parcel
+	 *            The parcelable from of the grounding of the metadata.
+	 * @return The uAAL Context Provider.
+	 */
 	private static ContextProvider prepareProvider(GroundingParcel parcel){
 		MessageContentSerializerEx parser = (MessageContentSerializerEx) AndroidContainer.THE_CONTAINER
 				.fetchSharedObject(AndroidContext.THE_CONTEXT,
@@ -71,6 +94,17 @@ public class ContextPublisherProxy extends ContextPublisher {
 		return prov;
 	}
 	
+	/**
+	 * Extract the table of mappings between extras and event values from the
+	 * grounding.
+	 * 
+	 * @param length
+	 *            Amount of entries.
+	 * @param keys
+	 *            Intent extra keys.
+	 * @param values
+	 *            Context Event values.
+	 */
 	private void fillTable(int length, String[] keys, String[] values){
 		extraKEYtoEventVAL=new Hashtable<String,String>(length);
 		for(int i=0; i<length; i++){
@@ -83,6 +117,14 @@ public class ContextPublisherProxy extends ContextPublisher {
 		// TODO Auto-generated method stub
 	}
 	
+	/**
+	 * Auxiliary class representing the Broadcast Receiver registered by the
+	 * middleware where apps will send intents when they want to send a context
+	 * event to uAAL.
+	 * 
+	 * @author alfiva
+	 * 
+	 */
 	public class ContextPublisherProxyReceiver extends BroadcastReceiver {
 		@Override
 		public void onReceive(Context context, Intent intent) {

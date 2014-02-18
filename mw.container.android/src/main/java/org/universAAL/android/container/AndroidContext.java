@@ -32,6 +32,14 @@ import ch.ethz.iks.slp.impl.filter.Filter;
 
 import android.util.Log;
 
+/**
+ * Android-specific implementation of ModuleContext. What is used in OSGi as a
+ * handle to bundle-specific references, in Android it has much less meaning.
+ * Most of the implementation here is empty or a stub.
+ * 
+ * @author alfiva
+ * 
+ */
 public class AndroidContext implements ModuleContext, PlatformAbstraction{
 	// In android we do not have bundles so lets use the same context for all.
 	// In the end it is just a facade for container-specific methods which in
@@ -42,10 +50,20 @@ public class AndroidContext implements ModuleContext, PlatformAbstraction{
 	private static final String DEFAULT_TAG = "Default Tag";
 	private String id="mw.modules.aalspace.osgi";
 	
+	/**
+	 * Constructor with ID.
+	 * 
+	 * @param id
+	 *            The ID given to this instance of Context. It should be the
+	 *            same as the "bundle ID" that will use this context.
+	 */
 	public AndroidContext(String id){
 		this.id=id;
 	}
 	
+	/**
+	 * Empty constructor.
+	 */
 	public AndroidContext(){
 	}
 	
@@ -84,21 +102,21 @@ public class AndroidContext implements ModuleContext, PlatformAbstraction{
 	}
 
 	public Object getAttribute(String attrName) {
-		// TODO Doesnt seem that anybody uses this
+		//  Doesnt seem that anybody uses this
 		return null;
 	}
 	
 	public void setAttribute(String attrName, Object attrValue) {
-		// TODO Doesnt seem that anybody uses this
+		//  Doesnt seem that anybody uses this
 	}
 
 	public Object getProperty(String name) {
-		// TODO Doesnt seem that anybody uses this
+		//  Doesnt seem that anybody uses this
 		return System.getProperty(name);
 	}
 
 	public Object getProperty(String name, Object def) {
-		// TODO Doesnt seem that anybody uses this
+		//  Doesnt seem that anybody uses this
 		Object value = getProperty(name);
 		if (value == null)
 			return def;
@@ -106,11 +124,11 @@ public class AndroidContext implements ModuleContext, PlatformAbstraction{
 	}
 
 	public void registerConfigFile(Object[] configFileParams) {
-		// TODO This is never going to be used in android
+		//  This is never going to be used in android
 	}
 
 	public File[] listConfigFiles(ModuleContext requester) {
-		// TODO This is never going to be used in android
+		//  This is never going to be used in android
 		return new File[0];
 	}
 
