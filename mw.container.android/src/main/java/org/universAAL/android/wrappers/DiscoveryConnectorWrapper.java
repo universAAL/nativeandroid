@@ -33,6 +33,15 @@ import org.universAAL.middleware.interfaces.aalspace.AALSpaceCard;
 
 import android.util.Log;
 
+/**
+ * A mock up class imitating the jSLP discovery module, but providing a
+ * transparent implementation (does nothing). This can be used when there is no
+ * WiFi data connection available, and the middleware will keep working, ignorant
+ * of the implementation.
+ * 
+ * @author alfiva
+ * 
+ */
 public class DiscoveryConnectorWrapper implements DiscoveryConnector, SharedObjectListener{
 	private final static String TAG = "DiscoveryConnectorWrapper";
 	public static boolean enableLog=false; //TODO Configure this is just remove it?

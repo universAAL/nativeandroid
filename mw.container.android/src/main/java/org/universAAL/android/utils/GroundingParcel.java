@@ -33,6 +33,14 @@ import org.universAAL.middleware.container.utils.StringUtils;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+/**
+ * Helper class that bundles the information of a metadata grounding into a
+ * Parcelable object that can be sent across Android components embedded in an
+ * intent.
+ * 
+ * @author alfiva
+ * 
+ */
 public class GroundingParcel implements Parcelable{
 	private String action;
 	private String category;
@@ -47,6 +55,9 @@ public class GroundingParcel implements Parcelable{
 	private String[] keysOUT;
 	private String[] valuesOUT;
 	
+	/**
+	 * Required to build a Parcelable
+	 */
 	public static final Parcelable.Creator<GroundingParcel> CREATOR = new Parcelable.Creator<GroundingParcel>() {
 		public GroundingParcel createFromParcel(Parcel in) {
 			return new GroundingParcel(in);
@@ -57,11 +68,11 @@ public class GroundingParcel implements Parcelable{
 		}
 	};
 
-	//TODO Deprecate this method
+	@Deprecated
 	public GroundingParcel(InputStream is) throws InvalidPropertiesFormatException, IOException {
 		Properties props=new Properties();
 		props.loadFromXML(is);
-		// TODO use another format/method? (Especially because characters < and
+		// use another format/method? (Especially because characters < and
 		// > of the turtle grounding are escaped in this format. Can be annoying)
 		is.close();
 		action = props.getProperty("action");
@@ -91,7 +102,7 @@ public class GroundingParcel implements Parcelable{
 					}
 				}
 			}else{
-				//TODO ???
+				// ???
 			}
 		}
 		lengthIN=listKeysVAR.size();
@@ -112,6 +123,30 @@ public class GroundingParcel implements Parcelable{
 		}
 	}
 
+	/**
+	 * Constructor to build a Parcelable grounding.
+	 * 
+	 * @param act
+	 *            Main intent action.
+	 * @param cat
+	 *            Main intent category.
+	 * @param ground
+	 *            Serialization of the grounding.
+	 * @param repAct
+	 *            Reply intent action.
+	 * @param repCat
+	 *            Reply intent category.
+	 * @param rem
+	 *            Code for the remote import through Gateway .
+	 * @param kIN
+	 *            Input mappings keys.
+	 * @param vIN
+	 *            Input mappings values.
+	 * @param kOUT
+	 *            Output mappings keys.
+	 * @param vOUT
+	 *            Output mappings values.
+	 */
 	public GroundingParcel(String act, String cat, String ground,
 			String repAct, String repCat, String rem, List<String> kIN,
 			List<String> vIN, List<String> kOUT, List<String> vOUT) {
@@ -139,6 +174,9 @@ public class GroundingParcel implements Parcelable{
 		}
 	}
 
+	/** Constructor to build a Parcelable grounding.
+	 * @param in Parcel representation of the grounding.
+	 */
 	public GroundingParcel(Parcel in) {
 		action=in.readString();
 		category=in.readString();
@@ -177,50 +215,110 @@ public class GroundingParcel implements Parcelable{
 		return 0;
 	}
 
+	/**
+	 * Get the serialized grounding.
+	 * 
+	 * @return the serialized grounding.
+	 */
 	public String getGrounding() {
 		return grounding;
 	}
 
+	/**
+	 * Get the reply intent action.
+	 * 
+	 * @return the reply intent action.
+	 */
 	public String getReplyAction() {
 		return replyAction;
 	}
 
+	/**
+	 * Get the reply category.
+	 * 
+	 * @return the reply category.
+	 */
 	public String getReplyCategory() {
 		return replyCategory;
 	}
 
+	/**
+	 * Get the main intent action.
+	 * 
+	 * @return the main intent action.
+	 */
 	public String getAction() {
 		return action;
 	}
 
+	/**
+	 * Get the main intent category.
+	 * 
+	 * @return the main intent category.
+	 */
 	public String getCategory() {
 		return category;
 	}
-	
+
+	/**
+	 * Get the input keys.
+	 * 
+	 * @return the input keys.
+	 */
 	public String[] getKeysIN() {
 		return keysIN;
 	}
 
+	/**
+	 * Get the input values.
+	 * 
+	 * @return the input values.
+	 */
 	public String[] getValuesIN() {
 		return valuesIN;
 	}
 
+	/**
+	 * Get the output keys.
+	 * 
+	 * @return the output keys.
+	 */
 	public String[] getKeysOUT() {
 		return keysOUT;
 	}
 
+	/**
+	 * Get the output values.
+	 * 
+	 * @return the output values.
+	 */
 	public String[] getValuesOUT() {
 		return valuesOUT;
 	}
-	
+
+	/**
+	 * Get the amount of inputs.
+	 * 
+	 * @return the amount of inputs.
+	 */
 	public int getLengthIN() {
 		return lengthIN;
 	}
 
+	/**
+	 * Get the amount of outputs.
+	 * 
+	 * @return the amount of outputs.
+	 */
 	public int getLengthOUT() {
 		return lengthOUT;
 	}
 
+	/**
+	 * Get the code for remote import through GW.
+	 * 
+	 * @return the code for remote import through GW.
+	 */
 	public String getRemote() {
 		return remote;
 	}

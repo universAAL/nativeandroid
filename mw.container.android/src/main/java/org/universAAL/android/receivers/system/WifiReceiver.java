@@ -28,12 +28,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-public class WifiReceiver extends BroadcastReceiver{
+/**
+ * Broadcast receiver that gets called with CONNECTIVITY_CHANGE system actions.
+ * It relays this information to the Middleware Service.
+ * 
+ * @author alfiva
+ * 
+ */
+public class WifiReceiver extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		// A change in Wifi happened. Whether its ON or OFF send the right command to MWService, Do not start/stop from here.
-		Log.v("WifiReceiver", "Received Broadcast: "+intent.getAction());
+		Log.v("WifiReceiver", "Received Broadcast: " + intent.getAction());
 		Intent start = new Intent(intent);
 		start.setClass(context, MiddlewareService.class);
 		context.startService(start);

@@ -39,13 +39,29 @@ import org.universAAL.ri.gateway.communicator.service.RemoteSpacesManager;
 import android.content.Context;
 import android.content.Intent;
 
+/**
+ * Class that acts as a connection between an Android component and a universAAL
+ * wrapper. In this case, between a context subscriber and an intent. The
+ * translation is made thanks to metadata grounding.
+ * 
+ * @author alfiva
+ * 
+ */
 public class ContextSubscriberProxy extends ContextSubscriber implements SharedObjectListener{
-	private WeakReference<Context> context; //TODO memory issues?
+	private WeakReference<Context> context;
 	private String action=null;
 	private String category=null;
 	private String grounding=null;
 	private Hashtable<String,String> eventVALtoExtraKEY;
 
+	/**
+	 * Constructor for the proxy.
+	 * 
+	 * @param parcel
+	 *            The parcelable from of the grounding of the metadata.
+	 * @param context
+	 *            The Android context.
+	 */
 	public ContextSubscriberProxy(GroundingParcel parcel, Context context) {
 		super(AndroidContext.THE_CONTEXT, prepareSubscriptions(parcel.getGrounding()));
 		this.context=new WeakReference<Context>(context);
@@ -69,6 +85,13 @@ public class ContextSubscriberProxy extends ContextSubscriber implements SharedO
 		}
 	}
 
+	/**
+	 * Extract the Context Event Pattern information from the grounding.
+	 * 
+	 * @param serial
+	 *            The serialized form of the pattern, taken from the grounding.
+	 * @return The deserialized array of patterns.
+	 */
 	private static ContextEventPattern[] prepareSubscriptions(String serial) {
 		MessageContentSerializerEx parser = (MessageContentSerializerEx) AndroidContainer.THE_CONTAINER
 				.fetchSharedObject(AndroidContext.THE_CONTEXT,
@@ -78,6 +101,17 @@ public class ContextSubscriberProxy extends ContextSubscriber implements SharedO
 		return new ContextEventPattern[]{cep};
 	}
 	
+	/**
+	 * Extract the table of mappings between event values and extras from the
+	 * grounding.
+	 * 
+	 * @param length
+	 *            Amount of entries.
+	 * @param keys
+	 *            Context Event keys.
+	 * @param values
+	 *            Extras values.
+	 */
 	private void fillTable(int length, String[] keys, String[] values){
 		eventVALtoExtraKEY=new Hashtable<String,String>(length);
 		for(int i=0; i<length; i++){

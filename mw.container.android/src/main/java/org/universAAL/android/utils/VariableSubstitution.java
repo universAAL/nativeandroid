@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
-import java.util.regex.Pattern;
 
 import org.universAAL.middleware.context.ContextEvent;
 import org.universAAL.middleware.rdf.Resource;
@@ -35,8 +34,28 @@ import org.universAAL.middleware.service.owls.process.ProcessOutput;
 
 import android.content.Intent;
 
+/**
+ * Helper class that provides static methods for variable substitution in the
+ * metadata.
+ * 
+ * @author alfiva
+ * 
+ */
 public class VariableSubstitution {
-//TODO Clean this code
+
+	/**
+	 * Puts any type of object as an intent extra with a given ID in the given
+	 * intent, taking care of any possible variable substitution.
+	 * 
+	 * @param intent
+	 *            The intent where to put the extra.
+	 * @param extrakey
+	 *            The ID of the extra to add.
+	 * @param value
+	 *            The value of the extra, which will be casted to the
+	 *            appropriate object.
+	 * @return The intent with the added extra.
+	 */
 	public static Intent putAnyExtra(Intent intent, String extrakey, Object value){
 		if(value instanceof Resource){
 			if(extrakey.contains("{")){//TODO Check numbers again, just in case. HANDLE EXCEPTIONS!!!
@@ -101,13 +120,31 @@ public class VariableSubstitution {
 		return intent;
 	}
 
-	// Used in CONTEXT PUBLISHER PROXY when registering
+	/**
+	 * Removes variables delimiters from a serialized context event. Used in
+	 * CONTEXT PUBLISHER PROXY when registering.
+	 * 
+	 * @param turtleEvent
+	 *            The serialized event.
+	 * @return The serialized event without variable delimiters.
+	 */
 	public static String cleanContextEvent(String turtleEvent) {
 		String replaced=turtleEvent;
 		return replaced.replaceAll("&.*?;","");
 	}
 	
-	// Used in SERVICE CALLEE PROXY when when receiving intent
+	/**
+	 * Converts thanks to the metadata mappings the extras of an intent into
+	 * Output objects for a Service Response in uAAL. Used in SERVICE CALLEE
+	 * PROXY when when receiving intent.
+	 * 
+	 * @param intent
+	 *            The intent containing the extras to transform.
+	 * @param response
+	 *            The Service Response object where the Outputs will be placed.
+	 * @param outputTOextra
+	 *            The mappings between Outputs and Extras.
+	 */
 	public static void putIntentExtrasAsResponseOutputs(Intent intent, ServiceResponse response, Hashtable<String,String> outputTOextra){
 		//table: URI of output in response -> substitutible string containing key of extra
 		for(String outputURI:outputTOextra.keySet()){
@@ -159,14 +196,36 @@ public class VariableSubstitution {
 		}
 	}
 	
-	// Used in SERVICE CALLEE PROXY when when receiving call
+	/**
+	 * Converts thanks to metadata mappings the uAAL Service Request Inputs to
+	 * intent extras. Used in SERVICE CALLEE PROXY when when receiving call.
+	 * 
+	 * @param call
+	 *            The Service Call resulting from a Service Request, containing
+	 *            the Inputs.
+	 * @param intent
+	 *            The intent where to put the extras.
+	 * @param table
+	 *            The mappings between Inputs and Extras.
+	 */
 	public static void putCallInputsAsIntentExtras(ServiceCall call, Intent intent, Hashtable<String,String> table){
 		for(String inputURI:table.keySet()){
 			putAnyExtra(intent, table.get(inputURI), call.getInputValue(inputURI));
 		}
 	}
 	
-	// Used in SERVICE CALLER PROXY when when receiving response
+	/**
+	 * Converts thanks to the metadata mappings the Outputs of a Service
+	 * Response into intent extras. Used in SERVICE CALLER PROXY when when
+	 * receiving response.
+	 * 
+	 * @param response
+	 *            The Service Response containing the Outputs.
+	 * @param intent
+	 *            The intent where to put the extras.
+	 * @param table
+	 *            The mappings between Extras and Outputs.
+	 */
 	public static void putResponseOutputsAsIntentExtras(ServiceResponse response,
 			Intent intent, Hashtable<String,String> table) {
 		for(String outputURI:table.keySet()){
@@ -181,8 +240,21 @@ public class VariableSubstitution {
 			}
 		}
 	}
-	
-	// Used in SERVICE CALLER PROXY when when receiving intent
+	 
+	/**
+	 * Converts thanks to the metadata mappings the intent extras into Inputs
+	 * for a Service Request. Used in SERVICE CALLER PROXY when when receiving
+	 * intent.
+	 * 
+	 * @param intent
+	 *            The intent where the extras are.
+	 * @param turtleRequest
+	 *            The serialized form of the Service Request where inputs must
+	 *            be placed.
+	 * @param table
+	 *            The mappings between Extras and Inputs.
+	 * @return The serialized from of the Service Request with the inputs added.
+	 */
 	public static String putIntentExtrasAsRequestInputs(Intent intent,
 			String turtleRequest, Hashtable<String,String> table) {
 		String replaced=turtleRequest;
@@ -206,7 +278,19 @@ public class VariableSubstitution {
 		//TODO its the same as putIntentExtrasAsEventValues
 	}
 	
-	// Used in CONTEXT PUBLISHER PROXY when receiving intent
+	/**
+	 * Converts thanks to the metadata mappings the intent extras into actual
+	 * values for a context event. Used in CONTEXT PUBLISHER PROXY when
+	 * receiving intent
+	 * 
+	 * @param intent
+	 *            The intent where the extras are.
+	 * @param turtleEvent
+	 *            The serialized form of the Context Event.
+	 * @param table
+	 *            The mappings between Extras and Values.
+	 * @return The serialized form of the Context Event.
+	 */
 	public static String putIntentExtrasAsEventValues(Intent intent, String turtleEvent, Hashtable<String,String> table){
 		String replaced=turtleEvent;//TODO Allow pre-variable uri substitution with { }
 		for(String val:table.keySet()){
@@ -215,7 +299,17 @@ public class VariableSubstitution {
 		return replaced;
 	}
 	
-	// Used in CONTEXT SUBSCRIBER PROXY when receiving event
+	/**
+	 * Converts thanks to the metadata mappings the event values into intent
+	 * extras. Used in CONTEXT SUBSCRIBER PROXY when receiving event.
+	 * 
+	 * @param event
+	 *            The Context Event where the values are.
+	 * @param intent
+	 *            The intent where the extras must be placed.
+	 * @param table
+	 *            The mappings between Values and Extras.
+	 */
 	public static void putEventValuesAsIntentExtras(ContextEvent event, Intent intent, Hashtable<String,String> table){
 		for(String inputURI:table.keySet()){//TODO Allow pre-variable uri substitution with { }
 			putAnyExtra(intent, table.get(inputURI), event.getProperty(inputURI));//TODO Allow ppaths into event?

@@ -31,6 +31,13 @@ import org.universAAL.android.utils.GroundingParcel;
 
 import android.content.Context;
 
+/**
+ * Class that works as a singleton where the instances of proxy classes are
+ * maintained.
+ * 
+ * @author alfiva
+ * 
+ */
 public class AndroidRegistry {
 	public static final int TYPE_CPUBLISHER = 1;
 	public static final int TYPE_CSUBSCRIBER = 2;
@@ -43,6 +50,19 @@ public class AndroidRegistry {
 	private static Hashtable<String, ServiceCalleeProxy> scallees = new Hashtable<String, ServiceCalleeProxy>();
 	private static Hashtable<String, ServiceCallerProxy> scallers = new Hashtable<String, ServiceCallerProxy>();
 
+	/**
+	 * Create and store in memory an instance of a proxy class for a given
+	 * grounding.
+	 * 
+	 * @param id
+	 *            The unique ID of the grounding.
+	 * @param parcel
+	 *            The Parcelable representation of the grounding.
+	 * @param type
+	 *            The type of uAAL wrapper.
+	 * @param context
+	 *            The Android context.
+	 */
 	public static synchronized void register(String id, GroundingParcel parcel,	int type,  Context context) {
 		switch (type) {
 		case TYPE_CPUBLISHER:
@@ -67,6 +87,14 @@ public class AndroidRegistry {
 		}
 	}
 	
+	/**
+	 * Remove an instance of a proxy class for a given grounding.
+	 * 
+	 * @param id
+	 *            The unique ID of the grounding.
+	 * @param type
+	 *            The type of uAAL wrapper.
+	 */
 	public static synchronized void unregister(String id, int type){
 		switch (type) {
 		case TYPE_CPUBLISHER:

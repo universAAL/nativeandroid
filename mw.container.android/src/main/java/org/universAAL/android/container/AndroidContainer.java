@@ -35,6 +35,14 @@ import org.universAAL.middleware.container.SharedObjectListener;
 
 import android.util.Log;
 
+/**
+ * Android-specific implementation of the Container interface for universAAL.
+ * Its prime function is to hold the references to all running modules of the
+ * middleware, and allow access to them.
+ * 
+ * @author alfiva
+ * 
+ */
 public class AndroidContainer implements Container{
 	private static final String TAG = "AndroidContainer";
 	// Events for listeners
@@ -163,6 +171,16 @@ public class AndroidContainer implements Container{
 	
 	// END OF INTERFACE
 	
+	/**
+	 * Auxiliary method to store objects in the container.
+	 * 
+	 * @param xface
+	 *            Interface implemented by the object to store.
+	 * @param obj
+	 *            Object to store.
+	 * @param object
+	 *            Properties of the object (not used).
+	 */
 	public void shareObject(String xface, Object obj, Dictionary object) {
 		WeakReference<Object> weak=new WeakReference<Object>(obj);
 		if (services.containsKey(xface)) { // looks like this works
@@ -172,12 +190,30 @@ public class AndroidContainer implements Container{
 		notifyListeners(xface, weak.get(), EVENT_SERV_REGISTERED);
 	}
 
+	/**
+	 * Auxiliary method to store objects in the container.
+	 * 
+	 * @param xface
+	 *            Interfaces implemented by the object to store.
+	 * @param obj
+	 *            Object to store.
+	 * @param props
+	 *            Properties of the object (not used).
+	 */
 	public void shareObject(String[] xface, Object obj, Dictionary props) {
 		for (String xf : xface) {
 			shareObject(xf,obj,props);
 		}
 	}
 
+	/**
+	 * Auxiliary method to get object from the container.
+	 * 
+	 * @param className
+	 *            Name of the class of the interface implemented by the object
+	 *            to retrieve.
+	 * @return The Object that implements it.
+	 */
 	public Object getObject(String className) {
 		if(className==null){
 			return null;
@@ -189,6 +225,16 @@ public class AndroidContainer implements Container{
 		return null; 
 	}
 	
+	/**
+	 * Auxiliary method to get objects from the container.
+	 * 
+	 * @param className
+	 *            Name of the class of the interface implemented by the object
+	 *            to retrieve.
+	 * @param filter
+	 *            Filter to get objects (not used).
+	 * @return The Objects that implement the interface.
+	 */
 	public Object[] getObjects(String className, String filter) {
 		// TODO Right now I dont care about the filter
 		if(className==null){
@@ -201,6 +247,14 @@ public class AndroidContainer implements Container{
 		return null;
 	}
 	
+	/**
+	 * Auxiliary method to remove object from the container.
+	 * 
+	 * @param xface
+	 *            Interface implemented by the object to remove.
+	 * @param obj
+	 *            Object to remove.
+	 */
 	public void unshareObject(String xface, Object obj) {
 		WeakReference<Object> weak=services.remove(xface);
 		if (weak!=null){
@@ -209,12 +263,31 @@ public class AndroidContainer implements Container{
 		}
 	}
 	
+	/**
+	 * Auxiliary method to remove object from the container.
+	 * 
+	 * @param xface
+	 *            Interfaces implemented by the object to remove.
+	 * @param obj
+	 *            Object to remove.
+	 */
 	public void unshareObject(String[] xface, Object obj) {
 		for (String xf : xface) {
 			unshareObject(xf, obj);
 		}
 	}
 
+	/**
+	 * Method to use when an object is added/removed/changed in the container
+	 * and there are listeners for such situation.
+	 * 
+	 * @param xf
+	 *            Interface of the object being added/removed/changed.
+	 * @param obj
+	 *            Object being added/removed/changed.
+	 * @param event
+	 *            Type of situation happening.
+	 */
 	private void notifyListeners(String xf, Object obj, int event) {
 		// TODO Not handling ServiceEvent.MODIFIED event
 		if (event == EVENT_SERV_MODIFIED)

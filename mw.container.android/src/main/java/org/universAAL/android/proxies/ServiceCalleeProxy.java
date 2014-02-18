@@ -46,17 +46,33 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 
+/**
+ * Class that acts as a connection between an Android component and a universAAL
+ * wrapper. In this case, between a service callee, an intent, and a broadcast
+ * receiver for the response. The translation is made thanks to metadata
+ * grounding.
+ * 
+ * @author alfiva
+ * 
+ */
 public class ServiceCalleeProxy extends ServiceCallee {
-	private WeakReference<Context> context; //TODO memory issues?
+	private WeakReference<Context> context;
 	private String action=null;
 	private String category=null;
 	private String replyAction=null;
 	private String replyCategory=null;
 	private ServiceCalleeProxyReceiver receiver=null;
-//	private static final long WAIT_MS = 5000; //TODO Adjust timer -> to timeout defined in serv profile
 	private Hashtable<String,String> inputURItoExtraKEY;
 	private Hashtable<String,String> extraKEYtoOutputURI;
 
+	/**
+	 * Constructor for the proxy.
+	 * 
+	 * @param parcel
+	 *            The parcelable from of the grounding of the metadata.
+	 * @param context
+	 *            The Android context.
+	 */
 	public ServiceCalleeProxy(GroundingParcel parcel, Context context) {
 		super(AndroidContext.THE_CONTEXT, prepareProfiles(parcel));
 		this.context=new WeakReference<Context>(context);
@@ -68,6 +84,13 @@ public class ServiceCalleeProxy extends ServiceCallee {
 		fillTableOUT(parcel.getLengthOUT(),parcel.getKeysOUT(), parcel.getValuesOUT());
 	}
 	
+	/**
+	 * Extract the Service Profile information from the grounding.
+	 * 
+	 * @param parcel
+	 *            The parcelable from of the grounding of the metadata.
+	 * @return The uAAL Service Profile.
+	 */
 	private static ServiceProfile[] prepareProfiles(GroundingParcel parcel) {
 		MessageContentSerializerEx parser = (MessageContentSerializerEx) AndroidContainer.THE_CONTAINER
 				.fetchSharedObject(AndroidContext.THE_CONTEXT,
@@ -77,6 +100,17 @@ public class ServiceCalleeProxy extends ServiceCallee {
 		return new ServiceProfile[]{sp};
 	}
 	
+	/**
+	 * Extract the table of mappings between inputs and extras from the
+	 * grounding.
+	 * 
+	 * @param length
+	 *            Amount of entries.
+	 * @param keys
+	 *            Input keys.
+	 * @param values
+	 *            Extras ID values.
+	 */
 	private void fillTableIN(int length, String[] keys, String[] values){
 		inputURItoExtraKEY=new Hashtable<String,String>(length);
 		for(int i=0; i<length; i++){
@@ -84,6 +118,17 @@ public class ServiceCalleeProxy extends ServiceCallee {
 		}
 	}
 	
+	/**
+	 * Extract the table of mappings between extras and outputs from the
+	 * grounding.
+	 * 
+	 * @param length
+	 *            Amount of entries.
+	 * @param keys
+	 *            Extras keys.
+	 * @param values
+	 *            Outputs values.
+	 */
 	private void fillTableOUT(int length, String[] keys, String[] values){
 		extraKEYtoOutputURI=new Hashtable<String,String>(length);
 		for(int i=0; i<length; i++){
@@ -163,6 +208,14 @@ public class ServiceCalleeProxy extends ServiceCallee {
 		}
 	}
 									
+	/**
+	 * Sends the response back to the service bus.
+	 * 
+	 * @param msg
+	 *            The message that originated the call.
+	 * @param sr
+	 *            The response to return.
+	 */
 	private void sendResponse(final BusMessage msg, final ServiceResponse sr) {
 		// First, since we already have the response (good or bad), remove the receiver
 		Context ctxt = context.get();
@@ -179,6 +232,14 @@ public class ServiceCalleeProxy extends ServiceCallee {
 		}
 	}
 
+	/**
+	 * Auxiliary class representing the Broadcast Receiver registered by the
+	 * middleware where apps will send intents when they have to return a
+	 * response to uAAL.
+	 * 
+	 * @author alfiva
+	 * 
+	 */
 	public class ServiceCalleeProxyReceiver extends BroadcastReceiver {
 		BusMessage msg;
 		

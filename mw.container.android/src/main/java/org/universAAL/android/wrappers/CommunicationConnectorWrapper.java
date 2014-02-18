@@ -44,6 +44,15 @@ import org.universAAL.middleware.managers.api.AALSpaceManager;
 
 import android.util.Log;
 
+/**
+ * A mock up class imitating the jGroups communication module, but providing a
+ * transparent implementation (does nothing). This can be used when there is no
+ * WiFi data connection available, and the middleware will keep working, ignorant
+ * of the implementation.
+ * 
+ * @author alfiva
+ * 
+ */
 public class CommunicationConnectorWrapper implements CommunicationConnector, Receiver, RequestHandler, MembershipListener{
 	private final static String TAG = "CommunicationConnectorWrapper";
 	public static boolean enableLog=false; //TODO Configure this is just remove it?

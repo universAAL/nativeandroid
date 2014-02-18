@@ -50,22 +50,6 @@
             </intent-filter>
         </receiver>
         
-        <!-- This launches scan for universaalized apps -->
-        <receiver
-            android:name="org.universAAL.android.receivers.system.PackageReceiver"
-            android:enabled="false"
-            android:exported="false" >
-            <intent-filter>
-                <action android:name="android.intent.action.PACKAGE_ADDED" >
-                </action>
-                <action android:name="android.intent.action.PACKAGE_REMOVED" >
-                </action>
-                <action android:name="android.intent.action.PACKAGE_REPLACED" >
-                </action>
-                <data android:scheme="package" />
-            </intent-filter>
-        </receiver>
-        
         <!-- This starts/stops the connector when Wifi is ON/OFF -->
         <receiver
             android:name="org.universAAL.android.receivers.system.WifiReceiver"
@@ -96,7 +80,6 @@
             android:enabled="true"
             android:exported="false" >
             <intent-filter>
-                <!-- TODO use a separate receiver??? set category too?? -->
                 <action android:name="org.universAAL.android.action.PCK_REGISTER" />
                 <action android:name="org.universAAL.android.action.PCK_UNREGISTER" />
             </intent-filter>
@@ -108,7 +91,6 @@
             android:enabled="true"
             android:exported="false" >
             <intent-filter>
-                <!-- TODO use a separate receiver??? set category too?? -->
                 <action android:name="org.universAAL.android.action.PCK_REGISTER_ALL" />
                 <action android:name="org.universAAL.android.action.PCK_UNREGISTER_ALL" />
             </intent-filter>
@@ -122,7 +104,6 @@
             android:enabled="true"
             android:exported="false" >
             <intent-filter>
-                <!-- TODO use a separate receiver??? set category too?? -->
                 <action android:name="org.universAAL.android.action.ONT_REGISTER" />
                 <action android:name="org.universAAL.android.action.ONT_UNREGISTER" />
                 <action android:name="org.universAAL.android.action.ONT_REGISTER_ALL" />

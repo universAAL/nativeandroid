@@ -57,6 +57,14 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 
+/**
+ * This service class is used when scanning all installed apps looking for
+ * universAAL metadata. The groundings found in the metadata will be sent to the
+ * Middleware service.
+ * 
+ * @author alfiva
+ * 
+ */
 public class ScanService extends Service{
 	
 	private static final String TAG = "ScanServiceXML";
@@ -97,7 +105,7 @@ public class ScanService extends Service{
 						}else{
 							Log.v(TAG, "Not the right action");
 						}
-					}else{ // TODO If (action=null) who?
+					}else{ // If (action=null) who?
 						Log.v(TAG, "Action is none");
 					}
 				}
@@ -113,6 +121,14 @@ public class ScanService extends Service{
 		return null;
 	}
 	
+	/**
+	 * Starts the scan for all installed apps, to register or unregister what it
+	 * finds.
+	 * 
+	 * @param register
+	 *            True if this is for registering groundings, at startup. False
+	 *            to unregister, when shutdown.
+	 */
 	private void scanAllApps(boolean register) {
 		if (register) {
 			// Only wait if we are going to register
@@ -139,14 +155,34 @@ public class ScanService extends Service{
 		}
 	}
 	
-	private synchronized void registerPackage(final String packageName){
+	/**
+	 * Scan a manifest to register the groundings found.
+	 * 
+	 * @param packageName
+	 *            The package ID of the App.
+	 */
+	private synchronized void registerPackage(final String packageName) {
 		scanManifest(packageName, true);
 	}
 
-	private synchronized void unregisterPackage(String packageName){
+	/**
+	 * Scan a manifest to unregister the groundings found.
+	 * 
+	 * @param packageName
+	 *            The package ID of the App.
+	 */
+	private synchronized void unregisterPackage(String packageName) {
 		scanManifest(packageName, false);
 	}
-	
+
+	/**
+	 * Scan a manifest to register/unregister the groundings found.
+	 * 
+	 * @param packageName
+	 *            The package ID of the App.
+	 * @param register
+	 *            True for register, false for unregister.
+	 */
 	private synchronized void scanManifest(final String packageName, boolean register){
 		Log.d(TAG, "Is about to search for uAAL metadata in package ["+ packageName + "]");
 		String componentNameString;
@@ -184,6 +220,23 @@ public class ScanService extends Service{
 		}
 	}
 
+	/**
+	 * Analyze the metadata to extract the groundings and register/unregister
+	 * them.
+	 * 
+	 * @param packageName
+	 *            The package ID of the App.
+	 * @param metadata
+	 *            Android metadata of the App manifest.
+	 * @param componentNameString
+	 *            Name of the component holding the metadata.
+	 * @param appInfo
+	 *            Android App Info.
+	 * @param register
+	 *            True for register, false for unregister.
+	 * @throws NameNotFoundException
+	 *             If the universAAL metadat file was not found were specified.
+	 */
 	private void scanMetadata(String packageName, Bundle metadata,
 			String componentNameString, ApplicationInfo appInfo, boolean register) throws NameNotFoundException {
 		// Find uAAL metadata file declared in this element. MAX ONE PER ELEMENT (app/activity/service) !!!!!!
@@ -275,6 +328,15 @@ public class ScanService extends Service{
 		}//TODO check that the ID works ok built like that
 	}
 	
+	/**
+	 * Extract the type constant from the metadata.
+	 * 
+	 * @param busName
+	 *            Bus section name.
+	 * @param typeName
+	 *            Advertisement or requirement.
+	 * @return The constant identifying the type of uAAL wrapper.
+	 */
     private int parseTypeName(String busName, String typeName) {
     	if(busName.equals("mw_bus_context")){
     		if(typeName.equals("advertisement")){
@@ -292,6 +354,17 @@ public class ScanService extends Service{
 		return 0;
 	}
 	
+	/**
+	 * Helper method to extract nodes from the metadata file.
+	 * 
+	 * @param property
+	 *            What to extract.
+	 * @param from
+	 *            From which Node.
+	 * @param xpath
+	 *            How it is reached.
+	 * @return The value.
+	 */
 	private String extractPermissionProperty(String property, Node from, XPath xpath) {
 		try {
 			return xpath.evaluate("normalize-space(" + property + ")", from);
@@ -300,6 +373,17 @@ public class ScanService extends Service{
 		}
 	}
 	
+	/**
+	 * Once the grounding is ready, send it to the Service Middleware to be
+	 * registered.
+	 * 
+	 * @param id
+	 *            ID for the Registry.
+	 * @param registration
+	 *            The Grounding data.
+	 * @param type
+	 *            Type of uAAL wrapper.
+	 */
 	private void sendRegisterToBus(String id, GroundingParcel registration, int type) {
 		Log.d(TAG, "Attempt to register component [id: " + id + ", \n act: "
 				+ registration.getAction() + ", \n cat: " + registration.getCategory()
@@ -313,6 +397,15 @@ public class ScanService extends Service{
 		startService(start);
 	}
 	
+	/**
+	 * Once the grounding is ready, send it to the Service Middleware to be
+	 * unregistered.
+	 * 
+	 * @param id
+	 *            ID for the Registry.
+	 * @param type
+	 *            Type of uAAL wrapper.
+	 */
 	private void sendUnRegisterToBus(String id, int type) {
 		Log.d(TAG, "Attempt to unregister component [id: " + id + ", \n type: "
 				+ type + "]");
@@ -323,6 +416,16 @@ public class ScanService extends Service{
 		startService(start);
 	}
 
+	/**
+	 * Extract the universAAL metadata file as specified by the manifest
+	 * metadata declaration.
+	 * 
+	 * @param metaData
+	 *            All available metadata.
+	 * @param metdataName
+	 *            The uAAL metadata file.
+	 * @return ID of the file.
+	 */
 	protected int extractResourceFromMetadata(Bundle metaData,
 			String metdataName) {
 		int resourceID = 0;
