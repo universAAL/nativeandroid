@@ -192,9 +192,9 @@ Files/Configurations/felix/configurations/etc/mw.managers.deploy.core.properties
 Files/Configurations/felix/configurations/etc/mw.modules.aalspace.core.properties -text
 Files/Configurations/felix/configurations/etc/org.universAAL.mw.data.representation.properties -text
 Files/Configurations/felix/configurations/etc/ri.gateway.communicator.core.properties -text
-Files/Configurations/felix/ontologies/ont.continuahealthmanager-2.0.4-SNAPSHOT.jar -text
-Files/Configurations/felix/ontologies/ont.lighting-2.0.1-SNAPSHOT.jar -text
-Files/Configurations/felix/ontologies/ont.personalhealthdevice-2.0.4-SNAPSHOT.jar -text
+Files/Configurations/felix/ontologies/ont.continuahealthmanager-3.0.1-SNAPSHOT.jar -text
+Files/Configurations/felix/ontologies/ont.lighting-3.0.1-SNAPSHOT.jar -text
+Files/Configurations/felix/ontologies/ont.personalhealthdevice-3.0.1-SNAPSHOT.jar -text
 Files/HelpWhenOutdoor.apk -text
 Files/LightClient.apk -text
 Files/LightServer.apk -text
