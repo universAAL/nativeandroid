@@ -11,6 +11,7 @@
     <UDP
          mcast_port="${jgroups.udp.mcast_port:45588}"
          tos="8"
+         ip_mcast="false"
          ucast_recv_buf_size="5M"
          ucast_send_buf_size="640K"
          mcast_recv_buf_size="5M"
@@ -44,7 +45,7 @@
          oob_thread_pool.queue_max_size="100"
          oob_thread_pool.rejection_policy="discard"/>
 
-    <PING timeout="2000"
+    <BPING timeout="2000"
             num_initial_members="20"/>
     <MERGE2 max_interval="30000"
             min_interval="10000"/>
