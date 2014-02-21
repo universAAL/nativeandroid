@@ -128,6 +128,12 @@ public class ContextPublisherProxy extends ContextPublisher {
 	public class ContextPublisherProxyReceiver extends BroadcastReceiver {
 		@Override
 		public void onReceive(Context context, Intent intent) {
+			if (intent.getBooleanExtra(IntentConstants.ACTION_META_FROMPROXY, false)) {
+				// The intent comes from a SubscriberProxy. It wouldnt have sent it
+				// if its receiver and this one where the same, but that doesnt
+				// count when it comes from the bus alone. This fixes that.
+				return;
+			}
 			ContextEvent event;
 			MessageContentSerializerEx parser = (MessageContentSerializerEx) AndroidContainer.THE_CONTAINER
 					.fetchSharedObject(AndroidContext.THE_CONTEXT,
