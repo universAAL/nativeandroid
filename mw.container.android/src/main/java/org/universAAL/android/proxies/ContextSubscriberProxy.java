@@ -146,6 +146,8 @@ public class ContextSubscriberProxy extends ContextSubscriber implements SharedO
 				if(eventVALtoExtraKEY!=null && !eventVALtoExtraKEY.isEmpty()){
 					VariableSubstitution.putEventValuesAsIntentExtras(event, broadcast, eventVALtoExtraKEY);
 				}
+				// Flag to avoid feeding back the intent to bus when intent is the same in app and in publisherproxy 
+				broadcast.putExtra(IntentConstants.ACTION_META_FROMPROXY, true);
 				ctxt.sendBroadcast(broadcast);
 			}
 		}

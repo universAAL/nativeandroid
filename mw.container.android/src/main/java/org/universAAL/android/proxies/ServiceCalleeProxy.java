@@ -166,8 +166,8 @@ public class ServiceCalleeProxy extends ServiceCallee {
 				// If a response is expected, prepare a callback receiver (which must be called by uaalized app) TODO If reply* fields not set???
 				if((replyAction!=null && !replyAction.isEmpty()) && (replyCategory!=null && !replyCategory.isEmpty())){
 					// Tell the destination where to send the reply
-					serv.putExtra("replyToAction", replyAction);
-					serv.putExtra("replyToCategory", replyCategory);
+					serv.putExtra("replyToAction", replyAction); //TODO change ID to IntentConstants.ACTION_META_REPLYTOACT
+					serv.putExtra("replyToCategory", replyCategory); //TODO change ID to IntentConstants.ACTION_META_REPLYTOCAT
 					// Register the receiver for the reply
 					receiver=new ServiceCalleeProxyReceiver(m);
 					IntentFilter filter=new IntentFilter(replyAction);
@@ -178,8 +178,8 @@ public class ServiceCalleeProxy extends ServiceCallee {
 					// No reply* fields set, but caller still needs a response, lets build him some (does not work for callers outside android MW)
 					Random r = new Random();
 					String action=IntentConstants.ACTION_REPLY+r.nextInt();
-					serv.putExtra("replyToAction", action);
-					serv.putExtra("replyToCategory", Intent.CATEGORY_DEFAULT);
+					serv.putExtra("replyToAction", action); //TODO change ID to IntentConstants.ACTION_META_REPLYTOACT
+					serv.putExtra("replyToCategory", Intent.CATEGORY_DEFAULT); //TODO change ID to IntentConstants.ACTION_META_REPLYTOCAT
 					// Register the receiver for the reply
 					receiver=new ServiceCalleeProxyReceiver(m);
 					IntentFilter filter=new IntentFilter(action);
@@ -191,6 +191,8 @@ public class ServiceCalleeProxy extends ServiceCallee {
 				if (inputURItoExtraKEY!=null && !inputURItoExtraKEY.isEmpty()){
 					VariableSubstitution.putCallInputsAsIntentExtras(call, serv, inputURItoExtraKEY);
 				}
+				// Flag to avoid feeding back the intent to bus when intent is the same in app and in callerproxy 
+				serv.putExtra(IntentConstants.ACTION_META_FROMPROXY, true);
 				// Send the intent to Android grounded service
 				ComponentName started=ctxt.startService(serv);
 				if(started==null){

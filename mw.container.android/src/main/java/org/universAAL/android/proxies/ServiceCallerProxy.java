@@ -189,6 +189,12 @@ public class ServiceCallerProxy extends ServiceCaller implements SharedObjectLis
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			System.out.println("//////onReceive");
+			if (intent.getBooleanExtra(IntentConstants.ACTION_META_FROMPROXY, false)) {
+				// The intent comes from a CalleeProxy. It wouldnt have sent it
+				// if its receiver and this one where the same, but that doesnt
+				// count when it comes from the bus alone. This fixes that.
+				return;
+			}
 			MessageContentSerializerEx parser = (MessageContentSerializerEx) AndroidContainer.THE_CONTAINER
 					.fetchSharedObject(AndroidContext.THE_CONTEXT,
 							new Object[] { MessageContentSerializerEx.class
