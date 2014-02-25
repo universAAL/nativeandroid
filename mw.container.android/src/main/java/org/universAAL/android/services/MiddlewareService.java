@@ -69,6 +69,8 @@ import org.universAAL.middleware.tracker.IBusMemberRegistry;
 import org.universAAL.middleware.tracker.impl.BusMemberRegistryImpl;
 import org.universAAL.middleware.ui.IUIBus;
 import org.universAAL.middleware.ui.impl.UIBusImpl;
+import org.universAAL.middleware.util.Constants;
+import org.universAAL.ontology.profile.User;
 import org.universAAL.ri.gateway.communicator.service.impl.CommunicatorStarter;
 import org.universAAL.ri.gateway.communicator.service.impl.GatewayAddress;
 import org.universAAL.ri.gateway.communicator.service.impl.GatewayCommunicatorImpl;
@@ -574,14 +576,16 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 			// _________________UI HANDLER_________________________
 			new Thread(new Runnable() {
 				public void run() {
-			mModHANDLER = new AndroidHandler(AndroidContext.THE_CONTEXT);
-			AndroidContainer.THE_CONTAINER.shareObject(
-					AndroidContext.THE_CONTEXT, mModHANDLER, new String[] {
-							AndroidHandler.class.getName(),
-							AndroidHandler.class.getName() });
-			mModHANDLER.render();
+					mModHANDLER = new AndroidHandler(AndroidContext.THE_CONTEXT,
+							Constants.uAAL_MIDDLEWARE_LOCAL_ID_PREFIX
+									+ "saied");// TODO Set user by settings
+					AndroidContainer.THE_CONTAINER.shareObject(
+							AndroidContext.THE_CONTEXT, mModHANDLER, new String[] {
+									AndroidHandler.class.getName(),
+									AndroidHandler.class.getName() });
+					mModHANDLER.render();
 				}
-			},UI_THREAD_TAG).start();
+			}, UI_THREAD_TAG).start();
 			Log.d(TAG, "Started UI HANDLER");
 		} catch (Exception e) {
 			Log.e(TAG, "Error while initializing MW", e);
@@ -594,10 +598,10 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 	 */
 	private synchronized void stopMiddleware(){		
 		// _________________UI HANDLER_________________________
-		if(mModHANDLER!=null){
-			mModHANDLER.close();//TODO Close better
+		if (mModHANDLER != null) {
+			mModHANDLER.close();// TODO Close better
 			AndroidContainer.THE_CONTAINER.unshareObject(AndroidHandler.class.getName(), mModHANDLER);
-			mModHANDLER=null;
+			mModHANDLER = null;
 		}
 		// _________________UI BUS_________________________
 		UIBusImpl.stopModule();

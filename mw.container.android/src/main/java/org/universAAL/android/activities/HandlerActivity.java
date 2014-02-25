@@ -23,11 +23,11 @@ public class HandlerActivity extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
+		AndroidHandler.setActivity(this);
 		AndroidHandler handler = (AndroidHandler) AndroidContainer.THE_CONTAINER
 				.fetchSharedObject(AndroidContext.THE_CONTEXT,
 						new Object[] { AndroidHandler.class.getName() });
 		if (handler != null) {
-			handler.setViewAndActivity(this);
 			handler.render();
 		}
 	}
@@ -35,17 +35,11 @@ public class HandlerActivity extends Activity {
 	@Override
 	protected void onStop() {
 		super.onStop();
-		AndroidHandler handler = (AndroidHandler) AndroidContainer.THE_CONTAINER
-				.fetchSharedObject(AndroidContext.THE_CONTEXT,
-						new Object[] { AndroidHandler.class.getName() });
-		if (handler != null) {
-			handler.setViewAndActivity(null);
-		}
+		AndroidHandler.setActivity(null);
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.handler, menu);
 		return true;
 	}
