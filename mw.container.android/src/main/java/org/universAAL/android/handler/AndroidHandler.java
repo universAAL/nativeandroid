@@ -46,12 +46,13 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
-import android.widget.HorizontalScrollView;
+import android.widget.FrameLayout;
+//import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.ScrollView;
+//import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -176,20 +177,20 @@ public class AndroidHandler extends UIHandler {
 					View submits;
 					if (f.isSystemMenu()) {
 						controls = renderGroupControl(mCurrentOutput.getDialogForm().getIOControls(), true);
-						submits = renderGroupControl(mCurrentOutput.getDialogForm().getStandardButtons(), false);
+						submits = renderGroupControl(mCurrentOutput.getDialogForm().getStandardButtons(), mActivity.getResources().getBoolean(R.bool.landscape));
 					} else if (f.isMessage()) {
 						controls = renderGroupControl(mCurrentOutput.getDialogForm().getIOControls(), true);
-						submits = renderGroupControl(mCurrentOutput.getDialogForm().getSubmits(), false);
+						submits = renderGroupControl(mCurrentOutput.getDialogForm().getSubmits(), mActivity.getResources().getBoolean(R.bool.landscape));
 					} else {
 						controls = renderGroupControl(mCurrentOutput.getDialogForm().getIOControls(), true);
-						submits = renderGroupControl(mCurrentOutput.getDialogForm().getSubmits(), false);
+						submits = renderGroupControl(mCurrentOutput.getDialogForm().getSubmits(), mActivity.getResources().getBoolean(R.bool.landscape));
 					}
 					// ...until here
 
 					// Find the controls and submits areas in the screen layout
 					LinearLayout mainView = (LinearLayout) mActivity.findViewById(R.id.mainView);
-					ScrollView mainControlsView = (ScrollView) mActivity.findViewById(R.id.mainScrollView);
-					HorizontalScrollView mainSubmitsView = (HorizontalScrollView) mActivity.findViewById(R.id.mainHorizontalScrollView);
+					FrameLayout mainControlsView = (FrameLayout) mActivity.findViewById(R.id.mainScrollView);
+					FrameLayout mainSubmitsView = (FrameLayout) mActivity.findViewById(R.id.mainHorizontalScrollView);
 					// Remove all their previous contents
 					mainControlsView.removeAllViews();
 					mainSubmitsView.removeAllViews();
