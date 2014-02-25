@@ -27,7 +27,6 @@ import org.universAAL.middleware.ui.rdf.Select1;
 import org.universAAL.middleware.ui.rdf.SimpleOutput;
 import org.universAAL.middleware.ui.rdf.Submit;
 import org.universAAL.middleware.ui.rdf.TextArea;
-import org.universAAL.middleware.util.Constants;
 import org.universAAL.ontology.profile.User;
 
 import android.app.Activity;
@@ -61,9 +60,11 @@ import android.widget.TextView;
 public class AndroidHandler extends UIHandler {
 
 	private static final String TAG = "AndroidHandler";
-	static final String mUserURI = Constants.uAAL_MIDDLEWARE_LOCAL_ID_PREFIX + "saied";
+	//"Constants." are not constant!!! MW must have been init for them to have a value!!!
+//	static final String mUserURI = Constants.uAAL_MIDDLEWARE_LOCAL_ID_PREFIX + "saied";//TODO Change URI by settings
+	private String mUserURI=null;
     //TODO Change to WeakRefs?
-	private Activity mActivity;
+	private static Activity mActivity;
 	private UIRequest mCurrentOutput = null;
 	private static boolean mNoLabels = false;
 	
@@ -76,12 +77,13 @@ public class AndroidHandler extends UIHandler {
 	 *            Initial handler profile for subscription
 	 */
 	protected AndroidHandler(ModuleContext context,
-			UIHandlerProfile initialSubscription) {
+			UIHandlerProfile initialSubscription, String user) {
 		super(context, initialSubscription);
+		mUserURI=user;
 	}
 
-	public AndroidHandler(AndroidContext context) {
-		super(context, getSubscriptions());
+	public AndroidHandler(AndroidContext context, String string) {
+		this(context, getSubscriptions(), string);
 	}
 
 	private static UIHandlerProfile getSubscriptions() {
@@ -94,12 +96,10 @@ public class AndroidHandler extends UIHandler {
 	/**
 	 * Links the handler to the android activity and view
 	 * 
-	 * @param mainView
-	 *            Android view
 	 * @param activity
 	 *            Android activity
 	 */
-	public void setViewAndActivity(Activity activity) {
+	public static void setActivity(Activity activity) {
 		mActivity = activity;
 	}
 	
@@ -167,7 +167,7 @@ public class AndroidHandler extends UIHandler {
 					/*
 					 * These next operations should be outside the
 					 * runOnUiThread, to avoid performing lengthy operations in
-					 * UI thread, but don�t know why they wouldn�t work there
+					 * UI thread, but dont know why they wouldnt work here
 					 * for the Galaxy Tab. They do work there in "official"
 					 * Android (and on my HTC).
 					 */
