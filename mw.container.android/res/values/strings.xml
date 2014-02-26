@@ -11,5 +11,36 @@
     <string name="action_start">Start</string>
     <string name="action_stop">Stop</string>
     <string name="action_settings">Settings</string>
+    
+    <string name="setting_resetwifi_text">Forget current home WiFi to be paired with a different one</string>
+    <string name="setting_resetwifi_text_none">There is no home WiFi paired yet</string>
+    <string name="setting_resetwifi_title">Reset home WiFi</string>
+    
+    <string name="folder_settings">Folder settings</string>
+    <string name="setting_cfolder_instr">Path of the configuration folder, with folder separator "/" at the beginning and the end</string>
+    <string name="setting_cfolder_text">Where the configuration files of all modules must be stored</string>
+    <string name="setting_cfolder_title">Configuration folder</string>
+    <string name="setting_ofolder_instr">Path of the ontologies folder, with folder separator "/" at the beginning and the end</string>
+    <string name="setting_ofolder_text">Where the "Dexed" jar files of additional ontologies must be stored</string>
+    <string name="setting_ofolder_title">Ontology folder</string>
+    <string name="setting_ifolder_instr">Path of the images folder, with folder separator "/" at the beginning and the end</string>
+    <string name="setting_ifolder_text">Where the images to be displayed by the user interface must be stored</string>
+    <string name="setting_ifolder_title">Image folder</string>
+    
+    <string name="user_settings">User settings</string>
+    <string name="setting_user_instr">Suffix of the user URI, after the # character</string>
+    <string name="setting_user_text">User of the AAL Space that is using this device</string>
+    <string name="setting_user_title">User identification</string>
+    <string name="setting_type_text">Type of role of the user</string>
+    <string name="setting_type_title">User type</string>
+    <string-array name="setting_type_entries">
+		<item>Assisted Person</item>
+		<item>Caregiver</item>
+	</string-array>
+	<!-- Reference values. DO NOT CHANGE, DO NOT TRANSLATE -->
+	<string-array name="setting_type_values">
+		<item>0</item>
+		<item>1</item>
+	</string-array>
 
 </resources>

@@ -124,7 +124,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 	private static final int WIFI_NOT_SET = 1;
 	private static final int WIFI_STRANGER = 2;
 	private static final int WIFI_NOT_ON = 3;
-	public static final String uAAL_CONF_ROOT_DIR = "/data/felix/configurations/etc/"; // TODO config better
+	public static final String uAAL_CONF_ROOT_DIR = "/data/felix/configurations/etc/"; // this is just the default
 
 	private MulticastLock mLock;
 	// MW modules stay in memory in this service class (Container holds only WeakRefs)
@@ -423,7 +423,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 			AndroidContext tempCtxt = new AndroidContext("mw.managers.aalspace.osgi");
 //			mModSPACEMANAGER = new AALSpaceManagerImpl(tempCtxt, new ModuleConfigHome(Environment.getExternalStorageDirectory()
 //					.getPath()+uAAL_CONF_ROOT_DIR, "mw.managers.aalspace.osgi"));//TODO check if works
-			mModSPACEMANAGER = new AALSpaceManagerImpl(tempCtxt, Environment.getExternalStorageDirectory().getPath()+uAAL_CONF_ROOT_DIR+"/mw.managers.aalspace.osgi");
+			mModSPACEMANAGER = new AALSpaceManagerImpl(tempCtxt, Environment.getExternalStorageDirectory().getPath()+getConfDir()+"/mw.managers.aalspace.osgi");
 			Dictionary aalSpaceManagerProps = getProperties("mw.managers.aalspace.core");
 			if (aalSpaceManagerProps == null) {
 				aalSpaceManagerProps = new Hashtable<String, String>();
@@ -514,7 +514,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 			AndroidContext c4=new AndroidContext("mw.managers.aalspace.osgi");
 //			mModSPACEMANAGER = new AALSpaceManagerImpl(c4, new ModuleConfigHome(Environment.getExternalStorageDirectory()
 //					.getPath()+uAAL_CONF_ROOT_DIR, "mw.managers.aalspace.osgi"));//TODO check if works
-			mModSPACEMANAGER = new AALSpaceManagerImpl(c4, Environment.getExternalStorageDirectory().getPath()+uAAL_CONF_ROOT_DIR+"mw.managers.aalspace.osgi");
+			mModSPACEMANAGER = new AALSpaceManagerImpl(c4, Environment.getExternalStorageDirectory().getPath()+getConfDir()+"mw.managers.aalspace.osgi");
 			Dictionary aalSpaceManagerProps = getProperties("mw.managers.aalspace.core");
 			if (aalSpaceManagerProps == null) {
 				aalSpaceManagerProps = new Hashtable<String, String>();
@@ -578,7 +578,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 				public void run() {
 					mModHANDLER = new AndroidHandler(AndroidContext.THE_CONTEXT,
 							Constants.uAAL_MIDDLEWARE_LOCAL_ID_PREFIX
-									+ "saied");// TODO Set user by settings
+									+ getUser());
 					AndroidContainer.THE_CONTAINER.shareObject(
 							AndroidContext.THE_CONTEXT, mModHANDLER, new String[] {
 									AndroidHandler.class.getName(),
@@ -599,7 +599,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 	private synchronized void stopMiddleware(){		
 		// _________________UI HANDLER_________________________
 		if (mModHANDLER != null) {
-			mModHANDLER.close();// TODO Close better
+			mModHANDLER.close();// TODO Close better?
 			AndroidContainer.THE_CONTAINER.unshareObject(AndroidHandler.class.getName(), mModHANDLER);
 			mModHANDLER = null;
 		}
@@ -729,7 +729,6 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 		Log.d(TAG, "Stopped GATEWAY");
 	}
 
-	// TODO find another method
 	/**
 	 * Gets the properties of a property file located in the config folder.
 	 * 
@@ -741,7 +740,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 		Properties prop = new Properties();
 		try {
 			File conf = new File(Environment.getExternalStorageDirectory()
-					.getPath(), uAAL_CONF_ROOT_DIR + file + ".properties");
+					.getPath(), getConfDir() + file + ".properties");
 			InputStream in = new FileInputStream(conf);
 			prop.load(in);
 			in.close();
@@ -752,6 +751,24 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 			Log.w("startBrokerClient", "Error reading props file: " + file);
 		}
 		return prop;
+	}
+	
+	/**
+	 * Get the config dir
+	 * 
+	 * @return the location of config dir as of setting_cfolder_key pref
+	 */
+	private String getConfDir(){
+		return PreferenceManager.getDefaultSharedPreferences(this).getString("setting_cfolder_key", uAAL_CONF_ROOT_DIR);
+	}
+	
+	/**
+	 * Get the user id
+	 * 
+	 * @return the user id as of setting_user_key pref
+	 */
+	private String getUser(){
+		return PreferenceManager.getDefaultSharedPreferences(MiddlewareService.this).getString("setting_user_key", "saied");
 	}
 	
 	/**

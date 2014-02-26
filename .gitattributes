@@ -464,8 +464,6 @@ mw.container.android/res/drawable/selectable_background_uaal.xml -text
 mw.container.android/res/drawable/uaal_btn_default_holo_light.xml -text
 mw.container.android/res/layout-sw720dp-land/handler.xml -text
 mw.container.android/res/layout/handler.xml -text
-mw.container.android/res/layout/main.xml -text
-mw.container.android/res/menu/handler.xml -text
 mw.container.android/res/values-sw600dp/dimens.xml -text
 mw.container.android/res/values-sw720dp-land/dimens.xml -text
 mw.container.android/res/values-sw720dp-land/flags.xml -text
@@ -476,12 +474,14 @@ mw.container.android/res/values/dimens.xml -text
 mw.container.android/res/values/flags.xml -text
 mw.container.android/res/values/strings.xml -text
 mw.container.android/res/values/themes_uaal.xml -text
+mw.container.android/res/xml/menu.xml -text
+mw.container.android/res/xml/settings.xml -text
 mw.container.android/src/main/java/org/apache/xerces/jaxp/datatype/DatatypeFactoryImpl.java -text
 mw.container.android/src/main/java/org/apache/xerces/jaxp/datatype/DurationImpl.java -text
 mw.container.android/src/main/java/org/apache/xerces/jaxp/datatype/XMLGregorianCalendarImpl.java -text
 mw.container.android/src/main/java/org/apache/xerces/util/DatatypeMessageFormatter.java -text
 mw.container.android/src/main/java/org/universAAL/android/activities/HandlerActivity.java -text
-mw.container.android/src/main/java/org/universAAL/android/activities/TestActivity.java -text
+mw.container.android/src/main/java/org/universAAL/android/activities/SettingsActivity.java -text
 mw.container.android/src/main/java/org/universAAL/android/activities/package.html -text
 mw.container.android/src/main/java/org/universAAL/android/container/AndroidContainer.java -text
 mw.container.android/src/main/java/org/universAAL/android/container/AndroidContext.java -text

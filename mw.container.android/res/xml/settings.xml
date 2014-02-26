@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    <PreferenceCategory android:title="@string/folder_settings" >
+        <EditTextPreference
+            android:defaultValue="/data/felix/configurations/etc/"
+            android:dialogMessage="@string/setting_cfolder_instr"
+            android:key="setting_cfolder_key"
+            android:summary="@string/setting_cfolder_text"
+            android:title="@string/setting_cfolder_title" />
+        <EditTextPreference
+            android:defaultValue="/data/felix/ontologies/"
+            android:dialogMessage="@string/setting_ofolder_instr"
+            android:key="setting_ofolder_key"
+            android:summary="@string/setting_ofolder_text"
+            android:title="@string/setting_ofolder_title" />
+        <EditTextPreference
+            android:defaultValue="/data/felix/configurations/etc/images/"
+            android:dialogMessage="@string/setting_ifolder_instr"
+            android:key="setting_ifolder_key"
+            android:summary="@string/setting_ifolder_text"
+            android:title="@string/setting_ifolder_title" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/user_settings" >
+        <EditTextPreference
+            android:defaultValue="saied"
+            android:dialogMessage="@string/setting_user_instr"
+            android:key="setting_user_key"
+            android:summary="@string/setting_user_text"
+            android:title="@string/setting_user_title" />
+        <ListPreference
+            android:defaultValue="0"
+            android:entries="@array/setting_type_entries"
+            android:entryValues="@array/setting_type_values"
+            android:key="setting_type_key"
+            android:summary="@string/setting_type_text"
+            android:title="@string/setting_type_title" />
+        <Preference
+            android:key="setting_resetwifi_key"
+            android:summary="@string/setting_resetwifi_text"
+            android:title="@string/setting_resetwifi_title" >
+        </Preference>
+    </PreferenceCategory>
+</PreferenceScreen>
