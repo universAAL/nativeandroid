@@ -53,6 +53,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Environment;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 /**
@@ -64,8 +65,7 @@ import android.util.Log;
  */
 public class OntologyService extends Service{
 	private static final String TAG = "OntologyService";
-	// TODO: specify folder another way?
-	private static final String ONT_FOLDER = "/data/felix/ontologies/";
+	private static final String ONT_FOLDER = "/data/felix/ontologies/";// this is just the default
 	private static final String ONT_CACHE = "ontdex";
 	private static final String ONT_ACTIVATOR_LIST_FILE = "activators.cfg";
 	private static final String ONT_ONTOLOGY_LIST_FILE = "ontologies.cfg";
@@ -124,7 +124,9 @@ public class OntologyService extends Service{
 		registerOntologiesFromAPK();
 	    
 		//Scan all the JAR files in the ont folder, but dont register yet
-	    File ontFolder = new File(Environment.getExternalStorageDirectory(), ONT_FOLDER);
+		File ontFolder = new File(Environment.getExternalStorageDirectory(),
+				PreferenceManager.getDefaultSharedPreferences(this).getString(
+						"setting_ofolder_key", ONT_FOLDER));
 		File[] files = ontFolder.listFiles(new ArchiveFilter());
 		StringBuilder filenames = new StringBuilder();
 		ArrayList<String> activators = new ArrayList<String>();

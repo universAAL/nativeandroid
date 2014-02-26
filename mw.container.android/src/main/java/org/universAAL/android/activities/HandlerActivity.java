@@ -40,7 +40,7 @@ public class HandlerActivity extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.handler, menu);
+		getMenuInflater().inflate(R.xml.menu, menu);
 		return true;
 	}
 	
@@ -56,7 +56,9 @@ public class HandlerActivity extends Activity {
 			this.stopService(stopServiceIntent);
 			return true;
 		case R.id.action_settings:
-			// TODO Show settings
+			Intent startSettingsIntent = new Intent(this, SettingsActivity.class);
+			startSettingsIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+			this.startActivity(startSettingsIntent);
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);

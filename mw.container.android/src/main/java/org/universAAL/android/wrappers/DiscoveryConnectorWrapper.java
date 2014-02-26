@@ -31,131 +31,80 @@ import org.universAAL.middleware.connectors.exception.DiscoveryConnectorExceptio
 import org.universAAL.middleware.container.SharedObjectListener;
 import org.universAAL.middleware.interfaces.aalspace.AALSpaceCard;
 
-import android.util.Log;
-
 /**
  * A mock up class imitating the jSLP discovery module, but providing a
  * transparent implementation (does nothing). This can be used when there is no
- * WiFi data connection available, and the middleware will keep working, ignorant
- * of the implementation.
+ * WiFi data connection available, and the middleware will keep working,
+ * ignorant of the implementation.
  * 
  * @author alfiva
  * 
  */
-public class DiscoveryConnectorWrapper implements DiscoveryConnector, SharedObjectListener{
-	private final static String TAG = "DiscoveryConnectorWrapper";
-	public static boolean enableLog=false; //TODO Configure this is just remove it?
+public class DiscoveryConnectorWrapper implements DiscoveryConnector,
+		SharedObjectListener {
 
 	public synchronized String getName() {
-		if (enableLog) {
-			Log.v(TAG, "Empty getName ");
-		}
 		return "";
 	}
 
 	public synchronized String getVersion() {
-		if (enableLog) {
-			Log.v(TAG, "Empty getVersion ");
-		}
 		return "";
 	}
 
 	public synchronized String getDescription() {
-		if (enableLog) {
-			Log.v(TAG, "Empty getDescription ");
-		}
 		return "";
 	}
 
 	public synchronized String getProvider() {
-		if (enableLog) {
-			Log.v(TAG, "Empty getProvider ");
-		}
 		return "";
 	}
 
 	public synchronized void loadConfigurations(Dictionary configurations) {
-		if (enableLog) {
-			Log.v(TAG, "Empty loadConfigurations ");
-		}
 	}
 
 	public synchronized boolean init() {
-		if (enableLog) {
-			Log.v(TAG, "Empty init ");
-		}
 		return false;
 	}
 
 	public synchronized void dispose() {
-		if (enableLog) {
-			Log.v(TAG, "Empty dispose ");
-		}
 	}
 
 	public synchronized String getSDPPRotocol() {
-		if (enableLog) {
-			Log.v(TAG, "Empty getSDPPRotocol ");
-		}
 		return "";
 	}
 
 	public synchronized List<AALSpaceCard> findAALSpace(
 			Dictionary<String, String> filters)
 			throws DiscoveryConnectorException {
-		if (enableLog) {
-			Log.v(TAG, "Empty findAALSpace ");
-		}
 		ArrayList<AALSpaceCard> list = new ArrayList<AALSpaceCard>();
 		return list;
 	}
 
 	public synchronized List<AALSpaceCard> findAALSpace()
 			throws DiscoveryConnectorException {
-		if (enableLog) {
-			Log.v(TAG, "Empty findAALSpace ");
-		}
 		ArrayList<AALSpaceCard> list = new ArrayList<AALSpaceCard>();
 		return list;
 	}
 
 	public synchronized void announceAALSpace(AALSpaceCard spaceCard)
 			throws DiscoveryConnectorException {
-		if (enableLog) {
-			Log.v(TAG, "Empty announceAALSpace ");
-		}
 	}
 
 	public synchronized void deregisterAALSpace(AALSpaceCard spaceCard)
 			throws DiscoveryConnectorException {
-		if (enableLog) {
-			Log.v(TAG, "Empty deregisterAALSpace ");
-		}
 	}
 
 	public synchronized void addAALSpaceListener(ServiceListener listener) {
-		if (enableLog) {
-			Log.v(TAG, "Empty addAALSpaceListener ");
-		}
 	}
 
 	public synchronized void removeAALSpaceListener(ServiceListener listener) {
-		if (enableLog) {
-			Log.v(TAG, "Empty removeAALSpaceListener ");
-		}
 	}
 
 	public synchronized void sharedObjectAdded(Object sharedObj,
 			Object removeHook) {
-		if (enableLog) {
-			Log.v(TAG, "Empty sharedObjectAdded ");
-		}
 	}
 
 	public synchronized void sharedObjectRemoved(Object removeHook) {
-		if (enableLog) {
-			Log.v(TAG, "Empty sharedObjectRemoved ");
-		}
 	}
 
 }

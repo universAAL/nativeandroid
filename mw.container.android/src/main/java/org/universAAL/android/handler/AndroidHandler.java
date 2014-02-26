@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.universAAL.android.R;
 import org.universAAL.android.container.AndroidContext;
-import org.universAAL.android.services.MiddlewareService;
 import org.universAAL.middleware.container.ModuleContext;
 import org.universAAL.middleware.rdf.Resource;
 import org.universAAL.middleware.ui.UIHandler;
@@ -27,12 +26,14 @@ import org.universAAL.middleware.ui.rdf.Select1;
 import org.universAAL.middleware.ui.rdf.SimpleOutput;
 import org.universAAL.middleware.ui.rdf.Submit;
 import org.universAAL.middleware.ui.rdf.TextArea;
+import org.universAAL.ontology.profile.AssistedPerson;
+import org.universAAL.ontology.profile.Caregiver;
 import org.universAAL.ontology.profile.User;
 
 import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -47,12 +48,10 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-//import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-//import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -61,8 +60,9 @@ import android.widget.TextView;
 public class AndroidHandler extends UIHandler {
 
 	private static final String TAG = "AndroidHandler";
+	private static final String IMAGE_FOLDER = "/data/felix/configurations/etc/images/";// this is just the default
 	//"Constants." are not constant!!! MW must have been init for them to have a value!!!
-//	static final String mUserURI = Constants.uAAL_MIDDLEWARE_LOCAL_ID_PREFIX + "saied";//TODO Change URI by settings
+//	static final String mUserURI = Constants.uAAL_MIDDLEWARE_LOCAL_ID_PREFIX + "saied";
 	private String mUserURI=null;
     //TODO Change to WeakRefs?
 	private static Activity mActivity;
@@ -108,7 +108,7 @@ public class AndroidHandler extends UIHandler {
 		if (mCurrentOutput != null) {
 			handleUICall(mCurrentOutput);
 		}else{
-			this.userLoggedIn(new User(mUserURI), null);// TODO Change to AP
+			this.userLoggedIn(makeUser(mUserURI), null);
 		}
 	}
 
@@ -193,6 +193,8 @@ public class AndroidHandler extends UIHandler {
 					FrameLayout mainSubmitsView = (FrameLayout) mActivity.findViewById(R.id.mainHorizontalScrollView);
 					// Remove all their previous contents
 					mainControlsView.removeAllViews();
+					// By default mainSubmits is GONE
+					mainSubmitsView.setVisibility(View.VISIBLE);
 					mainSubmitsView.removeAllViews();
 					// Add the new contents
 					if (controls != null)
@@ -216,7 +218,7 @@ public class AndroidHandler extends UIHandler {
 	 */
 	public void performSubmit(Submit submit) {
 		Log.d(TAG,   "pressed submit" );
-		this.dialogFinished(new UIResponse(new User(mUserURI), null, submit));
+		this.dialogFinished(new UIResponse(makeUser(mUserURI), null, submit));
 		Log.d(TAG,  "submit processed" );
 	}
 
@@ -285,7 +287,7 @@ public class AndroidHandler extends UIHandler {
 					currentView.addView(errorOut); // TODO return error view
 				}
 				// separator
-				if (vertical && (i + 1 < children.length)) {
+//				if (vertical && (i + 1 < children.length)) {
 //					ImageView separator = new ImageView(mActivity);
 //					Drawable sepDraw = Drawable.createFromPath(confHome
 //							+ "/separatorlist.png");
@@ -294,7 +296,7 @@ public class AndroidHandler extends UIHandler {
 //					currentView.addView(separator, new LayoutParams(
 //							LayoutParams.FILL_PARENT,
 //							LayoutParams.WRAP_CONTENT, 0));
-				}
+//				}
 			}
 		} catch (Exception e) {
 			Log.e(TAG,   "problems rendering group", e);
@@ -303,7 +305,7 @@ public class AndroidHandler extends UIHandler {
 			return errorOut;
 		}
 		// group separator
-		if (vertical) {
+//		if (vertical) {
 //			ImageView separator = new ImageView(mActivity);
 //			Drawable sepDraw = Drawable.createFromPath(confHome
 //					+ "/separator.png");
@@ -311,7 +313,7 @@ public class AndroidHandler extends UIHandler {
 //				separator.setBackgroundDrawable(sepDraw);
 //			currentView.addView(separator, new LayoutParams(
 //					LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 0));
-		}
+//		}
 		return currentView;
 	}
 
@@ -358,8 +360,9 @@ public class AndroidHandler extends UIHandler {
 			MediaObject mediaObject) {
 		renderLabel(currentView, mediaObject);
 		ImageView img = new ImageView(mActivity);
-		String confHome=Environment.getExternalStorageDirectory().getPath() + MiddlewareService.uAAL_CONF_ROOT_DIR+"images";
-		Drawable draw = Drawable.createFromPath(confHome + "/"
+		String confHome = PreferenceManager.getDefaultSharedPreferences(
+				mActivity).getString("setting_ifolder_key", IMAGE_FOLDER);
+		Drawable draw = Drawable.createFromPath(confHome
 				+ mediaObject.getContentURL());
 		if (draw != null)
 			img.setImageDrawable(draw);
@@ -641,4 +644,15 @@ public class AndroidHandler extends UIHandler {
 
 	// ==============================END LISTENERS===============================
 
+	private User makeUser(String uri){
+		int value=Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(mActivity).getString("setting_type_key", "0"));
+		switch (value) {
+		case 0:
+			return new AssistedPerson(uri);
+		case 1:
+			return new Caregiver(uri);
+		default:
+			return new User(uri);
+		}
+	}
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.universAAL.android"
-    android:versionCode="2014022501"
+    android:versionCode="2014022601"
     android:versionName="3.0.1-SNAPSHOT" >
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -24,6 +24,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
+        <activity android:name="org.universAAL.android.activities.SettingsActivity" android:launchMode="singleTop"/>
 
         <!-- This starts the MW when device is ON -->
         <receiver
@@ -60,20 +62,6 @@
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
-        
-        <!-- This is for uaalized apps to send c events 
-        <receiver
-            android:name="org.universAAL.android.receivers.buses.CEventReceiver"
-            android:enabled="false"
-            android:exported="false" >
-        </receiver>-->
-        
-        <!-- This is for uaalized apps to send s requests 
-        <receiver
-            android:name="org.universAAL.android.receivers.buses.SRequestReceiver"
-            android:enabled="false"
-            android:exported="false" >
-        </receiver>-->
 
         <!-- This is the service always running the MW and buses -->
         <service
