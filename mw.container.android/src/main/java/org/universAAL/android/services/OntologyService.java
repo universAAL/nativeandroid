@@ -75,14 +75,14 @@ public class OntologyService extends Service{
 		Log.v(TAG, "Start command: ");
 		// TODO not in thread because currently is called by MW and should be
 		// blocking until its finished loading. Thats fine for start, but other
-		// intents may need a thread
+		// intents may need a thread !!! It appears it is in a different thread
 		if (intent != null) {
 			String action = intent.getAction();
 			Log.v(TAG, "Intent: " + action);
 			if (action != null) {
 				if (action.equals(IntentConstants.ACTION_ONT_REG_ALL)) {
 					Log.v(TAG, "Action is REGISTER ALL");
-					registerOntologies();
+					registerOntologies(this);
 				} else {// TODO the rest of actions
 					Log.v(TAG, "Not the right action");
 				}
@@ -102,9 +102,11 @@ public class OntologyService extends Service{
 	}
 	
 	/**
-	 * Load ALL the ontologies available. Called at startup.
+	 * Load ALL the ontologies available. Called at startup. It is static so it
+	 * can be called directly by MW and avoid race condition instead of calling
+	 * this as a a service.
 	 */
-	private void registerOntologies() {
+	public static void registerOntologies(Context ctxt) {
 		// PATCH !!! The current way of registering ontologies in uAAL scans
 		// them at an arbitrary order, so it may happen that some start before
 		// their dependencies and therefore fail. A proposed solution would be
@@ -125,7 +127,7 @@ public class OntologyService extends Service{
 	    
 		//Scan all the JAR files in the ont folder, but dont register yet
 		File ontFolder = new File(Environment.getExternalStorageDirectory(),
-				PreferenceManager.getDefaultSharedPreferences(this).getString(
+				PreferenceManager.getDefaultSharedPreferences(ctxt).getString(
 						"setting_ofolder_key", ONT_FOLDER));
 		File[] files = ontFolder.listFiles(new ArchiveFilter());
 		StringBuilder filenames = new StringBuilder();
@@ -165,7 +167,7 @@ public class OntologyService extends Service{
 		}
 		
 		// Prepare the classloader for all these JAR files
-		final File optimizedDexOutputPath = getDir(ONT_CACHE, Context.MODE_PRIVATE);
+		final File optimizedDexOutputPath = ctxt.getDir(ONT_CACHE, Context.MODE_PRIVATE);
 		DexClassLoader cl = new DexClassLoader(filenames.toString(),
 				optimizedDexOutputPath.getAbsolutePath(), null,
 				OntologyService.class.getClassLoader());

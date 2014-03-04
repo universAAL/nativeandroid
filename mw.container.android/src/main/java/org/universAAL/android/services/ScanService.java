@@ -70,7 +70,6 @@ public class ScanService extends Service{
 	private static final String TAG = "ScanServiceXML";
 	private static final String START_THREAD_TAG = "Scan Service XML Start";
 	private static final String METADATA = "org.universAAL.android.metadata";
-	private static final long SCAN_WAIT_MS = 10000;
 
 	@Override
 	public int onStartCommand(final Intent intent, int flags, int startId) {
@@ -130,15 +129,6 @@ public class ScanService extends Service{
 	 *            to unregister, when shutdown.
 	 */
 	private void scanAllApps(boolean register) {
-		if (register) {
-			// Only wait if we are going to register
-			Log.d(TAG, "Is about to wait before scanning uAAL packages");
-			try {
-				Thread.sleep(SCAN_WAIT_MS);
-			} catch (InterruptedException e) {
-				Log.w(TAG, "Unable to sleep for [" + SCAN_WAIT_MS + "] ms");
-			}
-		}
 		Log.d(TAG, "Is about to scan uAAL packages");
 		PackageManager pm = getPackageManager();
 		List<PackageInfo> packages = pm

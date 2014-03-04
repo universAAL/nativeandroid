@@ -70,7 +70,6 @@ import org.universAAL.middleware.tracker.impl.BusMemberRegistryImpl;
 import org.universAAL.middleware.ui.IUIBus;
 import org.universAAL.middleware.ui.impl.UIBusImpl;
 import org.universAAL.middleware.util.Constants;
-import org.universAAL.ontology.profile.User;
 import org.universAAL.ri.gateway.communicator.service.impl.CommunicatorStarter;
 import org.universAAL.ri.gateway.communicator.service.impl.GatewayAddress;
 import org.universAAL.ri.gateway.communicator.service.impl.GatewayCommunicatorImpl;
@@ -193,15 +192,19 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 				// 2. Start the MW modules
 				startMiddleware();
 				// 3. Register the ontologies
-				//TODO Place call to ont better? Race cond: Currently in OntService it is not a thread and will block, as it should, but is there any other way?
-				Intent ont = new Intent(IntentConstants.ACTION_ONT_REG_ALL);
-				ont.setClass(MiddlewareService.this, OntologyService.class);
-				startService(ont);
-				// 4. Start GW IF WIFI==NOT_ON or WIFI==STRANGER
+				//TODO It appears ont service does run in separate thread > race cond: AP ont may not be reg before handler
+//				Intent ont = new Intent(IntentConstants.ACTION_ONT_REG_ALL);
+//				ont.setClass(MiddlewareService.this, OntologyService.class);
+//				startService(ont);
+				// That is why I moved to a static method TODO retrofit OntologyService
+				OntologyService.registerOntologies(MiddlewareService.this);
+				// 4. Start UI handler TODO start handler in last place
+				startHandler();
+				// 5. Start GW IF WIFI==NOT_ON or WIFI==STRANGER
 				if(wifiStatus==WIFI_NOT_ON || wifiStatus==WIFI_STRANGER){
 					startGateway();
 				}
-				// 5. Register the apps
+				// 6. Register the apps
 				Intent scan = new Intent(IntentConstants.ACTION_PCK_REG_ALL);
 				scan.setClass(MiddlewareService.this, ScanService.class);
 				startService(scan);
@@ -221,6 +224,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 		scan.setClass(this, ScanService.class);
 		startService(scan);
 		stopGateway();
+		stopHandler();
 		stopMiddleware();
 		stopConnector();
 		Log.v(TAG, "Destroyed");
@@ -573,20 +577,6 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 			UIBusImpl.startModule(AndroidContainer.THE_CONTAINER, c8,
 					busFetchParams, busFetchParams);
 			Log.d(TAG, "Started UI BUS");
-			// _________________UI HANDLER_________________________
-			new Thread(new Runnable() {
-				public void run() {
-					mModHANDLER = new AndroidHandler(AndroidContext.THE_CONTEXT,
-							Constants.uAAL_MIDDLEWARE_LOCAL_ID_PREFIX
-									+ getUser());
-					AndroidContainer.THE_CONTAINER.shareObject(
-							AndroidContext.THE_CONTEXT, mModHANDLER, new String[] {
-									AndroidHandler.class.getName(),
-									AndroidHandler.class.getName() });
-					mModHANDLER.render();
-				}
-			}, UI_THREAD_TAG).start();
-			Log.d(TAG, "Started UI HANDLER");
 		} catch (Exception e) {
 			Log.e(TAG, "Error while initializing MW", e);
 		}
@@ -597,12 +587,6 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 	 * each. Does not include the connectors.
 	 */
 	private synchronized void stopMiddleware(){		
-		// _________________UI HANDLER_________________________
-		if (mModHANDLER != null) {
-			mModHANDLER.close();// TODO Close better?
-			AndroidContainer.THE_CONTAINER.unshareObject(AndroidHandler.class.getName(), mModHANDLER);
-			mModHANDLER = null;
-		}
 		// _________________UI BUS_________________________
 		UIBusImpl.stopModule();
 		// _________________CONTEXT BUS_________________________
@@ -648,6 +632,37 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 		if(mModCOMMUNICATION!=null){
 			mModCOMMUNICATION.dispose();
 			AndroidContainer.THE_CONTAINER.unshareObject(CommunicationModule.class.getName(),mModCOMMUNICATION);
+		}
+	}
+	
+	/**
+	 * Start the modules needed for the UI Handler to start.
+	 */
+	private synchronized void startHandler() {
+		new Thread(new Runnable() {
+			public void run() {
+				// _________________UI HANDLER_________________________
+				mModHANDLER = new AndroidHandler(AndroidContext.THE_CONTEXT,
+						Constants.uAAL_MIDDLEWARE_LOCAL_ID_PREFIX + getUser());
+				AndroidContainer.THE_CONTAINER.shareObject(
+						AndroidContext.THE_CONTEXT, mModHANDLER, new String[] {
+								AndroidHandler.class.getName(),
+								AndroidHandler.class.getName() });
+				mModHANDLER.render();
+				Log.d(TAG, "Started UI HANDLER");
+			}
+		}, UI_THREAD_TAG).start();
+	}
+	
+	/**
+	 * Stops the modules needed for the RI AAL Space Gateway to stop.
+	 */
+	private synchronized void stopHandler() {
+		// _________________UI HANDLER_________________________
+		if (mModHANDLER != null) {
+			mModHANDLER.close();// TODO Close better?
+			AndroidContainer.THE_CONTAINER.unshareObject(AndroidHandler.class.getName(), mModHANDLER);
+			mModHANDLER = null;
 		}
 	}
 	
