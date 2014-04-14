@@ -70,6 +70,9 @@ import org.universAAL.middleware.tracker.impl.BusMemberRegistryImpl;
 import org.universAAL.middleware.ui.IUIBus;
 import org.universAAL.middleware.ui.impl.UIBusImpl;
 import org.universAAL.middleware.util.Constants;
+import org.universAAL.ontology.profile.AssistedPerson;
+import org.universAAL.ontology.profile.Caregiver;
+import org.universAAL.ontology.profile.User;
 import org.universAAL.ri.gateway.communicator.service.impl.CommunicatorStarter;
 import org.universAAL.ri.gateway.communicator.service.impl.GatewayAddress;
 import org.universAAL.ri.gateway.communicator.service.impl.GatewayCommunicatorImpl;
@@ -124,6 +127,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 	private static final int WIFI_STRANGER = 2;
 	private static final int WIFI_NOT_ON = 3;
 	public static final String uAAL_CONF_ROOT_DIR = "/data/felix/configurations/etc/"; // this is just the default
+	public static int mUSER_TYPE = 0; // This is just the default, but it is here to get it from AndroidHandler
 
 	private MulticastLock mLock;
 	// MW modules stay in memory in this service class (Container holds only WeakRefs)
@@ -234,6 +238,8 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 	public int onStartCommand(final Intent intent, int flags, int startId) {
 		// This will be called each time someone (scan/boot/wifi) sends an intent to this service. Analyze and react accordingly.
 		Log.v(TAG, "Start command: ");
+		// HACK: Set user type for AndroidHandler. Prevents NPE at startup when activity is not visible
+		mUSER_TYPE=Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(MiddlewareService.this).getString("setting_type_key", "0"));
 		new Thread(new Runnable() {
 			public void run() {
 				if (intent != null) {

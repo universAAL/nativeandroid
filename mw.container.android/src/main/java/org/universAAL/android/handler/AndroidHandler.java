@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.universAAL.android.R;
 import org.universAAL.android.container.AndroidContext;
+import org.universAAL.android.services.MiddlewareService;
 import org.universAAL.middleware.container.ModuleContext;
 import org.universAAL.middleware.rdf.Resource;
 import org.universAAL.middleware.ui.UIHandler;
@@ -32,6 +33,7 @@ import org.universAAL.ontology.profile.User;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.preference.PreferenceManager;
 import android.text.Editable;
@@ -68,6 +70,7 @@ public class AndroidHandler extends UIHandler {
 	private static Activity mActivity;
 	private UIRequest mCurrentOutput = null;
 	private static boolean mNoLabels = false;
+	private static int mMainColor=Color.parseColor("#388f90"); //uAAL color. If changed in resources, change here too
 	
 	/**
 	 * Default constructor
@@ -197,10 +200,12 @@ public class AndroidHandler extends UIHandler {
 					mainSubmitsView.setVisibility(View.VISIBLE);
 					mainSubmitsView.removeAllViews();
 					// Add the new contents
-					if (controls != null)
+					if (controls != null){
 						mainControlsView.addView(controls);
-					if (submits != null)
+					}
+					if (submits != null){
 						mainSubmitsView.addView(submits);
+					}
 					// Refresh the screen, showing the new contents
 					mainView.setVisibility(View.VISIBLE);
 					mainView.postInvalidate();
@@ -334,8 +339,9 @@ public class AndroidHandler extends UIHandler {
 		int initial = val;
 		for (int i = min; i < max; i += delta) {
 			adapter.add(new Integer(i));
-			if (val == i)
+			if (val == i){
 				initial = i - min;
+			}
 		}
 		spin.setAdapter(adapter);
 		spin.setOnItemSelectedListener(new SpinListener(range));
@@ -364,11 +370,11 @@ public class AndroidHandler extends UIHandler {
 				mActivity).getString("setting_ifolder_key", IMAGE_FOLDER);
 		Drawable draw = Drawable.createFromPath(confHome
 				+ mediaObject.getContentURL());
-		if (draw != null)
+		if (draw != null){
 			img.setImageDrawable(draw);
-		else
-			img.setImageDrawable(Drawable.createFromPath(confHome
-					+ "/notfound.png"));
+		}else{
+			img.setImageResource(R.drawable.img_notfound);
+		}
 		img.setAdjustViewBounds(true);
 		img.setMaxHeight(70);
 		currentView.addView(img);
@@ -380,10 +386,12 @@ public class AndroidHandler extends UIHandler {
 		Button button = new Button(mActivity);
 		button.setText(submit.getLabel().getText());
 		button.setOnClickListener(new SubmitListener(submit));
-		if (!vertical)
+		if (!vertical){
 			button.setMaxWidth(155);
-		if (button.getHint() != null)
+		}
+		if (button.getHint() != null){
 			button.setHint(button.getHint());
+		}
 		currentView.addView(button);
 	}
 
@@ -400,8 +408,9 @@ public class AndroidHandler extends UIHandler {
 		FormControl[] elems = repeat.getChildren();
 		boolean groupflag = false;
 		TableLayout table = new TableLayout(mActivity);
-		if (elems == null || elems.length != 1)
+		if (elems == null || elems.length != 1){
 			throw new IllegalArgumentException("Malformed argument!");
+		}
 		if (elems[0] instanceof Group) {
 			groupflag = true;
 			FormControl[] elems2 = ((Group) elems[0]).getChildren();
@@ -418,8 +427,9 @@ public class AndroidHandler extends UIHandler {
 				}
 			}
 			table.addView(row);
-		} else if (elems[0] == null)
+		} else if (elems[0] == null){
 			throw new IllegalArgumentException("Malformed argument!");
+		}
 		for (int i = 0; i < repeat.getNumberOfValues(); i++) {
 			TableRow row = new TableRow(mActivity);
 			repeat.setSelection(i);
@@ -531,12 +541,15 @@ public class AndroidHandler extends UIHandler {
 
 	private void renderLabel(LinearLayout currentView, FormControl ctrl) {
 		if (!mNoLabels) {
-			if (ctrl.getLabel() != null)
+			if (ctrl.getLabel() != null){
 				if (ctrl.getLabel().getText() != null) {
 					TextView label = new TextView(mActivity);
-					label.setText(ctrl.getLabel().getText());
+					label.setText(ctrl.getLabel().getText()+" ");
+					label.setTextColor(mMainColor);
+					label.setTypeface(Typeface.DEFAULT_BOLD);
 					currentView.addView(label);
 				}
+			}
 		}
 	}
 
@@ -645,8 +658,7 @@ public class AndroidHandler extends UIHandler {
 	// ==============================END LISTENERS===============================
 
 	private User makeUser(String uri){
-		int value=Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(mActivity).getString("setting_type_key", "0"));
-		switch (value) {
+		switch (MiddlewareService.mUSER_TYPE) {
 		case 0:
 			return new AssistedPerson(uri);
 		case 1:
