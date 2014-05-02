@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.universAAL.android.R;
+import org.universAAL.android.activities.HandlerActivity;
 import org.universAAL.android.container.AndroidContext;
 import org.universAAL.android.services.MiddlewareService;
 import org.universAAL.middleware.container.ModuleContext;
@@ -31,7 +32,6 @@ import org.universAAL.ontology.profile.AssistedPerson;
 import org.universAAL.ontology.profile.Caregiver;
 import org.universAAL.ontology.profile.User;
 
-import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -67,7 +67,7 @@ public class AndroidHandler extends UIHandler {
 //	static final String mUserURI = Constants.uAAL_MIDDLEWARE_LOCAL_ID_PREFIX + "saied";
 	private String mUserURI=null;
     //TODO Change to WeakRefs?
-	private static Activity mActivity;
+	private static HandlerActivity mActivity;
 	private UIRequest mCurrentOutput = null;
 	private static boolean mNoLabels = false;
 	private static int mMainColor=Color.parseColor("#388f90"); //uAAL color. If changed in resources, change here too
@@ -103,7 +103,7 @@ public class AndroidHandler extends UIHandler {
 	 * @param activity
 	 *            Android activity
 	 */
-	public static void setActivity(Activity activity) {
+	public static void setActivity(HandlerActivity activity) {
 		mActivity = activity;
 	}
 	
@@ -168,6 +168,7 @@ public class AndroidHandler extends UIHandler {
 			// This is where operations commented below should be
 			mActivity.runOnUiThread(new Runnable() {
 				public void run() {
+					mActivity.setContentView(R.layout.handler);//Just in case. This does nothing if already set.
 					/*
 					 * These next operations should be outside the
 					 * runOnUiThread, to avoid performing lengthy operations in

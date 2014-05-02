@@ -377,6 +377,7 @@ mw.container.android/AndroidManifest.xml -text
 mw.container.android/BSD-JSLP.txt -text
 mw.container.android/MITX.txt -text
 mw.container.android/NOTICE.txt -text
+mw.container.android/libs/bcprov-jdk13-140.jar -text
 mw.container.android/libs/jgroups-3.4.1.Final.jar -text
 mw.container.android/libs/jslp.core-3.0.1-SNAPSHOT.jar -text
 mw.container.android/libs/mw.bus.tracker.core-3.0.1-SNAPSHOT.jar -text
@@ -467,7 +468,9 @@ mw.container.android/res/drawable/btn_cab_done_uaal.xml -text
 mw.container.android/res/drawable/selectable_background_uaal.xml -text
 mw.container.android/res/drawable/uaal_btn_default_holo_light.xml -text
 mw.container.android/res/layout-sw720dp-land/handler.xml -text
+mw.container.android/res/layout/empty.xml -text
 mw.container.android/res/layout/handler.xml -text
+mw.container.android/res/layout/progress.xml -text
 mw.container.android/res/values-sw600dp/dimens.xml -text
 mw.container.android/res/values-sw720dp-land/dimens.xml -text
 mw.container.android/res/values-sw720dp-land/flags.xml -text

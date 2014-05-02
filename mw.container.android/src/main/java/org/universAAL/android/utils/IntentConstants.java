@@ -59,6 +59,9 @@ public class IntentConstants {
 	public static final String ACTION_ONT_REG_ALL = ACTION_PREFIX + "ONT_REGISTER_ALL";
 	public static final String ACTION_ONT_UNREG_ALL = ACTION_PREFIX + "ONT_UNREGISTER_ALL";
 
+	// Used to update the percentage of the progress bar
+	public static final String ACTION_UI_PROGRESS = ACTION_PREFIX + "UI_PROGRESS";
+	
 	// Hidden extras used by app to tell where it wants a reply
 	public static final String ACTION_META_REPLYTOACT = ACTION_PREFIX + "META_REPLYTOACT";
 	public static final String ACTION_META_REPLYTOCAT = ACTION_PREFIX + "META_REPLYTOCAT";
