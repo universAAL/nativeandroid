@@ -70,9 +70,6 @@ import org.universAAL.middleware.tracker.impl.BusMemberRegistryImpl;
 import org.universAAL.middleware.ui.IUIBus;
 import org.universAAL.middleware.ui.impl.UIBusImpl;
 import org.universAAL.middleware.util.Constants;
-import org.universAAL.ontology.profile.AssistedPerson;
-import org.universAAL.ontology.profile.Caregiver;
-import org.universAAL.ontology.profile.User;
 import org.universAAL.ri.gateway.communicator.service.impl.CommunicatorStarter;
 import org.universAAL.ri.gateway.communicator.service.impl.GatewayAddress;
 import org.universAAL.ri.gateway.communicator.service.impl.GatewayCommunicatorImpl;
@@ -128,6 +125,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 	private static final int WIFI_NOT_ON = 3;
 	public static final String uAAL_CONF_ROOT_DIR = "/data/felix/configurations/etc/"; // this is just the default
 	public static int mUSER_TYPE = 0; // This is just the default, but it is here to get it from AndroidHandler
+	public static int percentage=0; //This is for the progress bar
 
 	private MulticastLock mLock;
 	// MW modules stay in memory in this service class (Container holds only WeakRefs)
@@ -151,7 +149,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 		// This is where MW is created as it is called once when service is instantiated. Make sure it runs forever.
 		super.onCreate();
 		Log.v(TAG, "Create");
-
+		percentage=0;
 		// TODO Check! Supposedly, this starts as foreground but without notification. Not on 4.0 anymore
 		Notification notif = new Notification(0, null,
 				System.currentTimeMillis());
@@ -186,6 +184,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 		// Start the MW! Put all the above inside thread too? Cmon, its fast! Also, notification must be there
 		new Thread(new Runnable() {
 			public void run() {
+				addPercent(1);
 				int wifiStatus=checkWifi();
 				// 1. Stop-start the connector modules. Use jSLP only IF WIFI==WIFI_HOME or WIFI==WIFI_NOT_SET
 				if(wifiStatus==WIFI_HOME || wifiStatus==WIFI_NOT_SET){
@@ -202,12 +201,14 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 //				startService(ont);
 				// That is why I moved to a static method TODO retrofit OntologyService
 				OntologyService.registerOntologies(MiddlewareService.this);
+				addPercent(25);
 				// 4. Start UI handler TODO start handler in last place
 				startHandler();
 				// 5. Start GW IF WIFI==NOT_ON or WIFI==STRANGER
 				if(wifiStatus==WIFI_NOT_ON || wifiStatus==WIFI_STRANGER){
 					startGateway();
 				}
+				addPercent(10);
 				// 6. Register the apps
 				Intent scan = new Intent(IntentConstants.ACTION_PCK_REG_ALL);
 				scan.setClass(MiddlewareService.this, ScanService.class);
@@ -224,6 +225,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 		super.onDestroy();
 		Log.v(TAG, "Destroy");
 		//TODO Call to unreg onts? really? Place call to scan better?
+		percentage=0;
 		Intent scan = new Intent(IntentConstants.ACTION_PCK_UNREG_ALL);
 		scan.setClass(this, ScanService.class);
 		startService(scan);
@@ -360,6 +362,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 			SLPCore.destroyMulticastSocket();// TODO place this better?
 			SLPCore.stop();
 		}
+		addPercent(5);
 		// Then depending on WIFI start the real or the fake connectors
 		if (connect) {
 			// If wifiON start the real connectors
@@ -444,8 +447,9 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 			AndroidContainer.THE_CONTAINER.shareObject(tempCtxt, mModSPACEMANAGER,
 					new String[] { AALSpaceManager.class.getName(),
 							AALSpaceEventHandler.class.getName() });
-			Log.d(TAG, "Started AALSPACE MANAGER again");
+			Log.d(TAG, "Started AALSPACE MANAGER again"); //TODO What to do with AbstractBus, which uses aalspacemanager too???
 		}
+		addPercent(5);
 	}
 	
 	/**
@@ -500,6 +504,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 			AndroidContainer.THE_CONTAINER.shareObject(c1, mModCOMMUNICATION,
 					new Object[] { CommunicationModule.class.getName() });
 			Log.d(TAG, "Started COMMUNICATION MODULE");
+			addPercent(5);
 			// _________________AALSPACE MODULE_____________________
 			AndroidContext c2=new AndroidContext("mw.modules.aalspace.osgi");
 			mModSPACEMODULE = new AALSpaceModuleImpl(
@@ -514,12 +519,14 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 			AndroidContainer.THE_CONTAINER.shareObject(c2, mModSPACEMODULE,
 					new Object[] { AALSpaceModule.class.getName() });
 			Log.d(TAG, "Started AALSPACE MODULE");
+			addPercent(5);
 			// _________________CONTROL BROKER_____________________
 			AndroidContext c3=new AndroidContext("mw.brokers.control.osgi");
 			mModCONTROLBROKER = new ControlBroker(c3);
 			AndroidContainer.THE_CONTAINER.shareObject(c3, mModCONTROLBROKER,
 					new Object[] { ControlBroker.class.getName() });
 			Log.d(TAG, "Started CONTROL BROKER");
+			addPercent(5);
 			// _________________AALSPACE MANAGER_____________________
 			AndroidContext c4=new AndroidContext("mw.managers.aalspace.osgi");
 //			mModSPACEMANAGER = new AALSpaceManagerImpl(c4, new ModuleConfigHome(Environment.getExternalStorageDirectory()
@@ -537,6 +544,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 							AALSpaceEventHandler.class.getName() });
 			mModSPACEMANAGER.addAALSpaceListener(this);// For listening to AAL space changes
 			Log.d(TAG, "Started AALSPACE MANAGER");
+			addPercent(5);
 			// _________________DEPLOY MANAGER_______________________
 			// TODO DEPLOY MANAGER
 			// _________________DATA REPRESENTATION________________
@@ -544,6 +552,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 			SharedResources.loadReasoningEngine();
 			SharedResources.setDefaults();
 			Log.d(TAG, "Started DATA REP");
+			addPercent(5);
 			// _________________DATA SERIALIZATION_________________
 			TurtleUtil.moduleContext = AndroidContext.THE_CONTEXT;
 			mModSERIALIZER=new TurtleSerializer();
@@ -556,12 +565,14 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 					new Object[] { MessageContentSerializerEx.class
 							.getName() });
 			Log.d(TAG, "Started DATA SER");
+			addPercent(5);
 			// _________________BUS MODEL_________________________
 			AndroidContext c5=new AndroidContext("mw.bus.model.osgi");
 			AbstractBus.initBrokerage(c5,mModSPACEMANAGER, mModCOMMUNICATION);
 			BusMessage.setThisPeer(mModSPACEMANAGER.getMyPeerCard());
 			BusMessage.setMessageContentSerializer((MessageContentSerializer) mModSERIALIZER);
 			Log.d(TAG, "Started BUS MODEL");
+			addPercent(5);
 			// _________________SERVICE BUS_________________________
 			AndroidContext c6=new AndroidContext("mw.bus.service.osgi");
 			Object[] busFetchParams = new Object[] { ServiceBusImpl.class
@@ -570,6 +581,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 					c6, busFetchParams,
 					busFetchParams);
 			Log.d(TAG, "Started SERVICE BUS");
+			addPercent(5);
 			// _________________CONTEXT BUS_________________________
 			AndroidContext c7=new AndroidContext("mw.bus.context.osgi");
 			busFetchParams = new Object[] { ContextBus.class.getName() };
@@ -577,12 +589,14 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 					c7, busFetchParams,
 					busFetchParams);
 			Log.d(TAG, "Started CONTEXT BUS");
+			addPercent(5);
 			// _________________UI BUS_________________________
 			AndroidContext c8 = new AndroidContext("mw.bus.ui.osgi");
 			busFetchParams = new Object[] { IUIBus.class.getName() };
 			UIBusImpl.startModule(AndroidContainer.THE_CONTAINER, c8,
 					busFetchParams, busFetchParams);
 			Log.d(TAG, "Started UI BUS");
+			addPercent(5);
 		} catch (Exception e) {
 			Log.e(TAG, "Error while initializing MW", e);
 		}
@@ -658,6 +672,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 				Log.d(TAG, "Started UI HANDLER");
 			}
 		}, UI_THREAD_TAG).start();
+		addPercent(5);
 	}
 	
 	/**
@@ -845,6 +860,17 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 		}
 		Log.i(TAG, "WIFI CHECK: Wifi is not on");
 		return WIFI_NOT_ON;
+	}
+	
+	private void addPercent(int percent){
+		if(percentage<100){
+			percentage+=percent;
+		}
+		// TODO use pending intent? isnt a single sticky intent always there with this already?
+		Intent intent=new Intent(IntentConstants.ACTION_UI_PROGRESS);
+		intent.setFlags(Intent.FLAG_RECEIVER_REPLACE_PENDING+Intent.FLAG_RECEIVER_REGISTERED_ONLY);
+		intent.setPackage(getPackageName());
+		sendBroadcast(intent);
 	}
 
 	public void aalSpaceJoined(AALSpaceDescriptor spaceDescriptor) {
