@@ -126,7 +126,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 	public static final String uAAL_CONF_ROOT_DIR = "/data/felix/configurations/etc/"; // this is just the default
 	public static int mUSER_TYPE = 0; // This is just the default, but it is here to get it from AndroidHandler
 	public static int percentage=0; //This is for the progress bar
-
+	public static int mPastWIFI=WIFI_NOT_ON; //This is for the previous state of WIFI
 	private MulticastLock mLock;
 	// MW modules stay in memory in this service class (Container holds only WeakRefs)
 	private Advertiser mJSLPadvertiser;
@@ -163,7 +163,11 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 		System.setProperty("java.net.preferIPv6Addresses", "false");
 		System.setProperty("jgroups.use.jdk_logger ", "true");
 		System.setProperty("net.slp.port", "5555");
-		
+		boolean iscoord=PreferenceManager.getDefaultSharedPreferences(this).getBoolean(
+				"setting_iscoord_key", true);
+		System.setProperty(
+				"org.universAAL.middleware.peer.is_coordinator",Boolean.toString(iscoord));
+
 		// This is for setting IP manually, just in case (set it everytime you
 		// get a new IP). If not set, it seems it also works, but SLP keeps
 		// working on multicast for a while after Wifi is turned off.
@@ -192,6 +196,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 				}else{
 					restartConnector(false);
 				}
+				mPastWIFI=wifiStatus; //Set the initial status of WIFI
 				// 2. Start the MW modules
 				startMiddleware();
 				// 3. Register the ontologies
@@ -252,31 +257,34 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 							// Do we really have to do anything here? The MW is running by now...
 							Log.v(TAG, "Action is BOOT");
 						} else if (action.equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
-							// Change in Wifi TODO Can we get ON after ON?
+							//Only react to changes (we can get ON after ON) except WIFI_STRANGER: stranger1 -> stranger2 
 							Log.v(TAG, "Action is WIFI");
 							int wifiStatus=checkWifi();
-							switch (wifiStatus) {
-							case WIFI_HOME://We are at home: Stop GW and connect with jSLP
-								stopGateway();
-								restartConnector(true);
-								break;
-							case WIFI_NOT_SET://We still don´t have home: Dont use GW and try to connect with jSLP
-								stopGateway();
-								restartConnector(true);
-								break;
-							case WIFI_STRANGER://We are outside home: Start GW and dont try to connect with jSLP
-								stopGateway();
-								restartConnector(false);
-								startGateway();
-								break;
-							case WIFI_NOT_ON://No wifi: Start GW and dont try to connect with jSLP
-								stopGateway();
-								restartConnector(false);
-								startGateway();
-								break;
-							default:
-								break;
-							}// I know, this switch can be refactored better, but this way it is easier to read and tweak
+							if(mPastWIFI!=wifiStatus || (mPastWIFI==wifiStatus && wifiStatus==WIFI_STRANGER)){
+								switch (wifiStatus) {
+								case WIFI_HOME://We are at home: Stop GW and connect with jSLP
+									stopGateway();
+									restartConnector(true);
+									break;
+								case WIFI_NOT_SET://We still don´t have home: Dont use GW and try to connect with jSLP
+									stopGateway();
+									restartConnector(true);
+									break;
+								case WIFI_STRANGER://We are outside home: Start GW and dont try to connect with jSLP
+									stopGateway();
+									restartConnector(false);
+									startGateway();
+									break;
+								case WIFI_NOT_ON://No wifi: Start GW and dont try to connect with jSLP
+									stopGateway();
+									restartConnector(false);
+									startGateway();
+									break;
+								default:
+									break;
+								}// I know, this switch can be refactored better, but this way it is easier to read and tweak
+								mPastWIFI=wifiStatus;
+							}
 						} else if (action.equals(IntentConstants.ACTION_PCK_REG)) {
 							// REGISTER message from scan service
 							Log.v(TAG, "Action is REGISTER");
