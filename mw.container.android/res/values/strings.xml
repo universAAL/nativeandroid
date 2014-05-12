@@ -42,5 +42,8 @@
 		<item>0</item>
 		<item>1</item>
 	</string-array>
+	
+	<string name="setting_iscoord_title">Is Service coordinator</string>
+	<string name="setting_iscoord_text">Set this instance as the single Service Bus coordinator</string>
 
 </resources>
