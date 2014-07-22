@@ -207,4 +207,16 @@ public class AndroidContext implements ModuleContext, PlatformAbstraction{
 		return null;
 	}
 
+	public File getConfigHome() {
+		// TODO Auto-generated method stub
+		// Currently this new gimmick is empty. It should be like MiddlewareService.getConfDir but there is no context here
+		return null;
+	}
+
+	public File getDataFolder() {
+		// TODO Auto-generated method stub
+		// Currently this new gimmick is empty. It should be like MiddlewareService.getConfDir but there is no context here
+		return null;
+	}
+
 }
