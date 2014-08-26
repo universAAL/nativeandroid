@@ -325,7 +325,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 	 * jSLP+jGroups connectors or the fake ones.
 	 * 
 	 * @param connect
-	 *            Set to true if there is an actual WiFi connection where th
+	 *            Set to true if there is an actual WiFi connection where the
 	 *            real connectors should be started. Set to false to start the
 	 *            fake connectors.
 	 */
