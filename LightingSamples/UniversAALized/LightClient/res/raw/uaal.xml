@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <application>
    <permissions>
       <mw.bus.service>
@@ -158,7 +158,7 @@ _:BN000000 a pvn:ServiceRequest ;
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix ns: <http://ontology.universaal.org/Lighting.owl#> .
 @prefix : <http://www.w3.org/2002/07/owl#> .
-_:BN000000 a <http://ontology.universAAL.org/Context.owl#ContextEventPattern> ;
+<http://ontology.igd.fhg.de/LightingServer.owl#cep1> a <http://ontology.universAAL.org/Context.owl#ContextEventPattern> ;
   <http://www.w3.org/2000/01/rdf-schema#subClassOf> [
       a :Restriction ;
       :allValuesFrom ns:LightSource ;
