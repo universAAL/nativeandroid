@@ -22,7 +22,8 @@
 package org.universAAL.android.utils;
 
 /**
- * Helper class containing useful constant values used across the entire app.
+ * Helper class containing useful constant values used across the
+ * entire app.
  * 
  * @author alfiva
  * 
@@ -77,5 +78,30 @@ public class IntentConstants {
 	public static final String UAAL_META_PROP_NEEDSOUTPUTS = "http://ontology.universAAL.org/uAAL.owl#needsOutputs";
 	public static final String UAAL_META_PROP_REPLYTOACT = "http://ontology.universAAL.org/uAAL.owl#replyToAction";
 	public static final String UAAL_META_PROP_REPLYTOCAT = "http://ontology.universAAL.org/uAAL.owl#replyToCategory";
+	
+	//Assorted enumerations accessed from across the app
+	public static final int REMOTE_TYPE_GW=0;
+	public static final int REMOTE_TYPE_RAPI=1;
+	
+	public static final int USER_TYPE_AP=0;
+	public static final int USER_TYPE_CARE=1;
+	
+	public static final int REMOTE_MODE_ALWAYS=0;
+	public static final int REMOTE_MODE_WIFIOFF=1;
+	public static final int REMOTE_MODE_NEVER=2;
+	
+	public static final int WIFI_HOME = 0;
+	public static final int WIFI_NOTSET = 1;
+	public static final int WIFI_STRANGER = 2;
+	public static final int WIFI_OFF = 3;
+	
+	public static final int TYPE_CPUBLISHER = 1;
+	public static final int TYPE_CSUBSCRIBER = 2;
+	public static final int TYPE_SCALLEE = 3;
+	public static final int TYPE_SCALLER = 4;
+	
+	public static final String MY_WIFI = "home_wifi";
+	public static final String NO_WIFI = "uAALGhostWifi";
+	public static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
 }

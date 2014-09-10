@@ -512,6 +512,7 @@ mw.container.android/src/main/java/org/universAAL/android/services/ScanService.j
 mw.container.android/src/main/java/org/universAAL/android/services/package.html -text
 mw.container.android/src/main/java/org/universAAL/android/utils/GroundingParcel.java -text
 mw.container.android/src/main/java/org/universAAL/android/utils/IntentConstants.java -text
+mw.container.android/src/main/java/org/universAAL/android/utils/RAPIManager.java -text
 mw.container.android/src/main/java/org/universAAL/android/utils/VariableSubstitution.java -text
 mw.container.android/src/main/java/org/universAAL/android/utils/package.html -text
 mw.container.android/src/main/java/org/universAAL/android/wrappers/CommunicationConnectorWrapper.java -text

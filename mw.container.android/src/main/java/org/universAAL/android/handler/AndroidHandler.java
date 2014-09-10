@@ -7,6 +7,7 @@ import org.universAAL.android.R;
 import org.universAAL.android.activities.HandlerActivity;
 import org.universAAL.android.container.AndroidContext;
 import org.universAAL.android.services.MiddlewareService;
+import org.universAAL.android.utils.IntentConstants;
 import org.universAAL.middleware.container.ModuleContext;
 import org.universAAL.middleware.rdf.Resource;
 import org.universAAL.middleware.ui.UIHandler;
@@ -659,10 +660,10 @@ public class AndroidHandler extends UIHandler {
 	// ==============================END LISTENERS===============================
 
 	private User makeUser(String uri){
-		switch (MiddlewareService.mUSER_TYPE) {
-		case 0:
+		switch (MiddlewareService.mUserType) {
+		case IntentConstants.USER_TYPE_AP:
 			return new AssistedPerson(uri);
-		case 1:
+		case IntentConstants.USER_TYPE_CARE:
 			return new Caregiver(uri);
 		default:
 			return new User(uri);

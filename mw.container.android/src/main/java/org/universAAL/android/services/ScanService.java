@@ -36,7 +36,6 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
-import org.universAAL.android.container.AndroidRegistry;
 import org.universAAL.android.utils.GroundingParcel;
 import org.universAAL.android.utils.IntentConstants;
 import org.w3c.dom.Document;
@@ -131,9 +130,7 @@ public class ScanService extends Service{
 	private void scanAllApps(boolean register) {
 		Log.d(TAG, "Is about to scan uAAL packages");
 		PackageManager pm = getPackageManager();
-		List<PackageInfo> packages = pm
-				.getInstalledPackages(PackageManager.GET_ACTIVITIES
-						| PackageManager.GET_SERVICES);
+		List<PackageInfo> packages = pm.getInstalledPackages(0); 
 		if (register) { // register all packages
 			for (PackageInfo curPackage : packages) {
 				registerPackage(curPackage.packageName);
@@ -174,6 +171,10 @@ public class ScanService extends Service{
 	 *            True for register, false for unregister.
 	 */
 	private synchronized void scanManifest(final String packageName, boolean register){
+		if(packageName.matches("(com\\.android|com\\.sec\\.android|com\\.google\\.android).*")){
+			Log.d(TAG, "Ignore system package ["+ packageName + "]");
+			return; //Ignore system packages com.android com.sec.android and com.google.android
+		}
 		Log.d(TAG, "Is about to search for uAAL metadata in package ["+ packageName + "]");
 		String componentNameString;
 		ComponentName componentName;
@@ -184,29 +185,29 @@ public class ScanService extends Service{
 			ApplicationInfo appInfo = pm.getApplicationInfo(packageName, PackageManager.GET_META_DATA);
 			componentNameString = packageName;
 			scanMetadata(packageName, appInfo.metaData, componentNameString, appInfo, register);
-			// Scan all Activities sections
-			PackageInfo packInfo = pm.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES);
-			if (packInfo.activities != null) {
-				for (int i = 0; i < packInfo.activities.length; i++) {
-					componentNameString = packInfo.activities[i].name;
-					componentName = new ComponentName(packageName,componentNameString);
-					ActivityInfo ai = pm.getActivityInfo(componentName,	PackageManager.GET_META_DATA);
-					scanMetadata(packageName, ai.metaData, componentNameString, appInfo, register);
-				}
-			}
-			// Scan all Services sections TODO scan receivers too?
-			packInfo = pm.getPackageInfo(packageName, PackageManager.GET_SERVICES);
-			if (packInfo.services != null) {
-				for (int i = 0; i < packInfo.services.length; i++) {
-					componentNameString = packInfo.services[i].name;
-					componentName = new ComponentName(packageName,componentNameString);
-					ServiceInfo si = pm.getServiceInfo(componentName,PackageManager.GET_META_DATA);
-					scanMetadata(packageName, si.metaData,componentNameString, appInfo, register); //TODO AndroidServiceType.SERVICE I dont use this
-				}
-			}
+			// Scan all Activities sections NO, NOT EVEN ACTIVITIES ANYMORE to reduce intents
+//			PackageInfo packInfo = pm.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES);
+//			if (packInfo.activities != null) {
+//				for (int i = 0; i < packInfo.activities.length; i++) {
+//					componentNameString = packInfo.activities[i].name;
+//					componentName = new ComponentName(packageName,componentNameString);
+//					ActivityInfo ai = pm.getActivityInfo(componentName,	PackageManager.GET_META_DATA);
+//					scanMetadata(packageName, ai.metaData, componentNameString, appInfo, register);
+//				}
+//			}
+			// Scan all Services sections, scan receivers too? NO, NOT EVEN SERVICES ANYMORE to reduce intents
+//			packInfo = pm.getPackageInfo(packageName, PackageManager.GET_SERVICES);
+//			if (packInfo.services != null) {
+//				for (int i = 0; i < packInfo.services.length; i++) {
+//					componentNameString = packInfo.services[i].name;
+//					componentName = new ComponentName(packageName,componentNameString);
+//					ServiceInfo si = pm.getServiceInfo(componentName,PackageManager.GET_META_DATA);
+//					scanMetadata(packageName, si.metaData,componentNameString, appInfo, register); //TODO AndroidServiceType.SERVICE I dont use this
+//				}
+//			}
 		} catch (NameNotFoundException e) {
 			// Do nothing, just log it
-			Log.e(TAG, "Error when scanning package [" +packageName+ "]; Error [" + e.getMessage() + "]");
+			Log.w(TAG, "Error when scanning package [" +packageName+ "]; Error [" + e.getMessage() + "]");
 		}
 	}
 
@@ -330,15 +331,15 @@ public class ScanService extends Service{
     private int parseTypeName(String busName, String typeName) {
     	if(busName.equals("mw_bus_context")){
     		if(typeName.equals("advertisement")){
-        		return AndroidRegistry.TYPE_CPUBLISHER;
+        		return IntentConstants.TYPE_CPUBLISHER;
         	}else if(typeName.equals("requirement")){
-        		return AndroidRegistry.TYPE_CSUBSCRIBER;
+        		return IntentConstants.TYPE_CSUBSCRIBER;
         	}
     	}else if(busName.equals("mw_bus_service")){
     		if(typeName.equals("advertisement")){
-    			return AndroidRegistry.TYPE_SCALLEE;
+    			return IntentConstants.TYPE_SCALLEE;
         	}else if(typeName.equals("requirement")){
-        		return AndroidRegistry.TYPE_SCALLER;
+        		return IntentConstants.TYPE_SCALLER;
         	}
     	}
 		return 0;

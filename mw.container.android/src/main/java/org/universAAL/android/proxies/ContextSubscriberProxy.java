@@ -26,8 +26,10 @@ import java.util.Hashtable;
 
 import org.universAAL.android.container.AndroidContainer;
 import org.universAAL.android.container.AndroidContext;
+import org.universAAL.android.services.MiddlewareService;
 import org.universAAL.android.utils.GroundingParcel;
 import org.universAAL.android.utils.IntentConstants;
+import org.universAAL.android.utils.RAPIManager;
 import org.universAAL.android.utils.VariableSubstitution;
 import org.universAAL.middleware.container.SharedObjectListener;
 import org.universAAL.middleware.context.ContextEvent;
@@ -48,9 +50,10 @@ import android.content.Intent;
  * 
  */
 public class ContextSubscriberProxy extends ContextSubscriber implements SharedObjectListener{
-	private WeakReference<Context> context;
+	private WeakReference<Context> contextRef;
 	private String action=null;
 	private String category=null;
+	private String remote=null;
 	private String grounding=null;
 	private Hashtable<String,String> eventVALtoExtraKEY;
 
@@ -64,23 +67,39 @@ public class ContextSubscriberProxy extends ContextSubscriber implements SharedO
 	 */
 	public ContextSubscriberProxy(GroundingParcel parcel, Context context) {
 		super(AndroidContext.THE_CONTEXT, prepareSubscriptions(parcel.getGrounding()));
-		this.context=new WeakReference<Context>(context);
-		this.action=parcel.getAction();
-		this.category=parcel.getCategory();
-		fillTable(parcel.getLengthIN(),parcel.getKeysIN(), parcel.getValuesIN());
-		// This is for GW
-		if(parcel.getRemote()!=null && !parcel.getRemote().isEmpty()){
-			grounding=parcel.getGrounding();
-			RemoteSpacesManager[] gw = (RemoteSpacesManager[]) AndroidContainer.THE_CONTAINER
-					.fetchSharedObject(AndroidContext.THE_CONTEXT,
-							new Object[] { RemoteSpacesManager.class.getName() },
-							this);
-			if(gw!=null && gw.length>0){
-				try {
-					gw[0].importRemoteContextEvents(this, prepareSubscriptions(grounding));
-				} catch (Exception e) {
-					System.out.println("Could not import remote events");
+		contextRef=new WeakReference<Context>(context);
+		action=parcel.getAction();
+		category=parcel.getCategory();
+		fillTable(parcel.getLengthOUT(),parcel.getKeysOUT(), parcel.getValuesOUT());
+		grounding = parcel.getGrounding();
+		// This is for GW or RAPI. RAPI does not need remote tag, but keep using it for coherence
+		remote = parcel.getRemote();
+		sync();
+	}
+	
+	public void sync(){
+		if (MiddlewareService.isGWrequired() && remote != null && !remote.isEmpty()) {
+		switch (MiddlewareService.mSettingRemoteType) {
+			case IntentConstants.REMOTE_TYPE_GW:
+				RemoteSpacesManager[] gw = (RemoteSpacesManager[]) AndroidContainer.THE_CONTAINER
+						.fetchSharedObject(AndroidContext.THE_CONTEXT,
+								new Object[] { RemoteSpacesManager.class.getName() }, this);
+				if (gw != null && gw.length > 0) {
+					try {
+						gw[0].importRemoteContextEvents(this, prepareSubscriptions(grounding));
+					} catch (Exception e) {
+						System.out.println("Could not import remote events");
+					}
 				}
+				break;
+			case IntentConstants.REMOTE_TYPE_RAPI:
+				// RAPI only gets 1 pattern at a time, and the grounding is (surprise!) a single pattern
+				if(MiddlewareService.isGWrequired()){
+					RAPIManager.invokeInThread(RAPIManager.SENDC, grounding);
+				}
+				break;
+			default:
+				break;
 			}
 		}
 	}
@@ -139,7 +158,7 @@ public class ContextSubscriberProxy extends ContextSubscriber implements SharedO
 			// action+cat is being used as a kind of API to call the CPublisher.
 			// In this case we have to relay the event to the destination native
 			// app.
-			Context ctxt=context.get();
+			Context ctxt=contextRef.get();
 			if(ctxt!=null && !isNonIntrusive){
 				Intent broadcast = new Intent(action);
 				broadcast.addCategory(category);

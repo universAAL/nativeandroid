@@ -129,6 +129,7 @@ public class OntologyService extends Service{
 		File ontFolder = new File(Environment.getExternalStorageDirectory(),
 				PreferenceManager.getDefaultSharedPreferences(ctxt).getString(
 						"setting_ofolder_key", ONT_FOLDER));
+		if(!ontFolder.exists())return; //TODO Launch error here because the folder does not exist
 		File[] files = ontFolder.listFiles(new ArchiveFilter());
 		StringBuilder filenames = new StringBuilder();
 		ArrayList<String> activators = new ArrayList<String>();
@@ -223,15 +224,17 @@ public class OntologyService extends Service{
 			while(scan.hasNext()){
 				String activator=scan.next();
 				activator=activator.replace(",", "");
-				if(!activator.startsWith("org.universAAL.ontology.")){
-					activator="org.universAAL.ontology."+activator;
-				}
-				ModuleActivator modActivator;
-				try {
-					modActivator = (ModuleActivator) Class.forName(activator, true, cl).newInstance();
-					modActivator.start(AndroidContext.THE_CONTEXT);
-				} catch (Exception e) {
-					Log.e(TAG, "Error loading and starting an ontology activator from teh list of activators",e);
+				if (!activator.trim().isEmpty()){//Avoid empty spaces in the end of the list
+					if(!activator.startsWith("org.universAAL.ontology.")){
+						activator="org.universAAL.ontology."+activator;
+					}
+					ModuleActivator modActivator;
+					try {
+						modActivator = (ModuleActivator) Class.forName(activator, true, cl).newInstance();
+						modActivator.start(AndroidContext.THE_CONTEXT);
+					} catch (Exception e) {
+						Log.e(TAG, "Error loading and starting an ontology activator from teh list of activators",e);
+					}
 				}
 			}
 		} catch (FileNotFoundException e) {
@@ -264,11 +267,13 @@ public class OntologyService extends Service{
 			while(scan.hasNext()){
 				String ontology=scan.next();
 				ontology=ontology.replace(",", "");
-				try {
-					Ontology ontologyclass = (Ontology) Class.forName(ontology, true, cl).newInstance();
-					OntologyManagement.getInstance().register(AndroidContext.THE_CONTEXT, ontologyclass);
-				} catch (Exception e) {
-					Log.e(TAG, "Error loading and registering an ontology class from the list of classes",e);
+				if (!ontology.trim().isEmpty()){//Avoid empty spaces in the end of the list
+					try {
+						Ontology ontologyclass = (Ontology) Class.forName(ontology, true, cl).newInstance();
+						OntologyManagement.getInstance().register(AndroidContext.THE_CONTEXT, ontologyclass);
+					} catch (Exception e) {
+						Log.e(TAG, "Error loading and registering an ontology class from the list of classes",e);
+					}
 				}
 			}
 		} catch (FileNotFoundException e) {

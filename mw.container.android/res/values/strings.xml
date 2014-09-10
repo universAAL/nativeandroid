@@ -11,6 +11,7 @@
     <string name="action_start">Start</string>
     <string name="action_stop">Stop</string>
     <string name="action_settings">Settings</string>
+    <string name="warning_gplay">Google Play Services is not available</string>
     
     <string name="setting_resetwifi_text">Forget current home WiFi to be paired with a different one</string>
     <string name="setting_resetwifi_text_none">There is no home WiFi paired yet</string>
@@ -39,6 +40,34 @@
 	</string-array>
 	<!-- Reference values. DO NOT CHANGE, DO NOT TRANSLATE -->
 	<string-array name="setting_type_values">
+		<item>0</item>
+		<item>1</item>
+	</string-array>
+	
+	<string name="conn_settings">Connectivity settings</string>
+    <string name="setting_connwifi_text">Connect to other devices running universAAL in the same WiFi network</string>
+    <string name="setting_connwifi_title">WiFi discovery</string>
+    <string name="setting_connmode_text">When to connect to the remote node</string>
+    <string name="setting_connmode_title">Remote connection mode</string>
+    <string-array name="setting_connmode_entries">
+		<item>Always</item>
+		<item>Only when WiFi is Off</item>
+		<item>Never</item>
+	</string-array>
+	<!-- Reference values. DO NOT CHANGE, DO NOT TRANSLATE -->
+	<string-array name="setting_connmode_values">
+		<item>0</item>
+		<item>1</item>
+		<item>2</item>
+	</string-array>
+	<string name="setting_conntype_text">What type of connection to use with the remote node</string>
+    <string name="setting_conntype_title">Remote connection type</string>
+    <string-array name="setting_conntype_entries">
+		<item>Gateway</item>
+		<item>Remote API (requires Google Play Services)</item>
+	</string-array>
+	<!-- Reference values. DO NOT CHANGE, DO NOT TRANSLATE -->
+	<string-array name="setting_conntype_values">
 		<item>0</item>
 		<item>1</item>
 	</string-array>

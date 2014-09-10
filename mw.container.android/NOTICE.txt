@@ -15,6 +15,10 @@ I. Included Software
 
 Software developed by IBM and Fraunhofer IGD within the universAAL project.
 
+Code snippets by Google for using Google Cloud Messaging platform,
+licensed under Apache Software License 2.0,
+publicly available at http://developer.android.com/google/gcm/client.html
+
 
 II. Used Software
 
