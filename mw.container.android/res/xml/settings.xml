@@ -40,10 +40,29 @@
             android:key="setting_type_key"
             android:summary="@string/setting_type_text"
             android:title="@string/setting_type_title" />
+    </PreferenceCategory>
+    
+    <PreferenceCategory android:title="@string/conn_settings" >
+        <CheckBoxPreference
+            android:key="setting_connwifi_key"
+            android:summary="@string/setting_connwifi_text"
+            android:title="@string/setting_connwifi_title" />
         <Preference
             android:key="setting_resetwifi_key"
             android:summary="@string/setting_resetwifi_text"
             android:title="@string/setting_resetwifi_title" >
         </Preference>
+        <ListPreference
+            android:entries="@array/setting_connmode_entries"
+            android:entryValues="@array/setting_connmode_values"
+            android:key="setting_connmode_key"
+            android:summary="@string/setting_connmode_text"
+            android:title="@string/setting_connmode_title" />
+        <ListPreference
+            android:entries="@array/setting_conntype_entries"
+            android:entryValues="@array/setting_conntype_values"
+            android:key="setting_conntype_key"
+            android:summary="@string/setting_conntype_text"
+            android:title="@string/setting_conntype_title" />
     </PreferenceCategory>
 </PreferenceScreen>

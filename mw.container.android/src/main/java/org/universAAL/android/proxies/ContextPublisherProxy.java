@@ -21,12 +21,15 @@
  */
 package org.universAAL.android.proxies;
 
+import java.lang.ref.WeakReference;
 import java.util.Hashtable;
 
 import org.universAAL.android.container.AndroidContainer;
 import org.universAAL.android.container.AndroidContext;
+import org.universAAL.android.services.MiddlewareService;
 import org.universAAL.android.utils.GroundingParcel;
 import org.universAAL.android.utils.IntentConstants;
+import org.universAAL.android.utils.RAPIManager;
 import org.universAAL.android.utils.VariableSubstitution;
 import org.universAAL.middleware.context.ContextEvent;
 import org.universAAL.middleware.context.ContextPublisher;
@@ -47,11 +50,12 @@ import android.content.IntentFilter;
  * 
  */
 public class ContextPublisherProxy extends ContextPublisher {
+	private WeakReference<Context> contextRef=null;
 	private String action=null;
 	private String category=null;
-	private String turtleEvent=null;
-	private ContextPublisherProxyReceiver receiver=null;
+	private String grounding=null;
 	private Hashtable<String,String> extraKEYtoEventVAL;
+	private ContextPublisherProxyReceiver receiver=null;
 	
 	/**
 	 * Constructor for the proxy.
@@ -64,14 +68,20 @@ public class ContextPublisherProxy extends ContextPublisher {
 	public ContextPublisherProxy(GroundingParcel parcel,
 			Context context) {
 		super(AndroidContext.THE_CONTEXT, prepareProvider(parcel));
-		this.action=parcel.getAction();
-		this.category=parcel.getCategory();
-		this.turtleEvent=parcel.getGrounding();
+		contextRef=new WeakReference<Context>(context);
+		action=parcel.getAction();
+		category=parcel.getCategory();
+		grounding=parcel.getGrounding();
 		fillTable(parcel.getLengthIN(),parcel.getKeysIN(), parcel.getValuesIN());
-		this.receiver=new ContextPublisherProxyReceiver();
+		receiver=new ContextPublisherProxyReceiver();
 		IntentFilter filter=new IntentFilter(this.action);
-		filter.addCategory(this.category);
+		filter.addCategory(category);
 		context.registerReceiver(receiver, filter);//TODO use the other longer register method
+		sync();
+	}
+	
+	public void sync(){
+		//Nothing. Publishing does not need syncing. For now.
 	}
 
 	/**
@@ -117,6 +127,15 @@ public class ContextPublisherProxy extends ContextPublisher {
 		// TODO Auto-generated method stub
 	}
 	
+	@Override
+	public void close() {
+		super.close();
+		Context ctxt=this.contextRef.get();
+		if (ctxt!=null && receiver!=null){
+			ctxt.unregisterReceiver(receiver);
+		}
+	}
+
 	/**
 	 * Auxiliary class representing the Broadcast Receiver registered by the
 	 * middleware where apps will send intents when they want to send a context
@@ -140,10 +159,10 @@ public class ContextPublisherProxy extends ContextPublisher {
 							new Object[] { MessageContentSerializerEx.class
 									.getName() });
 			if(extraKEYtoEventVAL!=null && !extraKEYtoEventVAL.isEmpty()){
-				String turtleReplaced=VariableSubstitution.putIntentExtrasAsEventValues(intent, turtleEvent, extraKEYtoEventVAL);
+				String turtleReplaced=VariableSubstitution.putIntentExtrasAsEventValues(intent, grounding, extraKEYtoEventVAL);
 				event=(ContextEvent) parser.deserialize(turtleReplaced);
 			}else{
-				event=(ContextEvent) parser.deserialize(turtleEvent);
+				event=(ContextEvent) parser.deserialize(grounding);
 			}
 			// Cant Improve this. Must make a copy of the event so that URI is new. Timestamp and Provider are set by bus
 			ContextEvent cev = new ContextEvent(event.getRDFSubject(),
@@ -151,6 +170,15 @@ public class ContextPublisherProxy extends ContextPublisher {
 			cev.setConfidence(event.getConfidence());
 			cev.setExpirationTime(event.getExpirationTime());
 			publish(cev);
+			// If RAPI, send it to server. If GW it is automatic by the running GW
+			if (MiddlewareService.isGWrequired() && MiddlewareService.mSettingRemoteType == IntentConstants.REMOTE_TYPE_RAPI) {
+				ContextEvent cev2=(ContextEvent)cev.deepCopy();//Prevent concurrent change of cev!!!!
+				cev2.changeProperty(ContextEvent.PROP_CONTEXT_PROVIDER, null);//The single publisher in RAPI will send ANY event
+				String serial = parser.serialize(cev2);
+				if (serial != null){
+					RAPIManager.invokeInThread(RAPIManager.SENDC, serial);
+				}//TODO error
+			}
 		}
 	}
 

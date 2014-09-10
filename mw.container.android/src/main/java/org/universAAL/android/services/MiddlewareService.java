@@ -30,12 +30,14 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Properties;
 
+import org.universAAL.android.R;
 import org.universAAL.android.container.AndroidContainer;
 import org.universAAL.android.container.AndroidContext;
 import org.universAAL.android.container.AndroidRegistry;
 import org.universAAL.android.handler.AndroidHandler;
 import org.universAAL.android.utils.GroundingParcel;
 import org.universAAL.android.utils.IntentConstants;
+import org.universAAL.android.utils.RAPIManager;
 import org.universAAL.android.wrappers.CommunicationConnectorWrapper;
 import org.universAAL.android.wrappers.DiscoveryConnectorWrapper;
 import org.universAAL.middleware.brokers.control.ControlBroker;
@@ -99,6 +101,7 @@ import android.os.Environment;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.widget.Toast;
 
 /**
  * Central class and service of the application. It takes care of starting and
@@ -113,20 +116,17 @@ import android.util.Log;
 public class MiddlewareService extends Service implements AALSpaceListener{
 
 	private static final String TAG = "MiddlewareService";
-	private static final String CREATE_THREAD_TAG = "MW Service Create";
-	private static final String START_THREAD_TAG = "MW Service Start";
-	private static final String UI_THREAD_TAG = "UI Handler Create";
+	private static final String TAG_THREAD_CREATE = "MW Service Create";
+	private static final String TAG_THREAD_START = "MW Service Start";
+	private static final String TAG_THREAD_UI = "UI Handler Create";
+	private static final String UAAL_CONF_ROOT_DIR = "/data/felix/configurations/etc/"; // this is just the default
 	private static final int ONGOING_NOTIFICATION = 3948234; // TODO Random one?
-	private static final String MY_WIFI = "home_wifi";
-	private static final String NO_WIFI = "uAALGhostWifi";
-	private static final int WIFI_HOME = 0;
-	private static final int WIFI_NOT_SET = 1;
-	private static final int WIFI_STRANGER = 2;
-	private static final int WIFI_NOT_ON = 3;
-	public static final String uAAL_CONF_ROOT_DIR = "/data/felix/configurations/etc/"; // this is just the default
-	public static int mUSER_TYPE = 0; // This is just the default, but it is here to get it from AndroidHandler
-	public static int percentage=0; //This is for the progress bar
-	public static int mPastWIFI=WIFI_NOT_ON; //This is for the previous state of WIFI
+	public static int mPercentage = 0; // This is for the progress bar
+	public static int mCurrentWIFI = IntentConstants.WIFI_OFF; // This is for the previous state of WIFI
+	public static int mUserType = IntentConstants.USER_TYPE_AP; // Just default but it is here to get it from AndroidHandler
+	public static int mSettingRemoteType = IntentConstants.REMOTE_TYPE_GW;
+	public static int mSettingRemoteMode = IntentConstants.REMOTE_MODE_WIFIOFF;
+	private boolean mSettingWifiEnabled = true;
 	private MulticastLock mLock;
 	// MW modules stay in memory in this service class (Container holds only WeakRefs)
 	private Advertiser mJSLPadvertiser;
@@ -149,7 +149,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 		// This is where MW is created as it is called once when service is instantiated. Make sure it runs forever.
 		super.onCreate();
 		Log.v(TAG, "Create");
-		percentage=0;
+		mPercentage=0;
 		// TODO Check! Supposedly, this starts as foreground but without notification. Not on 4.0 anymore
 		Notification notif = new Notification(0, null,
 				System.currentTimeMillis());
@@ -163,10 +163,8 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 		System.setProperty("java.net.preferIPv6Addresses", "false");
 		System.setProperty("jgroups.use.jdk_logger ", "true");
 		System.setProperty("net.slp.port", "5555");
-		boolean iscoord=PreferenceManager.getDefaultSharedPreferences(this).getBoolean(
-				"setting_iscoord_key", true);
-		System.setProperty(
-				"org.universAAL.middleware.peer.is_coordinator",Boolean.toString(iscoord));
+		boolean iscoord = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("setting_iscoord_key", true);
+		System.setProperty("org.universAAL.middleware.peer.is_coordinator", Boolean.toString(iscoord));
 
 		// This is for setting IP manually, just in case (set it everytime you
 		// get a new IP). If not set, it seems it also works, but SLP keeps
@@ -177,26 +175,34 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 		// javadoc). Common sense would suggest to set it false, but it still
 		// works without doing so.
 		// System.setProperty("http.keepAlive", "false");
-		
+
+		mSettingWifiEnabled = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("setting_connwifi_key", true);
+		mSettingRemoteMode = Integer.parseInt(PreferenceManager
+				.getDefaultSharedPreferences(this).getString( "setting_connmode_key", "1"));
+		mSettingRemoteType = Integer.parseInt(PreferenceManager
+				.getDefaultSharedPreferences(this).getString( "setting_conntype_key", "0"));
 		// Create (dont use yet) the multicast lock. Make it not counted: this app only uses one lock
 		WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 		mLock = wifi.createMulticastLock("uaal_multicast");
 		mLock.setReferenceCounted(false);
 
-		// Set the static platform of SLP (for logging and stuff)
+		// Set the static platform of SLP (for logging and stuff). Do it here cause its static (!)
 		SLPCore.platform=AndroidContext.THE_CONTEXT;
 		// Start the MW! Put all the above inside thread too? Cmon, its fast! Also, notification must be there
 		new Thread(new Runnable() {
 			public void run() {
+				// Start the MW in onCreate makes sure it is running before
+				// handling any intents. The only problem is when stopping the
+				// MW and an intent comes... TODO
 				addPercent(1);
-				int wifiStatus=checkWifi();
-				// 1. Stop-start the connector modules. Use jSLP only IF WIFI==WIFI_HOME or WIFI==WIFI_NOT_SET
-				if(wifiStatus==WIFI_HOME || wifiStatus==WIFI_NOT_SET){
+				mCurrentWIFI=checkWifi();//Set the initial status of WIFI
+				// 1. Stop-start the connector modules. Use jSLP only IF WIFI enabled, and WIFI==WIFI_HOME or WIFI_NOT_SET
+				if (mSettingWifiEnabled
+						&& (mCurrentWIFI == IntentConstants.WIFI_HOME || mCurrentWIFI == IntentConstants.WIFI_NOTSET)) {
 					restartConnector(true);
-				}else{
+				} else {
 					restartConnector(false);
 				}
-				mPastWIFI=wifiStatus; //Set the initial status of WIFI
 				// 2. Start the MW modules
 				startMiddleware();
 				// 3. Register the ontologies
@@ -209,8 +215,8 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 				addPercent(25);
 				// 4. Start UI handler TODO start handler in last place
 				startHandler();
-				// 5. Start GW IF WIFI==NOT_ON or WIFI==STRANGER
-				if(wifiStatus==WIFI_NOT_ON || wifiStatus==WIFI_STRANGER){
+				// 5. Start GW IF WIFI==NOT_ON or WIFI==STRANGER (or if ALWAYS)
+				if (isGWrequired()) {
 					startGateway();
 				}
 				addPercent(10);
@@ -219,21 +225,27 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 				scan.setClass(MiddlewareService.this, ScanService.class);
 				startService(scan);
 			}
-		},CREATE_THREAD_TAG).start();
+		},TAG_THREAD_CREATE).start();
 
 		Log.v(TAG, "Created");
 	}
 
 	@Override
 	public void onDestroy() {
-		// This would only be called when low on memory: stop and release everything instantiated in onCreate an die. unshare
+		// Stop and release everything instantiated in onCreate an die. Unshare everything.
 		super.onDestroy();
 		Log.v(TAG, "Destroy");
-		//TODO Call to unreg onts? really? Place call to scan better?
-		percentage=0;
-		Intent scan = new Intent(IntentConstants.ACTION_PCK_UNREG_ALL);
-		scan.setClass(this, ScanService.class);
-		startService(scan);
+		//TODO Call to unreg onts? really?
+		mPercentage=0;//TODO update progress bar view?
+		// ScanService ran and tried to stop in parallel while MiddlewareService
+		// has already finished (next lines) AND also sent intents to it which
+		// restarted it. Instead I made a method for this in Registry, since
+		// unreg all is a special case (we already know what to unreg, no need
+		// to scan)
+		AndroidRegistry.unregisterAll();
+//		Intent scan = new Intent(IntentConstants.ACTION_PCK_UNREG_ALL);
+//		scan.setClass(this, ScanService.class);
+//		startService(scan);
 		stopGateway();
 		stopHandler();
 		stopMiddleware();
@@ -246,45 +258,57 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 		// This will be called each time someone (scan/boot/wifi) sends an intent to this service. Analyze and react accordingly.
 		Log.v(TAG, "Start command: ");
 		// HACK: Set user type for AndroidHandler. Prevents NPE at startup when activity is not visible
-		mUSER_TYPE=Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(MiddlewareService.this).getString("setting_type_key", "0"));
+		mUserType = Integer.parseInt(PreferenceManager
+				.getDefaultSharedPreferences(MiddlewareService.this).getString(
+						"setting_type_key", "0"));
 		new Thread(new Runnable() {
 			public void run() {
 				if (intent != null) {
 					String action = intent.getAction();
-					Log.v(TAG, "Intent: " + action);
+					Log.v(TAG, "Intent action: " + action);
 					if (action != null) {
 						if (action.equals(Intent.ACTION_BOOT_COMPLETED)) {
-							// Do we really have to do anything here? The MW is running by now...
+							//Do nothing, the MW is already started by now in oncreate
 							Log.v(TAG, "Action is BOOT");
 						} else if (action.equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
-							//Only react to changes (we can get ON after ON) except WIFI_STRANGER: stranger1 -> stranger2 
+							//Only react to meaningful changes 
 							Log.v(TAG, "Action is WIFI");
-							int wifiStatus=checkWifi();
-							if(mPastWIFI!=wifiStatus || (mPastWIFI==wifiStatus && wifiStatus==WIFI_STRANGER)){
-								switch (wifiStatus) {
-								case WIFI_HOME://We are at home: Stop GW and connect with jSLP
-									stopGateway();
-									restartConnector(true);
+							int newWifi = checkWifi(); //Dont set mCurrentWifi yet, we have to compare
+							if (mSettingWifiEnabled) {
+								boolean modeGW = (mSettingRemoteMode == IntentConstants.REMOTE_MODE_WIFIOFF);
+								switch (newWifi) {
+								case IntentConstants.WIFI_OFF:
+									if (mCurrentWIFI == IntentConstants.WIFI_NOTSET || mCurrentWIFI == IntentConstants.WIFI_HOME) {
+										if (modeGW) { stopGateway(); }
+										restartConnector(false); // Shut down jSLP, use GW
+										if (modeGW) { startGateway(); }
+									}
 									break;
-								case WIFI_NOT_SET://We still don´t have home: Dont use GW and try to connect with jSLP
-									stopGateway();
-									restartConnector(true);
+								case IntentConstants.WIFI_NOTSET:
+									if (mCurrentWIFI == IntentConstants.WIFI_OFF || mCurrentWIFI == IntentConstants.WIFI_STRANGER) {
+										if (modeGW) { stopGateway(); }
+										restartConnector(true); // Turn on jSLP, dont use GW
+									}
 									break;
-								case WIFI_STRANGER://We are outside home: Start GW and dont try to connect with jSLP
-									stopGateway();
-									restartConnector(false);
-									startGateway();
+								case IntentConstants.WIFI_STRANGER:
+									if (mCurrentWIFI == IntentConstants.WIFI_NOTSET || mCurrentWIFI == IntentConstants.WIFI_HOME) {
+										if (modeGW) { stopGateway(); }
+										restartConnector(false); // Shut down jSLP, use GW
+										if (modeGW) { startGateway(); }
+									}
 									break;
-								case WIFI_NOT_ON://No wifi: Start GW and dont try to connect with jSLP
-									stopGateway();
-									restartConnector(false);
-									startGateway();
+								case IntentConstants.WIFI_HOME:
+									if (mCurrentWIFI == IntentConstants.WIFI_NOTSET || mCurrentWIFI == IntentConstants.WIFI_HOME) {
+										if (modeGW) { stopGateway(); }
+										restartConnector(true); // Turn on jSLP, dont use GW
+									}
 									break;
 								default:
+									// Do nothing, keep using jSLP / GW or not, as previous state
 									break;
-								}// I know, this switch can be refactored better, but this way it is easier to read and tweak
-								mPastWIFI=wifiStatus;
+								}
 							}
+							mCurrentWIFI=newWifi;
 						} else if (action.equals(IntentConstants.ACTION_PCK_REG)) {
 							// REGISTER message from scan service
 							Log.v(TAG, "Action is REGISTER");
@@ -309,13 +333,13 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 					}
 				}
 			}
-		}, START_THREAD_TAG).start();
+		}, TAG_THREAD_START).start();
 		return START_STICKY;
 	}
 
 	@Override
 	public IBinder onBind(Intent arg0) {
-		// This will be called each time someone asks for our binder to perform operations. Give it. - NO! no more binders...
+		// Called each time someone asks for our binder to perform operations. I dont use binders anymore.
 		return null;
 	}
 	
@@ -371,10 +395,10 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 			SLPCore.stop();
 		}
 		addPercent(5);
-		// Then depending on WIFI start the real or the fake connectors
+		// Then depending on what we are asked to do start the real or the fake connectors
 		if (connect) {
-			// If wifiON start the real connectors
-			Log.v(TAG, "Wifi is ON");
+			// Start the real connectors
+			Log.v(TAG, "Starting network discovery and peering");
 			try {
 				// First acquire multicast lock
 				mLock.acquire();
@@ -421,10 +445,9 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 				Log.e(TAG, "Error while initializing connector", e);
 			}
 		} else {
-			// If wifi OFF start the fake connectors
-			Log.v(TAG, "Wifi is OFF");
-			// Release multicast
-			mLock.release();
+			// Start the fake connectors
+			Log.v(TAG, "Starting stub discovery and peering");
+			mLock.release(); // Release multicast
 			// _____________________JGROUPS_________________________
 			mModJGROUPS = new CommunicationConnectorWrapper();
 			AndroidContainer.THE_CONTAINER.shareObject(
@@ -484,7 +507,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 			AndroidContainer.THE_CONTAINER.unshareObject(CommunicationConnector.class.getName(),mModJGROUPS);
 			mModJGROUPS = null;
 		}
-		// Then stop JSLP library
+		// Stop JSLP library
 		if (mJSLPlocator != null) {
 			AndroidContainer.THE_CONTAINER.unshareObject(Locator.class.getName(), mJSLPlocator);
 			mJSLPlocator = null;
@@ -495,8 +518,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 			SLPCore.destroyMulticastSocket();//TODO place this better?
 			SLPCore.stop();
 		}
-		// And release multicast lock
-		mLock.release();
+		mLock.release(); // Release multicast lock
 	}
 	
 	/**
@@ -679,12 +701,12 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 				mModHANDLER.render();
 				Log.d(TAG, "Started UI HANDLER");
 			}
-		}, UI_THREAD_TAG).start();
+		}, TAG_THREAD_UI).start();// Do in thread because if there is no coord it would block
 		addPercent(5);
 	}
 	
 	/**
-	 * Stops the modules needed for the RI AAL Space Gateway to stop.
+	 * Stops the modules needed for the UI Handler to stop.
 	 */
 	private synchronized void stopHandler() {
 		// _________________UI HANDLER_________________________
@@ -696,81 +718,136 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 	}
 	
 	/**
-	 * Start the modules needed for the RI AAL Space Gateway to start.
+	 * Start the modules needed for the RI AAL Space Gateway/R API to start.
 	 */
 	private synchronized void startGateway(){
-		// _________________BUS TRACKER_________________ TODO Allow ON/OFF
-		mModTRACKER = new BusMemberRegistryImpl(AndroidContext.THE_CONTEXT);
-		AndroidContainer.THE_CONTAINER.shareObject(
-				AndroidContext.THE_CONTEXT, mModTRACKER,
-				new Object[] { IBusMemberRegistry.class.getName() });
-		Log.d(TAG, "Started BUS TRACKER");
-		// _________________GATEWAY_________________________ TODO Allow ON/OFF
-		ModuleContext c8 = new AndroidContext("ri.gateway.communicator");
-		Dictionary gatewayProps = getProperties("ri.gateway.communicator.core");
-		try {
-			CommunicatorStarter.properties=(Properties) gatewayProps;
-			CommunicatorStarter.mc=AndroidContext.THE_CONTEXT;
-			Serializer.contentSerializer=mModSERIALIZER;
-			mModGATEWAY = new GatewayCommunicatorImpl();
-			final List<GatewayAddress> remoteAddresses = CommunicatorStarter.extractRemoteGateways();
-			mModGATEWAY.addRemoteGateways(remoteAddresses);
-			mModEXPORT = new ExportManagerImpl(mModGATEWAY);
-			mModIMPORT = new ImportManagerImpl(mModGATEWAY);
-			mModGATEWAY.setManagers(mModIMPORT, mModEXPORT);
-			mModGATEWAY.start();
-			mModTRACKER.addBusRegistryListener(mModEXPORT, true);
-			mModTRACKER.addBusRegistryListener(mModIMPORT, true);
-			AndroidContainer.THE_CONTAINER.fetchSharedObject(c8, new Object[] {
-					ImportOperationInterceptor.class.getName(),
-					ExportOperationInterceptor.class.getName() },
-					EIOperationManager.Instance);
-			AndroidContainer.THE_CONTAINER
-					.shareObject(c8, mModGATEWAY,
-							new Object[] { ImportOperationInterceptor.class
-									.getName() });
-			AndroidContainer.THE_CONTAINER
-					.shareObject(c8, mModGATEWAY,
-							new Object[] { ExportOperationInterceptor.class
-									.getName() });
-			Log.d(TAG, "Started GATEWAY");
-		} catch (Exception e) {
-			Log.e(TAG, "Error while initializing Gateway", e);
+		switch (mSettingRemoteType) {
+		case IntentConstants.REMOTE_TYPE_GW:
+			// _________________BUS TRACKER_________________
+			mModTRACKER = new BusMemberRegistryImpl(AndroidContext.THE_CONTEXT);
+			AndroidContainer.THE_CONTAINER.shareObject(
+					AndroidContext.THE_CONTEXT, mModTRACKER,
+					new Object[] { IBusMemberRegistry.class.getName() });
+			Log.d(TAG, "Started BUS TRACKER");
+			// _________________GATEWAY_________________________
+			ModuleContext c8 = new AndroidContext("ri.gateway.communicator");
+			Dictionary gatewayProps = getProperties("ri.gateway.communicator.core");
+			try {
+				CommunicatorStarter.properties=(Properties) gatewayProps;
+				CommunicatorStarter.mc=AndroidContext.THE_CONTEXT;
+				Serializer.contentSerializer=mModSERIALIZER;
+				mModGATEWAY = new GatewayCommunicatorImpl();
+				final List<GatewayAddress> remoteAddresses = CommunicatorStarter.extractRemoteGateways();
+				mModGATEWAY.addRemoteGateways(remoteAddresses);
+				mModEXPORT = new ExportManagerImpl(mModGATEWAY);
+				mModIMPORT = new ImportManagerImpl(mModGATEWAY);
+				mModGATEWAY.setManagers(mModIMPORT, mModEXPORT);
+				mModGATEWAY.start();
+				mModTRACKER.addBusRegistryListener(mModEXPORT, true);
+				mModTRACKER.addBusRegistryListener(mModIMPORT, true);
+				AndroidContainer.THE_CONTAINER.fetchSharedObject(c8, new Object[] {
+						ImportOperationInterceptor.class.getName(),
+						ExportOperationInterceptor.class.getName() },
+						EIOperationManager.Instance);
+				AndroidContainer.THE_CONTAINER
+						.shareObject(c8, mModGATEWAY,
+								new Object[] { ImportOperationInterceptor.class
+										.getName() });
+				AndroidContainer.THE_CONTAINER
+						.shareObject(c8, mModGATEWAY,
+								new Object[] { ExportOperationInterceptor.class
+										.getName() });
+				Log.d(TAG, "Started GATEWAY");
+			} catch (Exception e) {
+				Log.e(TAG, "Error while initializing Gateway", e);
+			}
+			break;
+		case IntentConstants.REMOTE_TYPE_RAPI:
+			// Check Play Services and register in GCM if not already
+			if (RAPIManager.checkPlayServices(getApplicationContext())) {
+				String mRegID = RAPIManager.getRegistrationId(getApplicationContext());
+				if (mRegID.isEmpty()) {
+					RAPIManager.registerInThread(getApplicationContext());
+				}else{//Already registered in GCM, but maybe not in uAAL yet
+					RAPIManager.invoke(RAPIManager.REGISTER, mRegID);
+				}
+			}else{
+				//TODO show error
+				Toast.makeText(getApplicationContext(),	R.string.warning_gplay, Toast.LENGTH_LONG).show();
+			}
+			break;
+		default:
+			break;
+		}
+		AndroidRegistry.sync();//Makes all proxies register to remote node (if possible)
+	}
+	
+	/**
+	 * Stops the modules needed for the RI AAL Space Gateway/R API to stop.
+	 */
+	private synchronized void stopGateway(){	
+		switch (mSettingRemoteType) {
+		case IntentConstants.REMOTE_TYPE_GW:
+			// _________________GATEWAY_________________________
+			if (mModTRACKER!= null){
+				mModTRACKER.removeBusRegistryListener(mModEXPORT);
+				mModTRACKER.removeBusRegistryListener(mModIMPORT);
+			}
+			if (mModEXPORT != null){
+				mModEXPORT.shutdown();
+			}
+			if (mModIMPORT != null){
+				mModIMPORT.shutdown();
+			}
+			AndroidContainer.THE_CONTAINER.removeSharedObjectListener(EIOperationManager.Instance);
+			if (mModGATEWAY != null) {
+				mModGATEWAY.stop();
+				AndroidContainer.THE_CONTAINER.unshareObject(ExportOperationInterceptor.class.getName(), mModGATEWAY);
+				AndroidContainer.THE_CONTAINER.unshareObject(ImportOperationInterceptor.class.getName(), mModGATEWAY);
+				CommunicatorStarter.properties=null;
+				CommunicatorStarter.mc=null;
+				mModGATEWAY = null;
+				Serializer.contentSerializer=null;
+			}
+			// _________________BUS TRACKER_________________
+			if (mModTRACKER != null) {
+				mModTRACKER.removeRegistryListeners();
+				AndroidContainer.THE_CONTAINER.unshareObject(IBusMemberRegistry.class.getName(), mModTRACKER);
+				mModTRACKER = null;
+			}
+			Log.d(TAG, "Stopped GATEWAY");
+			break;
+		case IntentConstants.REMOTE_TYPE_RAPI:
+			// Check Play Services and register in GCM if not already
+			if (RAPIManager.checkPlayServices(getApplicationContext())) {
+				String mRegID = RAPIManager.getRegistrationId(getApplicationContext());
+				if (mRegID.isEmpty()) {
+					RAPIManager.registerInThread(getApplicationContext());
+				}else{//mRegID not really needed, but just in case in the future...
+					RAPIManager.invokeInThread(RAPIManager.UNREGISTER, mRegID);
+				}
+			}else{
+				//TODO show error better
+				Toast.makeText(getApplicationContext(),	R.string.warning_gplay, Toast.LENGTH_LONG).show();
+			}
+			break;
+		default:
+			break;
 		}
 	}
 	
 	/**
-	 * Stops the modules needed for the RI AAL Space Gateway to stop.
+	 * Determines if GW for remtoe node (GW or R API) is needed in current
+	 * situation.
+	 * 
+	 * @return True if Remote mode ALWAYS, or remote mode WIFIOFF and the WIFI
+	 *         is OFF or STRANGER
 	 */
-	private synchronized void stopGateway(){	
-		// _________________GATEWAY_________________________
-		if (mModTRACKER!= null){
-			mModTRACKER.removeBusRegistryListener(mModEXPORT);
-			mModTRACKER.removeBusRegistryListener(mModIMPORT);
-		}
-		if (mModEXPORT != null){
-			mModEXPORT.shutdown();
-		}
-		if (mModIMPORT != null){
-			mModIMPORT.shutdown();
-		}
-		AndroidContainer.THE_CONTAINER.removeSharedObjectListener(EIOperationManager.Instance);
-		if (mModGATEWAY != null) {
-			mModGATEWAY.stop();
-			AndroidContainer.THE_CONTAINER.unshareObject(ExportOperationInterceptor.class.getName(), mModGATEWAY);
-			AndroidContainer.THE_CONTAINER.unshareObject(ImportOperationInterceptor.class.getName(), mModGATEWAY);
-			CommunicatorStarter.properties=null;
-			CommunicatorStarter.mc=null;
-			mModGATEWAY = null;
-			Serializer.contentSerializer=null;
-		}
-		// _________________BUS TRACKER_________________
-		if (mModTRACKER != null) {
-			mModTRACKER.removeRegistryListeners();
-			AndroidContainer.THE_CONTAINER.unshareObject(IBusMemberRegistry.class.getName(), mModTRACKER);
-			mModTRACKER = null;
-		}
-		Log.d(TAG, "Stopped GATEWAY");
+	public static boolean isGWrequired(){
+		return (mSettingRemoteMode == IntentConstants.REMOTE_MODE_ALWAYS
+				|| (mSettingRemoteMode == IntentConstants.REMOTE_MODE_WIFIOFF 
+				&& (mCurrentWIFI == IntentConstants.WIFI_OFF 
+				|| mCurrentWIFI == IntentConstants.WIFI_STRANGER)));
 	}
 
 	/**
@@ -802,8 +879,8 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 	 * 
 	 * @return the location of config dir as of setting_cfolder_key pref
 	 */
-	private String getConfDir(){
-		return PreferenceManager.getDefaultSharedPreferences(this).getString("setting_cfolder_key", uAAL_CONF_ROOT_DIR);
+	private String getConfDir() {
+		return PreferenceManager.getDefaultSharedPreferences(this).getString("setting_cfolder_key", UAAL_CONF_ROOT_DIR);
 	}
 	
 	/**
@@ -838,13 +915,13 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 			WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 			WifiInfo wifiInfo = wifiManager.getConnectionInfo();
 			String networkId = wifiInfo.getSSID();
-			PreferenceManager.getDefaultSharedPreferences(this).edit().putString(MY_WIFI, networkId).commit();
+			PreferenceManager.getDefaultSharedPreferences(this).edit().putString(IntentConstants.MY_WIFI, networkId).commit();
 			Log.i(TAG, "Setting home space Wifi: "+networkId);
 		}
 	}
 	
 	/**
-	 * Check whether we are now connected to "our" AAL Space WiFi Network.
+	 * Check what is the current connection status of WiFi.
 	 * 
 	 * @return Constant representing the status.
 	 */
@@ -853,26 +930,27 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 			WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 			WifiInfo wifiInfo = wifiManager.getConnectionInfo();
 			String networkId = wifiInfo.getSSID();
-			String home=PreferenceManager.getDefaultSharedPreferences(this).getString(MY_WIFI, NO_WIFI);
-			Log.i(TAG, "WIFI CHECK: Evaluating: "+networkId);
-			if(home.equals(NO_WIFI)){
+			String home = PreferenceManager.getDefaultSharedPreferences(this)
+					.getString(IntentConstants.MY_WIFI, IntentConstants.NO_WIFI);
+			Log.i(TAG, "WIFI CHECK: Evaluating: " + networkId);
+			if(home.equals(IntentConstants.NO_WIFI)){
 				Log.i(TAG, "WIFI CHECK: We still do not have a home wifi, maybe this one will be?");
-				return WIFI_NOT_SET;
+				return IntentConstants.WIFI_NOTSET;
 			}else if(networkId.equals(home)){
 				Log.i(TAG, "WIFI CHECK: We have a home wifi, and we are in it!");
-				return WIFI_HOME;
+				return IntentConstants.WIFI_HOME;
 			}else{
 				Log.i(TAG, "WIFI CHECK: We have a home wifi, but it is not this one. If you want it to be, clear app data");
-				return WIFI_STRANGER;
+				return IntentConstants.WIFI_STRANGER;
 			}
 		}
 		Log.i(TAG, "WIFI CHECK: Wifi is not on");
-		return WIFI_NOT_ON;
+		return IntentConstants.WIFI_OFF;
 	}
 	
 	private void addPercent(int percent){
-		if(percentage<100){
-			percentage+=percent;
+		if(mPercentage<100){
+			mPercentage+=percent;
 		}
 		// TODO use pending intent? isnt a single sticky intent always there with this already?
 		Intent intent=new Intent(IntentConstants.ACTION_UI_PROGRESS);
@@ -882,26 +960,29 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 	}
 
 	public void aalSpaceJoined(AALSpaceDescriptor spaceDescriptor) {
-		String home=PreferenceManager.getDefaultSharedPreferences(this).getString(MY_WIFI, NO_WIFI);
-		if(home.equals(NO_WIFI)){ //This is the first time we connect to a space
+		String home = PreferenceManager.getDefaultSharedPreferences(this)
+				.getString(IntentConstants.MY_WIFI, IntentConstants.NO_WIFI);
+		if (home.equals(IntentConstants.NO_WIFI)) { // This is the first time we connect to a space
 			thisIsOurWifi();
 		}
-		//Always stop the GW because we are in a space (probably already stopped)
-		stopGateway();
-	}
-
-	public void aalSpaceLost(AALSpaceDescriptor spaceDescriptor) {
-		// TODO Auto-generated method stub
+		if( mSettingRemoteMode == IntentConstants.REMOTE_MODE_WIFIOFF){
+			stopGateway();//stop the GW because we are in a space (probably already stopped)
+		}
 	}
 
 	public void newPeerJoined(PeerCard peer) {
-		String home=PreferenceManager.getDefaultSharedPreferences(this).getString(MY_WIFI, NO_WIFI);
-		if(home.equals(NO_WIFI)){ //This is the first time we connect to a space
-			//This is the first time
+		String home = PreferenceManager.getDefaultSharedPreferences(this)
+				.getString(IntentConstants.MY_WIFI, IntentConstants.NO_WIFI);
+		if (home.equals(IntentConstants.NO_WIFI)) { // This is the first time we connect to a space
 			thisIsOurWifi();
 		}
-		//Always stop the GW because we are in a space (probably already stopped)
-		stopGateway();
+		if( mSettingRemoteMode == IntentConstants.REMOTE_MODE_WIFIOFF){
+			stopGateway();//stop the GW because we are in a space (probably already stopped)
+		}
+	}
+	
+	public void aalSpaceLost(AALSpaceDescriptor spaceDescriptor) {
+		// TODO Auto-generated method stub
 	}
 
 	public void peerLost(PeerCard peer) {

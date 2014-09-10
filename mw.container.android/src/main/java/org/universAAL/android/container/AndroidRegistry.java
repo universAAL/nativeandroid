@@ -21,6 +21,7 @@
  */
 package org.universAAL.android.container;
 
+import java.util.Enumeration;
 import java.util.Hashtable;
 
 import org.universAAL.android.proxies.ContextPublisherProxy;
@@ -28,8 +29,10 @@ import org.universAAL.android.proxies.ContextSubscriberProxy;
 import org.universAAL.android.proxies.ServiceCalleeProxy;
 import org.universAAL.android.proxies.ServiceCallerProxy;
 import org.universAAL.android.utils.GroundingParcel;
+import org.universAAL.android.utils.IntentConstants;
 
 import android.content.Context;
+import android.util.Log;
 
 /**
  * Class that works as a singleton where the instances of proxy classes are
@@ -39,16 +42,14 @@ import android.content.Context;
  * 
  */
 public class AndroidRegistry {
-	public static final int TYPE_CPUBLISHER = 1;
-	public static final int TYPE_CSUBSCRIBER = 2;
-	public static final int TYPE_SCALLEE = 3;
-	public static final int TYPE_SCALLER = 4;
-	
+	private static final String TAG = "AndroidRegistry";
 	// Each uAAL wrapper is created here and therefore it must stay here in memory-> dont use WeakRefs
 	private static Hashtable<String, ContextPublisherProxy> cpublishers = new Hashtable<String, ContextPublisherProxy>();
 	private static Hashtable<String, ContextSubscriberProxy> csubscribers = new Hashtable<String, ContextSubscriberProxy>();
 	private static Hashtable<String, ServiceCalleeProxy> scallees = new Hashtable<String, ServiceCalleeProxy>();
 	private static Hashtable<String, ServiceCallerProxy> scallers = new Hashtable<String, ServiceCallerProxy>();
+	// I need this for R API: links SP URI to ID, which I need when receiving callbacks from R API
+	private static Hashtable<String, String> scalleesAux = new Hashtable<String, String>();
 
 	/**
 	 * Create and store in memory an instance of a proxy class for a given
@@ -65,24 +66,31 @@ public class AndroidRegistry {
 	 */
 	public static synchronized void register(String id, GroundingParcel parcel,	int type,  Context context) {
 		switch (type) {
-		case TYPE_CPUBLISHER:
+		case IntentConstants.TYPE_CPUBLISHER:
+			Log.d(TAG, "//////registering publisher");
 			ContextPublisherProxy cpub=new ContextPublisherProxy(parcel,context);
 			cpublishers.put(id, cpub);
 			break;
-		case TYPE_CSUBSCRIBER:
+		case IntentConstants.TYPE_CSUBSCRIBER:
+			Log.d(TAG, "//////registering subscriber");
 			ContextSubscriberProxy csub=new ContextSubscriberProxy(parcel,context);
 			csubscribers.put(id, csub);
 			break;
-		case TYPE_SCALLEE:
+		case IntentConstants.TYPE_SCALLEE:
+			Log.d(TAG, "//////registering scallee");
 			ServiceCalleeProxy scee=new ServiceCalleeProxy(parcel,context);
 			scallees.put(id, scee);
+			if(scee.getSpURI()!=null){
+				scalleesAux.put(scee.getSpURI(),id);
+			}
 			break;
-		case TYPE_SCALLER:
+		case IntentConstants.TYPE_SCALLER:
+			Log.d(TAG, "//////registering scaller");
 			ServiceCallerProxy scer=new ServiceCallerProxy(parcel,context);
 			scallers.put(id, scer);
 			break;
 		default:
-			System.out.println("//////registering nothing");
+			Log.d(TAG, "//////registering nothing");
 			break;
 		}
 	}
@@ -97,25 +105,104 @@ public class AndroidRegistry {
 	 */
 	public static synchronized void unregister(String id, int type){
 		switch (type) {
-		case TYPE_CPUBLISHER:
-			System.out.println("//////unregistering publisher");
+		case IntentConstants.TYPE_CPUBLISHER:
+			Log.d(TAG, "//////unregistering publisher");
 			cpublishers.remove(id).close();
 			break;
-		case TYPE_CSUBSCRIBER:
-			System.out.println("//////unregistering subscriber");
+		case IntentConstants.TYPE_CSUBSCRIBER:
+			Log.d(TAG, "//////unregistering subscriber");
 			csubscribers.remove(id).close();
 			break;
-		case TYPE_SCALLEE:
-			System.out.println("//////unregistering callee");
-			scallees.remove(id).close();
+		case IntentConstants.TYPE_SCALLEE:
+			Log.d(TAG, "//////unregistering callee");
+			ServiceCalleeProxy scee = scallees.remove(id);
+			scee.close();
+			if(scee.getSpURI()!=null){
+				scalleesAux.remove(scee.getSpURI());
+			}
 			break;
-		case TYPE_SCALLER:
-			System.out.println("//////unregistering caller");
+		case IntentConstants.TYPE_SCALLER:
+			Log.d(TAG, "//////unregistering caller");
 			scallers.remove(id).close();
 			break;
 		default:
-			System.out.println("//////unregistering nothing");
+			Log.d(TAG, "//////unregistering nothing");
 			break;
+		}
+	}
+	
+	/**
+	 * Special method that unregisters all the registered proxies. This is to be
+	 * used when uAAL is closing, thus avoiding to scan individual packages and
+	 * unregister them one by one.
+	 */
+	public static synchronized void unregisterAll() {
+		Enumeration<ContextPublisherProxy> cpubs=cpublishers.elements();
+		while(cpubs.hasMoreElements()){
+			cpubs.nextElement().close();
+		}
+		cpublishers.clear();
+		
+		Enumeration<ContextSubscriberProxy> csubs=csubscribers.elements();
+		while(csubs.hasMoreElements()){
+			csubs.nextElement().close();
+		}
+		csubscribers.clear();
+		
+		Enumeration<ServiceCallerProxy> scers=scallers.elements();
+		while(scers.hasMoreElements()){
+			scers.nextElement().close();
+		}
+		scallers.clear();
+		
+		Enumeration<ServiceCalleeProxy> scees=scallees.elements();
+		while(scees.hasMoreElements()){
+			scees.nextElement().close();
+		}
+		scallees.clear();
+		scalleesAux.clear();
+	}
+	
+	/**
+	 * Auxiliary method to access the list of registered callees and call
+	 * directly the one addressed from GCM
+	 * 
+	 * @param uri
+	 *            URI of the ServiceProfile which matching originated a call
+	 *            from R API through GCM.
+	 * @return The instance of ServiceCalleeProxy representing it
+	 */
+	public static ServiceCalleeProxy getCallee(String uri) {
+		String id=scalleesAux.get(uri);
+		if(id!=null){
+			return scallees.get(id);
+		}
+		return null;		
+	}
+	
+	/**
+	 * Requests all proxies to sync to the remote node through either GW or R
+	 * API.
+	 */
+	public static void sync(){
+		Enumeration<ContextPublisherProxy> cpubs=cpublishers.elements();
+		while(cpubs.hasMoreElements()){
+			cpubs.nextElement().sync();
+		}
+		
+		Enumeration<ContextSubscriberProxy> csubs=csubscribers.elements();
+		while(csubs.hasMoreElements()){
+			csubs.nextElement().sync();
+		}
+		
+		Enumeration<ServiceCallerProxy> scers=scallers.elements();
+		while(scers.hasMoreElements()){
+			scers.nextElement().sync();
+		}
+		
+		Enumeration<ServiceCalleeProxy> scees=scallees.elements();
+		while(scees.hasMoreElements()){
+			scees.nextElement().sync();
 		}
 	}
 }

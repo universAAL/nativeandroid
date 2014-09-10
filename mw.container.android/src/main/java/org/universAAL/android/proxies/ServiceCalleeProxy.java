@@ -23,14 +23,20 @@ package org.universAAL.android.proxies;
 
 import java.lang.ref.WeakReference;
 import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 
 import org.universAAL.android.container.AndroidContainer;
 import org.universAAL.android.container.AndroidContext;
+import org.universAAL.android.services.MiddlewareService;
 import org.universAAL.android.utils.GroundingParcel;
 import org.universAAL.android.utils.IntentConstants;
+import org.universAAL.android.utils.RAPIManager;
 import org.universAAL.android.utils.VariableSubstitution;
 import org.universAAL.middleware.bus.msg.BusMessage;
+import org.universAAL.middleware.rdf.Resource;
+import org.universAAL.middleware.rdf.TypeMapper;
 import org.universAAL.middleware.serialization.MessageContentSerializerEx;
 import org.universAAL.middleware.service.CallStatus;
 import org.universAAL.middleware.service.ServiceBus;
@@ -56,15 +62,17 @@ import android.content.IntentFilter;
  * 
  */
 public class ServiceCalleeProxy extends ServiceCallee {
-	private WeakReference<Context> context;
+	private WeakReference<Context> contextRef;
 	private String action=null;
 	private String category=null;
 	private String replyAction=null;
 	private String replyCategory=null;
-	private ServiceCalleeProxyReceiver receiver=null;
+	private String grounding=null;
 	private Hashtable<String,String> inputURItoExtraKEY;
 	private Hashtable<String,String> extraKEYtoOutputURI;
-
+	private BroadcastReceiver receiver=null;
+	private String spURI=null;
+	
 	/**
 	 * Constructor for the proxy.
 	 * 
@@ -75,13 +83,34 @@ public class ServiceCalleeProxy extends ServiceCallee {
 	 */
 	public ServiceCalleeProxy(GroundingParcel parcel, Context context) {
 		super(AndroidContext.THE_CONTEXT, prepareProfiles(parcel));
-		this.context=new WeakReference<Context>(context);
-		this.action=parcel.getAction();
-		this.category=parcel.getCategory();
-		this.replyAction=parcel.getReplyAction();
-		this.replyCategory=parcel.getReplyCategory();
+		contextRef=new WeakReference<Context>(context);
+		action=parcel.getAction();
+		category=parcel.getCategory();
+		replyAction=parcel.getReplyAction();
+		replyCategory=parcel.getReplyCategory();
+		grounding=parcel.getGrounding();
 		fillTableIN(parcel.getLengthIN(),parcel.getKeysIN(), parcel.getValuesIN());
 		fillTableOUT(parcel.getLengthOUT(),parcel.getKeysOUT(), parcel.getValuesOUT());
+		ServiceProfile[] sps = prepareProfiles(parcel);
+		spURI = sps[0].getURI();
+		// This is for RAPI. 
+		sync();
+	}
+	
+	public void sync(){
+		if(MiddlewareService.isGWrequired()){
+			switch (MiddlewareService.mSettingRemoteType) {
+			case IntentConstants.REMOTE_TYPE_GW:
+				// Does not need syncing in GW, callees will be imported by remote node
+				break;
+			case IntentConstants.REMOTE_TYPE_RAPI:
+				//Publish as well in the RAPI TODO What if offline!!!!!!!!?????
+				RAPIManager.invokeInThread(RAPIManager.PROVIDES, grounding);
+				break;
+			default:
+				break;
+			}
+		}
 	}
 	
 	/**
@@ -140,6 +169,15 @@ public class ServiceCalleeProxy extends ServiceCallee {
 	public void communicationChannelBroken() {
 		// TODO Auto-generated method stub
 	}
+	
+	@Override
+	public void close() {
+		super.close();
+		Context ctxt=this.contextRef.get();
+		if (ctxt!=null && receiver!=null){
+			ctxt.unregisterReceiver(receiver);
+		}
+	}
 
 	@Override
 	public void handleRequest(BusMessage m) {
@@ -157,7 +195,7 @@ public class ServiceCalleeProxy extends ServiceCallee {
 			// In this case the serv intents are different because the origin
 			// action+cat is being used as a kind of API to call the SCaller.
 			// In this case we have to relay the call to the destination native app.
-			Context ctxt=context.get();
+			Context ctxt=contextRef.get();
 			if(ctxt!=null){
 				// Prepare an intent for sending to Android grounded service
 				Intent serv = new Intent(action);
@@ -169,7 +207,7 @@ public class ServiceCalleeProxy extends ServiceCallee {
 					serv.putExtra("replyToAction", replyAction); //TODO change ID to IntentConstants.ACTION_META_REPLYTOACT
 					serv.putExtra("replyToCategory", replyCategory); //TODO change ID to IntentConstants.ACTION_META_REPLYTOCAT
 					// Register the receiver for the reply
-					receiver=new ServiceCalleeProxyReceiver(m);
+					receiver=new ServiceCalleeProxyReceiver(m);// TODO Can only handle 1 call at a time per proxy
 					IntentFilter filter=new IntentFilter(replyAction);
 					filter.addCategory(replyCategory);
 					ctxt.registerReceiver(receiver, filter);
@@ -196,10 +234,11 @@ public class ServiceCalleeProxy extends ServiceCallee {
 				// Send the intent to Android grounded service
 				ComponentName started=ctxt.startService(serv);
 				if(started==null){
-					// No service in android was actually there, send error response
-					ServiceResponse resp = new ServiceResponse(CallStatus.serviceSpecificFailure);
-					resp.addOutput(new ProcessOutput(ServiceResponse.PROP_SERVICE_SPECIFIC_ERROR, "Could not find the Android grounded service"));
-					sendResponse(m,resp);
+					// No service in android was actually there, try with broadcast. If neither, it will timeout
+//					ServiceResponse resp = new ServiceResponse(CallStatus.serviceSpecificFailure);
+//					resp.addOutput(new ProcessOutput(ServiceResponse.PROP_SERVICE_SPECIFIC_ERROR, "Could not find the Android grounded service"));
+//					sendResponse(m,resp);
+					ctxt.sendBroadcast(serv);//No way to know if received. If no response, timeout
 				}else if(!expecting){
 					// There is no receiver waiting a response, send success now
 					ServiceResponse resp = new ServiceResponse(CallStatus.succeeded);
@@ -208,6 +247,12 @@ public class ServiceCalleeProxy extends ServiceCallee {
 				//TODO Handle timeout
 			}
 		}
+	}
+	
+	@Override
+	public ServiceResponse handleCall(ServiceCall call) {
+		// Empty, we handle asynchronously in handleRequest
+		return null;
 	}
 									
 	/**
@@ -220,7 +265,7 @@ public class ServiceCalleeProxy extends ServiceCallee {
 	 */
 	private void sendResponse(final BusMessage msg, final ServiceResponse sr) {
 		// First, since we already have the response (good or bad), remove the receiver
-		Context ctxt = context.get();
+		Context ctxt = contextRef.get();
 		if (ctxt != null) {
 			if (receiver != null) {
 				ctxt.unregisterReceiver(receiver);
@@ -233,7 +278,7 @@ public class ServiceCalleeProxy extends ServiceCallee {
 			((ServiceBus) theBus).brokerReply(busResourceURI, reply);
 		}
 	}
-
+	
 	/**
 	 * Auxiliary class representing the Broadcast Receiver registered by the
 	 * middleware where apps will send intents when they have to return a
@@ -244,10 +289,6 @@ public class ServiceCalleeProxy extends ServiceCallee {
 	 */
 	public class ServiceCalleeProxyReceiver extends BroadcastReceiver {
 		BusMessage msg;
-		
-		public ServiceCalleeProxyReceiver() {
-			super();
-		}
 		
 		public ServiceCalleeProxyReceiver(BusMessage m) {
 			super();
@@ -264,11 +305,177 @@ public class ServiceCalleeProxy extends ServiceCallee {
 			sendResponse(msg, resp);
 		}
 	}
+	
+	// The following are additions for the management of calls coming from R API
+	
+	public String getSpURI(){
+		return spURI;
+	}
+	
+	/**
+	 * This is an auxiliary method that invokes this proxy when a service
+	 * request matched in the R API server, and the ServiceCall was sent here
+	 * through GCM. We receive a ServiceCall not a BusMessage nor a
+	 * ServiceRequest. It sends the response back to the R API rather than
+	 * through the inner bus.
+	 * 
+	 * @param scall
+	 *            The ServiceCall as received from R API through GCM.
+	 * @param origincall
+	 *            The original ServiceCall URI as specified by the server. It is
+	 *            not the same as scall.getURI() since that object is created
+	 *            here in the client.
+	 */
+	public void handleCallFromGCM(ServiceCall scall, String origincall) {
+		Boolean needsOuts=(Boolean)scall.getNonSemanticInput(IntentConstants.UAAL_META_PROP_NEEDSOUTPUTS);
+		Context ctxt=contextRef.get();
+		if(ctxt!=null){
+			// Prepare an intent for sending to Android grounded service
+			Intent serv = new Intent(action);
+			serv.addCategory(category);
+			boolean expecting=false;
+			// If a response is expected, prepare a callback receiver (which must be called by uaalized app) TODO If reply* fields not set???
+			if((replyAction!=null && !replyAction.isEmpty()) && (replyCategory!=null && !replyCategory.isEmpty())){
+				// Tell the destination where to send the reply
+				serv.putExtra("replyToAction", replyAction); //TODO change ID to IntentConstants.ACTION_META_REPLYTOACT
+				serv.putExtra("replyToCategory", replyCategory); //TODO change ID to IntentConstants.ACTION_META_REPLYTOCAT
+				// Register the receiver for the reply
+				receiver=new ServiceCalleeProxyReceiverGCM(origincall);
+				IntentFilter filter=new IntentFilter(replyAction);
+				filter.addCategory(replyCategory);
+				ctxt.registerReceiver(receiver, filter);
+				expecting=true;
+			} else if (needsOuts!=null && needsOuts.booleanValue()){
+				// No reply* fields set, but caller still needs a response, lets build him some (does not work for callers outside android MW)
+				Random r = new Random();
+				String action=IntentConstants.ACTION_REPLY+r.nextInt();
+				serv.putExtra("replyToAction", action); //TODO change ID to IntentConstants.ACTION_META_REPLYTOACT
+				serv.putExtra("replyToCategory", Intent.CATEGORY_DEFAULT); //TODO change ID to IntentConstants.ACTION_META_REPLYTOCAT
+				// Register the receiver for the reply
+				receiver=new ServiceCalleeProxyReceiverGCM(origincall);
+				IntentFilter filter=new IntentFilter(action);
+				filter.addCategory(Intent.CATEGORY_DEFAULT);
+				ctxt.registerReceiver(receiver, filter);
+				expecting=true;
+			}
+			// Take the inputs from the call and put them in the intent
+			if (inputURItoExtraKEY!=null && !inputURItoExtraKEY.isEmpty()){
+				VariableSubstitution.putCallInputsAsIntentExtras(scall, serv, inputURItoExtraKEY);
+			}
+			// Flag to avoid feeding back the intent to bus when intent is the same in app and in callerproxy 
+			serv.putExtra(IntentConstants.ACTION_META_FROMPROXY, true);
+			// Send the intent to Android grounded service
+			ComponentName started=ctxt.startService(serv);
+			if(started==null){
+				// No service in android was actually there, send error response
+				ServiceResponse resp = new ServiceResponse(CallStatus.serviceSpecificFailure);
+				resp.addOutput(new ProcessOutput(ServiceResponse.PROP_SERVICE_SPECIFIC_ERROR, "Could not find the Android grounded service"));
+				sendResponseGCM(resp, origincall);
+			}else if(!expecting){
+				// There is no receiver waiting a response, send success now
+				ServiceResponse resp = new ServiceResponse(CallStatus.succeeded);
+				sendResponseGCM(resp, origincall);
+			}
+			//TODO Handle timeout
+		}
+	}
+	
+	/**
+	 * Sends the response back to the R API.
+	 * 
+	 * @param sresp
+	 *            The ServiceResponse to deliver
+	 * @param callURI
+	 *            The ServiceCall URI that originated this response in the server
+	 */
+	private void sendResponseGCM(final ServiceResponse sresp, final String callURI) {
+		StringBuilder strb = new StringBuilder();
+		List outputs = sresp.getOutputs();
+		if (outputs != null && outputs.size() > 0) {
+			for (Iterator iter1 = outputs.iterator(); iter1.hasNext();) {
+				Object obj = iter1.next();
+				if (obj instanceof ProcessOutput) {
+					ProcessOutput output = (ProcessOutput) obj;
+					Object value=output.getParameterValue();
+					String type="";
+					if(value instanceof Resource){
+						type=((Resource) value).getType();
+					}else if (value instanceof List){
+						if( ((List) value).get(0)  instanceof Resource ){
+							type=((Resource)((List) value).get(0)).getType();
+						}else{
+							type=TypeMapper.getDatatypeURI(((List) value).get(0));
+						}
+					}else{
+						type=TypeMapper.getDatatypeURI(((List) value).get(0));
+					}
+					strb.append(output.getURI()).append("=")
+					.append(output.getParameterValue().toString()).append("@").append(type)
+					.append("\n");
+				} else if (obj instanceof List) {
+					List outputLists = (List) obj;
+					for (Iterator iter2 = outputLists.iterator(); iter2
+							.hasNext();) {
+						ProcessOutput output = (ProcessOutput) iter2.next();
+						Object value=output.getParameterValue();
+						String type="";
+						if(value instanceof Resource){
+							type=((Resource) value).getType();
+						}else if (value instanceof List){
+							if( ((List) value).get(0)  instanceof Resource ){
+								type=((Resource)((List) value).get(0)).getType();
+							}else{
+								type=TypeMapper.getDatatypeURI(((List) value).get(0));
+							}
+						}else{
+							type=TypeMapper.getDatatypeURI(((List) value).get(0));
+						}
+						strb.append(output.getURI())
+						.append("=")
+						.append(output.getParameterValue()
+								.toString()).append("@").append(type).append("\n");
+					}
+				}
+			}
+		}
+	    strb.append("status=").append(sresp.getCallStatus().toString()).append("\n");
+	    strb.append("call=").append(callURI).append("\n");
+	    strb.append("TURTLE").append("\n");
+	    MessageContentSerializerEx parser = (MessageContentSerializerEx) AndroidContainer.THE_CONTAINER
+				.fetchSharedObject(AndroidContext.THE_CONTEXT,
+						new Object[] { MessageContentSerializerEx.class
+								.getName() });//TODO throw ex if error
+	    strb.append(parser.serialize(sresp));
+	    //Send callback response to server
+	    RAPIManager.invokeInThread(RAPIManager.RESPONSES, strb.toString());
+	}
 
-	@Override
-	public ServiceResponse handleCall(ServiceCall call) {
-		// Empty, we handle asynchronously in handleRequest
-		return null;
+	/**
+	 * Auxiliary class representing the Broadcast Receiver registered by the
+	 * middleware where apps will send intents when they have to return a
+	 * response to uAAL. This is a variation for the R API through GCM, which
+	 * will send the response through R API rather than the inner bus.
+	 * 
+	 * @author alfiva
+	 * 
+	 */
+	public class ServiceCalleeProxyReceiverGCM extends BroadcastReceiver {
+		String callURI;
+		
+		public ServiceCalleeProxyReceiverGCM(String call) {
+			super();
+			callURI=call;
+		}
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			System.out.println("//////onReceive");
+			ServiceResponse resp = new ServiceResponse(CallStatus.succeeded);
+			if (extraKEYtoOutputURI!=null && !extraKEYtoOutputURI.isEmpty()){
+				VariableSubstitution.putIntentExtrasAsResponseOutputs(intent,resp,extraKEYtoOutputURI);
+			}
+			sendResponseGCM(resp,callURI);
+		}
 	}
 
 }

@@ -46,9 +46,9 @@ import android.util.Log;
 public class AndroidContainer implements Container{
 	private static final String TAG = "AndroidContainer";
 	// Events for listeners
-	public static final int EVENT_SERV_MODIFIED = 0;
-	public static final int EVENT_SERV_REGISTERED = 1;
-	public static final int EVENT_SERV_UNREGISTER = 2;
+	private static final int EVENT_SERV_MODIFIED = 0;
+	private static final int EVENT_SERV_REGISTERED = 1;
+	private static final int EVENT_SERV_UNREGISTER = 2;
 	// Singleton
 	public static final AndroidContainer THE_CONTAINER = new AndroidContainer();
 	// This is where we store in memory all the references to modules (OSGI services)
