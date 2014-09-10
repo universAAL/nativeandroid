@@ -119,7 +119,7 @@ public class LightServerModel {
 		Intent intent = new Intent(IConstants.lampStateChangedAction);
 		intent.addCategory(Intent.CATEGORY_DEFAULT);
 		intent.putExtra(IConstants.lampNumberArg, lampID);
-		intent.putExtra(IConstants.brightnessArg, lampState ? "100" : "0");
+		intent.putExtra(IConstants.brightnessArg, lampState ? 100 : 0);
 		
 		getInstance().context.sendBroadcast(intent);
 	}

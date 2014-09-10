@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <application>
    <permissions>
       <mw.bus.service>
@@ -19,7 +19,7 @@
 @prefix ns1: <http://www.daml.org/services/owl-s/1.1/Process.owl#> .
 @prefix ns2: <http://www.daml.org/services/owl-s/1.1/Profile.owl#> .
 @prefix : <http://ontology.igd.fhg.de/LightingServer.owl#> .
-_:BN000000 ns:presentedBy :getControlledLamps ;
+<http://ontology.igd.fhg.de/LightingServer.owl#sp1> ns:presentedBy :getControlledLamps ;
   a ns2:Profile ;
   ns2:has_process :getControlledLampsProcess ;
   ns2:hasResult [
@@ -65,7 +65,7 @@ _:BN000000 ns:presentedBy :getControlledLamps ;
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix psn: <http://ontology.universAAL.org/Service.owl#> .
 @prefix : <http://www.daml.org/services/owl-s/1.1/Process.owl#> .
-_:BN000000 ns2:presentedBy ns1:turnOff ;
+<http://ontology.igd.fhg.de/LightingServer.owl#sp2> ns2:presentedBy ns1:turnOff ;
   a ns:Profile ;
   ns:has_process ns1:turnOffProcess ;
   ns:hasResult [
@@ -123,7 +123,7 @@ ns1:lampURI psn:parameterCardinality "1"^^xsd:int ;
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix psn: <http://ontology.universAAL.org/Service.owl#> .
 @prefix : <http://www.daml.org/services/owl-s/1.1/Process.owl#> .
-_:BN000000 ns2:presentedBy ns1:turnOn ;
+<http://ontology.igd.fhg.de/LightingServer.owl#sp3> ns2:presentedBy ns1:turnOn ;
   a ns:Profile ;
   ns:has_process ns1:turnOnProcess ;
   ns:hasResult [
