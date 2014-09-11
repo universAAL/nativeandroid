@@ -21,14 +21,7 @@
  */
 package org.universAAL.android.utils;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.InvalidPropertiesFormatException;
 import java.util.List;
-import java.util.Properties;
-
-import org.universAAL.middleware.container.utils.StringUtils;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -67,61 +60,6 @@ public class GroundingParcel implements Parcelable{
 			return new GroundingParcel[size];
 		}
 	};
-
-	@Deprecated
-	public GroundingParcel(InputStream is) throws InvalidPropertiesFormatException, IOException {
-		Properties props=new Properties();
-		props.loadFromXML(is);
-		// use another format/method? (Especially because characters < and
-		// > of the turtle grounding are escaped in this format. Can be annoying)
-		is.close();
-		action = props.getProperty("action");
-		category = props.getProperty("category");
-		grounding = props.getProperty("grounding");
-		replyAction = props.getProperty("replyAction");
-		replyCategory = props.getProperty("replyCategory");
-		remote = props.getProperty("remote");
-		// variables
-		List<String> listKeysVAR=new ArrayList<String>();
-		List<String> listValuesVAR=new ArrayList<String>();
-		List<String> listKeysURI=new ArrayList<String>();
-		List<String> listValuesURI=new ArrayList<String>();
-		for(Object key:props.keySet()){
-			if(key instanceof String){
-				String keystr=(String)key;
-				if(!(keystr.equals("action")||keystr.equals("action")||keystr.equals("action")||keystr.equals("action")||keystr.equals("action"))){
-					//Its a custom property (a variable assignation)
-					if(StringUtils.isQualifiedName(keystr)){
-						//Its a URI
-						listKeysURI.add(keystr);
-						listValuesURI.add(props.getProperty(keystr));
-					}else{
-						//Its a variable
-						listKeysVAR.add(keystr);
-						listValuesVAR.add(props.getProperty(keystr));
-					}
-				}
-			}else{
-				// ???
-			}
-		}
-		lengthIN=listKeysVAR.size();
-		if(lengthIN>0){
-			keysIN=listKeysVAR.toArray(new String[lengthIN]);
-			valuesIN=listValuesVAR.toArray(new String[lengthIN]);
-		}else{
-			keysIN=new String[0];
-			valuesIN=new String[0];
-		}
-		lengthOUT=listKeysURI.size();
-		if(lengthOUT>0){
-			keysOUT=listKeysURI.toArray(new String[lengthOUT]);
-			valuesOUT=listValuesURI.toArray(new String[lengthOUT]);
-		}else{
-			keysOUT=new String[0];
-			valuesOUT=new String[0];
-		}
-	}
 
 	/**
 	 * Constructor to build a Parcelable grounding.
@@ -178,6 +116,7 @@ public class GroundingParcel implements Parcelable{
 	 * @param in Parcel representation of the grounding.
 	 */
 	public GroundingParcel(Parcel in) {
+		// There used to be another constructor using InputStream. Check SVN history
 		action=in.readString();
 		category=in.readString();
 		grounding=in.readString();

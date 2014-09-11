@@ -1,3 +1,24 @@
+/*
+	Copyright 2008-2014 ITACA-TSB, http://www.tsb.upv.es
+	Instituto Tecnologico de Aplicaciones de Comunicacion 
+	Avanzadas - Grupo Tecnologias para la Salud y el 
+	Bienestar (TSB)
+	
+	See the NOTICE file distributed with this work for additional 
+	information regarding copyright ownership
+	
+	Licensed under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
+	
+	  http://www.apache.org/licenses/LICENSE-2.0
+	
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
+ */
 package org.universAAL.android.handler;
 
 import java.util.ArrayList;
@@ -60,12 +81,15 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+/**
+ * Android UI Handler, connects to HandlerActivity to show things
+ * @author alfiva
+ *
+ */
 public class AndroidHandler extends UIHandler {
-
 	private static final String TAG = "AndroidHandler";
 	private static final String IMAGE_FOLDER = "/data/felix/configurations/etc/images/";// this is just the default
-	//"Constants." are not constant!!! MW must have been init for them to have a value!!!
-//	static final String mUserURI = Constants.uAAL_MIDDLEWARE_LOCAL_ID_PREFIX + "saied";
+	//"Constants." are not constant! Constants.uAAL_MIDDLEWARE_LOCAL_ID_PREFIX + "saied" does not have value until MW inits
 	private String mUserURI=null;
     //TODO Change to WeakRefs?
 	private static HandlerActivity mActivity;
@@ -127,7 +151,7 @@ public class AndroidHandler extends UIHandler {
 	public void adaptationParametersChanged(String arg0, String arg1,
 			Object arg2) {
 		// TODO For now do nothing, but refresh output
-		Log.d(TAG,   "adaptation params changed" );
+		Log.d(TAG, "adaptation params changed" );
 	}
 
 	/*
@@ -138,7 +162,7 @@ public class AndroidHandler extends UIHandler {
 	@Override
 	public void communicationChannelBroken() {
 		// TODO For now do nothing, but warn and reset?
-		Log.d(TAG,   "comm channel broken" );
+		Log.d(TAG, "comm channel broken" );
 	}
 
 	/*
@@ -149,7 +173,7 @@ public class AndroidHandler extends UIHandler {
 	@Override
 	public Resource cutDialog(String dialogID) {
 		// TODO For now do nothing, but return current inputs and close
-		Log.d(TAG,   "cut dialog" );
+		Log.d(TAG, "cut dialog" );
 		return null;
 	}
 
@@ -165,8 +189,8 @@ public class AndroidHandler extends UIHandler {
 		Log.d(TAG,  "handle ui request" );
 		mCurrentOutput = output;
 		if (mActivity != null) {
-			// Handle user? not for now
-			// This is where operations commented below should be
+			// TODO Handle user? not for now
+			// This is where operations mentioned in the comment below should be
 			mActivity.runOnUiThread(new Runnable() {
 				public void run() {
 					mActivity.setContentView(R.layout.handler);//Just in case. This does nothing if already set.
@@ -293,7 +317,7 @@ public class AndroidHandler extends UIHandler {
 				} else {
 					currentView.addView(errorOut); // TODO return error view
 				}
-				// separator
+				// separator - kept for legacy in case we want it back
 //				if (vertical && (i + 1 < children.length)) {
 //					ImageView separator = new ImageView(mActivity);
 //					Drawable sepDraw = Drawable.createFromPath(confHome
@@ -311,7 +335,7 @@ public class AndroidHandler extends UIHandler {
 			errorOut.setTextColor(Color.RED);
 			return errorOut;
 		}
-		// group separator
+		// group separator - kept for legacy in case we want it back
 //		if (vertical) {
 //			ImageView separator = new ImageView(mActivity);
 //			Drawable sepDraw = Drawable.createFromPath(confHome

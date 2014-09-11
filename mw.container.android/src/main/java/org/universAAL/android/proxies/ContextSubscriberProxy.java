@@ -148,7 +148,8 @@ public class ContextSubscriberProxy extends ContextSubscriber implements SharedO
 		// Extract the origin action and category from the event
 		String fromAction=(String)event.getProvider().getProperty(IntentConstants.UAAL_META_PROP_FROMACTION);
 		String fromCategory=(String)event.getProvider().getProperty(IntentConstants.UAAL_META_PROP_FROMCATEGORY);
-		boolean isNonIntrusive = fromAction!=null && fromAction.equals(action) && fromCategory!=null && fromCategory.equals(category);
+		boolean isNonIntrusive = fromAction != null	&& fromAction.equals(action) 
+				&& fromCategory != null && fromCategory.equals(category);
 		// This means the receiver in the publisher proxy is the same as the
 		// receiver in destination native app. Therefore the destination will
 		// already have received it and we must not send the intent to avoid
@@ -156,8 +157,7 @@ public class ContextSubscriberProxy extends ContextSubscriber implements SharedO
 		if (!isNonIntrusive) {
 			// In this case the receivers are different because the origin
 			// action+cat is being used as a kind of API to call the CPublisher.
-			// In this case we have to relay the event to the destination native
-			// app.
+			// In this case we have to relay the event to the destination native app.
 			Context ctxt=contextRef.get();
 			if(ctxt!=null && !isNonIntrusive){
 				Intent broadcast = new Intent(action);
@@ -172,7 +172,7 @@ public class ContextSubscriberProxy extends ContextSubscriber implements SharedO
 		}
 	}
 
-	//For the GW
+	// For the GW
 	public void sharedObjectAdded(Object sharedObj, Object removeHook) {
 		if(grounding!=null && sharedObj!=null && sharedObj instanceof RemoteSpacesManager){
 			try {
@@ -184,7 +184,7 @@ public class ContextSubscriberProxy extends ContextSubscriber implements SharedO
 	}
 
 	public void sharedObjectRemoved(Object removeHook) {
-		//Unimport is only for services
+		// Unimport is only for services
 	}
 
 }

@@ -74,5 +74,21 @@
 	
 	<string name="setting_iscoord_title">Is Service coordinator</string>
 	<string name="setting_iscoord_text">Set this instance as the single Service Bus coordinator</string>
+	
+	<string name="setting_connurl_instr">Full URL (protocol to context) of the server hosting the Remote API</string>
+    <string name="setting_connurl_text">URL of the server hosting the Remote API</string>
+    <string name="setting_connurl_title">Remote connection URL</string>
+    
+    <string name="setting_conngcm_instr">Google Cloud Messaging Key Identificator of the server hosting the Remote API</string>
+    <string name="setting_conngcm_text">GCM Key of the server hosting the Remote API</string>
+    <string name="setting_conngcm_title">Remote connection identification</string>
+    
+    <string name="setting_connusr_instr">String that uniquely identifies this universAAL node for the Remote API</string>
+    <string name="setting_connusr_text">Identifier of this node for the Remote API</string>
+    <string name="setting_connusr_title">Client identification</string>
+    
+    <string name="setting_connpwd_instr">Password that uniquely identifies this universAAL node for the Remote API</string>
+    <string name="setting_connpwd_text">Password associated to this node for the Remote API</string>
+    <string name="setting_connpwd_title">Client password</string>
 
 </resources>

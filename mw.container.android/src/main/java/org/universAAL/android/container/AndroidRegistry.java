@@ -67,17 +67,17 @@ public class AndroidRegistry {
 	public static synchronized void register(String id, GroundingParcel parcel,	int type,  Context context) {
 		switch (type) {
 		case IntentConstants.TYPE_CPUBLISHER:
-			Log.d(TAG, "//////registering publisher");
+			Log.d(TAG, "Registering publisher");
 			ContextPublisherProxy cpub=new ContextPublisherProxy(parcel,context);
 			cpublishers.put(id, cpub);
 			break;
 		case IntentConstants.TYPE_CSUBSCRIBER:
-			Log.d(TAG, "//////registering subscriber");
+			Log.d(TAG, "Registering subscriber");
 			ContextSubscriberProxy csub=new ContextSubscriberProxy(parcel,context);
 			csubscribers.put(id, csub);
 			break;
 		case IntentConstants.TYPE_SCALLEE:
-			Log.d(TAG, "//////registering scallee");
+			Log.d(TAG, "Registering scallee");
 			ServiceCalleeProxy scee=new ServiceCalleeProxy(parcel,context);
 			scallees.put(id, scee);
 			if(scee.getSpURI()!=null){
@@ -85,12 +85,12 @@ public class AndroidRegistry {
 			}
 			break;
 		case IntentConstants.TYPE_SCALLER:
-			Log.d(TAG, "//////registering scaller");
+			Log.d(TAG, "Registering scaller");
 			ServiceCallerProxy scer=new ServiceCallerProxy(parcel,context);
 			scallers.put(id, scer);
 			break;
 		default:
-			Log.d(TAG, "//////registering nothing");
+			Log.d(TAG, "Registering nothing");
 			break;
 		}
 	}
@@ -106,15 +106,15 @@ public class AndroidRegistry {
 	public static synchronized void unregister(String id, int type){
 		switch (type) {
 		case IntentConstants.TYPE_CPUBLISHER:
-			Log.d(TAG, "//////unregistering publisher");
+			Log.d(TAG, "Unregistering publisher");
 			cpublishers.remove(id).close();
 			break;
 		case IntentConstants.TYPE_CSUBSCRIBER:
-			Log.d(TAG, "//////unregistering subscriber");
+			Log.d(TAG, "Unregistering subscriber");
 			csubscribers.remove(id).close();
 			break;
 		case IntentConstants.TYPE_SCALLEE:
-			Log.d(TAG, "//////unregistering callee");
+			Log.d(TAG, "Unregistering callee");
 			ServiceCalleeProxy scee = scallees.remove(id);
 			scee.close();
 			if(scee.getSpURI()!=null){
@@ -122,11 +122,11 @@ public class AndroidRegistry {
 			}
 			break;
 		case IntentConstants.TYPE_SCALLER:
-			Log.d(TAG, "//////unregistering caller");
+			Log.d(TAG, "Unregistering caller");
 			scallers.remove(id).close();
 			break;
 		default:
-			Log.d(TAG, "//////unregistering nothing");
+			Log.d(TAG, "Unregistering nothing");
 			break;
 		}
 	}
@@ -137,6 +137,7 @@ public class AndroidRegistry {
 	 * unregister them one by one.
 	 */
 	public static synchronized void unregisterAll() {
+		Log.d(TAG, "Unregistering everything");
 		Enumeration<ContextPublisherProxy> cpubs=cpublishers.elements();
 		while(cpubs.hasMoreElements()){
 			cpubs.nextElement().close();
@@ -185,6 +186,7 @@ public class AndroidRegistry {
 	 * API.
 	 */
 	public static void sync(){
+		Log.d(TAG, "Syncing proxies");
 		Enumeration<ContextPublisherProxy> cpubs=cpublishers.elements();
 		while(cpubs.hasMoreElements()){
 			cpubs.nextElement().sync();
