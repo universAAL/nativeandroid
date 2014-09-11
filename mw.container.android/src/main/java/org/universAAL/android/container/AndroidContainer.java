@@ -43,7 +43,7 @@ import android.util.Log;
  * @author alfiva
  * 
  */
-public class AndroidContainer implements Container{
+public class AndroidContainer implements Container {
 	private static final String TAG = "AndroidContainer";
 	// Events for listeners
 	private static final int EVENT_SERV_MODIFIED = 0;
@@ -51,24 +51,25 @@ public class AndroidContainer implements Container{
 	private static final int EVENT_SERV_UNREGISTER = 2;
 	// Singleton
 	public static final AndroidContainer THE_CONTAINER = new AndroidContainer();
-	// This is where we store in memory all the references to modules (OSGI services)
+	// This is where we store in memory all the references to modules (OSGI
+	// services)
 	private Hashtable<String, WeakReference<Object>> services = new Hashtable<String, WeakReference<Object>>();
 	// This is a list of all modules listening to something (OSGI listeners)
 	private List<SharedObjectListener> listeners = Collections
 			.synchronizedList(new ArrayList<SharedObjectListener>());
-	
+
 	public Object fetchSharedObject(ModuleContext requester,
 			Object[] fetchParams) {
 		if (requester instanceof AndroidContext && fetchParams != null
-				&& fetchParams.length > 0){
+				&& fetchParams.length > 0) {
 			if (fetchParams.length == 1) {
 				if (fetchParams[0] instanceof String) {
 					return getObject((String) fetchParams[0]);
 				}
 			} else if ((fetchParams[0] == null || fetchParams[0] instanceof String)
 					&& (fetchParams[1] == null || fetchParams[1] instanceof String)) {
-				Object[] result = getObjects(
-						(String) fetchParams[0], (String) fetchParams[1]);
+				Object[] result = getObjects((String) fetchParams[0],
+						(String) fetchParams[1]);
 				if (result != null)
 					return result[0];
 			}
@@ -95,8 +96,8 @@ public class AndroidContainer implements Container{
 					synchronized (listeners) {
 						listeners.add(listener);
 					}
-				return getObjects(
-						(String) fetchParams[0], (String) fetchParams[1]);
+				return getObjects((String) fetchParams[0],
+						(String) fetchParams[1]);
 			} // else{ problems with parameters => do not add the listener
 		return null;
 	}
@@ -116,8 +117,8 @@ public class AndroidContainer implements Container{
 	}
 
 	public Iterator logListeners() {
-		// TODO Looks like this is just for logging
-		ArrayList empty=new ArrayList();
+		// Looks like this is just for logging
+		ArrayList empty = new ArrayList();
 		return empty.iterator();
 	}
 
@@ -132,7 +133,7 @@ public class AndroidContainer implements Container{
 			Object[] shareParams) {
 		if (!(requester instanceof AndroidContext) || objToShare == null
 				|| shareParams == null || shareParams.length == 0) {
-			Log.w(TAG,"Parameters passed to 'shareObject' are null or not the right type");
+			Log.w(TAG, "Parameters passed to 'shareObject' are null or not the right type");
 			return;
 		}
 		int n = shareParams.length - 1;
@@ -143,12 +144,12 @@ public class AndroidContainer implements Container{
 				shareObject((String) null, objToShare,
 						(Dictionary) shareParams[0]);
 			} else {
-				Log.w(TAG,"'shareParams' passed to 'shareObject' are not Strings or Dicitionary");
+				Log.w(TAG, "'shareParams' passed to 'shareObject' are not Strings or Dicitionary");
 			}
 		} else {
 			for (int i = 0; i < n; i++) {
 				if (!(shareParams[i] instanceof String)) {
-					Log.w(TAG,"one of 'shareParams' passed to 'shareObject' is not a String");
+					Log.w(TAG, "one of 'shareParams' passed to 'shareObject' is not a String");
 					return;
 				}
 			}
@@ -165,12 +166,12 @@ public class AndroidContainer implements Container{
 					shareObject(xfaces, objToShare, (Dictionary) shareParams[n]);
 				}
 			} else
-				Log.w(TAG,"one of 'shareParams' passed to 'shareObject' is not String or Dictionary");
+				Log.w(TAG, "one of 'shareParams' passed to 'shareObject' is not String or Dictionary");
 		}
 	}
-	
+
 	// END OF INTERFACE
-	
+
 	/**
 	 * Auxiliary method to store objects in the container.
 	 * 
@@ -182,9 +183,10 @@ public class AndroidContainer implements Container{
 	 *            Properties of the object (not used).
 	 */
 	public void shareObject(String xface, Object obj, Dictionary object) {
-		WeakReference<Object> weak=new WeakReference<Object>(obj);
+		WeakReference<Object> weak = new WeakReference<Object>(obj);
 		if (services.containsKey(xface)) { // looks like this works
-			notifyListeners(xface, services.remove(xface).get(), EVENT_SERV_UNREGISTER);
+			notifyListeners(xface, services.remove(xface).get(),
+					EVENT_SERV_UNREGISTER);
 		}
 		services.put(xface, weak); // TODO Only one at each point in time...
 		notifyListeners(xface, weak.get(), EVENT_SERV_REGISTERED);
@@ -202,7 +204,7 @@ public class AndroidContainer implements Container{
 	 */
 	public void shareObject(String[] xface, Object obj, Dictionary props) {
 		for (String xf : xface) {
-			shareObject(xf,obj,props);
+			shareObject(xf, obj, props);
 		}
 	}
 
@@ -215,16 +217,16 @@ public class AndroidContainer implements Container{
 	 * @return The Object that implements it.
 	 */
 	public Object getObject(String className) {
-		if(className==null){
+		if (className == null) {
 			return null;
 		}
 		WeakReference<Object> weak = services.get(className);
-		if (weak != null){
+		if (weak != null) {
 			return weak.get();
 		}
-		return null; 
+		return null;
 	}
-	
+
 	/**
 	 * Auxiliary method to get objects from the container.
 	 * 
@@ -237,16 +239,16 @@ public class AndroidContainer implements Container{
 	 */
 	public Object[] getObjects(String className, String filter) {
 		// TODO Right now I dont care about the filter
-		if(className==null){
+		if (className == null) {
 			return null;
 		}
 		WeakReference<Object> weak = services.get(className);
-		if (weak != null){
-			return new Object[]{weak.get()};
+		if (weak != null) {
+			return new Object[] { weak.get() };
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Auxiliary method to remove object from the container.
 	 * 
@@ -256,13 +258,14 @@ public class AndroidContainer implements Container{
 	 *            Object to remove.
 	 */
 	public void unshareObject(String xface, Object obj) {
-		WeakReference<Object> weak=services.remove(xface);
-		if (weak!=null){
-			//TODO I can do this because there is just 1 reference per xface. Otherwise notify on obj directly
+		WeakReference<Object> weak = services.remove(xface);
+		if (weak != null) {
+			// TODO I can do this because there is just 1 reference per xface.
+			// Otherwise notify on obj directly
 			notifyListeners(xface, weak.get(), EVENT_SERV_UNREGISTER);
 		}
 	}
-	
+
 	/**
 	 * Auxiliary method to remove object from the container.
 	 * 
@@ -290,9 +293,9 @@ public class AndroidContainer implements Container{
 	 */
 	private void notifyListeners(String xf, Object obj, int event) {
 		// TODO Not handling ServiceEvent.MODIFIED event
-		if (event == EVENT_SERV_MODIFIED)
+		if (event == EVENT_SERV_MODIFIED) {
 			return;
-
+		}
 		final ArrayList<SharedObjectListener> listenersLocalCopy;
 		// Make a copy of the listeners so it does not get modified
 		synchronized (listeners) {
@@ -300,7 +303,8 @@ public class AndroidContainer implements Container{
 		}
 		switch (event) {
 		case EVENT_SERV_REGISTERED:
-			for (Iterator<SharedObjectListener> i = listenersLocalCopy.iterator(); i.hasNext();) {
+			for (Iterator<SharedObjectListener> i = listenersLocalCopy
+					.iterator(); i.hasNext();) {
 				SharedObjectListener sol = (SharedObjectListener) i.next();
 				if (sol != null) {
 					sol.sharedObjectAdded(obj, obj); // TODO passing obj as removeHook ?
@@ -308,7 +312,8 @@ public class AndroidContainer implements Container{
 			}
 			break;
 		case EVENT_SERV_UNREGISTER:
-			for (Iterator<SharedObjectListener> i = listenersLocalCopy.iterator(); i.hasNext();) {
+			for (Iterator<SharedObjectListener> i = listenersLocalCopy
+					.iterator(); i.hasNext();) {
 				SharedObjectListener sol = (SharedObjectListener) i.next();
 				if (sol != null) {
 					sol.sharedObjectRemoved(obj); // TODO passing obj as removeHook ?

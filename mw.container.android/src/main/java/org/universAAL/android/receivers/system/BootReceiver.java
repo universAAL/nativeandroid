@@ -39,7 +39,7 @@ public class BootReceiver extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		// TODO Activate in manifest! Device has booted. Launch the MW service forever (scan packages is called from MWService)
+		// Device has booted. Launch the MW service forever (scan packages is called from MWService)
 		Log.v("BootReceiver", "Received Broadcast: " + intent.getAction());
 		Intent start = new Intent(context, MiddlewareService.class);
 		context.startService(start);

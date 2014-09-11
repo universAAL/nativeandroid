@@ -186,7 +186,8 @@ public class ServiceCalleeProxy extends ServiceCallee {
 		String fromAction=(String)call.getNonSemanticInput(IntentConstants.UAAL_META_PROP_FROMACTION);
 		String fromCategory=(String)call.getNonSemanticInput(IntentConstants.UAAL_META_PROP_FROMCATEGORY);
 		Boolean needsOuts=(Boolean)call.getNonSemanticInput(IntentConstants.UAAL_META_PROP_NEEDSOUTPUTS);
-		boolean isNonIntrusive = fromAction!=null && fromAction.equals(action) && fromCategory!=null && fromCategory.equals(category);
+		boolean isNonIntrusive = fromAction != null	&& fromAction.equals(action) 
+				&& fromCategory != null	&& fromCategory.equals(category);
 		// This means the serv Intent in the caller proxy is the same as the
 		// serv Intent in destination native app. Therefore the destination will
 		// already have received it and we must not send the intent to avoid
@@ -200,12 +201,12 @@ public class ServiceCalleeProxy extends ServiceCallee {
 				// Prepare an intent for sending to Android grounded service
 				Intent serv = new Intent(action);
 				serv.addCategory(category);
-				boolean expecting=false;
-				// If a response is expected, prepare a callback receiver (which must be called by uaalized app) TODO If reply* fields not set???
+				boolean expecting = false;
+				// If a response is expected, prepare a callback receiver (which must be called by uaalized app)
 				if((replyAction!=null && !replyAction.isEmpty()) && (replyCategory!=null && !replyCategory.isEmpty())){
 					// Tell the destination where to send the reply
-					serv.putExtra("replyToAction", replyAction); //TODO change ID to IntentConstants.ACTION_META_REPLYTOACT
-					serv.putExtra("replyToCategory", replyCategory); //TODO change ID to IntentConstants.ACTION_META_REPLYTOCAT
+					serv.putExtra(IntentConstants.ACTION_META_REPLYTOACT, replyAction);
+					serv.putExtra(IntentConstants.ACTION_META_REPLYTOCAT, replyCategory);
 					// Register the receiver for the reply
 					receiver=new ServiceCalleeProxyReceiver(m);// TODO Can only handle 1 call at a time per proxy
 					IntentFilter filter=new IntentFilter(replyAction);
@@ -213,11 +214,12 @@ public class ServiceCalleeProxy extends ServiceCallee {
 					ctxt.registerReceiver(receiver, filter);
 					expecting=true;
 				} else if (needsOuts!=null && needsOuts.booleanValue()){
-					// No reply* fields set, but caller still needs a response, lets build him some (does not work for callers outside android MW)
+					// No reply* fields set, but caller still needs a response,
+					// lets build one (does not work for callers outside android MW)
 					Random r = new Random();
 					String action=IntentConstants.ACTION_REPLY+r.nextInt();
-					serv.putExtra("replyToAction", action); //TODO change ID to IntentConstants.ACTION_META_REPLYTOACT
-					serv.putExtra("replyToCategory", Intent.CATEGORY_DEFAULT); //TODO change ID to IntentConstants.ACTION_META_REPLYTOCAT
+					serv.putExtra(IntentConstants.ACTION_META_REPLYTOACT, action);
+					serv.putExtra(IntentConstants.ACTION_META_REPLYTOCAT, Intent.CATEGORY_DEFAULT);
 					// Register the receiver for the reply
 					receiver=new ServiceCalleeProxyReceiver(m);
 					IntentFilter filter=new IntentFilter(action);
@@ -234,11 +236,8 @@ public class ServiceCalleeProxy extends ServiceCallee {
 				// Send the intent to Android grounded service
 				ComponentName started=ctxt.startService(serv);
 				if(started==null){
-					// No service in android was actually there, try with broadcast. If neither, it will timeout
-//					ServiceResponse resp = new ServiceResponse(CallStatus.serviceSpecificFailure);
-//					resp.addOutput(new ProcessOutput(ServiceResponse.PROP_SERVICE_SPECIFIC_ERROR, "Could not find the Android grounded service"));
-//					sendResponse(m,resp);
-					ctxt.sendBroadcast(serv);//No way to know if received. If no response, timeout
+					// No android service was there, try with broadcast. Before, here it used to send failure response
+					ctxt.sendBroadcast(serv); // No way to know if received. If no response, bus will timeout (?)
 				}else if(!expecting){
 					// There is no receiver waiting a response, send success now
 					ServiceResponse resp = new ServiceResponse(CallStatus.succeeded);
@@ -297,7 +296,6 @@ public class ServiceCalleeProxy extends ServiceCallee {
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			System.out.println("//////onReceive");
 			ServiceResponse resp = new ServiceResponse(CallStatus.succeeded);
 			if (extraKEYtoOutputURI!=null && !extraKEYtoOutputURI.isEmpty()){
 				VariableSubstitution.putIntentExtrasAsResponseOutputs(intent,resp,extraKEYtoOutputURI);
@@ -334,11 +332,11 @@ public class ServiceCalleeProxy extends ServiceCallee {
 			Intent serv = new Intent(action);
 			serv.addCategory(category);
 			boolean expecting=false;
-			// If a response is expected, prepare a callback receiver (which must be called by uaalized app) TODO If reply* fields not set???
+			// If a response is expected, prepare a callback receiver (which must be called by uaalized app)
 			if((replyAction!=null && !replyAction.isEmpty()) && (replyCategory!=null && !replyCategory.isEmpty())){
 				// Tell the destination where to send the reply
-				serv.putExtra("replyToAction", replyAction); //TODO change ID to IntentConstants.ACTION_META_REPLYTOACT
-				serv.putExtra("replyToCategory", replyCategory); //TODO change ID to IntentConstants.ACTION_META_REPLYTOCAT
+				serv.putExtra(IntentConstants.ACTION_META_REPLYTOACT, replyAction);
+				serv.putExtra(IntentConstants.ACTION_META_REPLYTOCAT, replyCategory);
 				// Register the receiver for the reply
 				receiver=new ServiceCalleeProxyReceiverGCM(origincall);
 				IntentFilter filter=new IntentFilter(replyAction);
@@ -346,11 +344,12 @@ public class ServiceCalleeProxy extends ServiceCallee {
 				ctxt.registerReceiver(receiver, filter);
 				expecting=true;
 			} else if (needsOuts!=null && needsOuts.booleanValue()){
-				// No reply* fields set, but caller still needs a response, lets build him some (does not work for callers outside android MW)
+				// No reply* fields set, but caller still needs a response, lets
+				// build one (does not work for callers outside android MW)
 				Random r = new Random();
 				String action=IntentConstants.ACTION_REPLY+r.nextInt();
-				serv.putExtra("replyToAction", action); //TODO change ID to IntentConstants.ACTION_META_REPLYTOACT
-				serv.putExtra("replyToCategory", Intent.CATEGORY_DEFAULT); //TODO change ID to IntentConstants.ACTION_META_REPLYTOCAT
+				serv.putExtra(IntentConstants.ACTION_META_REPLYTOACT, action);
+				serv.putExtra(IntentConstants.ACTION_META_REPLYTOCAT, Intent.CATEGORY_DEFAULT);
 				// Register the receiver for the reply
 				receiver=new ServiceCalleeProxyReceiverGCM(origincall);
 				IntentFilter filter=new IntentFilter(action);
@@ -367,10 +366,8 @@ public class ServiceCalleeProxy extends ServiceCallee {
 			// Send the intent to Android grounded service
 			ComponentName started=ctxt.startService(serv);
 			if(started==null){
-				// No service in android was actually there, send error response
-				ServiceResponse resp = new ServiceResponse(CallStatus.serviceSpecificFailure);
-				resp.addOutput(new ProcessOutput(ServiceResponse.PROP_SERVICE_SPECIFIC_ERROR, "Could not find the Android grounded service"));
-				sendResponseGCM(resp, origincall);
+				// No android service was there, try with broadcast. Before, here it used to send failure response
+				ctxt.sendBroadcast(serv); // No way to know if received. If no response, bus will timeout (?)
 			}else if(!expecting){
 				// There is no receiver waiting a response, send success now
 				ServiceResponse resp = new ServiceResponse(CallStatus.succeeded);
@@ -469,7 +466,6 @@ public class ServiceCalleeProxy extends ServiceCallee {
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			System.out.println("//////onReceive");
 			ServiceResponse resp = new ServiceResponse(CallStatus.succeeded);
 			if (extraKEYtoOutputURI!=null && !extraKEYtoOutputURI.isEmpty()){
 				VariableSubstitution.putIntentExtrasAsResponseOutputs(intent,resp,extraKEYtoOutputURI);

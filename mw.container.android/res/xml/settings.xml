@@ -4,6 +4,14 @@
         android:key="setting_iscoord_key"
         android:summary="@string/setting_iscoord_text"
         android:title="@string/setting_iscoord_title" android:defaultValue="true"/>
+    <CheckBoxPreference
+            android:key="setting_connwifi_key"
+            android:summary="@string/setting_connwifi_text"
+            android:title="@string/setting_connwifi_title" />
+	<Preference
+            android:key="setting_resetwifi_key"
+            android:summary="@string/setting_resetwifi_text"
+            android:title="@string/setting_resetwifi_title" />
 
     <PreferenceCategory android:title="@string/folder_settings" >
         <EditTextPreference
@@ -43,15 +51,6 @@
     </PreferenceCategory>
     
     <PreferenceCategory android:title="@string/conn_settings" >
-        <CheckBoxPreference
-            android:key="setting_connwifi_key"
-            android:summary="@string/setting_connwifi_text"
-            android:title="@string/setting_connwifi_title" />
-        <Preference
-            android:key="setting_resetwifi_key"
-            android:summary="@string/setting_resetwifi_text"
-            android:title="@string/setting_resetwifi_title" >
-        </Preference>
         <ListPreference
             android:entries="@array/setting_connmode_entries"
             android:entryValues="@array/setting_connmode_values"
@@ -64,5 +63,29 @@
             android:key="setting_conntype_key"
             android:summary="@string/setting_conntype_text"
             android:title="@string/setting_conntype_title" />
+        <EditTextPreference
+            android:defaultValue="http://158.42.167.41:8181/universaal"
+            android:dialogMessage="@string/setting_connurl_instr"
+            android:key="setting_connurl_key"
+            android:summary="@string/setting_connurl_text"
+            android:title="@string/setting_connurl_title" />
+        <EditTextPreference
+            android:defaultValue="1036878524725"
+            android:dialogMessage="@string/setting_conngcm_instr"
+            android:key="setting_conngcm_key"
+            android:summary="@string/setting_conngcm_text"
+            android:title="@string/setting_conngcm_title" />
+        <EditTextPreference
+            android:defaultValue="yo"
+            android:dialogMessage="@string/setting_connusr_instr"
+            android:key="setting_connusr_key"
+            android:summary="@string/setting_connusr_text"
+            android:title="@string/setting_connusr_title" />
+        <EditTextPreference
+            android:defaultValue="ual"
+            android:dialogMessage="@string/setting_connpwd_instr"
+            android:key="setting_connpwd_key"
+            android:summary="@string/setting_connpwd_text"
+            android:title="@string/setting_connpwd_title" />
     </PreferenceCategory>
 </PreferenceScreen>

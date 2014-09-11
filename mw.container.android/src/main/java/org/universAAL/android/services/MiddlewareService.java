@@ -126,6 +126,9 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 	public static int mUserType = IntentConstants.USER_TYPE_AP; // Just default but it is here to get it from AndroidHandler
 	public static int mSettingRemoteType = IntentConstants.REMOTE_TYPE_GW;
 	public static int mSettingRemoteMode = IntentConstants.REMOTE_MODE_WIFIOFF;
+	public static String mServerURL="http://158.42.167.41:8181/universaal";// TODO do all this in Configuration
+    public static String mServerUSR="yo";
+    public static String mServerPWD="ual";
 	private boolean mSettingWifiEnabled = true;
 	private MulticastLock mLock;
 	// MW modules stay in memory in this service class (Container holds only WeakRefs)
@@ -175,6 +178,10 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 		// javadoc). Common sense would suggest to set it false, but it still
 		// works without doing so.
 		// System.setProperty("http.keepAlive", "false");
+		mServerURL = PreferenceManager.getDefaultSharedPreferences(this)
+				.getString("setting_connurl_key", "http://158.42.167.41:8181/universaal");
+		mServerUSR = PreferenceManager.getDefaultSharedPreferences(this).getString("setting_connusr_key", "yo");
+		mServerPWD = PreferenceManager.getDefaultSharedPreferences(this).getString("setting_connpwd_key", "ual");
 
 		mSettingWifiEnabled = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("setting_connwifi_key", true);
 		mSettingRemoteMode = Integer.parseInt(PreferenceManager
@@ -206,11 +213,8 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 				// 2. Start the MW modules
 				startMiddleware();
 				// 3. Register the ontologies
-				//TODO It appears ont service does run in separate thread > race cond: AP ont may not be reg before handler
-//				Intent ont = new Intent(IntentConstants.ACTION_ONT_REG_ALL);
-//				ont.setClass(MiddlewareService.this, OntologyService.class);
-//				startService(ont);
-				// That is why I moved to a static method TODO retrofit OntologyService
+				// It appears ont service does run in separate thread > race cond: AP ont may not be reg before handler
+				// That is why I moved to a static method instead of ACTION_ONT_REG_ALL intent TODO retrofit OntologyService
 				OntologyService.registerOntologies(MiddlewareService.this);
 				addPercent(25);
 				// 4. Start UI handler TODO start handler in last place
@@ -226,7 +230,6 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 				startService(scan);
 			}
 		},TAG_THREAD_CREATE).start();
-
 		Log.v(TAG, "Created");
 	}
 
@@ -239,13 +242,10 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 		mPercentage=0;//TODO update progress bar view?
 		// ScanService ran and tried to stop in parallel while MiddlewareService
 		// has already finished (next lines) AND also sent intents to it which
-		// restarted it. Instead I made a method for this in Registry, since
-		// unreg all is a special case (we already know what to unreg, no need
-		// to scan)
+		// restarted it. Instead of ACTION_PCK_UNREG_ALL intent I made a method
+		// for this in Registry, since unreg all is a special case (we already
+		// know what to unreg, no need to scan)
 		AndroidRegistry.unregisterAll();
-//		Intent scan = new Intent(IntentConstants.ACTION_PCK_UNREG_ALL);
-//		scan.setClass(this, ScanService.class);
-//		startService(scan);
 		stopGateway();
 		stopHandler();
 		stopMiddleware();
@@ -465,9 +465,8 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 		if (aalspaceflag) {
 			// _________________AALSPACE MANAGER_____________________
 			AndroidContext tempCtxt = new AndroidContext("mw.managers.aalspace.osgi");
-//			mModSPACEMANAGER = new AALSpaceManagerImpl(tempCtxt, new ModuleConfigHome(Environment.getExternalStorageDirectory()
-//					.getPath()+uAAL_CONF_ROOT_DIR, "mw.managers.aalspace.osgi"));//TODO check if works
-			mModSPACEMANAGER = new AALSpaceManagerImpl(tempCtxt, Environment.getExternalStorageDirectory().getPath()+getConfDir()+"/mw.managers.aalspace.osgi");
+			mModSPACEMANAGER = new AALSpaceManagerImpl(tempCtxt, Environment
+					.getExternalStorageDirectory().getPath() + getConfDir() + "/mw.managers.aalspace.osgi");
 			Dictionary aalSpaceManagerProps = getProperties("mw.managers.aalspace.core");
 			if (aalSpaceManagerProps == null) {
 				aalSpaceManagerProps = new Hashtable<String, String>();
@@ -559,9 +558,8 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 			addPercent(5);
 			// _________________AALSPACE MANAGER_____________________
 			AndroidContext c4=new AndroidContext("mw.managers.aalspace.osgi");
-//			mModSPACEMANAGER = new AALSpaceManagerImpl(c4, new ModuleConfigHome(Environment.getExternalStorageDirectory()
-//					.getPath()+uAAL_CONF_ROOT_DIR, "mw.managers.aalspace.osgi"));//TODO check if works
-			mModSPACEMANAGER = new AALSpaceManagerImpl(c4, Environment.getExternalStorageDirectory().getPath()+getConfDir()+"mw.managers.aalspace.osgi");
+			mModSPACEMANAGER = new AALSpaceManagerImpl(c4, Environment
+					.getExternalStorageDirectory().getPath() + getConfDir() + "mw.managers.aalspace.osgi");
 			Dictionary aalSpaceManagerProps = getProperties("mw.managers.aalspace.core");
 			if (aalSpaceManagerProps == null) {
 				aalSpaceManagerProps = new Hashtable<String, String>();

@@ -40,16 +40,16 @@ import android.util.Log;
  * @author alfiva
  * 
  */
-public class AndroidContext implements ModuleContext, PlatformAbstraction{
+public class AndroidContext implements ModuleContext, PlatformAbstraction {
 	// In android we do not have bundles so lets use the same context for all.
 	// In the end it is just a facade for container-specific methods which in
 	// android we are never going to use.
 	public static final AndroidContext THE_CONTEXT = new AndroidContext();
 	// TODO allow enable/disable the log of jslp
-	private static boolean JSLP_LOG=false;
+	private static boolean JSLP_LOG = false;
 	private static final String DEFAULT_TAG = "Default Tag";
-	private String id="mw.modules.aalspace.osgi";
-	
+	private String id = "mw.modules.aalspace.osgi";
+
 	/**
 	 * Constructor with ID.
 	 * 
@@ -57,16 +57,16 @@ public class AndroidContext implements ModuleContext, PlatformAbstraction{
 	 *            The ID given to this instance of Context. It should be the
 	 *            same as the "bundle ID" that will use this context.
 	 */
-	public AndroidContext(String id){
-		this.id=id;
+	public AndroidContext(String id) {
+		this.id = id;
 	}
-	
+
 	/**
 	 * Empty constructor.
 	 */
-	public AndroidContext(){
+	public AndroidContext() {
 	}
-	
+
 	public Container getContainer() {
 		return AndroidContainer.THE_CONTAINER;
 	}
@@ -74,7 +74,7 @@ public class AndroidContext implements ModuleContext, PlatformAbstraction{
 	public String getID() {
 		// TODO This is (!?) used in jgroups to describe channels, so it must have a specific value per instance...
 		return id;
-//		return "mw.container.android";//TODO this was in theory not used anymore.. but it is
+		// return "mw.container.android";//TODO this was in theory not used anymore.. but it is
 	}
 
 	public boolean canBeStarted(ModuleContext requester) {
@@ -88,7 +88,7 @@ public class AndroidContext implements ModuleContext, PlatformAbstraction{
 	public boolean canBeUninstalled(ModuleContext requester) {
 		return true;
 	}
-	
+
 	public boolean start(ModuleContext requester) {
 		return false;
 	}
@@ -102,21 +102,21 @@ public class AndroidContext implements ModuleContext, PlatformAbstraction{
 	}
 
 	public Object getAttribute(String attrName) {
-		//  Doesnt seem that anybody uses this
+		// Doesnt seem that anybody uses this
 		return null;
 	}
-	
+
 	public void setAttribute(String attrName, Object attrValue) {
-		//  Doesnt seem that anybody uses this
+		// Doesnt seem that anybody uses this
 	}
 
 	public Object getProperty(String name) {
-		//  Doesnt seem that anybody uses this
+		// Doesnt seem that anybody uses this
 		return System.getProperty(name);
 	}
 
 	public Object getProperty(String name, Object def) {
-		//  Doesnt seem that anybody uses this
+		// Doesnt seem that anybody uses this
 		Object value = getProperty(name);
 		if (value == null)
 			return def;
@@ -124,11 +124,11 @@ public class AndroidContext implements ModuleContext, PlatformAbstraction{
 	}
 
 	public void registerConfigFile(Object[] configFileParams) {
-		//  This is never going to be used in android
+		// This is never going to be used in android
 	}
 
 	public File[] listConfigFiles(ModuleContext requester) {
-		//  This is never going to be used in android
+		// This is never going to be used in android
 		return new File[0];
 	}
 
@@ -153,39 +153,39 @@ public class AndroidContext implements ModuleContext, PlatformAbstraction{
 	}
 
 	public void logDebug(String message) {
-		if(JSLP_LOG)logDebug(DEFAULT_TAG,message,null);
+		if (JSLP_LOG) logDebug(DEFAULT_TAG, message, null);
 	}
 
 	public void logDebug(String message, Throwable exception) {
-		if(JSLP_LOG)logDebug(DEFAULT_TAG,message,exception);
+		if (JSLP_LOG) logDebug(DEFAULT_TAG, message, exception);
 	}
 
 	public void logTraceMessage(String string) {
-		if(JSLP_LOG)logTrace(DEFAULT_TAG, string, null);
+		if (JSLP_LOG) logTrace(DEFAULT_TAG, string, null);
 	}
 
 	public void logTraceReg(String string) {
-		if(JSLP_LOG)logTrace(DEFAULT_TAG, string, null);
+		if (JSLP_LOG) logTrace(DEFAULT_TAG, string, null);
 	}
 
 	public void logTraceDrop(String string) {
-		if(JSLP_LOG)logTrace(DEFAULT_TAG, string, null);
+		if (JSLP_LOG) logTrace(DEFAULT_TAG, string, null);
 	}
 
 	public void logWarning(String message) {
-		if(JSLP_LOG)logWarn(DEFAULT_TAG, message, null);
+		if (JSLP_LOG) logWarn(DEFAULT_TAG, message, null);
 	}
 
 	public void logWarning(String message, Throwable exception) {
-		if(JSLP_LOG)logWarn(DEFAULT_TAG, message, exception);
+		if (JSLP_LOG) logWarn(DEFAULT_TAG, message, exception);
 	}
 
 	public void logError(String message) {
-		if(JSLP_LOG)logError(DEFAULT_TAG, message, null);
+		if (JSLP_LOG) logError(DEFAULT_TAG, message, null);
 	}
 
 	public void logError(String message, Throwable exception) {
-		if(JSLP_LOG)logError(DEFAULT_TAG, message, exception);
+		if (JSLP_LOG) logError(DEFAULT_TAG, message, exception);
 	}
 
 	public Filter createFilter(String filterString) {

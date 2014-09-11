@@ -73,7 +73,7 @@ public class OntologyService extends Service{
 	@Override
 	public int onStartCommand(final Intent intent, int flags, int startId) {
 		Log.v(TAG, "Start command: ");
-		// TODO not in thread because currently is called by MW and should be
+		// Not in thread because currently is called by MW and should be
 		// blocking until its finished loading. Thats fine for start, but other
 		// intents may need a thread !!! It appears it is in a different thread
 		if (intent != null) {
@@ -83,11 +83,10 @@ public class OntologyService extends Service{
 				if (action.equals(IntentConstants.ACTION_ONT_REG_ALL)) {
 					Log.v(TAG, "Action is REGISTER ALL");
 					registerOntologies(this);
-				} else {// TODO the rest of actions
+				} else {
 					Log.v(TAG, "Not the right action");
 				}
-			} else {
-				// If (action=null) who?
+			} else {// If (action=null) who?
 				Log.v(TAG, "Action is none");
 			}
 		}
@@ -96,9 +95,7 @@ public class OntologyService extends Service{
 
 	@Override
 	public IBinder onBind(Intent arg0) {
-		// This service does not allow binding. Return null.
-		Log.v(TAG, "Bind (no)");
-		return null;
+		return null; // This service does not allow binding. Return null.
 	}
 	
 	/**
@@ -125,11 +122,15 @@ public class OntologyService extends Service{
 		// FIRST SOURCE: ONTS INCLUDED IN APK
 		registerOntologiesFromAPK();
 	    
-		//Scan all the JAR files in the ont folder, but dont register yet
+		// Scan all the JAR files in the ont folder, but dont register yet
 		File ontFolder = new File(Environment.getExternalStorageDirectory(),
 				PreferenceManager.getDefaultSharedPreferences(ctxt).getString(
 						"setting_ofolder_key", ONT_FOLDER));
-		if(!ontFolder.exists())return; //TODO Launch error here because the folder does not exist
+		if (!ontFolder.exists()) {
+			Log.w(TAG, "The ontology folder does not exist."
+					+ "Make sure the value is correct in the settings");
+			return;
+		}
 		File[] files = ontFolder.listFiles(new ArchiveFilter());
 		StringBuilder filenames = new StringBuilder();
 		ArrayList<String> activators = new ArrayList<String>();
@@ -193,7 +194,7 @@ public class OntologyService extends Service{
 	 * Inner method to load all ontologies included in the app libraries.
 	 */
 	private static void registerOntologiesFromAPK(){
-		// First of all, register the phWorld ont, which is included in the apk. TODO move outside too? Include other basic ones?
+		// First of all, register the phWorld ont, which is included in the apk.
 		OntologyManagement.getInstance().register(AndroidContext.THE_CONTEXT, new LocationOntology());
 	    OntologyManagement.getInstance().register(AndroidContext.THE_CONTEXT, new ShapeOntology());
 	    OntologyManagement.getInstance().register(AndroidContext.THE_CONTEXT, new PhThingOntology());
@@ -238,8 +239,8 @@ public class OntologyService extends Service{
 				}
 			}
 		} catch (FileNotFoundException e) {
-			// Not found. Do nothing.
-			Log.w(TAG, "There is no file with the list of ontology activators. That is OK, will try other file...: "+e.getMessage());
+			Log.w(TAG, "There is no file with the list of ontology activators. That is OK, will try other file...: "
+							+ e.getMessage());
 		}finally{
 			if(scan!=null){
 				scan.close();
@@ -277,8 +278,8 @@ public class OntologyService extends Service{
 				}
 			}
 		} catch (FileNotFoundException e) {
-			// Not found. Do nothing. 
-			Log.w(TAG, "There is no file with the list of ontology classes. That is OK, will try scanning jars... :"+e.getMessage());
+			Log.w(TAG, "There is no file with the list of ontology classes. That is OK, will try scanning jars... :"
+							+ e.getMessage());
 		}finally{
 			if(scan!=null){
 				scan.close();

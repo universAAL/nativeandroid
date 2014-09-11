@@ -45,11 +45,9 @@ import org.w3c.dom.NodeList;
 import android.app.Service;
 import android.content.ComponentName;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.ServiceInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -114,9 +112,7 @@ public class ScanService extends Service{
 
 	@Override
 	public IBinder onBind(Intent arg0) {
-		// This service does not allow binding. Return null.
-		Log.v(TAG, "Bind (no)");
-		return null;
+		return null; // This service does not allow binding. Return null.
 	}
 	
 	/**
@@ -206,7 +202,6 @@ public class ScanService extends Service{
 //				}
 //			}
 		} catch (NameNotFoundException e) {
-			// Do nothing, just log it
 			Log.w(TAG, "Error when scanning package [" +packageName+ "]; Error [" + e.getMessage() + "]");
 		}
 	}
@@ -230,7 +225,7 @@ public class ScanService extends Service{
 	 */
 	private void scanMetadata(String packageName, Bundle metadata,
 			String componentNameString, ApplicationInfo appInfo, boolean register) throws NameNotFoundException {
-		// Find uAAL metadata file declared in this element. MAX ONE PER ELEMENT (app/activity/service) !!!!!!
+		// Find uAAL metadata file declared in this element. MAX ONE PER ELEMENT (app) !!!!!!
 		int groundingID = extractResourceFromMetadata(metadata,METADATA);
 		PackageManager pm = getPackageManager();
 		Resources resources = pm.getResourcesForApplication(appInfo);

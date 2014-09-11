@@ -193,7 +193,6 @@ public class ServiceCallerProxy extends ServiceCaller implements SharedObjectLis
 			if(outputURItoExtraKEY!=null && !outputURItoExtraKEY.isEmpty()){
 				VariableSubstitution.putResponseOutputsAsIntentExtras(response, start, outputURItoExtraKEY);
 			}
-//			ctxt.startService(start);//TODO Allow activities and services too?
 			ctxt.sendBroadcast(start);
 			//TODO Send to replyact/cat that the app said at first (embed into sreq, then in sresp in callee and then read here)
 		}
@@ -210,7 +209,6 @@ public class ServiceCallerProxy extends ServiceCaller implements SharedObjectLis
 	public class ServiceCallerProxyReceiver extends BroadcastReceiver {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			System.out.println("//////onReceive");
 			if (intent.getBooleanExtra(IntentConstants.ACTION_META_FROMPROXY, false)) {
 				// The intent comes from a CalleeProxy. It wouldnt have sent it
 				// if its receiver and this one where the same, but that doesnt
@@ -232,11 +230,16 @@ public class ServiceCallerProxy extends ServiceCaller implements SharedObjectLis
 			// I have to make this hack to convert the SR into an AAPI SR in order to inject metadata.
 			// It would be soooo much easier if ServiceRequest allowed setProperty of AAPI metadata directly...
 			final AapiServiceRequest srmeta=new AapiServiceRequest(sr.getURI());
-			srmeta.setProperty(ServiceRequest.PROP_AGGREGATING_FILTER, sr.getProperty(ServiceRequest.PROP_AGGREGATING_FILTER));
-			srmeta.setProperty(ServiceRequest.PROP_REQUESTED_SERVICE, sr.getProperty(ServiceRequest.PROP_REQUESTED_SERVICE));
-			srmeta.setProperty(ServiceRequest.PROP_REQUIRED_PROCESS_RESULT, sr.getProperty(ServiceRequest.PROP_REQUIRED_PROCESS_RESULT));
-			srmeta.setProperty(ServiceRequest.PROP_uAAL_SERVICE_CALLER, sr.getProperty(ServiceRequest.PROP_uAAL_SERVICE_CALLER));
-			srmeta.setProperty(ServiceRequest.PROP_uAAL_INVOLVED_HUMAN_USER, sr.getProperty(ServiceRequest.PROP_uAAL_INVOLVED_HUMAN_USER));
+			srmeta.setProperty(ServiceRequest.PROP_AGGREGATING_FILTER,
+					sr.getProperty(ServiceRequest.PROP_AGGREGATING_FILTER));
+			srmeta.setProperty(ServiceRequest.PROP_REQUESTED_SERVICE,
+					sr.getProperty(ServiceRequest.PROP_REQUESTED_SERVICE));
+			srmeta.setProperty(ServiceRequest.PROP_REQUIRED_PROCESS_RESULT,
+					sr.getProperty(ServiceRequest.PROP_REQUIRED_PROCESS_RESULT));
+			srmeta.setProperty(ServiceRequest.PROP_uAAL_SERVICE_CALLER,
+					sr.getProperty(ServiceRequest.PROP_uAAL_SERVICE_CALLER));
+			srmeta.setProperty(ServiceRequest.PROP_uAAL_INVOLVED_HUMAN_USER, sr
+					.getProperty(ServiceRequest.PROP_uAAL_INVOLVED_HUMAN_USER));
 			srmeta.addInput(IntentConstants.UAAL_META_PROP_FROMACTION, action);
 			srmeta.addInput(IntentConstants.UAAL_META_PROP_FROMCATEGORY, category);
 			Resource[] outputs=sr.getRequiredOutputs();
