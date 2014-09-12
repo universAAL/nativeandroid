@@ -30,8 +30,8 @@ public interface IConstants {
 	public final String lampNumberArrayArg 	= "lamp_number_array";
 	public final String brightnessArg 		= "lamp_brightness";
 	
-	public final String replyToActionArg 	= "replyToAction";
-	public final String replyToCategoryArg 	= "replyToCategory";
+	public final String replyToActionArg 	= "org.universAAL.android.action.META_REPLYTOACT";
+	public final String replyToCategoryArg 	= "org.universAAL.android.action.META_REPLYTOCAT";
 	
 	public final String lampStateChangedAction = "org.universaal.nativeandroid.lighting.LAMP_STATE_CHANGED";
 }

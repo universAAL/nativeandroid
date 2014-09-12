@@ -30,7 +30,7 @@ package org.universAAL.android.utils;
  */
 public class IntentConstants {
 
-	private static final String ACTION_PREFIX = "org.universAAL.android.action";
+	private static final String ACTION_PREFIX = "org.universAAL.android.action.";
 	
 	// Sent from ScanService to MiddlewareService, to specify which scanned
 	// package has to be un/registered
