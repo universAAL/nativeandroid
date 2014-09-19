@@ -27,6 +27,7 @@ import java.util.Hashtable;
 import org.universAAL.android.container.AndroidContainer;
 import org.universAAL.android.container.AndroidContext;
 import org.universAAL.android.services.MiddlewareService;
+import org.universAAL.android.utils.Config;
 import org.universAAL.android.utils.GroundingParcel;
 import org.universAAL.android.utils.IntentConstants;
 import org.universAAL.android.utils.RAPIManager;
@@ -96,7 +97,7 @@ public class ServiceCallerProxy extends ServiceCaller implements SharedObjectLis
 	
 	public void sync() {
 		if (MiddlewareService.isGWrequired() && remote != null && !remote.isEmpty()) {
-			switch (MiddlewareService.mSettingRemoteType) {
+			switch (Config.getRemoteType()) {
 			case IntentConstants.REMOTE_TYPE_GW:
 				RemoteSpacesManager[] gw = (RemoteSpacesManager[]) AndroidContainer.THE_CONTAINER
 				.fetchSharedObject(AndroidContext.THE_CONTEXT, new Object[] { RemoteSpacesManager.class.getName() }, this);
@@ -249,7 +250,7 @@ public class ServiceCallerProxy extends ServiceCaller implements SharedObjectLis
 			}
 			sendRequest(srmeta);
 			// If RAPI, send it to server. If GW it is automatic by the running GW
-			if (MiddlewareService.isGWrequired() && MiddlewareService.mSettingRemoteType == IntentConstants.REMOTE_TYPE_RAPI
+			if (MiddlewareService.isGWrequired() && Config.getRemoteType() == IntentConstants.REMOTE_TYPE_RAPI
 					&& remote != null && !remote.isEmpty()) {
 				new Thread() {
 					@Override

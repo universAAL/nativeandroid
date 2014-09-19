@@ -22,6 +22,7 @@
 package org.universAAL.android.activities;
 
 import org.universAAL.android.R;
+import org.universAAL.android.utils.Config;
 import org.universAAL.android.utils.IntentConstants;
 import org.universAAL.android.utils.RAPIManager;
 
@@ -51,6 +52,7 @@ public class SettingsActivity extends PreferenceActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		Config.load(getApplicationContext()); //Sync Preferences in Config util
 		addPreferencesFromResource(R.xml.settings);
 		// Manage the availability of "remove current wifi" option
 		Preference wifiPref = (Preference) findPreference("setting_resetwifi_key");
@@ -103,6 +105,12 @@ public class SettingsActivity extends PreferenceActivity {
 	}
 
 	// The following is from http://developer.android.com/google/gcm/client.html
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+		Config.load(getApplicationContext());  //Sync Preferences in Config util now that they are changed
+	}
 
 	/**
 	 * Check the device to make sure it has the Google Play Services APK. If it

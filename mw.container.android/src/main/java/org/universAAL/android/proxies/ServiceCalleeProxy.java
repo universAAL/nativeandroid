@@ -30,6 +30,7 @@ import java.util.Random;
 import org.universAAL.android.container.AndroidContainer;
 import org.universAAL.android.container.AndroidContext;
 import org.universAAL.android.services.MiddlewareService;
+import org.universAAL.android.utils.Config;
 import org.universAAL.android.utils.GroundingParcel;
 import org.universAAL.android.utils.IntentConstants;
 import org.universAAL.android.utils.RAPIManager;
@@ -99,7 +100,7 @@ public class ServiceCalleeProxy extends ServiceCallee {
 	
 	public void sync(){
 		if(MiddlewareService.isGWrequired()){
-			switch (MiddlewareService.mSettingRemoteType) {
+			switch (Config.getRemoteType()) {
 			case IntentConstants.REMOTE_TYPE_GW:
 				// Does not need syncing in GW, callees will be imported by remote node
 				break;

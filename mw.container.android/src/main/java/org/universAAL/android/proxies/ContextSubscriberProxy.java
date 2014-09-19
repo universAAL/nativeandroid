@@ -27,6 +27,7 @@ import java.util.Hashtable;
 import org.universAAL.android.container.AndroidContainer;
 import org.universAAL.android.container.AndroidContext;
 import org.universAAL.android.services.MiddlewareService;
+import org.universAAL.android.utils.Config;
 import org.universAAL.android.utils.GroundingParcel;
 import org.universAAL.android.utils.IntentConstants;
 import org.universAAL.android.utils.RAPIManager;
@@ -79,7 +80,7 @@ public class ContextSubscriberProxy extends ContextSubscriber implements SharedO
 	
 	public void sync(){
 		if (MiddlewareService.isGWrequired() && remote != null && !remote.isEmpty()) {
-		switch (MiddlewareService.mSettingRemoteType) {
+		switch (Config.getRemoteType()) {
 			case IntentConstants.REMOTE_TYPE_GW:
 				RemoteSpacesManager[] gw = (RemoteSpacesManager[]) AndroidContainer.THE_CONTAINER
 						.fetchSharedObject(AndroidContext.THE_CONTEXT,
