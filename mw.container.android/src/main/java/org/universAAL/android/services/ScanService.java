@@ -37,7 +37,7 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.universAAL.android.utils.GroundingParcel;
-import org.universAAL.android.utils.IntentConstants;
+import org.universAAL.android.utils.AppConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -92,10 +92,10 @@ public class ScanService extends Service{
 							String packageName = intent.getDataString().replaceFirst("package:", "");
 							Log.v(TAG, "Action is REMOVED");
 							unregisterPackage(packageName);
-						}else if(action.equals(IntentConstants.ACTION_PCK_REG_ALL)){ // This is called by MW when started
+						}else if(action.equals(AppConstants.ACTION_PCK_REG_ALL)){ // This is called by MW when started
 							Log.v(TAG, "Action is REGISTER ALL");
 							scanAllApps(true);
-						}else if(action.equals(IntentConstants.ACTION_PCK_UNREG_ALL)){ // This is called by MW when stopped
+						}else if(action.equals(AppConstants.ACTION_PCK_UNREG_ALL)){ // This is called by MW when stopped
 							Log.v(TAG, "Action is UNREGISTER ALL");
 							scanAllApps(false);
 						}else{
@@ -326,15 +326,15 @@ public class ScanService extends Service{
     private int parseTypeName(String busName, String typeName) {
     	if(busName.equals("mw_bus_context")){
     		if(typeName.equals("advertisement")){
-        		return IntentConstants.TYPE_CPUBLISHER;
+        		return AppConstants.TYPE_CPUBLISHER;
         	}else if(typeName.equals("requirement")){
-        		return IntentConstants.TYPE_CSUBSCRIBER;
+        		return AppConstants.TYPE_CSUBSCRIBER;
         	}
     	}else if(busName.equals("mw_bus_service")){
     		if(typeName.equals("advertisement")){
-    			return IntentConstants.TYPE_SCALLEE;
+    			return AppConstants.TYPE_SCALLEE;
         	}else if(typeName.equals("requirement")){
-        		return IntentConstants.TYPE_SCALLER;
+        		return AppConstants.TYPE_SCALLER;
         	}
     	}
 		return 0;
@@ -375,11 +375,11 @@ public class ScanService extends Service{
 				+ registration.getAction() + ", \n cat: " + registration.getCategory()
 				+ ", \n turtle: " + registration.getGrounding() + ", \n type: "
 				+ type + "]");
-		Intent start = new Intent(IntentConstants.ACTION_PCK_REG);
+		Intent start = new Intent(AppConstants.ACTION_PCK_REG);
 		start.setClass(this, MiddlewareService.class);
-		start.putExtra(IntentConstants.ACTION_PCK_REG_X_ID, id);
-		start.putExtra(IntentConstants.ACTION_PCK_REG_X_PARCEL, registration);
-		start.putExtra(IntentConstants.ACTION_PCK_REG_X_TYPE, type);
+		start.putExtra(AppConstants.ACTION_PCK_REG_X_ID, id);
+		start.putExtra(AppConstants.ACTION_PCK_REG_X_PARCEL, registration);
+		start.putExtra(AppConstants.ACTION_PCK_REG_X_TYPE, type);
 		startService(start);
 	}
 	
@@ -395,10 +395,10 @@ public class ScanService extends Service{
 	private void sendUnRegisterToBus(String id, int type) {
 		Log.d(TAG, "Attempt to unregister component [id: " + id + ", \n type: "
 				+ type + "]");
-		Intent start = new Intent(IntentConstants.ACTION_PCK_UNREG);
+		Intent start = new Intent(AppConstants.ACTION_PCK_UNREG);
 		start.setClass(this, MiddlewareService.class);
-		start.putExtra(IntentConstants.ACTION_PCK_REG_X_ID, id);
-		start.putExtra(IntentConstants.ACTION_PCK_REG_X_TYPE, type);
+		start.putExtra(AppConstants.ACTION_PCK_REG_X_ID, id);
+		start.putExtra(AppConstants.ACTION_PCK_REG_X_TYPE, type);
 		startService(start);
 	}
 

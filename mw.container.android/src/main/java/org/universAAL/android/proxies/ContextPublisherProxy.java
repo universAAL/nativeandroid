@@ -29,7 +29,7 @@ import org.universAAL.android.container.AndroidContext;
 import org.universAAL.android.services.MiddlewareService;
 import org.universAAL.android.utils.Config;
 import org.universAAL.android.utils.GroundingParcel;
-import org.universAAL.android.utils.IntentConstants;
+import org.universAAL.android.utils.AppConstants;
 import org.universAAL.android.utils.RAPIManager;
 import org.universAAL.android.utils.VariableSubstitution;
 import org.universAAL.middleware.context.ContextEvent;
@@ -100,8 +100,8 @@ public class ContextPublisherProxy extends ContextPublisher {
 		ContextEvent event=(ContextEvent) parser.deserialize(VariableSubstitution.cleanContextEvent(parcel.getGrounding()));
 		ContextProvider prov=event.getProvider();
 		// This is for identifying the origin of the event, to avoid duplications in csub later
-		prov.setProperty(IntentConstants.UAAL_META_PROP_FROMACTION, parcel.getAction()); 
-		prov.setProperty(IntentConstants.UAAL_META_PROP_FROMCATEGORY, parcel.getCategory());
+		prov.setProperty(AppConstants.UAAL_META_PROP_FROMACTION, parcel.getAction()); 
+		prov.setProperty(AppConstants.UAAL_META_PROP_FROMCATEGORY, parcel.getCategory());
 		return prov;
 	}
 	
@@ -148,7 +148,7 @@ public class ContextPublisherProxy extends ContextPublisher {
 	public class ContextPublisherProxyReceiver extends BroadcastReceiver {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			if (intent.getBooleanExtra(IntentConstants.ACTION_META_FROMPROXY, false)) {
+			if (intent.getBooleanExtra(AppConstants.ACTION_META_FROMPROXY, false)) {
 				// The intent comes from a SubscriberProxy. It wouldnt have sent it
 				// if its receiver and this one where the same, but that doesnt
 				// count when it comes from the bus alone. This fixes that.
@@ -172,7 +172,7 @@ public class ContextPublisherProxy extends ContextPublisher {
 			cev.setExpirationTime(event.getExpirationTime());
 			publish(cev);
 			// If RAPI, send it to server. If GW it is automatic by the running GW
-			if (MiddlewareService.isGWrequired() && Config.getRemoteType() == IntentConstants.REMOTE_TYPE_RAPI) {
+			if (MiddlewareService.isGWrequired() && Config.getRemoteType() == AppConstants.REMOTE_TYPE_RAPI) {
 				ContextEvent cev2=(ContextEvent)cev.deepCopy();//Prevent concurrent change of cev!!!!
 				cev2.changeProperty(ContextEvent.PROP_CONTEXT_PROVIDER, null);//The single publisher in RAPI will send ANY event
 				String serial = parser.serialize(cev2);

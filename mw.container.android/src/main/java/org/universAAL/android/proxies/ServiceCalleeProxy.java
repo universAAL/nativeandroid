@@ -32,7 +32,7 @@ import org.universAAL.android.container.AndroidContext;
 import org.universAAL.android.services.MiddlewareService;
 import org.universAAL.android.utils.Config;
 import org.universAAL.android.utils.GroundingParcel;
-import org.universAAL.android.utils.IntentConstants;
+import org.universAAL.android.utils.AppConstants;
 import org.universAAL.android.utils.RAPIManager;
 import org.universAAL.android.utils.VariableSubstitution;
 import org.universAAL.middleware.bus.msg.BusMessage;
@@ -101,10 +101,10 @@ public class ServiceCalleeProxy extends ServiceCallee {
 	public void sync(){
 		if(MiddlewareService.isGWrequired()){
 			switch (Config.getRemoteType()) {
-			case IntentConstants.REMOTE_TYPE_GW:
+			case AppConstants.REMOTE_TYPE_GW:
 				// Does not need syncing in GW, callees will be imported by remote node
 				break;
-			case IntentConstants.REMOTE_TYPE_RAPI:
+			case AppConstants.REMOTE_TYPE_RAPI:
 				//Publish as well in the RAPI TODO What if offline!!!!!!!!?????
 				RAPIManager.invokeInThread(RAPIManager.PROVIDES, grounding);
 				break;
@@ -184,9 +184,9 @@ public class ServiceCalleeProxy extends ServiceCallee {
 	public void handleRequest(BusMessage m) {
 		ServiceCall call=(ServiceCall) m.getContent();
 		// Extract the origin action and category from the call
-		String fromAction=(String)call.getNonSemanticInput(IntentConstants.UAAL_META_PROP_FROMACTION);
-		String fromCategory=(String)call.getNonSemanticInput(IntentConstants.UAAL_META_PROP_FROMCATEGORY);
-		Boolean needsOuts=(Boolean)call.getNonSemanticInput(IntentConstants.UAAL_META_PROP_NEEDSOUTPUTS);
+		String fromAction=(String)call.getNonSemanticInput(AppConstants.UAAL_META_PROP_FROMACTION);
+		String fromCategory=(String)call.getNonSemanticInput(AppConstants.UAAL_META_PROP_FROMCATEGORY);
+		Boolean needsOuts=(Boolean)call.getNonSemanticInput(AppConstants.UAAL_META_PROP_NEEDSOUTPUTS);
 		boolean isNonIntrusive = fromAction != null	&& fromAction.equals(action) 
 				&& fromCategory != null	&& fromCategory.equals(category);
 		// This means the serv Intent in the caller proxy is the same as the
@@ -206,8 +206,8 @@ public class ServiceCalleeProxy extends ServiceCallee {
 				// If a response is expected, prepare a callback receiver (which must be called by uaalized app)
 				if((replyAction!=null && !replyAction.isEmpty()) && (replyCategory!=null && !replyCategory.isEmpty())){
 					// Tell the destination where to send the reply
-					serv.putExtra(IntentConstants.ACTION_META_REPLYTOACT, replyAction);
-					serv.putExtra(IntentConstants.ACTION_META_REPLYTOCAT, replyCategory);
+					serv.putExtra(AppConstants.ACTION_META_REPLYTOACT, replyAction);
+					serv.putExtra(AppConstants.ACTION_META_REPLYTOCAT, replyCategory);
 					// Register the receiver for the reply
 					receiver=new ServiceCalleeProxyReceiver(m);// TODO Can only handle 1 call at a time per proxy
 					IntentFilter filter=new IntentFilter(replyAction);
@@ -218,9 +218,9 @@ public class ServiceCalleeProxy extends ServiceCallee {
 					// No reply* fields set, but caller still needs a response,
 					// lets build one (does not work for callers outside android MW)
 					Random r = new Random();
-					String action=IntentConstants.ACTION_REPLY+r.nextInt();
-					serv.putExtra(IntentConstants.ACTION_META_REPLYTOACT, action);
-					serv.putExtra(IntentConstants.ACTION_META_REPLYTOCAT, Intent.CATEGORY_DEFAULT);
+					String action=AppConstants.ACTION_REPLY+r.nextInt();
+					serv.putExtra(AppConstants.ACTION_META_REPLYTOACT, action);
+					serv.putExtra(AppConstants.ACTION_META_REPLYTOCAT, Intent.CATEGORY_DEFAULT);
 					// Register the receiver for the reply
 					receiver=new ServiceCalleeProxyReceiver(m);
 					IntentFilter filter=new IntentFilter(action);
@@ -233,7 +233,7 @@ public class ServiceCalleeProxy extends ServiceCallee {
 					VariableSubstitution.putCallInputsAsIntentExtras(call, serv, inputURItoExtraKEY);
 				}
 				// Flag to avoid feeding back the intent to bus when intent is the same in app and in callerproxy 
-				serv.putExtra(IntentConstants.ACTION_META_FROMPROXY, true);
+				serv.putExtra(AppConstants.ACTION_META_FROMPROXY, true);
 				// Send the intent to Android grounded service
 				ComponentName started=ctxt.startService(serv);
 				if(started==null){
@@ -326,7 +326,7 @@ public class ServiceCalleeProxy extends ServiceCallee {
 	 *            here in the client.
 	 */
 	public void handleCallFromGCM(ServiceCall scall, String origincall) {
-		Boolean needsOuts=(Boolean)scall.getNonSemanticInput(IntentConstants.UAAL_META_PROP_NEEDSOUTPUTS);
+		Boolean needsOuts=(Boolean)scall.getNonSemanticInput(AppConstants.UAAL_META_PROP_NEEDSOUTPUTS);
 		Context ctxt=contextRef.get();
 		if(ctxt!=null){
 			// Prepare an intent for sending to Android grounded service
@@ -336,8 +336,8 @@ public class ServiceCalleeProxy extends ServiceCallee {
 			// If a response is expected, prepare a callback receiver (which must be called by uaalized app)
 			if((replyAction!=null && !replyAction.isEmpty()) && (replyCategory!=null && !replyCategory.isEmpty())){
 				// Tell the destination where to send the reply
-				serv.putExtra(IntentConstants.ACTION_META_REPLYTOACT, replyAction);
-				serv.putExtra(IntentConstants.ACTION_META_REPLYTOCAT, replyCategory);
+				serv.putExtra(AppConstants.ACTION_META_REPLYTOACT, replyAction);
+				serv.putExtra(AppConstants.ACTION_META_REPLYTOCAT, replyCategory);
 				// Register the receiver for the reply
 				receiver=new ServiceCalleeProxyReceiverGCM(origincall);
 				IntentFilter filter=new IntentFilter(replyAction);
@@ -348,9 +348,9 @@ public class ServiceCalleeProxy extends ServiceCallee {
 				// No reply* fields set, but caller still needs a response, lets
 				// build one (does not work for callers outside android MW)
 				Random r = new Random();
-				String action=IntentConstants.ACTION_REPLY+r.nextInt();
-				serv.putExtra(IntentConstants.ACTION_META_REPLYTOACT, action);
-				serv.putExtra(IntentConstants.ACTION_META_REPLYTOCAT, Intent.CATEGORY_DEFAULT);
+				String action=AppConstants.ACTION_REPLY+r.nextInt();
+				serv.putExtra(AppConstants.ACTION_META_REPLYTOACT, action);
+				serv.putExtra(AppConstants.ACTION_META_REPLYTOCAT, Intent.CATEGORY_DEFAULT);
 				// Register the receiver for the reply
 				receiver=new ServiceCalleeProxyReceiverGCM(origincall);
 				IntentFilter filter=new IntentFilter(action);
@@ -363,7 +363,7 @@ public class ServiceCalleeProxy extends ServiceCallee {
 				VariableSubstitution.putCallInputsAsIntentExtras(scall, serv, inputURItoExtraKEY);
 			}
 			// Flag to avoid feeding back the intent to bus when intent is the same in app and in callerproxy 
-			serv.putExtra(IntentConstants.ACTION_META_FROMPROXY, true);
+			serv.putExtra(AppConstants.ACTION_META_FROMPROXY, true);
 			// Send the intent to Android grounded service
 			ComponentName started=ctxt.startService(serv);
 			if(started==null){

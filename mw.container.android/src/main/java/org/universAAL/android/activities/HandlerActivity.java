@@ -28,7 +28,7 @@ import org.universAAL.android.handler.AndroidHandler;
 import org.universAAL.android.services.MiddlewareService;
 import org.universAAL.android.utils.Config;
 import org.universAAL.android.utils.RAPIManager;
-import org.universAAL.android.utils.IntentConstants;
+import org.universAAL.android.utils.AppConstants;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -70,7 +70,7 @@ public class HandlerActivity extends Activity {
 		Integer remoteType = Integer.parseInt(PreferenceManager
 				.getDefaultSharedPreferences(this).getString(
 						"setting_conntype_key", "0"));
-		if (remoteType == IntentConstants.REMOTE_TYPE_RAPI) {
+		if (remoteType == AppConstants.REMOTE_TYPE_RAPI) {
 			if (checkPlayServices()) {
 				String mRegID = RAPIManager.getRegistrationId(mContext);
 				if (mRegID.isEmpty()) {
@@ -102,7 +102,7 @@ public class HandlerActivity extends Activity {
 				mReceiver = new ProgressReceiver();
 			}
 			IntentFilter filter = new IntentFilter(
-					IntentConstants.ACTION_UI_PROGRESS);
+					AppConstants.ACTION_UI_PROGRESS);
 			registerReceiver(mReceiver, filter);
 		}
 	}
@@ -206,7 +206,7 @@ public class HandlerActivity extends Activity {
 		if (resultCode != ConnectionResult.SUCCESS) {
 			if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
 				GooglePlayServicesUtil.getErrorDialog(resultCode, this,
-						IntentConstants.PLAY_SERVICES_RESOLUTION_REQUEST)
+						AppConstants.PLAY_SERVICES_RESOLUTION_REQUEST)
 						.show();
 			} else {
 				Log.i(TAG, "This device does not support Google Play Services");

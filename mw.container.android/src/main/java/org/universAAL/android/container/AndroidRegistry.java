@@ -29,7 +29,7 @@ import org.universAAL.android.proxies.ContextSubscriberProxy;
 import org.universAAL.android.proxies.ServiceCalleeProxy;
 import org.universAAL.android.proxies.ServiceCallerProxy;
 import org.universAAL.android.utils.GroundingParcel;
-import org.universAAL.android.utils.IntentConstants;
+import org.universAAL.android.utils.AppConstants;
 
 import android.content.Context;
 import android.util.Log;
@@ -66,17 +66,17 @@ public class AndroidRegistry {
 	 */
 	public static synchronized void register(String id, GroundingParcel parcel,	int type,  Context context) {
 		switch (type) {
-		case IntentConstants.TYPE_CPUBLISHER:
+		case AppConstants.TYPE_CPUBLISHER:
 			Log.d(TAG, "Registering publisher");
 			ContextPublisherProxy cpub=new ContextPublisherProxy(parcel,context);
 			cpublishers.put(id, cpub);
 			break;
-		case IntentConstants.TYPE_CSUBSCRIBER:
+		case AppConstants.TYPE_CSUBSCRIBER:
 			Log.d(TAG, "Registering subscriber");
 			ContextSubscriberProxy csub=new ContextSubscriberProxy(parcel,context);
 			csubscribers.put(id, csub);
 			break;
-		case IntentConstants.TYPE_SCALLEE:
+		case AppConstants.TYPE_SCALLEE:
 			Log.d(TAG, "Registering scallee");
 			ServiceCalleeProxy scee=new ServiceCalleeProxy(parcel,context);
 			scallees.put(id, scee);
@@ -84,7 +84,7 @@ public class AndroidRegistry {
 				scalleesAux.put(scee.getSpURI(),id);
 			}
 			break;
-		case IntentConstants.TYPE_SCALLER:
+		case AppConstants.TYPE_SCALLER:
 			Log.d(TAG, "Registering scaller");
 			ServiceCallerProxy scer=new ServiceCallerProxy(parcel,context);
 			scallers.put(id, scer);
@@ -105,15 +105,15 @@ public class AndroidRegistry {
 	 */
 	public static synchronized void unregister(String id, int type){
 		switch (type) {
-		case IntentConstants.TYPE_CPUBLISHER:
+		case AppConstants.TYPE_CPUBLISHER:
 			Log.d(TAG, "Unregistering publisher");
 			cpublishers.remove(id).close();
 			break;
-		case IntentConstants.TYPE_CSUBSCRIBER:
+		case AppConstants.TYPE_CSUBSCRIBER:
 			Log.d(TAG, "Unregistering subscriber");
 			csubscribers.remove(id).close();
 			break;
-		case IntentConstants.TYPE_SCALLEE:
+		case AppConstants.TYPE_SCALLEE:
 			Log.d(TAG, "Unregistering callee");
 			ServiceCalleeProxy scee = scallees.remove(id);
 			scee.close();
@@ -121,7 +121,7 @@ public class AndroidRegistry {
 				scalleesAux.remove(scee.getSpURI());
 			}
 			break;
-		case IntentConstants.TYPE_SCALLER:
+		case AppConstants.TYPE_SCALLER:
 			Log.d(TAG, "Unregistering caller");
 			scallers.remove(id).close();
 			break;

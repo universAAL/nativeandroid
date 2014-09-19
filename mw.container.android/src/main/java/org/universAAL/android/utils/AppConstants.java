@@ -28,7 +28,7 @@ package org.universAAL.android.utils;
  * @author alfiva
  * 
  */
-public class IntentConstants {
+public class AppConstants {
 
 	private static final String ACTION_PREFIX = "org.universAAL.android.action.";
 	

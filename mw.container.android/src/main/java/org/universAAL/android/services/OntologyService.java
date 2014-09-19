@@ -33,7 +33,7 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 import org.universAAL.android.container.AndroidContext;
-import org.universAAL.android.utils.IntentConstants;
+import org.universAAL.android.utils.AppConstants;
 import org.universAAL.middleware.container.ModuleActivator;
 import org.universAAL.middleware.owl.Ontology;
 import org.universAAL.middleware.owl.OntologyManagement;
@@ -80,7 +80,7 @@ public class OntologyService extends Service{
 			String action = intent.getAction();
 			Log.v(TAG, "Intent: " + action);
 			if (action != null) {
-				if (action.equals(IntentConstants.ACTION_ONT_REG_ALL)) {
+				if (action.equals(AppConstants.ACTION_ONT_REG_ALL)) {
 					Log.v(TAG, "Action is REGISTER ALL");
 					registerOntologies(this);
 				} else {
