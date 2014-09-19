@@ -22,7 +22,6 @@
 package org.universAAL.android.utils;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -30,7 +29,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.Charset;
 
-import org.universAAL.android.services.MiddlewareService;
 import org.universAAL.middleware.xsd.util.Base64;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -200,8 +198,8 @@ public class RAPIManager {
 		String result="";
 		try {
 			byte[] data = str.getBytes(Charset.forName("UTF-8"));
-			String auth="Basic "+Base64.encodeBytes((MiddlewareService.mServerUSR+":"+MiddlewareService.mServerPWD).getBytes());
-			URL url = new URL(MiddlewareService.mServerURL);
+			String auth="Basic "+Base64.encodeBytes((Config.getServerUSR()+":"+Config.getServerPWD()).getBytes());
+			URL url = new URL(Config.getServerURL());
 
 			conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("POST");

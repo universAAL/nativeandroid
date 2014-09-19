@@ -21,10 +21,6 @@
  */
 package org.universAAL.android.services;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.List;
@@ -35,6 +31,7 @@ import org.universAAL.android.container.AndroidContainer;
 import org.universAAL.android.container.AndroidContext;
 import org.universAAL.android.container.AndroidRegistry;
 import org.universAAL.android.handler.AndroidHandler;
+import org.universAAL.android.utils.Config;
 import org.universAAL.android.utils.GroundingParcel;
 import org.universAAL.android.utils.IntentConstants;
 import org.universAAL.android.utils.RAPIManager;
@@ -119,17 +116,10 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 	private static final String TAG_THREAD_CREATE = "MW Service Create";
 	private static final String TAG_THREAD_START = "MW Service Start";
 	private static final String TAG_THREAD_UI = "UI Handler Create";
-	private static final String UAAL_CONF_ROOT_DIR = "/data/felix/configurations/etc/"; // this is just the default
 	private static final int ONGOING_NOTIFICATION = 3948234; // TODO Random one?
-	public static int mPercentage = 0; // This is for the progress bar
-	public static int mCurrentWIFI = IntentConstants.WIFI_OFF; // This is for the previous state of WIFI
+	private static int mCurrentWIFI = IntentConstants.WIFI_OFF; // This is for the previous state of WIFI
 	public static int mUserType = IntentConstants.USER_TYPE_AP; // Just default but it is here to get it from AndroidHandler
-	public static int mSettingRemoteType = IntentConstants.REMOTE_TYPE_GW;
-	public static int mSettingRemoteMode = IntentConstants.REMOTE_MODE_WIFIOFF;
-	public static String mServerURL="http://158.42.167.41:8181/universaal";// TODO do all this in Configuration
-    public static String mServerUSR="yo";
-    public static String mServerPWD="ual";
-	private boolean mSettingWifiEnabled = true;
+	public static int mPercentage = 0; // This is for the progress bar
 	private MulticastLock mLock;
 	// MW modules stay in memory in this service class (Container holds only WeakRefs)
 	private Advertiser mJSLPadvertiser;
@@ -159,6 +149,8 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 		notif.flags |= Notification.FLAG_NO_CLEAR;
 		startForeground(ONGOING_NOTIFICATION, notif);
 		
+		//Load initial config through Config utility. Changing config requires restart the MW service to take effect.
+		Config.load(getApplicationContext());
 		// These properties must be set here, not from file
 		System.setProperty("java.net.preferIPv4Stack", "true");
 		System.setProperty("java.net.preferIPv6Stack", "false");
@@ -166,8 +158,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 		System.setProperty("java.net.preferIPv6Addresses", "false");
 		System.setProperty("jgroups.use.jdk_logger ", "true");
 		System.setProperty("net.slp.port", "5555");
-		boolean iscoord = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("setting_iscoord_key", true);
-		System.setProperty("org.universAAL.middleware.peer.is_coordinator", Boolean.toString(iscoord));
+		System.setProperty("org.universAAL.middleware.peer.is_coordinator", Boolean.toString(Config.isServiceCoord()));
 
 		// This is for setting IP manually, just in case (set it everytime you
 		// get a new IP). If not set, it seems it also works, but SLP keeps
@@ -178,16 +169,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 		// javadoc). Common sense would suggest to set it false, but it still
 		// works without doing so.
 		// System.setProperty("http.keepAlive", "false");
-		mServerURL = PreferenceManager.getDefaultSharedPreferences(this)
-				.getString("setting_connurl_key", "http://158.42.167.41:8181/universaal");
-		mServerUSR = PreferenceManager.getDefaultSharedPreferences(this).getString("setting_connusr_key", "yo");
-		mServerPWD = PreferenceManager.getDefaultSharedPreferences(this).getString("setting_connpwd_key", "ual");
 
-		mSettingWifiEnabled = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("setting_connwifi_key", true);
-		mSettingRemoteMode = Integer.parseInt(PreferenceManager
-				.getDefaultSharedPreferences(this).getString( "setting_connmode_key", "1"));
-		mSettingRemoteType = Integer.parseInt(PreferenceManager
-				.getDefaultSharedPreferences(this).getString( "setting_conntype_key", "0"));
 		// Create (dont use yet) the multicast lock. Make it not counted: this app only uses one lock
 		WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 		mLock = wifi.createMulticastLock("uaal_multicast");
@@ -204,7 +186,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 				addPercent(1);
 				mCurrentWIFI=checkWifi();//Set the initial status of WIFI
 				// 1. Stop-start the connector modules. Use jSLP only IF WIFI enabled, and WIFI==WIFI_HOME or WIFI_NOT_SET
-				if (mSettingWifiEnabled
+				if (Config.isWifiAllowed()
 						&& (mCurrentWIFI == IntentConstants.WIFI_HOME || mCurrentWIFI == IntentConstants.WIFI_NOTSET)) {
 					restartConnector(true);
 				} else {
@@ -274,8 +256,8 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 							//Only react to meaningful changes 
 							Log.v(TAG, "Action is WIFI");
 							int newWifi = checkWifi(); //Dont set mCurrentWifi yet, we have to compare
-							if (mSettingWifiEnabled) {
-								boolean modeGW = (mSettingRemoteMode == IntentConstants.REMOTE_MODE_WIFIOFF);
+							if (Config.isWifiAllowed()) {
+								boolean modeGW = (Config.getRemoteMode() == IntentConstants.REMOTE_MODE_WIFIOFF);
 								switch (newWifi) {
 								case IntentConstants.WIFI_OFF:
 									if (mCurrentWIFI == IntentConstants.WIFI_NOTSET || mCurrentWIFI == IntentConstants.WIFI_HOME) {
@@ -417,7 +399,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 				// _____________________JGROUPS______________________
 				mModJGROUPS = new JGroupsCommunicationConnector(
 						AndroidContext.THE_CONTEXT);
-				Dictionary jGroupDCOnnector = getProperties("mw.connectors.communication.jgroups.core");
+				Dictionary jGroupDCOnnector = Config.getProperties("mw.connectors.communication.jgroups.core");
 				if (jGroupDCOnnector != null) {
 					mModJGROUPS
 							.loadConfigurations(jGroupDCOnnector);
@@ -431,7 +413,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 				// _____________________JSLP_________________________
 				mModJSLP = new SLPDiscoveryConnector(
 						AndroidContext.THE_CONTEXT);
-				Dictionary slpDConnectorProperties = getProperties("mw.connectors.discovery.slp.core");
+				Dictionary slpDConnectorProperties = Config.getProperties("mw.connectors.discovery.slp.core");
 				if (slpDConnectorProperties != null) {
 					mModJSLP
 							.loadConfigurations(slpDConnectorProperties);
@@ -466,8 +448,8 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 			// _________________AALSPACE MANAGER_____________________
 			AndroidContext tempCtxt = new AndroidContext("mw.managers.aalspace.osgi");
 			mModSPACEMANAGER = new AALSpaceManagerImpl(tempCtxt, Environment
-					.getExternalStorageDirectory().getPath() + getConfDir() + "/mw.managers.aalspace.osgi");
-			Dictionary aalSpaceManagerProps = getProperties("mw.managers.aalspace.core");
+					.getExternalStorageDirectory().getPath() + Config.getConfigDir() + "/mw.managers.aalspace.osgi");
+			Dictionary aalSpaceManagerProps = Config.getProperties("mw.managers.aalspace.core");
 			if (aalSpaceManagerProps == null) {
 				aalSpaceManagerProps = new Hashtable<String, String>();
 			} else {
@@ -538,7 +520,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 			AndroidContext c2=new AndroidContext("mw.modules.aalspace.osgi");
 			mModSPACEMODULE = new AALSpaceModuleImpl(
 					c2);
-			Dictionary aalSpaceModuleProp = getProperties("mw.modules.aalspace.core");
+			Dictionary aalSpaceModuleProp = Config.getProperties("mw.modules.aalspace.core");
 			if (aalSpaceModuleProp != null) {
 				mModSPACEMODULE.loadConfigurations(aalSpaceModuleProp);
 			} else {
@@ -559,8 +541,8 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 			// _________________AALSPACE MANAGER_____________________
 			AndroidContext c4=new AndroidContext("mw.managers.aalspace.osgi");
 			mModSPACEMANAGER = new AALSpaceManagerImpl(c4, Environment
-					.getExternalStorageDirectory().getPath() + getConfDir() + "mw.managers.aalspace.osgi");
-			Dictionary aalSpaceManagerProps = getProperties("mw.managers.aalspace.core");
+					.getExternalStorageDirectory().getPath() + Config.getConfigDir() + "mw.managers.aalspace.osgi");
+			Dictionary aalSpaceManagerProps = Config.getProperties("mw.managers.aalspace.core");
 			if (aalSpaceManagerProps == null) {
 				aalSpaceManagerProps = new Hashtable<String, String>();
 			} else {
@@ -691,7 +673,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 			public void run() {
 				// _________________UI HANDLER_________________________
 				mModHANDLER = new AndroidHandler(AndroidContext.THE_CONTEXT,
-						Constants.uAAL_MIDDLEWARE_LOCAL_ID_PREFIX + getUser());
+						Constants.uAAL_MIDDLEWARE_LOCAL_ID_PREFIX + Config.getUAALUser());
 				AndroidContainer.THE_CONTAINER.shareObject(
 						AndroidContext.THE_CONTEXT, mModHANDLER, new String[] {
 								AndroidHandler.class.getName(),
@@ -719,7 +701,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 	 * Start the modules needed for the RI AAL Space Gateway/R API to start.
 	 */
 	private synchronized void startGateway(){
-		switch (mSettingRemoteType) {
+		switch (Config.getRemoteType()) {
 		case IntentConstants.REMOTE_TYPE_GW:
 			// _________________BUS TRACKER_________________
 			mModTRACKER = new BusMemberRegistryImpl(AndroidContext.THE_CONTEXT);
@@ -729,7 +711,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 			Log.d(TAG, "Started BUS TRACKER");
 			// _________________GATEWAY_________________________
 			ModuleContext c8 = new AndroidContext("ri.gateway.communicator");
-			Dictionary gatewayProps = getProperties("ri.gateway.communicator.core");
+			Dictionary gatewayProps = Config.getProperties("ri.gateway.communicator.core");
 			try {
 				CommunicatorStarter.properties=(Properties) gatewayProps;
 				CommunicatorStarter.mc=AndroidContext.THE_CONTEXT;
@@ -784,7 +766,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 	 * Stops the modules needed for the RI AAL Space Gateway/R API to stop.
 	 */
 	private synchronized void stopGateway(){	
-		switch (mSettingRemoteType) {
+		switch (Config.getRemoteType()) {
 		case IntentConstants.REMOTE_TYPE_GW:
 			// _________________GATEWAY_________________________
 			if (mModTRACKER!= null){
@@ -842,52 +824,10 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 	 *         is OFF or STRANGER
 	 */
 	public static boolean isGWrequired(){
-		return (mSettingRemoteMode == IntentConstants.REMOTE_MODE_ALWAYS
-				|| (mSettingRemoteMode == IntentConstants.REMOTE_MODE_WIFIOFF 
+		return (Config.getRemoteMode() == IntentConstants.REMOTE_MODE_ALWAYS
+				|| (Config.getRemoteMode() == IntentConstants.REMOTE_MODE_WIFIOFF 
 				&& (mCurrentWIFI == IntentConstants.WIFI_OFF 
 				|| mCurrentWIFI == IntentConstants.WIFI_STRANGER)));
-	}
-
-	/**
-	 * Gets the properties of a property file located in the config folder.
-	 * 
-	 * @param file
-	 *            The name of the file (without path nor extension).
-	 * @return The Properties
-	 */
-	private Dictionary getProperties(String file) {
-		Properties prop = new Properties();
-		try {
-			File conf = new File(Environment.getExternalStorageDirectory()
-					.getPath(), getConfDir() + file + ".properties");
-			InputStream in = new FileInputStream(conf);
-			prop.load(in);
-			in.close();
-		} catch (java.io.FileNotFoundException e) {
-			Log.w("startBrokerClient", "Properties file does not exist: "
-					+ file);
-		} catch (IOException e) {
-			Log.w("startBrokerClient", "Error reading props file: " + file);
-		}
-		return prop;
-	}
-	
-	/**
-	 * Get the config dir
-	 * 
-	 * @return the location of config dir as of setting_cfolder_key pref
-	 */
-	private String getConfDir() {
-		return PreferenceManager.getDefaultSharedPreferences(this).getString("setting_cfolder_key", UAAL_CONF_ROOT_DIR);
-	}
-	
-	/**
-	 * Get the user id
-	 * 
-	 * @return the user id as of setting_user_key pref
-	 */
-	private String getUser(){
-		return PreferenceManager.getDefaultSharedPreferences(MiddlewareService.this).getString("setting_user_key", "saied");
 	}
 	
 	/**
@@ -963,7 +903,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 		if (home.equals(IntentConstants.NO_WIFI)) { // This is the first time we connect to a space
 			thisIsOurWifi();
 		}
-		if( mSettingRemoteMode == IntentConstants.REMOTE_MODE_WIFIOFF){
+		if( Config.getRemoteMode() == IntentConstants.REMOTE_MODE_WIFIOFF){
 			stopGateway();//stop the GW because we are in a space (probably already stopped)
 		}
 	}
@@ -974,7 +914,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 		if (home.equals(IntentConstants.NO_WIFI)) { // This is the first time we connect to a space
 			thisIsOurWifi();
 		}
-		if( mSettingRemoteMode == IntentConstants.REMOTE_MODE_WIFIOFF){
+		if( Config.getRemoteMode() == IntentConstants.REMOTE_MODE_WIFIOFF){
 			stopGateway();//stop the GW because we are in a space (probably already stopped)
 		}
 	}

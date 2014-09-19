@@ -26,6 +26,7 @@ import org.universAAL.android.container.AndroidContainer;
 import org.universAAL.android.container.AndroidContext;
 import org.universAAL.android.handler.AndroidHandler;
 import org.universAAL.android.services.MiddlewareService;
+import org.universAAL.android.utils.Config;
 import org.universAAL.android.utils.RAPIManager;
 import org.universAAL.android.utils.IntentConstants;
 
@@ -62,6 +63,7 @@ public class HandlerActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		Config.load(getApplicationContext()); //Sync Preferences in Config util
 		setContentView(R.layout.empty);
 		mContext = getApplicationContext();
 		// Check device for Play Services APK. ONLY IF R-API MODE

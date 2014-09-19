@@ -27,6 +27,7 @@ import java.util.Hashtable;
 import org.universAAL.android.container.AndroidContainer;
 import org.universAAL.android.container.AndroidContext;
 import org.universAAL.android.services.MiddlewareService;
+import org.universAAL.android.utils.Config;
 import org.universAAL.android.utils.GroundingParcel;
 import org.universAAL.android.utils.IntentConstants;
 import org.universAAL.android.utils.RAPIManager;
@@ -171,7 +172,7 @@ public class ContextPublisherProxy extends ContextPublisher {
 			cev.setExpirationTime(event.getExpirationTime());
 			publish(cev);
 			// If RAPI, send it to server. If GW it is automatic by the running GW
-			if (MiddlewareService.isGWrequired() && MiddlewareService.mSettingRemoteType == IntentConstants.REMOTE_TYPE_RAPI) {
+			if (MiddlewareService.isGWrequired() && Config.getRemoteType() == IntentConstants.REMOTE_TYPE_RAPI) {
 				ContextEvent cev2=(ContextEvent)cev.deepCopy();//Prevent concurrent change of cev!!!!
 				cev2.changeProperty(ContextEvent.PROP_CONTEXT_PROVIDER, null);//The single publisher in RAPI will send ANY event
 				String serial = parser.serialize(cev2);
