@@ -29,7 +29,7 @@ import org.universAAL.android.container.AndroidContext;
 import org.universAAL.android.services.MiddlewareService;
 import org.universAAL.android.utils.Config;
 import org.universAAL.android.utils.GroundingParcel;
-import org.universAAL.android.utils.IntentConstants;
+import org.universAAL.android.utils.AppConstants;
 import org.universAAL.android.utils.RAPIManager;
 import org.universAAL.android.utils.VariableSubstitution;
 import org.universAAL.middleware.container.SharedObjectListener;
@@ -81,7 +81,7 @@ public class ContextSubscriberProxy extends ContextSubscriber implements SharedO
 	public void sync(){
 		if (MiddlewareService.isGWrequired() && remote != null && !remote.isEmpty()) {
 		switch (Config.getRemoteType()) {
-			case IntentConstants.REMOTE_TYPE_GW:
+			case AppConstants.REMOTE_TYPE_GW:
 				RemoteSpacesManager[] gw = (RemoteSpacesManager[]) AndroidContainer.THE_CONTAINER
 						.fetchSharedObject(AndroidContext.THE_CONTEXT,
 								new Object[] { RemoteSpacesManager.class.getName() }, this);
@@ -93,7 +93,7 @@ public class ContextSubscriberProxy extends ContextSubscriber implements SharedO
 					}
 				}
 				break;
-			case IntentConstants.REMOTE_TYPE_RAPI:
+			case AppConstants.REMOTE_TYPE_RAPI:
 				// RAPI only gets 1 pattern at a time, and the grounding is (surprise!) a single pattern
 				if(MiddlewareService.isGWrequired()){
 					RAPIManager.invokeInThread(RAPIManager.SENDC, grounding);
@@ -147,8 +147,8 @@ public class ContextSubscriberProxy extends ContextSubscriber implements SharedO
 	@Override
 	public void handleContextEvent(ContextEvent event) {
 		// Extract the origin action and category from the event
-		String fromAction=(String)event.getProvider().getProperty(IntentConstants.UAAL_META_PROP_FROMACTION);
-		String fromCategory=(String)event.getProvider().getProperty(IntentConstants.UAAL_META_PROP_FROMCATEGORY);
+		String fromAction=(String)event.getProvider().getProperty(AppConstants.UAAL_META_PROP_FROMACTION);
+		String fromCategory=(String)event.getProvider().getProperty(AppConstants.UAAL_META_PROP_FROMCATEGORY);
 		boolean isNonIntrusive = fromAction != null	&& fromAction.equals(action) 
 				&& fromCategory != null && fromCategory.equals(category);
 		// This means the receiver in the publisher proxy is the same as the
@@ -167,7 +167,7 @@ public class ContextSubscriberProxy extends ContextSubscriber implements SharedO
 					VariableSubstitution.putEventValuesAsIntentExtras(event, broadcast, eventVALtoExtraKEY);
 				}
 				// Flag to avoid feeding back the intent to bus when intent is the same in app and in publisherproxy 
-				broadcast.putExtra(IntentConstants.ACTION_META_FROMPROXY, true);
+				broadcast.putExtra(AppConstants.ACTION_META_FROMPROXY, true);
 				ctxt.sendBroadcast(broadcast);
 			}
 		}

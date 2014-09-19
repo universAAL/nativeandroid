@@ -38,8 +38,8 @@ public class Config {
 	private static String mServerPWD = "ual";
 	private static String mConfigFolder = "/data/felix/configurations/etc/";
 	private static String mUAALUser = "saied";
-	private static int mSettingRemoteType = IntentConstants.REMOTE_TYPE_GW;
-	private static int mSettingRemoteMode = IntentConstants.REMOTE_MODE_WIFIOFF;
+	private static int mSettingRemoteType = AppConstants.REMOTE_TYPE_GW;
+	private static int mSettingRemoteMode = AppConstants.REMOTE_MODE_WIFIOFF;
 	private static boolean mSettingWifiEnabled = true;
 	private static boolean mServiceCoord = true;
 

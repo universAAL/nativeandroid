@@ -26,7 +26,7 @@ import org.universAAL.android.container.AndroidContext;
 import org.universAAL.android.container.AndroidRegistry;
 import org.universAAL.android.proxies.ServiceCalleeProxy;
 import org.universAAL.android.utils.Config;
-import org.universAAL.android.utils.IntentConstants;
+import org.universAAL.android.utils.AppConstants;
 import org.universAAL.middleware.context.ContextEvent;
 import org.universAAL.middleware.context.DefaultContextPublisher;
 import org.universAAL.middleware.serialization.MessageContentSerializerEx;
@@ -48,7 +48,7 @@ public class GCMReceiver extends WakefulBroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		if (Config.getRemoteType() != IntentConstants.REMOTE_TYPE_RAPI) {
+		if (Config.getRemoteType() != AppConstants.REMOTE_TYPE_RAPI) {
 			return;// For now, double check. TODO make sure not needed
 		}
 

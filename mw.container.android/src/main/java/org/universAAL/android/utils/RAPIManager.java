@@ -165,7 +165,7 @@ public class RAPIManager {
 	        if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
 	        	if(context instanceof Activity){
 	        		 GooglePlayServicesUtil.getErrorDialog(resultCode, (Activity)context,
-	            		IntentConstants.PLAY_SERVICES_RESOLUTION_REQUEST).show();
+	            		AppConstants.PLAY_SERVICES_RESOLUTION_REQUEST).show();
 	        	}
 	           
 	        } else {

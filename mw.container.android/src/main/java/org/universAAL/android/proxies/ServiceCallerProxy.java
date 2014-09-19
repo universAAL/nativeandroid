@@ -29,7 +29,7 @@ import org.universAAL.android.container.AndroidContext;
 import org.universAAL.android.services.MiddlewareService;
 import org.universAAL.android.utils.Config;
 import org.universAAL.android.utils.GroundingParcel;
-import org.universAAL.android.utils.IntentConstants;
+import org.universAAL.android.utils.AppConstants;
 import org.universAAL.android.utils.RAPIManager;
 import org.universAAL.android.utils.VariableSubstitution;
 import org.universAAL.middleware.container.SharedObjectListener;
@@ -98,7 +98,7 @@ public class ServiceCallerProxy extends ServiceCaller implements SharedObjectLis
 	public void sync() {
 		if (MiddlewareService.isGWrequired() && remote != null && !remote.isEmpty()) {
 			switch (Config.getRemoteType()) {
-			case IntentConstants.REMOTE_TYPE_GW:
+			case AppConstants.REMOTE_TYPE_GW:
 				RemoteSpacesManager[] gw = (RemoteSpacesManager[]) AndroidContainer.THE_CONTAINER
 				.fetchSharedObject(AndroidContext.THE_CONTEXT, new Object[] { RemoteSpacesManager.class.getName() }, this);
 				if (gw != null && gw.length > 0) {
@@ -110,7 +110,7 @@ public class ServiceCallerProxy extends ServiceCaller implements SharedObjectLis
 					}
 				}
 				break;
-			case IntentConstants.REMOTE_TYPE_RAPI:
+			case AppConstants.REMOTE_TYPE_RAPI:
 				// In R API does not need syncing
 				break;
 			default:
@@ -210,7 +210,7 @@ public class ServiceCallerProxy extends ServiceCaller implements SharedObjectLis
 	public class ServiceCallerProxyReceiver extends BroadcastReceiver {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			if (intent.getBooleanExtra(IntentConstants.ACTION_META_FROMPROXY, false)) {
+			if (intent.getBooleanExtra(AppConstants.ACTION_META_FROMPROXY, false)) {
 				// The intent comes from a CalleeProxy. It wouldnt have sent it
 				// if its receiver and this one where the same, but that doesnt
 				// count when it comes from the bus alone. This fixes that.
@@ -241,16 +241,16 @@ public class ServiceCallerProxy extends ServiceCaller implements SharedObjectLis
 					sr.getProperty(ServiceRequest.PROP_uAAL_SERVICE_CALLER));
 			srmeta.setProperty(ServiceRequest.PROP_uAAL_INVOLVED_HUMAN_USER, sr
 					.getProperty(ServiceRequest.PROP_uAAL_INVOLVED_HUMAN_USER));
-			srmeta.addInput(IntentConstants.UAAL_META_PROP_FROMACTION, action);
-			srmeta.addInput(IntentConstants.UAAL_META_PROP_FROMCATEGORY, category);
+			srmeta.addInput(AppConstants.UAAL_META_PROP_FROMACTION, action);
+			srmeta.addInput(AppConstants.UAAL_META_PROP_FROMCATEGORY, category);
 			Resource[] outputs=sr.getRequiredOutputs();
 			if(outputs.length>0){
-				srmeta.addInput(IntentConstants.UAAL_META_PROP_NEEDSOUTPUTS, Boolean.TRUE);
+				srmeta.addInput(AppConstants.UAAL_META_PROP_NEEDSOUTPUTS, Boolean.TRUE);
 				// I have to add this flag metadata because otherwise callee doesnt know if an output is really needed
 			}
 			sendRequest(srmeta);
 			// If RAPI, send it to server. If GW it is automatic by the running GW
-			if (MiddlewareService.isGWrequired() && Config.getRemoteType() == IntentConstants.REMOTE_TYPE_RAPI
+			if (MiddlewareService.isGWrequired() && Config.getRemoteType() == AppConstants.REMOTE_TYPE_RAPI
 					&& remote != null && !remote.isEmpty()) {
 				new Thread() {
 					@Override

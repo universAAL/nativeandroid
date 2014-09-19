@@ -23,7 +23,7 @@ package org.universAAL.android.activities;
 
 import org.universAAL.android.R;
 import org.universAAL.android.utils.Config;
-import org.universAAL.android.utils.IntentConstants;
+import org.universAAL.android.utils.AppConstants;
 import org.universAAL.android.utils.RAPIManager;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -57,8 +57,8 @@ public class SettingsActivity extends PreferenceActivity {
 		// Manage the availability of "remove current wifi" option
 		Preference wifiPref = (Preference) findPreference("setting_resetwifi_key");
 		String wifiVal = PreferenceManager.getDefaultSharedPreferences(this)
-				.getString(IntentConstants.MY_WIFI, IntentConstants.NO_WIFI);
-		if (wifiVal.equals(IntentConstants.NO_WIFI)) {
+				.getString(AppConstants.MY_WIFI, AppConstants.NO_WIFI);
+		if (wifiVal.equals(AppConstants.NO_WIFI)) {
 			wifiPref.setSummary(R.string.setting_resetwifi_text_none);
 			wifiPref.setEnabled(false);
 		} else {
@@ -68,7 +68,7 @@ public class SettingsActivity extends PreferenceActivity {
 				public boolean onPreferenceClick(Preference preference) {
 					PreferenceManager
 							.getDefaultSharedPreferences(SettingsActivity.this)
-							.edit().remove(IntentConstants.MY_WIFI).commit();
+							.edit().remove(AppConstants.MY_WIFI).commit();
 					preference.setEnabled(false);
 					return true;
 				}
@@ -123,7 +123,7 @@ public class SettingsActivity extends PreferenceActivity {
 		if (resultCode != ConnectionResult.SUCCESS) {
 			if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
 				GooglePlayServicesUtil.getErrorDialog(resultCode, this,
-						IntentConstants.PLAY_SERVICES_RESOLUTION_REQUEST)
+						AppConstants.PLAY_SERVICES_RESOLUTION_REQUEST)
 						.show();
 			} else {
 				Log.i(TAG, "This device does not support Google Play Services");
