@@ -76,6 +76,7 @@ public class SettingsActivity extends PreferenceActivity {
 		}
 		// Manage the registration on Google Play Services GCM when selecting R-API conn type
 		ListPreference connType = (ListPreference) findPreference("setting_conntype_key");
+		setRAPIOptionsEnabled(connType.getValue()!=null && connType.getValue().equals("1"));
 		connType.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
 			public boolean onPreferenceChange(Preference preference,
 					Object newValue) {
@@ -88,20 +89,34 @@ public class SettingsActivity extends PreferenceActivity {
 							RAPIManager
 									.registerInThread(getApplicationContext());
 						}
+						setRAPIOptionsEnabled(true);//Enable RAPI options only if RAPI selected
 						return true;
 					} else {
 						Toast.makeText(getApplicationContext(),
 								R.string.warning_gplay, Toast.LENGTH_LONG)
 								.show();
 						// Do not block the app from running if Play Services is not available
+						setRAPIOptionsEnabled(false);
 						return false;// just dont allow change
 					}
 				} else {
+					setRAPIOptionsEnabled(false);
 					return true;// Allow the change
 				}
 			}
 
 		});
+	}
+	
+	private void setRAPIOptionsEnabled(boolean enable){
+		Preference pref = (Preference) findPreference("setting_connurl_key");
+		pref.setEnabled(enable);
+		pref = (Preference) findPreference("setting_conngcm_key");
+		pref.setEnabled(enable);
+		pref = (Preference) findPreference("setting_connusr_key");
+		pref.setEnabled(enable);
+		pref = (Preference) findPreference("setting_connpwd_key");
+		pref.setEnabled(enable);
 	}
 
 	// The following is from http://developer.android.com/google/gcm/client.html

@@ -17,7 +17,7 @@
     <string name="setting_resetwifi_text_none">There is no home WiFi paired yet</string>
     <string name="setting_resetwifi_title">Reset home WiFi</string>
     
-    <string name="folder_settings">Folder settings</string>
+    <string name="folder_settings">Folders</string>
     <string name="setting_cfolder_instr">Path of the configuration folder, with folder separator "/" at the beginning and the end</string>
     <string name="setting_cfolder_text">Where the configuration files of all modules must be stored</string>
     <string name="setting_cfolder_title">Configuration folder</string>
@@ -28,7 +28,7 @@
     <string name="setting_ifolder_text">Where the images to be displayed by the user interface must be stored</string>
     <string name="setting_ifolder_title">Image folder</string>
     
-    <string name="user_settings">User settings</string>
+    <string name="user_settings">User</string>
     <string name="setting_user_instr">Suffix of the user URI, after the # character</string>
     <string name="setting_user_text">User of the AAL Space that is using this device</string>
     <string name="setting_user_title">User identification</string>
@@ -44,7 +44,7 @@
 		<item>1</item>
 	</string-array>
 	
-	<string name="conn_settings">Connectivity settings</string>
+	<string name="conn_settings">Connectivity</string>
     <string name="setting_connwifi_text">Connect to other devices running universAAL in the same WiFi network</string>
     <string name="setting_connwifi_title">WiFi discovery</string>
     <string name="setting_connmode_text">When to connect to the remote node</string>
@@ -74,6 +74,9 @@
 	
 	<string name="setting_iscoord_title">Is Service coordinator</string>
 	<string name="setting_iscoord_text">Set this instance as the single Service Bus coordinator</string>
+	
+	<string name="setting_uihandler_title">Enable uAAL User Interface</string>
+	<string name="setting_uihandler_text">Use this application as User Interface Handler with uAAL</string>
 	
 	<string name="setting_connurl_instr">Full URL (protocol to context) of the server hosting the Remote API</string>
     <string name="setting_connurl_text">URL of the server hosting the Remote API</string>
