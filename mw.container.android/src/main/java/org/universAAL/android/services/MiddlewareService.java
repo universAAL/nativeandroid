@@ -200,7 +200,11 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 				OntologyService.registerOntologies(MiddlewareService.this);
 				addPercent(25);
 				// 4. Start UI handler TODO start handler in last place
-				startHandler();
+				if(Config.isUIHandler()){
+					startHandler();
+				}else{
+					addPercent(5);//startHandler() adds 5 when finished
+				}
 				// 5. Start GW IF WIFI==NOT_ON or WIFI==STRANGER (or if ALWAYS)
 				if (isGWrequired()) {
 					startGateway();
@@ -221,7 +225,8 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 		super.onDestroy();
 		Log.v(TAG, "Destroy");
 		//TODO Call to unreg onts? really?
-		mPercentage=0;//TODO update progress bar view?
+		mPercentage=0;
+		notifyPercent();
 		// ScanService ran and tried to stop in parallel while MiddlewareService
 		// has already finished (next lines) AND also sent intents to it which
 		// restarted it. Instead of ACTION_PCK_UNREG_ALL intent I made a method
@@ -600,12 +605,14 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 					busFetchParams);
 			Log.d(TAG, "Started CONTEXT BUS");
 			addPercent(5);
-			// _________________UI BUS_________________________
-			AndroidContext c8 = new AndroidContext("mw.bus.ui.osgi");
-			busFetchParams = new Object[] { IUIBus.class.getName() };
-			UIBusImpl.startModule(AndroidContainer.THE_CONTAINER, c8,
-					busFetchParams, busFetchParams);
-			Log.d(TAG, "Started UI BUS");
+			if(Config.isUIHandler()){ //No need for UI bus if no Handler
+				// _________________UI BUS_________________________
+				AndroidContext c8 = new AndroidContext("mw.bus.ui.osgi");
+				busFetchParams = new Object[] { IUIBus.class.getName() };
+				UIBusImpl.startModule(AndroidContainer.THE_CONTAINER, c8,
+						busFetchParams, busFetchParams);
+				Log.d(TAG, "Started UI BUS");
+			}
 			addPercent(5);
 		} catch (Exception e) {
 			Log.e(TAG, "Error while initializing MW", e);
@@ -618,7 +625,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 	 */
 	private synchronized void stopMiddleware(){		
 		// _________________UI BUS_________________________
-		UIBusImpl.stopModule();
+		UIBusImpl.stopModule(); //TODO will it work if not started?
 		// _________________CONTEXT BUS_________________________
 		ContextBusImpl.stopModule();
 		// _________________SERVICE BUS_________________________
@@ -890,6 +897,10 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 		if(mPercentage<100){
 			mPercentage+=percent;
 		}
+		notifyPercent();
+	}
+	
+	private void notifyPercent(){
 		// TODO use pending intent? isnt a single sticky intent always there with this already?
 		Intent intent=new Intent(AppConstants.ACTION_UI_PROGRESS);
 		intent.setFlags(Intent.FLAG_RECEIVER_REPLACE_PENDING+Intent.FLAG_RECEIVER_REGISTERED_ONLY);

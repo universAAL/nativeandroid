@@ -5,9 +5,13 @@
         android:summary="@string/setting_iscoord_text"
         android:title="@string/setting_iscoord_title" android:defaultValue="true"/>
     <CheckBoxPreference
+            android:key="setting_uihandler_key"
+            android:summary="@string/setting_uihandler_text"
+            android:title="@string/setting_uihandler_title" android:defaultValue="true"/>
+    <CheckBoxPreference
             android:key="setting_connwifi_key"
             android:summary="@string/setting_connwifi_text"
-            android:title="@string/setting_connwifi_title" />
+            android:title="@string/setting_connwifi_title"  android:defaultValue="true"/>
 	<Preference
             android:key="setting_resetwifi_key"
             android:summary="@string/setting_resetwifi_text"

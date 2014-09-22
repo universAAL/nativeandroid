@@ -42,6 +42,7 @@ public class Config {
 	private static int mSettingRemoteMode = AppConstants.REMOTE_MODE_WIFIOFF;
 	private static boolean mSettingWifiEnabled = true;
 	private static boolean mServiceCoord = true;
+	private static boolean mUIHandler = true;
 
 	/**
 	 * Synchronize the Config utility class with the actual saved preferences.
@@ -61,6 +62,7 @@ public class Config {
 		mServerUSR = prefs.getString("setting_connusr_key", "yo");
 		mServerPWD = prefs.getString("setting_connpwd_key", "ual");
 		mServiceCoord = prefs.getBoolean("setting_iscoord_key", true);
+		mUIHandler = prefs.getBoolean("setting_uihandler_key", true);
 		mSettingWifiEnabled = prefs.getBoolean("setting_connwifi_key", true);
 		mSettingRemoteMode = Integer.parseInt(prefs.getString(
 				"setting_connmode_key", "1"));
@@ -107,6 +109,15 @@ public class Config {
 	 */
 	public static boolean isServiceCoord() {
 		return mServiceCoord;
+	}
+	
+	/**
+	 * Check if this application should work as a UI Handler
+	 * 
+	 * @return true if it is set as UI Handler
+	 */
+	public static boolean isUIHandler() {
+		return mUIHandler;
 	}
 
 	/**
