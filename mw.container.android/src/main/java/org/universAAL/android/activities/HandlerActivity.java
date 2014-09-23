@@ -63,9 +63,14 @@ public class HandlerActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Config.load(getApplicationContext()); //Sync Preferences in Config util
 		setContentView(R.layout.empty);
 		mContext = getApplicationContext();
+		Config.load(mContext); //Sync Preferences in Config util
+		if(PreferenceManager.getDefaultSharedPreferences(this).getBoolean(AppConstants.FIRST, true)){
+			// first time we run the app (or app data has been cleared)
+			PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean(AppConstants.FIRST, false).commit();
+			Config.createFiles(mContext);
+		}
 		// Check device for Play Services APK. ONLY IF R-API MODE
 		Integer remoteType = Integer.parseInt(PreferenceManager
 				.getDefaultSharedPreferences(this).getString(

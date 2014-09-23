@@ -98,6 +98,7 @@ public class AppConstants {
 	// Some defaults
 	public static final String MY_WIFI = "home_wifi";
 	public static final String NO_WIFI = "uAALGhostWifi";
+	public static final String FIRST = "is_first";
 	public static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
 }
