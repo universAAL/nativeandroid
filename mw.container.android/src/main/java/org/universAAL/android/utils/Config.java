@@ -2,10 +2,13 @@ package org.universAAL.android.utils;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Dictionary;
 import java.util.Properties;
+
+import org.universAAL.android.R;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -33,6 +36,7 @@ import android.util.Log;
  * 
  */
 public class Config {
+	private static final String TAG = "Config";
 	private static String mServerURL = "http://158.42.167.41:8181/universaal";
 	private static String mServerUSR = "yo";
 	private static String mServerPWD = "ual";
@@ -182,12 +186,68 @@ public class Config {
 			prop.load(in);
 			in.close();
 		} catch (java.io.FileNotFoundException e) {
-			Log.w("startBrokerClient", "Properties file does not exist: "
+			Log.w(TAG, "Properties file does not exist: "
 					+ file);
 		} catch (IOException e) {
-			Log.w("startBrokerClient", "Error reading props file: " + file);
+			Log.w(TAG, "Error reading props file: " + file);
 		}
 		return prop;
+	}
+	
+	/**
+	 * Creates all the configuration files needed for running uAAL if they dont
+	 * exist already.
+	 * 
+	 * @param ctxt
+	 *            Application context
+	 */
+	public static void createFiles(Context ctxt) {
+		String basepath=Environment.getExternalStorageDirectory().getPath()+Config.getConfigDir();
+		Log.d(TAG, "Creating default configuration files");
+		try {
+			createFile(ctxt, R.raw.jgroups, basepath+"mw.connectors.communication.jgroups.core.properties");
+			createFile(ctxt, R.raw.slp, basepath+"mw.connectors.discovery.slp.core.properties");
+			createFile(ctxt, R.raw.managersaalspace, basepath+"mw.managers.aalspace.core.properties");
+			createFile(ctxt, R.raw.modulesaalspace, basepath+"mw.modules.aalspace.core.properties");
+			createFile(ctxt, R.raw.gateway, basepath+"ri.gateway.communicator.core.properties");
+			createFile(ctxt, R.raw.udp, basepath+"udp.xml");
+			createFile(ctxt, R.raw.aalspace, basepath+"aalspace.xsd");
+			createFile(ctxt, R.raw.home, basepath+"Home.space");
+		} catch (IOException e) {
+			Log.e(TAG, "Could not create one or more default configuarion files."
+							+ "You will have to place them manually: " + e);
+		}
+	}
+
+	/**
+	 * Writes a new file into the sdcard if it doesnt exist already
+	 * 
+	 * @param ctxt
+	 *            Application context
+	 * @param fileID
+	 *            ID of the file in R.raw
+	 * @param path
+	 *            Path in the sdcard with the file name
+	 * @throws IOException
+	 *             If an error occurs during writing
+	 */
+	private static void createFile(Context ctxt, int fileID, String path) throws IOException {
+		File file = new File(path);
+		if (file.exists()) {
+			return; // Do not overwrite existing files
+		}
+		InputStream in = ctxt.getResources().openRawResource(fileID);
+		FileOutputStream out = new FileOutputStream(file);
+		byte[] buff = new byte[1024];
+		int read = 0;
+		try {
+			while ((read = in.read(buff)) > 0) {
+				out.write(buff, 0, read);
+			}
+		} finally {
+			in.close();
+			out.close();
+		}
 	}
 
 }
