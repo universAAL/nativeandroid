@@ -44,6 +44,7 @@ import org.universAAL.middleware.service.ServiceBus;
 import org.universAAL.middleware.service.ServiceCall;
 import org.universAAL.middleware.service.ServiceCallee;
 import org.universAAL.middleware.service.ServiceResponse;
+import org.universAAL.middleware.service.impl.ServiceRealization;
 import org.universAAL.middleware.service.owls.process.ProcessOutput;
 import org.universAAL.middleware.service.owls.profile.ServiceProfile;
 
@@ -273,6 +274,8 @@ public class ServiceCalleeProxy extends ServiceCallee {
 			}
 		}
 		// Then send back the response
+		sr.setProperty(ServiceRealization.uAAL_SERVICE_PROVIDER,
+			    new Resource(busResourceURI));
 		BusMessage reply = msg.createReply(sr);
 		if (reply != null) {
 			((ServiceBus) theBus).brokerReply(busResourceURI, reply);
