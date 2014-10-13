@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.universAAL.android"
-    android:versionCode="2014092201"
+    android:versionCode="2014101301"
     android:versionName="3.1.1-SNAPSHOT" >
 
     <uses-permission android:name="android.permission.INTERNET" />
