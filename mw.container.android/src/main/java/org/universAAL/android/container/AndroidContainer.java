@@ -169,6 +169,44 @@ public class AndroidContainer implements Container {
 				Log.w(TAG, "one of 'shareParams' passed to 'shareObject' is not String or Dictionary");
 		}
 	}
+	
+	public void removeSharedObject(ModuleContext requester, Object objToRemove,
+			Object[] shareParams) {
+		if (!(requester instanceof AndroidContext) || objToRemove == null
+				|| shareParams == null || shareParams.length == 0) {
+			Log.w(TAG, "Parameters passed to 'removeSharedObject' are null or not the right type");
+			return;
+		}
+
+		int n = shareParams.length - 1;
+		if (n == 0)
+			if (shareParams[0] instanceof String)
+				unshareObject((String) shareParams[0], objToRemove);
+			else if (shareParams[0] instanceof Dictionary)
+				unshareObject((String) null, objToRemove);
+			else
+				Log.w(TAG, "'shareParams' passed to 'removeSharedObject' is not String or Dictionary");
+		else {
+			for (int i = 0; i < n; i++)
+				if (!(shareParams[i] instanceof String)) {
+					Log.w(TAG, "'shareParams' passed to 'removeSharedObject' is not String or Dictionary");
+					return;
+				}
+			if (shareParams[n] instanceof String)
+				unshareObject((String[]) shareParams, objToRemove);
+			else if (shareParams[n] instanceof Dictionary)
+				if (n == 1)
+					unshareObject((String) shareParams[0], objToRemove);
+				else {
+					String[] xfaces = new String[n];
+					for (int i = 0; i < n; i++)
+						xfaces[i] = (String) shareParams[i];
+					unshareObject(xfaces, objToRemove);
+				}
+			else
+				Log.w(TAG, "'shareParams' passed to 'removeSharedObject' is not String or Dictionary");
+		}
+	}
 
 	// END OF INTERFACE
 

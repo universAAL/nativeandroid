@@ -63,6 +63,7 @@ import org.universAAL.middleware.serialization.MessageContentSerializer;
 import org.universAAL.middleware.serialization.MessageContentSerializerEx;
 import org.universAAL.middleware.serialization.turtle.TurtleSerializer;
 import org.universAAL.middleware.serialization.turtle.TurtleUtil;
+import org.universAAL.middleware.service.ServiceBus.CallInjector;
 import org.universAAL.middleware.service.impl.ServiceBusImpl;
 import org.universAAL.middleware.tracker.IBusMemberRegistry;
 import org.universAAL.middleware.tracker.impl.BusMemberRegistryImpl;
@@ -592,9 +593,10 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 			AndroidContext c6=new AndroidContext("mw.bus.service.osgi");
 			Object[] busFetchParams = new Object[] { ServiceBusImpl.class
 					.getName() };
-			ServiceBusImpl.startModule(AndroidContainer.THE_CONTAINER,
-					c6, busFetchParams,
-					busFetchParams);
+			Object[] busInjectFetchParams = new Object[] { CallInjector.class
+					.getName() };
+			ServiceBusImpl.startModule(c6, busFetchParams, busFetchParams,
+					busInjectFetchParams, busInjectFetchParams);
 			Log.d(TAG, "Started SERVICE BUS");
 			addPercent(5);
 			// _________________CONTEXT BUS_________________________
