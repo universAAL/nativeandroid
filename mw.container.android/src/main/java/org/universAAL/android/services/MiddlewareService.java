@@ -732,8 +732,8 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 				mModIMPORT = new ImportManagerImpl(mModGATEWAY);
 				mModGATEWAY.setManagers(mModIMPORT, mModEXPORT);
 				mModGATEWAY.start();
-				mModTRACKER.addBusRegistryListener(mModEXPORT, true);
-				mModTRACKER.addBusRegistryListener(mModIMPORT, true);
+				mModTRACKER.addListener(mModEXPORT, true);
+				mModTRACKER.addListener(mModIMPORT, true);
 				AndroidContainer.THE_CONTAINER.fetchSharedObject(c8, new Object[] {
 						ImportOperationInterceptor.class.getName(),
 						ExportOperationInterceptor.class.getName() },
@@ -779,8 +779,8 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 		case AppConstants.REMOTE_TYPE_GW:
 			// _________________GATEWAY_________________________
 			if (mModTRACKER!= null){
-				mModTRACKER.removeBusRegistryListener(mModEXPORT);
-				mModTRACKER.removeBusRegistryListener(mModIMPORT);
+				mModTRACKER.removeListener(mModEXPORT);
+				mModTRACKER.removeListener(mModIMPORT);
 			}
 			if (mModEXPORT != null){
 				mModEXPORT.shutdown();
