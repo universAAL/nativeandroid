@@ -24,6 +24,7 @@ package org.universAAL.android.container;
 import java.io.File;
 import java.util.Dictionary;
 
+import org.universAAL.android.utils.Config;
 import org.universAAL.middleware.container.Container;
 import org.universAAL.middleware.container.ModuleContext;
 
@@ -208,13 +209,12 @@ public class AndroidContext implements ModuleContext, PlatformAbstraction {
 	}
 
 	public File getConfigHome() {
-		// TODO Auto-generated method stub
-		// Currently this new gimmick is empty. It should be like MiddlewareService.getConfDir but there is no context here
-		return null;
+		// Used only by GW
+		return new File(Config.getConfigDir()+id+"/");
 	}
 
 	public File getDataFolder() {
-		// TODO Auto-generated method stub
+		// TODO Not used in any module in Android yet
 		// Currently this new gimmick is empty. It should be like MiddlewareService.getConfDir but there is no context here
 		return null;
 	}

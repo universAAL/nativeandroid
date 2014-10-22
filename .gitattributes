@@ -385,7 +385,7 @@ mw.container.android/libs/mw.bus.tracker.core-3.2.0.jar -text
 mw.container.android/libs/mw.data.serialization.core-3.2.0.jar -text
 mw.container.android/libs/mw.managers.aalspace.core-3.2.0.jar -text
 mw.container.android/libs/mw.schemas-3.2.0.jar -text
-mw.container.android/libs/ri.gateway.communicator.core-3.1.1-SNAPSHOT.jar -text
+mw.container.android/libs/ri.gateway.multitenant-3.2.0.jar -text
 mw.container.android/pom.xml -text
 mw.container.android/project.properties -text
 mw.container.android/res/drawable-hdpi/ab_bottom_solid_uaal.9.png -text
@@ -473,7 +473,7 @@ mw.container.android/res/layout/empty.xml -text
 mw.container.android/res/layout/handler.xml -text
 mw.container.android/res/layout/progress.xml -text
 mw.container.android/res/raw/aalspace.xsd -text
-mw.container.android/res/raw/gateway.properties -text
+mw.container.android/res/raw/client.properties -text
 mw.container.android/res/raw/home.space -text
 mw.container.android/res/raw/jgroups.properties -text
 mw.container.android/res/raw/managersaalspace.properties -text

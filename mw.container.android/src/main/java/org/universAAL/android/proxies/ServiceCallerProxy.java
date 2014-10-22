@@ -32,15 +32,12 @@ import org.universAAL.android.utils.GroundingParcel;
 import org.universAAL.android.utils.AppConstants;
 import org.universAAL.android.utils.RAPIManager;
 import org.universAAL.android.utils.VariableSubstitution;
-import org.universAAL.middleware.container.SharedObjectListener;
 import org.universAAL.middleware.rdf.Resource;
 import org.universAAL.middleware.serialization.MessageContentSerializerEx;
 import org.universAAL.middleware.service.ServiceCaller;
 import org.universAAL.middleware.service.ServiceRequest;
 import org.universAAL.middleware.service.ServiceResponse;
 import org.universAAL.middleware.service.aapi.AapiServiceRequest;
-import org.universAAL.ri.gateway.communicator.service.RemoteSpacesManager;
-import org.universAAL.ri.gateway.eimanager.ImportEntry;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -55,7 +52,7 @@ import android.content.IntentFilter;
  * @author alfiva
  * 
  */
-public class ServiceCallerProxy extends ServiceCaller implements SharedObjectListener {
+public class ServiceCallerProxy extends ServiceCaller {
 	private WeakReference<Context> contextRef;
 	private String action=null;
 	private String category=null;
@@ -66,7 +63,6 @@ public class ServiceCallerProxy extends ServiceCaller implements SharedObjectLis
 	private Hashtable<String,String> extraKEYtoInputURI;
 	private Hashtable<String,String> outputURItoExtraKEY;
 	private ServiceCallerProxyReceiver receiver=null;
-	private ImportEntry entry=null;
 	
 	/**
 	 * Constructor for the proxy.
@@ -96,27 +92,7 @@ public class ServiceCallerProxy extends ServiceCaller implements SharedObjectLis
 	}
 	
 	public void sync() {
-		if (MiddlewareService.isGWrequired() && remote != null && !remote.isEmpty()) {
-			switch (Config.getRemoteType()) {
-			case AppConstants.REMOTE_TYPE_GW:
-				RemoteSpacesManager[] gw = (RemoteSpacesManager[]) AndroidContainer.THE_CONTAINER
-				.fetchSharedObject(AndroidContext.THE_CONTEXT, new Object[] { RemoteSpacesManager.class.getName() }, this);
-				if (gw != null && gw.length > 0) {
-					try { // In remote tag must be: URIoftheservice@NAMESPACEoftheserver
-						String[] uris = remote.split("@");
-						entry = gw[0].importRemoteService(this, uris[0], uris[1]);
-					} catch (Exception e) {
-						System.out.println("Could not import remote services");
-					}
-				}
-				break;
-			case AppConstants.REMOTE_TYPE_RAPI:
-				// In R API does not need syncing
-				break;
-			default:
-				break;
-			}
-		}
+		//Nothing. Publishing does not need syncing. For now. It used to for GW, but not with new GW.
 	}
 
 	/**
@@ -263,8 +239,8 @@ public class ServiceCallerProxy extends ServiceCaller implements SharedObjectLis
 		}
 	}
 	
-	//For the GW
-	public void sharedObjectAdded(Object sharedObj, Object removeHook) {
+	//For the old GW
+/*	public void sharedObjectAdded(Object sharedObj, Object removeHook) {
 		if(remote!=null && !remote.isEmpty() && sharedObj!=null && sharedObj instanceof RemoteSpacesManager){
 			try {
 				String[] uris=remote.split("@");
@@ -283,5 +259,5 @@ public class ServiceCallerProxy extends ServiceCaller implements SharedObjectLis
 				System.out.println("Could not unimport remote services");
 			}
 		}
-	}
+	}*/
 }
