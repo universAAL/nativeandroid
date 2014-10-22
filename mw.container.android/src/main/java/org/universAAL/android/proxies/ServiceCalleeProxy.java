@@ -103,7 +103,7 @@ public class ServiceCalleeProxy extends ServiceCallee {
 		if(MiddlewareService.isGWrequired()){
 			switch (Config.getRemoteType()) {
 			case AppConstants.REMOTE_TYPE_GW:
-				// Does not need syncing in GW, callees will be imported by remote node
+				// Does not need syncing in GW, transparent
 				break;
 			case AppConstants.REMOTE_TYPE_RAPI:
 				//Publish as well in the RAPI TODO What if offline!!!!!!!!?????

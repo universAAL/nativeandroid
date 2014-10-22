@@ -70,15 +70,7 @@ import org.universAAL.middleware.tracker.impl.BusMemberRegistryImpl;
 import org.universAAL.middleware.ui.IUIBus;
 import org.universAAL.middleware.ui.impl.UIBusImpl;
 import org.universAAL.middleware.util.Constants;
-import org.universAAL.ri.gateway.communicator.service.impl.CommunicatorStarter;
-import org.universAAL.ri.gateway.communicator.service.impl.GatewayAddress;
-import org.universAAL.ri.gateway.communicator.service.impl.GatewayCommunicatorImpl;
-import org.universAAL.ri.gateway.communicator.service.impl.Serializer;
-import org.universAAL.ri.gateway.eimanager.ExportOperationInterceptor;
-import org.universAAL.ri.gateway.eimanager.ImportOperationInterceptor;
-import org.universAAL.ri.gateway.eimanager.impl.EIOperationManager;
-import org.universAAL.ri.gateway.eimanager.impl.ExportManagerImpl;
-import org.universAAL.ri.gateway.eimanager.impl.ImportManagerImpl;
+import org.universAAL.ri.gateway.Gateway;
 
 import ch.ethz.iks.slp.Advertiser;
 import ch.ethz.iks.slp.Locator;
@@ -133,9 +125,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 	private ControlBroker mModCONTROLBROKER;
 	private TurtleSerializer mModSERIALIZER;
 	private BusMemberRegistryImpl mModTRACKER;
-	private GatewayCommunicatorImpl mModGATEWAY;
-	private ExportManagerImpl mModEXPORT;
-	private ImportManagerImpl mModIMPORT;
+	private Gateway mModGATEWAY;
 	private AndroidHandler mModHANDLER;
 	
 	@Override
@@ -713,39 +703,18 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 		switch (Config.getRemoteType()) {
 		case AppConstants.REMOTE_TYPE_GW:
 			// _________________BUS TRACKER_________________
+			org.universAAL.middleware.tracker.impl.Activator.fetchParams = new Object[] { IBusMemberRegistry.class.getName() };
 			mModTRACKER = new BusMemberRegistryImpl(AndroidContext.THE_CONTEXT);
 			AndroidContainer.THE_CONTAINER.shareObject(
 					AndroidContext.THE_CONTEXT, mModTRACKER,
 					new Object[] { IBusMemberRegistry.class.getName() });
 			Log.d(TAG, "Started BUS TRACKER");
 			// _________________GATEWAY_________________________
-			ModuleContext c8 = new AndroidContext("ri.gateway.communicator");
+			ModuleContext c8 = new AndroidContext("ri.gateway.multitenant");
 			Dictionary gatewayProps = Config.getProperties("ri.gateway.communicator.core");
 			try {
-				CommunicatorStarter.properties=(Properties) gatewayProps;
-				CommunicatorStarter.mc=AndroidContext.THE_CONTEXT;
-				Serializer.contentSerializer=mModSERIALIZER;
-				mModGATEWAY = new GatewayCommunicatorImpl();
-				final List<GatewayAddress> remoteAddresses = CommunicatorStarter.extractRemoteGateways();
-				mModGATEWAY.addRemoteGateways(remoteAddresses);
-				mModEXPORT = new ExportManagerImpl(mModGATEWAY);
-				mModIMPORT = new ImportManagerImpl(mModGATEWAY);
-				mModGATEWAY.setManagers(mModIMPORT, mModEXPORT);
-				mModGATEWAY.start();
-				mModTRACKER.addListener(mModEXPORT, true);
-				mModTRACKER.addListener(mModIMPORT, true);
-				AndroidContainer.THE_CONTAINER.fetchSharedObject(c8, new Object[] {
-						ImportOperationInterceptor.class.getName(),
-						ExportOperationInterceptor.class.getName() },
-						EIOperationManager.Instance);
-				AndroidContainer.THE_CONTAINER
-						.shareObject(c8, mModGATEWAY,
-								new Object[] { ImportOperationInterceptor.class
-										.getName() });
-				AndroidContainer.THE_CONTAINER
-						.shareObject(c8, mModGATEWAY,
-								new Object[] { ExportOperationInterceptor.class
-										.getName() });
+				mModGATEWAY = new Gateway();
+				mModGATEWAY.start(c8);
 				Log.d(TAG, "Started GATEWAY");
 			} catch (Exception e) {
 				Log.e(TAG, "Error while initializing Gateway", e);
@@ -778,25 +747,13 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 		switch (Config.getRemoteType()) {
 		case AppConstants.REMOTE_TYPE_GW:
 			// _________________GATEWAY_________________________
-			if (mModTRACKER!= null){
-				mModTRACKER.removeListener(mModEXPORT);
-				mModTRACKER.removeListener(mModIMPORT);
-			}
-			if (mModEXPORT != null){
-				mModEXPORT.shutdown();
-			}
-			if (mModIMPORT != null){
-				mModIMPORT.shutdown();
-			}
-			AndroidContainer.THE_CONTAINER.removeSharedObjectListener(EIOperationManager.Instance);
 			if (mModGATEWAY != null) {
-				mModGATEWAY.stop();
-				AndroidContainer.THE_CONTAINER.unshareObject(ExportOperationInterceptor.class.getName(), mModGATEWAY);
-				AndroidContainer.THE_CONTAINER.unshareObject(ImportOperationInterceptor.class.getName(), mModGATEWAY);
-				CommunicatorStarter.properties=null;
-				CommunicatorStarter.mc=null;
-				mModGATEWAY = null;
-				Serializer.contentSerializer=null;
+				try {
+					mModGATEWAY.getInstance().stop(mModGATEWAY.getInstance().context);
+					mModGATEWAY = null;
+				} catch (Exception e) {
+					Log.e(TAG, "Cannot stop the Gateway correctly");
+				}
 			}
 			// _________________BUS TRACKER_________________
 			if (mModTRACKER != null) {

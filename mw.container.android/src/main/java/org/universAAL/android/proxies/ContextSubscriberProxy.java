@@ -32,12 +32,10 @@ import org.universAAL.android.utils.GroundingParcel;
 import org.universAAL.android.utils.AppConstants;
 import org.universAAL.android.utils.RAPIManager;
 import org.universAAL.android.utils.VariableSubstitution;
-import org.universAAL.middleware.container.SharedObjectListener;
 import org.universAAL.middleware.context.ContextEvent;
 import org.universAAL.middleware.context.ContextEventPattern;
 import org.universAAL.middleware.context.ContextSubscriber;
 import org.universAAL.middleware.serialization.MessageContentSerializerEx;
-import org.universAAL.ri.gateway.communicator.service.RemoteSpacesManager;
 
 import android.content.Context;
 import android.content.Intent;
@@ -50,7 +48,7 @@ import android.content.Intent;
  * @author alfiva
  * 
  */
-public class ContextSubscriberProxy extends ContextSubscriber implements SharedObjectListener{
+public class ContextSubscriberProxy extends ContextSubscriber {
 	private WeakReference<Context> contextRef;
 	private String action=null;
 	private String category=null;
@@ -82,21 +80,12 @@ public class ContextSubscriberProxy extends ContextSubscriber implements SharedO
 		if (MiddlewareService.isGWrequired() && remote != null && !remote.isEmpty()) {
 		switch (Config.getRemoteType()) {
 			case AppConstants.REMOTE_TYPE_GW:
-				RemoteSpacesManager[] gw = (RemoteSpacesManager[]) AndroidContainer.THE_CONTAINER
-						.fetchSharedObject(AndroidContext.THE_CONTEXT,
-								new Object[] { RemoteSpacesManager.class.getName() }, this);
-				if (gw != null && gw.length > 0) {
-					try {
-						gw[0].importRemoteContextEvents(this, prepareSubscriptions(grounding));
-					} catch (Exception e) {
-						System.out.println("Could not import remote events");
-					}
-				}
+				// Does not need syncing in GW, transparent
 				break;
 			case AppConstants.REMOTE_TYPE_RAPI:
 				// RAPI only gets 1 pattern at a time, and the grounding is (surprise!) a single pattern
 				if(MiddlewareService.isGWrequired()){
-					RAPIManager.invokeInThread(RAPIManager.SENDC, grounding);
+					RAPIManager.invokeInThread(RAPIManager.SUBSCRIBEC, grounding);
 				}
 				break;
 			default:
@@ -173,8 +162,8 @@ public class ContextSubscriberProxy extends ContextSubscriber implements SharedO
 		}
 	}
 
-	// For the GW
-	public void sharedObjectAdded(Object sharedObj, Object removeHook) {
+	// For the old GW
+	/*public void sharedObjectAdded(Object sharedObj, Object removeHook) {
 		if(grounding!=null && sharedObj!=null && sharedObj instanceof RemoteSpacesManager){
 			try {
 				((RemoteSpacesManager)sharedObj).importRemoteContextEvents(this, prepareSubscriptions(grounding));
@@ -186,6 +175,6 @@ public class ContextSubscriberProxy extends ContextSubscriber implements SharedO
 
 	public void sharedObjectRemoved(Object removeHook) {
 		// Unimport is only for services
-	}
+	}*/
 
 }

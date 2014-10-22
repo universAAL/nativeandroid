@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.universAAL.android"
-    android:versionCode="2014101601"
+    android:versionCode="2014102001"
     android:versionName="3.2.0" >
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -16,7 +16,7 @@
     <permission android:name="org.universAAL.android.permission.C2D_MESSAGE" android:protectionLevel="signature" />
     <uses-permission android:name="org.universAAL.android.permission.C2D_MESSAGE" />
 
-    <uses-sdk android:minSdkVersion="10" android:targetSdkVersion="19"/>
+    <uses-sdk android:minSdkVersion="10" android:targetSdkVersion="21"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application

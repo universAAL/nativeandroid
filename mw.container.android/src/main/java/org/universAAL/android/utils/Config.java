@@ -205,14 +205,14 @@ public class Config {
 		String basepath=Environment.getExternalStorageDirectory().getPath()+Config.getConfigDir();
 		Log.d(TAG, "Creating default configuration files");
 		try {
-			createFile(ctxt, R.raw.jgroups, basepath+"mw.connectors.communication.jgroups.core.properties");
-			createFile(ctxt, R.raw.slp, basepath+"mw.connectors.discovery.slp.core.properties");
-			createFile(ctxt, R.raw.managersaalspace, basepath+"mw.managers.aalspace.core.properties");
-			createFile(ctxt, R.raw.modulesaalspace, basepath+"mw.modules.aalspace.core.properties");
-			createFile(ctxt, R.raw.gateway, basepath+"ri.gateway.communicator.core.properties");
-			createFile(ctxt, R.raw.udp, basepath+"udp.xml");
-			createFile(ctxt, R.raw.aalspace, basepath+"aalspace.xsd");
-			createFile(ctxt, R.raw.home, basepath+"Home.space");
+			createFile(ctxt, R.raw.jgroups, basepath,"mw.connectors.communication.jgroups.core.properties");
+			createFile(ctxt, R.raw.slp, basepath,"mw.connectors.discovery.slp.core.properties");
+			createFile(ctxt, R.raw.managersaalspace, basepath,"mw.managers.aalspace.core.properties");
+			createFile(ctxt, R.raw.modulesaalspace, basepath,"mw.modules.aalspace.core.properties");
+			createFile(ctxt, R.raw.client, basepath+"ri.gateway.multitenant/","client.properties");
+			createFile(ctxt, R.raw.udp, basepath,"udp.xml");
+			createFile(ctxt, R.raw.aalspace, basepath,"aalspace.xsd");
+			createFile(ctxt, R.raw.home, basepath,"Home.space");
 		} catch (IOException e) {
 			Log.e(TAG, "Could not create one or more default configuarion files."
 							+ "You will have to place them manually: " + e);
@@ -227,15 +227,20 @@ public class Config {
 	 * @param fileID
 	 *            ID of the file in R.raw
 	 * @param path
-	 *            Path in the sdcard with the file name
+	 *            Path in the sdcard without the file name
+	 * @param filename
+	 *            Name of the file
 	 * @throws IOException
 	 *             If an error occurs during writing
 	 */
-	private static void createFile(Context ctxt, int fileID, String path) throws IOException {
-		File file = new File(path);
+	private static void createFile(Context ctxt, int fileID, String path,
+			String filename) throws IOException {
+		File file = new File(path, filename);
 		if (file.exists()) {
 			return; // Do not overwrite existing files
 		}
+		File folder = new File(path);
+		folder.mkdirs(); // Create folder if it did not exist, the file is created in FileOutputStream
 		InputStream in = ctxt.getResources().openRawResource(fileID);
 		FileOutputStream out = new FileOutputStream(file);
 		byte[] buff = new byte[1024];
