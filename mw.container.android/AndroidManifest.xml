@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="org.universAAL.android"
+    android:versionCode="2014051401"
+    android:versionName="3.0.1-SNAPSHOT" >
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <uses-sdk android:minSdkVersion="10" android:targetSdkVersion="19"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+    <application
+        android:allowBackup="false"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name" android:theme="@style/_uaal">
+        <activity android:name="org.universAAL.android.activities.HandlerActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+        <activity android:name="org.universAAL.android.activities.SettingsActivity" android:launchMode="singleTop"/>
+
+        <!-- This starts the MW when device is ON -->
+        <receiver
+            android:name="org.universAAL.android.receivers.system.BootReceiver"
+            android:enabled="true"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+        
+        <!-- This launches scan for universaalized apps -->
+        <receiver
+            android:name="org.universAAL.android.receivers.system.PackageReceiver"
+            android:enabled="false"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED" >
+                </action>
+                <action android:name="android.intent.action.PACKAGE_REMOVED" >
+                </action>
+                <action android:name="android.intent.action.PACKAGE_REPLACED" >
+                </action>
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+        
+        <!-- This starts/stops the connector when Wifi is ON/OFF -->
+        <receiver
+            android:name="org.universAAL.android.receivers.system.WifiReceiver"
+            android:enabled="true"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+
+        <!-- This is the service always running the MW and buses -->
+        <service
+            android:name="org.universAAL.android.services.MiddlewareService"
+            android:enabled="true"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="org.universAAL.android.action.PCK_REGISTER" />
+                <action android:name="org.universAAL.android.action.PCK_UNREGISTER" />
+            </intent-filter>
+        </service>
+        
+        <!-- This scans apps for universaalized manifests -->
+        <service
+            android:name="org.universAAL.android.services.ScanService"
+            android:enabled="true"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="org.universAAL.android.action.PCK_REGISTER_ALL" />
+                <action android:name="org.universAAL.android.action.PCK_UNREGISTER_ALL" />
+            </intent-filter>
+        </service>
+        
+        <!-- This keeps ontologies updated and registered. 
+        Unlike registering packages, it can all be done from this service 
+        because it uses OntologyManagement singleton -->
+        <service
+            android:name="org.universAAL.android.services.OntologyService"
+            android:enabled="true"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="org.universAAL.android.action.ONT_REGISTER" />
+                <action android:name="org.universAAL.android.action.ONT_UNREGISTER" />
+                <action android:name="org.universAAL.android.action.ONT_REGISTER_ALL" />
+                <action android:name="org.universAAL.android.action.ONT_UNREGISTER_ALL" />
+            </intent-filter>
+        </service>
+        
+    </application>
+
+</manifest>
