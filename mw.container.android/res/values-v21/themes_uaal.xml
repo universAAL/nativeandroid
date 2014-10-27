@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Generated with http://android-holo-colors.com -->
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="uaal" parent="@style/_uaal" />
+
+    <style name="_uaal" parent="android:Theme.Material.Light">
+        <item name="android:buttonStyle">@style/Buttonuaal</item>
+        <item name="android:imageButtonStyle">@style/ImageButtonuaal</item>
+        <item name="android:actionBarItemBackground">@drawable/selectable_background_uaal</item>
+        <item name="android:popupMenuStyle">@style/PopupMenu.Uaal</item>
+        <item name="android:dropDownListViewStyle">@style/DropDownListView.Uaal</item>
+<!--         <item name="android:actionBarTabStyle">@style/ActionBarTabStyle.Uaal</item> -->
+<!--         <item name="android:actionDropDownStyle">@style/DropDownNav.Uaal</item> -->
+        <item name="android:actionBarStyle">@style/ActionBar.Solid.Uaal</item>
+        <item name="android:actionModeBackground">@drawable/cab_background_top_uaal</item>
+        <item name="android:actionModeSplitBackground">@drawable/cab_background_bottom_uaal</item>
+        <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Uaal</item>
+    </style>
+
+    <style name="Buttonuaal" parent="android:Widget.Material.Light.Button">
+        <item name="android:background">@drawable/uaal_btn_default_holo_light</item>
+        <item name="android:textColor">@color/default_txt_color_w</item>
+        <item name="android:paddingBottom">@dimen/activity_vertical_margin_buttons</item>
+        <item name="android:paddingTop">@dimen/activity_vertical_margin_buttons</item>
+    </style>
+
+    <style name="ImageButtonuaal" parent="android:Widget.Material.Light.ImageButton">
+        <item name="android:background">@drawable/uaal_btn_default_holo_light</item>
+        <item name="android:textColor">@color/default_txt_color_w</item>
+        <item name="android:paddingBottom">@dimen/activity_vertical_margin_buttons</item>
+        <item name="android:paddingTop">@dimen/activity_vertical_margin_buttons</item>
+    </style>
+
+    <style name="ActionBar.Solid.Uaal" parent="@android:style/Widget.Material.Light.ActionBar.Solid">
+        <item name="android:background">@drawable/ab_solid_uaal</item>
+        <item name="android:backgroundStacked">@drawable/ab_stacked_solid_uaal</item>
+        <item name="android:backgroundSplit">@drawable/ab_bottom_solid_uaal</item>
+<!--         <item name="android:progressBarStyle">@style/ProgressBar.Uaal</item> -->
+    </style>
+
+<!--     <style name="ActionBar.Transparent.Uaal" parent="@android:style/Widget.Holo.Light.ActionBar"> -->
+<!--         <item name="android:background">@drawable/ab_transparent_uaal</item> -->
+<!--         <item name="android:progressBarStyle">@style/ProgressBar.Uaal</item> -->
+<!--     </style> -->
+
+    <style name="PopupMenu.Uaal" parent="@android:style/Widget.Material.Light.ListPopupWindow">
+        <item name="android:popupBackground">@drawable/menu_dropdown_panel_uaal</item>
+    </style>
+
+    <style name="DropDownListView.Uaal" parent="@android:style/Widget.Material.Light.ListView.DropDown">
+        <item name="android:listSelector">@drawable/selectable_background_uaal</item>
+    </style>
+
+<!--     <style name="ActionBarTabStyle.Uaal" parent="@android:style/Widget.Holo.Light.ActionBar.TabView"> -->
+<!--         <item name="android:background">@drawable/tab_indicator_ab_uaal</item> -->
+<!--     </style> -->
+
+<!--     <style name="DropDownNav.Uaal" parent="@android:style/Widget.Holo.Light.Spinner"> -->
+<!--         <item name="android:background">@drawable/spinner_background_ab_uaal</item> -->
+<!--         <item name="android:popupBackground">@drawable/menu_dropdown_panel_uaal</item> -->
+<!--         <item name="android:dropDownSelector">@drawable/selectable_background_uaal</item> -->
+<!--     </style> -->
+
+<!--     <style name="ProgressBar.Uaal" parent="@android:style/Widget.Holo.Light.ProgressBar.Horizontal"> -->
+<!--         <item name="android:progressDrawable">@drawable/progress_horizontal_uaal</item> -->
+<!--     </style> -->
+
+    <style name="ActionButton.CloseMode.Uaal" parent="@android:style/Widget.Material.Light.ActionButton.CloseMode">
+        <item name="android:background">@drawable/btn_cab_done_uaal</item>
+    </style>
+
+    <!-- this style is only referenced in a Light.DarkActionBar based theme -->
+    <style name="Theme.Uaal.Widget" parent="@android:style/Theme.Material">
+        <item name="android:popupMenuStyle">@style/PopupMenu.Uaal</item>
+        <item name="android:dropDownListViewStyle">@style/DropDownListView.Uaal</item>
+    </style>
+
+</resources>

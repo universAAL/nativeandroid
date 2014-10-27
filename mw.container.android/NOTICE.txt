@@ -1,0 +1,82 @@
+embedded universAAL middleware on Android
+
+Copyright 2008-2014 ITACA-TSB, http://www.tsb.upv.es
+Instituto Tecnologico de Aplicaciones de Comunicacion 
+Avanzadas - Grupo Tecnologias para la Salud y el 
+Bienestar (TSB)
+
+OCO Source Materials
+(C) Copyright IBM Corp. 2012
+
+Copyright 2007-2014 Fraunhofer IGD, http://www.igd.fraunhofer.de
+Fraunhofer-Gesellschaft - Institute for Computer Graphics Research 
+	
+I. Included Software
+
+Software developed by IBM and Fraunhofer IGD within the universAAL project.
+
+Code snippets by Google for using Google Cloud Messaging platform,
+licensed under Apache Software License 2.0,
+publicly available at http://developer.android.com/google/gcm/client.html
+
+
+II. Used Software
+
+This product uses software developed at
+The Apace Xerces(TM) Project (http://xerces.apache.org/)
+Licensed under the Apache License 2.0.
+
+NOTE: The code is embedded AS IS, with only package names changed,
+in org.universAAL.middleware.android.impl.datatypefactory
+
+This product uses software developed at
+The Android Open Source Project (http://source.android.com/)
+Licensed under the Apache License 2.0.
+
+This product uses software developed at
+Information-technology Promotion Agency, (http://www.ipa.go.jp/)
+& Precision Modeling Laboratory, Inc., (http://www.pml.co.jp/)
+Copyright 2000 Software Research Associates, Inc., Tokyo, Japan.
+Licensed under specific License.
+
+This product uses software developed at
+The Legion Of The Bouncy Castle (http://www.bouncycastle.org)
+Copyright (c) 2000 - 2009 The Legion Of The Bouncy Castle
+Licensed under modified MIT X11 License.
+
+This product uses software developed at
+Google Gson (https://sites.google.com/site/gson/)
+Copyright (c) Google
+Licensed under the Apache License 2.0.
+
+This product uses software developed at
+JGroups (http://www.jgroups.org/index.html)
+Copyright (c) JGroups
+Licensed under the Apache License 2.0.
+
+This product uses software developed at
+JSLP (http://jslp.sourceforge.net/index.html)
+Copyright (c) JSLP
+Licensed under BSD style license.
+
+
+III. License Summary
+- Apache License 2.0
+- Modified MIT X11 License
+- License of the package jp.go.ipa.jgcl:
+
+ Copyright 2000 by Information-technology Promotion Agency, Japan
+ Copyright 2000 by Precision Modeling Laboratory, Inc., Tokyo, Japan
+ Copyright 2000 by Software Research Associates, Inc., Tokyo, Japan
+
+ Permission to use, copy, modify, and distribute this software
+ and its documentation for any purpose and without fee is hereby
+ granted, provided that the above copyright notice appear in all
+ copies and that both that copyright notice and this permission
+ notice appear in supporting documentation, and that the name of
+ Software Research Associates and Information-technology
+ Promotion Agency not be used in advertising or publicity
+ pertaining to distribution of the software without specific,
+ written prior permission. Information-technology Promotion 
+ Agency make no representations about the suitability of this software
+ for any purpose. It is provided "as is" without express or implied warranty.
