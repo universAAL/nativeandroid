@@ -384,6 +384,12 @@ mw.container.android/NOTICE.txt -text
 mw.container.android/libs/android-support-v4.jar -text
 mw.container.android/libs/bcprov-jdk13-140.jar -text
 mw.container.android/libs/jgroups-3.4.1.Final.jar -text
+mw.container.android/libs/jslp.core-3.2.1-SNAPSHOT.jar -text
+mw.container.android/libs/mw.bus.tracker.core-3.2.1-SNAPSHOT.jar -text
+mw.container.android/libs/mw.data.serialization.core-3.2.1-SNAPSHOT.jar -text
+mw.container.android/libs/mw.managers.aalspace.core-3.2.1-SNAPSHOT.jar -text
+mw.container.android/libs/mw.schemas-3.2.1-SNAPSHOT.jar -text
+mw.container.android/libs/ri.gateway.multitenant-3.2.1-SNAPSHOT.jar -text
 mw.container.android/pom.xml -text
 mw.container.android/project.properties -text
 mw.container.android/res/drawable-hdpi-v11/ic_notif.png -text
