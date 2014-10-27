@@ -392,6 +392,7 @@ mw.container.android/libs/mw.schemas-3.2.0.jar -text
 mw.container.android/libs/ri.gateway.multitenant-3.2.0.jar -text
 mw.container.android/pom.xml -text
 mw.container.android/project.properties -text
+mw.container.android/res/drawable-hdpi-v11/ic_notif.png -text
 mw.container.android/res/drawable-hdpi/ab_bottom_solid_uaal.9.png -text
 mw.container.android/res/drawable-hdpi/ab_solid_uaal.9.png -text
 mw.container.android/res/drawable-hdpi/ab_stacked_solid_uaal.9.png -text
@@ -402,6 +403,7 @@ mw.container.android/res/drawable-hdpi/btn_cab_done_pressed_uaal.9.png -text
 mw.container.android/res/drawable-hdpi/cab_background_bottom_uaal.9.png -text
 mw.container.android/res/drawable-hdpi/cab_background_top_uaal.9.png -text
 mw.container.android/res/drawable-hdpi/ic_launcher.png -text
+mw.container.android/res/drawable-hdpi/ic_notif.png -text
 mw.container.android/res/drawable-hdpi/img_notfound.png -text
 mw.container.android/res/drawable-hdpi/list_focused_uaal.9.png -text
 mw.container.android/res/drawable-hdpi/list_pressed_uaal.9.png -text
@@ -411,6 +413,7 @@ mw.container.android/res/drawable-hdpi/uaal_btn_default_disabled_holo_light.9.pn
 mw.container.android/res/drawable-hdpi/uaal_btn_default_focused_holo_light.9.png -text
 mw.container.android/res/drawable-hdpi/uaal_btn_default_normal_holo_light.9.png -text
 mw.container.android/res/drawable-hdpi/uaal_btn_default_pressed_holo_light.9.png -text
+mw.container.android/res/drawable-mdpi-v11/ic_notif.png -text
 mw.container.android/res/drawable-mdpi/ab_bottom_solid_uaal.9.png -text
 mw.container.android/res/drawable-mdpi/ab_solid_uaal.9.png -text
 mw.container.android/res/drawable-mdpi/ab_stacked_solid_uaal.9.png -text
@@ -421,6 +424,7 @@ mw.container.android/res/drawable-mdpi/btn_cab_done_pressed_uaal.9.png -text
 mw.container.android/res/drawable-mdpi/cab_background_bottom_uaal.9.png -text
 mw.container.android/res/drawable-mdpi/cab_background_top_uaal.9.png -text
 mw.container.android/res/drawable-mdpi/ic_launcher.png -text
+mw.container.android/res/drawable-mdpi/ic_notif.png -text
 mw.container.android/res/drawable-mdpi/img_notfound.png -text
 mw.container.android/res/drawable-mdpi/list_focused_uaal.9.png -text
 mw.container.android/res/drawable-mdpi/list_pressed_uaal.9.png -text
@@ -430,6 +434,7 @@ mw.container.android/res/drawable-mdpi/uaal_btn_default_disabled_holo_light.9.pn
 mw.container.android/res/drawable-mdpi/uaal_btn_default_focused_holo_light.9.png -text
 mw.container.android/res/drawable-mdpi/uaal_btn_default_normal_holo_light.9.png -text
 mw.container.android/res/drawable-mdpi/uaal_btn_default_pressed_holo_light.9.png -text
+mw.container.android/res/drawable-xhdpi-v11/ic_notif.png -text
 mw.container.android/res/drawable-xhdpi/ab_bottom_solid_uaal.9.png -text
 mw.container.android/res/drawable-xhdpi/ab_solid_uaal.9.png -text
 mw.container.android/res/drawable-xhdpi/ab_stacked_solid_uaal.9.png -text
@@ -440,6 +445,7 @@ mw.container.android/res/drawable-xhdpi/btn_cab_done_pressed_uaal.9.png -text
 mw.container.android/res/drawable-xhdpi/cab_background_bottom_uaal.9.png -text
 mw.container.android/res/drawable-xhdpi/cab_background_top_uaal.9.png -text
 mw.container.android/res/drawable-xhdpi/ic_launcher.png -text
+mw.container.android/res/drawable-xhdpi/ic_notif.png -text
 mw.container.android/res/drawable-xhdpi/img_notfound.png -text
 mw.container.android/res/drawable-xhdpi/list_focused_uaal.9.png -text
 mw.container.android/res/drawable-xhdpi/list_pressed_uaal.9.png -text
@@ -449,6 +455,7 @@ mw.container.android/res/drawable-xhdpi/uaal_btn_default_disabled_holo_light.9.p
 mw.container.android/res/drawable-xhdpi/uaal_btn_default_focused_holo_light.9.png -text
 mw.container.android/res/drawable-xhdpi/uaal_btn_default_normal_holo_light.9.png -text
 mw.container.android/res/drawable-xhdpi/uaal_btn_default_pressed_holo_light.9.png -text
+mw.container.android/res/drawable-xxhdpi-v11/ic_notif.png -text
 mw.container.android/res/drawable-xxhdpi/ab_bottom_solid_uaal.9.png -text
 mw.container.android/res/drawable-xxhdpi/ab_solid_uaal.9.png -text
 mw.container.android/res/drawable-xxhdpi/ab_stacked_solid_uaal.9.png -text
@@ -459,6 +466,7 @@ mw.container.android/res/drawable-xxhdpi/btn_cab_done_pressed_uaal.9.png -text
 mw.container.android/res/drawable-xxhdpi/cab_background_bottom_uaal.9.png -text
 mw.container.android/res/drawable-xxhdpi/cab_background_top_uaal.9.png -text
 mw.container.android/res/drawable-xxhdpi/ic_launcher.png -text
+mw.container.android/res/drawable-xxhdpi/ic_notif.png -text
 mw.container.android/res/drawable-xxhdpi/img_notfound.png -text
 mw.container.android/res/drawable-xxhdpi/list_focused_uaal.9.png -text
 mw.container.android/res/drawable-xxhdpi/list_pressed_uaal.9.png -text

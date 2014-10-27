@@ -13,6 +13,9 @@
     <string name="action_settings">Settings</string>
     <string name="warning_gplay">Google Play Services is not available</string>
     
+    <string name="notif_title">universAAL</string>
+    <string name="notif_text">universAAL is up and running, tap to access the control panel</string>
+    
     <string name="setting_resetwifi_text">Forget current home WiFi to be paired with a different one</string>
     <string name="setting_resetwifi_text_none">There is no home WiFi paired yet</string>
     <string name="setting_resetwifi_title">Reset home WiFi</string>

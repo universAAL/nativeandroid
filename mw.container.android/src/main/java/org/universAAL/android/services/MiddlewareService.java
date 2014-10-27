@@ -23,10 +23,9 @@ package org.universAAL.android.services;
 
 import java.util.Dictionary;
 import java.util.Hashtable;
-import java.util.List;
-import java.util.Properties;
 
 import org.universAAL.android.R;
+import org.universAAL.android.activities.HandlerActivity;
 import org.universAAL.android.container.AndroidContainer;
 import org.universAAL.android.container.AndroidContext;
 import org.universAAL.android.container.AndroidRegistry;
@@ -79,6 +78,7 @@ import ch.ethz.iks.slp.impl.LocatorImpl;
 import ch.ethz.iks.slp.impl.SLPCore;
 
 import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -90,6 +90,7 @@ import android.net.wifi.WifiManager.MulticastLock;
 import android.os.Environment;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -134,9 +135,18 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 		super.onCreate();
 		Log.v(TAG, "Create");
 		mPercentage=0;
-		// TODO Check! Supposedly, this starts as foreground but without notification. Not on 4.0 anymore
-		Notification notif = new Notification(0, null,
-				System.currentTimeMillis());
+		
+		// Ongoing notification is mandatory after Android 4.0
+		Intent notificationIntent = new Intent(this, HandlerActivity.class);
+		PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, Intent.FLAG_ACTIVITY_NEW_TASK );
+		NotificationCompat.Builder builder =
+		        new NotificationCompat.Builder(this)
+		        .setSmallIcon(R.drawable.ic_notif)
+		        .setContentTitle(getString(R.string.notif_title))
+		        .setContentText(getString(R.string.notif_text))
+		        .setContentIntent(contentIntent)
+		        .setPriority(NotificationCompat.PRIORITY_MIN);
+		Notification notif=builder.build();
 		notif.flags |= Notification.FLAG_NO_CLEAR;
 		startForeground(ONGOING_NOTIFICATION, notif);
 		
