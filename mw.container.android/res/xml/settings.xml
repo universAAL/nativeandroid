@@ -74,7 +74,7 @@
             android:summary="@string/setting_connurl_text"
             android:title="@string/setting_connurl_title" />
         <EditTextPreference
-            android:defaultValue="1036878524725"
+            android:defaultValue="@string/setting_conngcm_def"
             android:dialogMessage="@string/setting_conngcm_instr"
             android:key="setting_conngcm_key"
             android:summary="@string/setting_conngcm_text"

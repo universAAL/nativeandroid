@@ -146,7 +146,7 @@ public class RAPIManager {
 	private static void storeRegistrationId(Context context, String regId) {
 	    final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 	    int appVersion = getAppVersion(context);
-	    Log.i(TAG, "Saving regId on app version " + appVersion);
+	    Log.i(TAG, "Saving regId "+regId+" on app version " + appVersion);
 	    SharedPreferences.Editor editor = prefs.edit();
 	    editor.putString(PROPERTY_REG_ID, regId);
 	    editor.putInt(PROPERTY_APP_VERSION, appVersion);
@@ -218,9 +218,9 @@ public class RAPIManager {
 			wr.flush();
 			wr.close();
 
-			Log.d("GCMReceiver","SENT TO SERVER: "+url);
+			Log.d(TAG,"SENT TO SERVER: "+url);
 			if (conn.getResponseCode() != HttpURLConnection.HTTP_OK){
-				Log.e("GCMReceiver","ERROR REACHING SERVER "+conn.getResponseCode()+" : "+conn.getResponseMessage());
+				Log.e(TAG,"ERROR REACHING SERVER "+conn.getResponseCode()+" : "+conn.getResponseMessage());
 			}
 
 			if (method == RAPIManager.CALLS) {

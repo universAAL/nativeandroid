@@ -30,6 +30,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 
 import android.os.Bundle;
+import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
@@ -104,7 +105,29 @@ public class SettingsActivity extends PreferenceActivity {
 					return true;// Allow the change
 				}
 			}
-
+		});
+		
+		// Manage the registration on Google Play Services GCM when changing project API key
+		EditTextPreference connKey = (EditTextPreference) findPreference("setting_conngcm_key");
+		connKey.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+			public boolean onPreferenceChange(Preference preference,
+					Object newValue) {
+				if (checkPlayServices()) {
+					String mRegID = RAPIManager
+							.getRegistrationId(getApplicationContext());
+					if (!mRegID.equals((String) newValue)) {
+						// API Key of GCM project changed
+						RAPIManager.registerInThread(getApplicationContext());
+					}
+					return true;
+				} else {
+					Toast.makeText(getApplicationContext(),
+							R.string.warning_gplay, Toast.LENGTH_LONG).show();
+					// Do not block the app from running if Play Services is not
+					// available
+					return false;// just dont allow change
+				}
+			}
 		});
 	}
 	
