@@ -88,6 +88,8 @@
     <string name="setting_conngcm_instr">Google Cloud Messaging Key Identificator of the server hosting the Remote API</string>
     <string name="setting_conngcm_text">GCM Key of the server hosting the Remote API</string>
     <string name="setting_conngcm_title">Remote connection identification</string>
+    <string name="setting_conngcm_def">1036878524725</string>
+    <!-- must be defined here otherwise interpreted as int in settings.xml -->
     
     <string name="setting_connusr_instr">String that uniquely identifies this universAAL node for the Remote API</string>
     <string name="setting_connusr_text">Identifier of this node for the Remote API</string>
