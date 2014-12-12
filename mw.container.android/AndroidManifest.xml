@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.universAAL.android"
-    android:versionCode="2014121001"
+    android:versionCode="2014121201"
     android:versionName="3.2.1-SNAPSHOT" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -52,12 +53,9 @@
             android:enabled="false"
             android:exported="false" >
             <intent-filter>
-                <action android:name="android.intent.action.PACKAGE_ADDED" >
-                </action>
-                <action android:name="android.intent.action.PACKAGE_REMOVED" >
-                </action>
-                <action android:name="android.intent.action.PACKAGE_REPLACED" >
-                </action>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+                <action android:name="android.intent.action.PACKAGE_REPLACED" />
                 <data android:scheme="package" />
             </intent-filter>
         </receiver>
@@ -69,6 +67,7 @@
             android:exported="false" >
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="android.net.wifi.STATE_CHANGE" />
             </intent-filter>
         </receiver>
 

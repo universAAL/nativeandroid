@@ -77,16 +77,20 @@ import ch.ethz.iks.slp.impl.AdvertiserImpl;
 import ch.ethz.iks.slp.impl.LocatorImpl;
 import ch.ethz.iks.slp.impl.SLPCore;
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+import android.net.Network;
+import android.net.NetworkCapabilities;
+import android.net.NetworkRequest;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.net.wifi.WifiManager.MulticastLock;
+import android.os.Build;
 import android.os.Environment;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
@@ -171,6 +175,15 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 		// works without doing so.
 		// System.setProperty("http.keepAlive", "false");
 
+		// Google had the wonderful idea in Android 5.0 of not enabling WIFI
+		// connection when it does not have internet access, and fall back to
+		// data connection. So in 5.0 we have to deliberately request WIFI and
+		// set it as the process connection when it "becomes" available. And
+		// pray that WIFI is ON by the time we make our checks...
+		if (Config.isWifiAllowed()) {
+			requestLollipopWifi();
+		}
+		
 		// Create (dont use yet) the multicast lock. Make it not counted: this app only uses one lock
 		WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 		mLock = wifi.createMulticastLock("uaal_multicast");
@@ -258,8 +271,9 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 						if (action.equals(Intent.ACTION_BOOT_COMPLETED)) {
 							//Do nothing, the MW is already started by now in oncreate
 							Log.v(TAG, "Action is BOOT");
-						} else if (action.equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
-							//Only react to meaningful changes 
+						} else if (action.equals(ConnectivityManager.CONNECTIVITY_ACTION)
+								|| action.equals("android.net.wifi.STATE_CHANGE")) {
+							// Only react to meaningful changes
 							Log.v(TAG, "Action is WIFI");
 							int newWifi = checkWifi(); //Dont set mCurrentWifi yet, we have to compare
 							if (Config.isWifiAllowed()) {
@@ -286,7 +300,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 									}
 									break;
 								case AppConstants.WIFI_HOME:
-									if (mCurrentWIFI == AppConstants.WIFI_NOTSET || mCurrentWIFI == AppConstants.WIFI_HOME) {
+									if (mCurrentWIFI == AppConstants.WIFI_OFF || mCurrentWIFI == AppConstants.WIFI_STRANGER) {
 										if (modeGW) { stopGateway(); }
 										restartConnector(true); // Turn on jSLP, dont use GW
 									}
@@ -811,11 +825,32 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 	 * 
 	 * @return True if there is one.
 	 */
-	private boolean isWifiOn(){
-		ConnectivityManager connectivityManager = (ConnectivityManager) MiddlewareService.this
-				.getSystemService(Context.CONNECTIVITY_SERVICE);
-		NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
-		return (netInfo != null && netInfo.getType() == ConnectivityManager.TYPE_WIFI);
+//	private boolean isWifiOn(){
+//		try {
+//			Thread.sleep(3000);
+//		} catch (InterruptedException e) {
+//			e.printStackTrace();
+//		}
+//		ConnectivityManager connectivityManager = (ConnectivityManager) MiddlewareService.this
+//				.getSystemService(Context.CONNECTIVITY_SERVICE);
+//		NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
+//		return (netInfo != null && netInfo.getType() == ConnectivityManager.TYPE_WIFI);
+//	}
+
+	@SuppressLint("NewApi")
+	private void requestLollipopWifi() {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+			ConnectivityManager connectivityManager = (ConnectivityManager) MiddlewareService.this
+					.getSystemService(Context.CONNECTIVITY_SERVICE);
+			connectivityManager.requestNetwork(new NetworkRequest.Builder()
+					.addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
+					.build(), new ConnectivityManager.NetworkCallback() {
+				public void onAvailable(Network network) {
+					Log.d(TAG, "Setting process default network "+network.toString());
+					ConnectivityManager.setProcessDefaultNetwork(network);
+				}
+			});
+		}
 	}
 	
 	//All this "isOurWifi" thing is for knowing when to start the GW or connector.
@@ -825,13 +860,13 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 	 * Space is located.
 	 */
 	private void thisIsOurWifi() {
-		if (isWifiOn()) {
+//		if (isWifiOn()) {
 			WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 			WifiInfo wifiInfo = wifiManager.getConnectionInfo();
 			String networkId = wifiInfo.getSSID();
 			PreferenceManager.getDefaultSharedPreferences(this).edit().putString(AppConstants.MY_WIFI, networkId).commit();
 			Log.i(TAG, "Setting home space Wifi: "+networkId);
-		}
+//		}
 	}
 	
 	/**
@@ -840,9 +875,13 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 	 * @return Constant representing the status.
 	 */
 	private int checkWifi(){
-		if (isWifiOn()) {
+//		if (isWifiOn()) {
 			WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 			WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+			if(wifiInfo.getNetworkId()==-1){ //No network actually
+				Log.i(TAG, "WIFI CHECK: Wifi is not on");
+				return AppConstants.WIFI_OFF;
+			}
 			String networkId = wifiInfo.getSSID();
 			String home = PreferenceManager.getDefaultSharedPreferences(this)
 					.getString(AppConstants.MY_WIFI, AppConstants.NO_WIFI);
@@ -857,9 +896,9 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 				Log.i(TAG, "WIFI CHECK: We have a home wifi, but it is not this one. If you want it to be, clear app data");
 				return AppConstants.WIFI_STRANGER;
 			}
-		}
-		Log.i(TAG, "WIFI CHECK: Wifi is not on");
-		return AppConstants.WIFI_OFF;
+//		}
+//		Log.i(TAG, "WIFI CHECK: Wifi is not on");
+//		return AppConstants.WIFI_OFF;
 	}
 	
 	private void addPercent(int percent){

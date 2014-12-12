@@ -483,6 +483,7 @@ mw.container.android/res/drawable/uaal_btn_default_holo_light.xml -text
 mw.container.android/res/layout-sw720dp-land/handler.xml -text
 mw.container.android/res/layout/empty.xml -text
 mw.container.android/res/layout/handler.xml -text
+mw.container.android/res/layout/pin.xml -text
 mw.container.android/res/layout/progress.xml -text
 mw.container.android/res/raw/aalspace.xsd -text
 mw.container.android/res/raw/client.properties -text

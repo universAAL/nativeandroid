@@ -36,13 +36,18 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -146,10 +151,31 @@ public class HandlerActivity extends Activity {
 			this.stopService(stopServiceIntent);
 			return true;
 		case R.id.action_settings:
-			Intent startSettingsIntent = new Intent(this,
-					SettingsActivity.class);
-			startSettingsIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-			this.startActivity(startSettingsIntent);
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			LayoutInflater inflater = getLayoutInflater();
+			View view = inflater.inflate(R.layout.pin, null);
+			final EditText pin = (EditText) view.findViewById(R.id.editPin);
+			builder.setView(view).setTitle(R.string.pinTitle)
+					.setPositiveButton(R.string.ok,
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int id) {
+									String editable=pin.getText().toString();
+									if (editable.equals("8225")) {
+										Intent startSettingsIntent = new Intent(
+												HandlerActivity.this,
+												SettingsActivity.class);
+										startSettingsIntent
+												.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+										HandlerActivity.this
+												.startActivity(startSettingsIntent);
+									} else {
+										Toast.makeText(HandlerActivity.this,
+												R.string.pinError,
+												Toast.LENGTH_LONG).show();
+									}
+								}
+							}).create().show();
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
