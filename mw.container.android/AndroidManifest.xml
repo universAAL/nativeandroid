@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.universAAL.android"
-    android:versionCode="2014121201"
+    android:versionCode="2015012102"
     android:versionName="3.2.1-SNAPSHOT" >
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -14,8 +14,10 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-    <permission android:name="org.universAAL.android.permission.C2D_MESSAGE" android:protectionLevel="signature" />
     <uses-permission android:name="org.universAAL.android.permission.C2D_MESSAGE" />
+    <permission android:name="org.universAAL.android.permission.C2D_MESSAGE" android:protectionLevel="signature" />
+    <permission android:name="org.universAAL.android.permission.SYS" android:protectionLevel="normal" />
+    <permission android:name="org.universAAL.android.permission.SETTINGS" android:protectionLevel="normal" />
 
     <uses-sdk android:minSdkVersion="10" android:targetSdkVersion="21"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
@@ -51,7 +53,7 @@
         <receiver
             android:name="org.universAAL.android.receivers.system.PackageReceiver"
             android:enabled="false"
-            android:exported="false" >
+            android:exported="false" ><!-- TODO enable -->
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_ADDED" />
                 <action android:name="android.intent.action.PACKAGE_REMOVED" />
@@ -115,6 +117,30 @@
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <category android:name="org.universAAL.android" />
+            </intent-filter>
+        </receiver>
+        
+        <!-- This allows config settings from other apps -->
+        <receiver
+            android:name="org.universAAL.android.receivers.SettingsReceiver"
+            android:enabled="true"
+            android:exported="true" 
+            android:permission="org.universAAL.android.permission.SETTINGS" >
+            <intent-filter>
+                <action android:name="org.universAAL.android.action.SETTINGS" />
+            </intent-filter>
+        </receiver>
+        
+        <!-- This allows start/stop remote control from other apps -->
+        <receiver
+            android:name="org.universAAL.android.receivers.RestartReceiver"
+            android:enabled="true"
+            android:exported="true" 
+            android:permission="org.universAAL.android.permission.SYS" >
+            <intent-filter>
+                <action android:name="org.universAAL.android.action.SYS_START" />
+                <action android:name="org.universAAL.android.action.SYS_STOP" />
+                <action android:name="org.universAAL.android.action.SYS_RESTART" />
             </intent-filter>
         </receiver>
     </application>

@@ -33,6 +33,7 @@ import org.universAAL.middleware.service.ServiceResponse;
 import org.universAAL.middleware.service.owls.process.ProcessOutput;
 
 import android.content.Intent;
+import android.util.Log;
 
 /**
  * Helper class that provides static methods for variable substitution in the
@@ -42,6 +43,7 @@ import android.content.Intent;
  * 
  */
 public class VariableSubstitution {
+	private static final String TAG="VariableSubstitution";
 
 	/**
 	 * Puts any type of object as an intent extra with a given ID in the given
@@ -57,21 +59,18 @@ public class VariableSubstitution {
 	 * @return The intent with the added extra.
 	 */
 	public static Intent putAnyExtra(Intent intent, String extrakey, Object value){
-		if(value instanceof Resource){
-			if(extrakey.contains("{")){//TODO Check numbers again, just in case. HANDLE EXCEPTIONS!!!
-				//value URI= http://ontology.igd.fhg.de/LightingServer.owl#controlledLamp2instance             ->Put this "2" into  V
-				//extra KEY= http://ontology.igd.fhg.de/LightingServer.owl#controlledLamp{lamp_number}instance                "lamp_number"
-				
+		if(value instanceof Resource){//Exceptions are handled by the calling methods
+			if(extrakey.contains("{")){//TODO Check numbers again, just in case.
+				//value URI= http://ont...#controlledLamp2instance             ->Put this "2" into  V
+				//extra KEY= http://ont...#controlledLamp{lamp_number}instance                "lamp_number"
 				// Take "lamp_number"
 				int start=extrakey.indexOf("{");
 				int end=extrakey.indexOf("}");
 				String decodedKey=extrakey.substring(start+1,end);
-				
 				//Take "2"
 				String valueUri=((Resource)value).getURI();
 				int startUri=start;
 				int endUri=valueUri.length()-(extrakey.length()-end);
-				
 				//Put "2" into "lamp_number"
 				intent.putExtra(decodedKey, valueUri.substring(startUri, endUri+1)); //TODO put it in native type????
 			}else{
@@ -91,11 +90,23 @@ public class VariableSubstitution {
 			Object first=((List)value).get(0);
 			if(first instanceof Resource){
 				List<Resource> listinput=(List<Resource>)value;
-				String[] uris=new String[listinput.size()];
-				for(int i=0; i<listinput.size(); i++){
-					uris[i]=listinput.get(i).getURI();
+				String[] vals=new String[listinput.size()];
+				if(extrakey.contains("{")){
+					int start=extrakey.indexOf("{");
+					int end=extrakey.indexOf("}");
+					extrakey=extrakey.substring(start+1,end);
+					for(int i=0; i<listinput.size(); i++){
+						String valueUri = listinput.get(i).getURI();
+						int startUri=start;
+						int endUri=valueUri.length()-(extrakey.length()-end);
+						vals[i]=valueUri.substring(startUri, endUri+1);
+					}
+				}else{
+					for(int i=0; i<listinput.size(); i++){
+						vals[i]=listinput.get(i).getURI();
+					}
 				}
-				intent.putExtra(extrakey, uris);
+				intent.putExtra(extrakey, vals);
 			}else if(first instanceof String){
 				List<String> listinput=(List<String>)value;
 				intent.putExtra(extrakey, listinput.toArray(new String[listinput.size()]));
@@ -112,10 +123,10 @@ public class VariableSubstitution {
 				List<Double> listinput=(List<Double>)value;
 				intent.putExtra(extrakey, listinput.toArray(new Double[listinput.size()]));
 			}else{
-				System.out.println("NOT VALID VALUE");
+				Log.w(TAG,"Unrecognized value type of one item of an array value, for key: "+extrakey);
 			}
 		}else {
-			System.out.println("NOT VALID VALUE");
+			Log.w(TAG,"Unrecognized value type of value, for key: "+extrakey);
 		}
 		return intent;
 	}
@@ -145,54 +156,59 @@ public class VariableSubstitution {
 	 * @param outputTOextra
 	 *            The mappings between Outputs and Extras.
 	 */
-	public static void putIntentExtrasAsResponseOutputs(Intent intent, ServiceResponse response, Hashtable<String,String> outputTOextra){
+	public static void putIntentExtrasAsResponseOutputs(Intent intent,
+			ServiceResponse response, Hashtable<String, String> outputTOextra) {
 		//table: URI of output in response -> substitutible string containing key of extra
-		for(String outputURI:outputTOextra.keySet()){
-			String encodedExtraKEY=outputTOextra.get(outputURI);
-			if(encodedExtraKEY.contains("{")){
-				// The encoded key is a URI with an {embedded} extra key and a type:
-				// http://ontology.igd.fhg.de/LightingServer.owl#controlledLamp{lamp_number_array}@http://ontology.universaal.org/Lighting.owl#LightSource
-				int start=encodedExtraKEY.indexOf("{");
-				int end=encodedExtraKEY.indexOf("}");
-				String[] parts=encodedExtraKEY.split("@");
-				String decodedExtraKEY=parts[0].substring(start+1,end);
-				String type=parts[1];
-				Object extra=intent.getExtras().get(decodedExtraKEY);
-				if(extra instanceof List){
-					// Several values in this extra, in from of ArrayList
-					Iterator iter=((List)extra).listIterator();
-					ArrayList valueList=new ArrayList();
-					while(iter.hasNext()){
-						Object item=iter.next();
-						String valueURI=parts[0].replaceAll("\\{.*\\}", item.toString());
+		try{
+			for(String outputURI:outputTOextra.keySet()){
+				String encodedExtraKEY=outputTOextra.get(outputURI);
+				if(encodedExtraKEY.contains("{")){
+					// The encoded key is a URI with an {embedded} extra key and a type:
+					// http://ont...#controlledLamp{lamp_number_array}@http://ont...#LightSource
+					int start=encodedExtraKEY.indexOf("{");
+					int end=encodedExtraKEY.indexOf("}");
+					String[] parts=encodedExtraKEY.split("@");
+					String decodedExtraKEY=parts[0].substring(start+1,end);
+					String type=parts[1];
+					Object extra=intent.getExtras().get(decodedExtraKEY);
+					if(extra instanceof List){
+						// Several values in this extra, in from of ArrayList
+						Iterator iter=((List)extra).listIterator();
+						ArrayList valueList=new ArrayList();
+						while(iter.hasNext()){
+							Object item=iter.next();
+							String valueURI=parts[0].replaceAll("\\{.*\\}", item.toString());
+							Resource value=Resource.getResource(type, valueURI);
+							valueList.add(value);
+						}
+						response.addOutput(new ProcessOutput(outputURI,valueList));
+					}else if(extra instanceof Object[]){
+						// Several values in this extra, in from of Array
+						Object[] array=(Object[])extra;
+						ArrayList valueList=new ArrayList();
+						for(Object item:array){
+							String valueURI=parts[0].replaceAll("\\{.*\\}", item.toString());
+							Resource value=Resource.getResource(type, valueURI);
+							valueList.add(value);
+						}
+						response.addOutput(new ProcessOutput(outputURI,valueList));
+					}else{
+						// Just one value in this extra
+						String valueURI=parts[0].replaceAll("\\{.*\\}", extra.toString());
 						Resource value=Resource.getResource(type, valueURI);
-						valueList.add(value);
+						response.addOutput(new ProcessOutput(outputURI,value));
 					}
-					response.addOutput(new ProcessOutput(outputURI,valueList));
-				}else if(extra instanceof Object[]){
-					// Several values in this extra, in from of Array
-					Object[] array=(Object[])extra;
-					ArrayList valueList=new ArrayList();
-					for(Object item:array){
-						String valueURI=parts[0].replaceAll("\\{.*\\}", item.toString());
-						Resource value=Resource.getResource(type, valueURI);
-						valueList.add(value);
-					}
-					response.addOutput(new ProcessOutput(outputURI,valueList));
 				}else{
-					// Just one value in this extra
-					String valueURI=encodedExtraKEY.replaceAll("\\{.*\\}", extra.toString());
-					Resource value=Resource.getResource(parts[1], parts[0]);
-					response.addOutput(new ProcessOutput(outputURI,value));
+					// The encoded key is directly a key
+					//TODO What happens if extras are an array and not an Arraylist?
+					Object extra=intent.getExtras().get(encodedExtraKEY);
+					// The value of the extra is a native type or an ArrayList of native types
+					response.addOutput(new ProcessOutput(outputURI,extra));
 				}
-			}else{
-				// The encoded key is directly a key
-				//TODO What happens if extras are an array and not an Arraylist?
-				Object extra=intent.getExtras().get(encodedExtraKEY);
-				// The value of the extra is a native type or an ArrayList of native types
-				response.addOutput(new ProcessOutput(outputURI,extra));
+
 			}
-			
+		} catch (Exception e) {
+			Log.w(TAG,"Unexpected error placing values in outputs. Some or all outputs will not be added.", e);
 		}
 	}
 	
@@ -209,8 +225,12 @@ public class VariableSubstitution {
 	 *            The mappings between Inputs and Extras.
 	 */
 	public static void putCallInputsAsIntentExtras(ServiceCall call, Intent intent, Hashtable<String,String> table){
-		for(String inputURI:table.keySet()){
-			putAnyExtra(intent, table.get(inputURI), call.getInputValue(inputURI));
+		try{
+			for(String inputURI:table.keySet()){
+				putAnyExtra(intent, table.get(inputURI), call.getInputValue(inputURI));
+			}
+		} catch (Exception e) {
+			Log.w(TAG,"Unexpected error putting extras from inputs. Some or all extras will be empty or not present.", e);
 		}
 	}
 	
@@ -228,16 +248,20 @@ public class VariableSubstitution {
 	 */
 	public static void putResponseOutputsAsIntentExtras(ServiceResponse response,
 			Intent intent, Hashtable<String,String> table) {
-		for(String outputURI:table.keySet()){
-			//TODO What happens if extras were an array?????
-			List<Object> outs=response.getOutput(outputURI, true);
-			if(outs==null || outs.size()<1){
-				//TODO What????
-			}else if(outs.size()==1){
-				putAnyExtra(intent, table.get(outputURI), outs.get(0));
-			}else{
-				putAnyExtra(intent, table.get(outputURI), outs);
+		try{
+			for(String outputURI:table.keySet()){
+				//TODO What happens if extras were an array?????
+				List<Object> outs=response.getOutput(outputURI);
+				if(outs==null || outs.size()<1){
+					//TODO What????
+				}else if(outs.size()==1){
+					putAnyExtra(intent, table.get(outputURI), outs.get(0));
+				}else{
+					putAnyExtra(intent, table.get(outputURI), outs);
+				}
 			}
+		} catch (Exception e) {
+			Log.w(TAG,"Unexpected error putting extras from outputs. Some or all extras will be empty or not present.", e);
 		}
 	}
 	 
@@ -258,24 +282,29 @@ public class VariableSubstitution {
 	public static String putIntentExtrasAsRequestInputs(Intent intent,
 			String turtleRequest, Hashtable<String,String> table) {
 		String replaced=turtleRequest;
-		for(String val:table.keySet()){
-			String encodedKey=table.get(val);
-			if(encodedKey.contains("{")){
-				// The encoded key is a whatever with an {embedded} extra key:
-				// <http://ontology.igd.fhg.de/LightingServer.owl#controlledLamp{lamp_number_array}>
-				int start=encodedKey.indexOf("{");
-				int end=encodedKey.indexOf("}");
-				String decodedKey=encodedKey.substring(start+1,end);
-				String decodedValue=intent.getExtras().get(decodedKey).toString();
-				String encodedValue=encodedKey.replaceAll("\\{.*\\}",decodedValue);
-				replaced=replaced.replaceAll("&"+val+";.*?&"+val+";", encodedValue);
-			}else{
-				replaced=replaced.replaceAll("&"+val+";.*?&"+val+";", intent.getExtras().get(table.get(val)).toString());
+		try{
+			for(String val:table.keySet()){
+				String encodedKey=table.get(val);
+				if(encodedKey.contains("{")){
+					// The encoded key is a whatever with an {embedded} extra key:
+					// <http://ontology.igd.fhg.de/LightingServer.owl#controlledLamp{lamp_number_array}>
+					int start=encodedKey.indexOf("{");
+					int end=encodedKey.indexOf("}");
+					String decodedKey=encodedKey.substring(start+1,end);
+					String decodedValue=intent.getExtras().get(decodedKey).toString();
+					String encodedValue=encodedKey.replaceAll("\\{.*\\}",decodedValue);
+					replaced=replaced.replaceAll("&"+val+";.*?&"+val+";", encodedValue);
+				}else{
+					replaced=replaced.replaceAll("&"+val+";.*?&"+val+";", intent.getExtras().get(table.get(val)).toString());
+				}
+
 			}
-			
+		} catch (Exception e) {
+			Log.e(TAG,"Unexpected error placing values in request. DO NOT use default values: Request will not be sent.", e);
+			return null;
 		}
 		return replaced;
-		//TODO its the same as putIntentExtrasAsEventValues
+		//TODO its the same as putIntentExtrasAsEventValues?
 	}
 	
 	/**
@@ -293,8 +322,13 @@ public class VariableSubstitution {
 	 */
 	public static String putIntentExtrasAsEventValues(Intent intent, String turtleEvent, Hashtable<String,String> table){
 		String replaced=turtleEvent;//TODO Allow pre-variable uri substitution with { }
-		for(String val:table.keySet()){
-			replaced=replaced.replaceAll("&"+val+";.*?&"+val+";", intent.getExtras().get(table.get(val)).toString());
+		try{
+			for(String val:table.keySet()){
+				replaced=replaced.replaceAll("&"+val+";.*?&"+val+";", intent.getExtras().get(table.get(val)).toString());
+			}
+		} catch (Exception e) {
+			Log.e(TAG,"Unexpected error placing values in event. DO NOT use default values: The event will not be sent.", e);
+			return null;
 		}
 		return replaced;
 	}
@@ -310,9 +344,14 @@ public class VariableSubstitution {
 	 * @param table
 	 *            The mappings between Values and Extras.
 	 */
-	public static void putEventValuesAsIntentExtras(ContextEvent event, Intent intent, Hashtable<String,String> table){
-		for(String inputURI:table.keySet()){//TODO Allow pre-variable uri substitution with { }
-			putAnyExtra(intent, table.get(inputURI), event.getProperty(inputURI));//TODO Allow ppaths into event?
+	public static void putEventValuesAsIntentExtras(ContextEvent event,
+			Intent intent, Hashtable<String, String> table) {
+		try {
+			for (String inputURI : table.keySet()) {// TODO Allow pre-variable uri substitution with { }
+				putAnyExtra(intent, table.get(inputURI), event.getProperty(inputURI));// TODO Allow ppaths into event?
+			}
+		} catch (Exception e) {
+			Log.w(TAG,"Unexpected error putting extras from event. Some or all extras will be empty or not present.", e);
 		}
 	}
 

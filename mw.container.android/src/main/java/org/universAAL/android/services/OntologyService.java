@@ -65,7 +65,7 @@ import android.util.Log;
  */
 public class OntologyService extends Service{
 	private static final String TAG = "OntologyService";
-	private static final String ONT_FOLDER = "/data/felix/ontologies/";// this is just the default
+//	public static final String ONT_FOLDER = "/data/felix/ontologies/";// this is just the default
 	private static final String ONT_CACHE = "ontdex";
 	private static final String ONT_ACTIVATOR_LIST_FILE = "activators.cfg";
 	private static final String ONT_ONTOLOGY_LIST_FILE = "ontologies.cfg";
@@ -125,7 +125,7 @@ public class OntologyService extends Service{
 		// Scan all the JAR files in the ont folder, but dont register yet
 		File ontFolder = new File(Environment.getExternalStorageDirectory(),
 				PreferenceManager.getDefaultSharedPreferences(ctxt).getString(
-						"setting_ofolder_key", ONT_FOLDER));
+						"setting_ofolder_key", AppConstants.Defaults.OFOLDER));
 		if (!ontFolder.exists()) {
 			Log.w(TAG, "The ontology folder does not exist."
 					+ "Make sure the value is correct in the settings");

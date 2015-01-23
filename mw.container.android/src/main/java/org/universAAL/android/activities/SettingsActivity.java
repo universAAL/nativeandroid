@@ -22,6 +22,7 @@
 package org.universAAL.android.activities;
 
 import org.universAAL.android.R;
+import org.universAAL.android.services.MiddlewareService;
 import org.universAAL.android.utils.Config;
 import org.universAAL.android.utils.AppConstants;
 import org.universAAL.android.utils.RAPIManager;
@@ -29,6 +30,9 @@ import org.universAAL.android.utils.RAPIManager;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
@@ -49,12 +53,20 @@ import android.widget.Toast;
  */
 public class SettingsActivity extends PreferenceActivity {
 	private static final String TAG = "SettingsActivity";
+	private static boolean changed=false;
+	private static OnSharedPreferenceChangeListener listener=new OnSharedPreferenceChangeListener() {
+		public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+			changed=true;
+		}
+	};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Config.load(getApplicationContext()); //Sync Preferences in Config util
 		addPreferencesFromResource(R.xml.settings);
+		// Be notified if there is any change
+		PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(listener);
 		// Manage the availability of "remove current wifi" option
 		Preference wifiPref = (Preference) findPreference("setting_resetwifi_key");
 		String wifiVal = PreferenceManager.getDefaultSharedPreferences(this)
@@ -106,7 +118,6 @@ public class SettingsActivity extends PreferenceActivity {
 				}
 			}
 		});
-		
 		// Manage the registration on Google Play Services GCM when changing project API key
 		EditTextPreference connKey = (EditTextPreference) findPreference("setting_conngcm_key");
 		connKey.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
@@ -142,13 +153,22 @@ public class SettingsActivity extends PreferenceActivity {
 		pref.setEnabled(enable);
 	}
 
-	// The following is from http://developer.android.com/google/gcm/client.html
-
 	@Override
 	protected void onStop() {
 		super.onStop();
-		Config.load(getApplicationContext());  //Sync Preferences in Config util now that they are changed
+		if (changed) {// There was a change in settings, restart MW service
+			changed=false; // for the next time
+			Config.load(getApplicationContext()); // Sync Preferences in Config util now that they are changed
+			Intent stopServiceIntent = new Intent(this, MiddlewareService.class);
+			boolean stopped = stopService(stopServiceIntent);
+			if (stopped) {// The service was running, restart it
+				Intent startServiceIntent = new Intent(this, MiddlewareService.class);
+				this.startService(startServiceIntent);
+			}
+		}
 	}
+
+	// The following is from http://developer.android.com/google/gcm/client.html
 
 	/**
 	 * Check the device to make sure it has the Google Play Services APK. If it

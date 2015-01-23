@@ -37,16 +37,16 @@ import android.util.Log;
  */
 public class Config {
 	private static final String TAG = "Config";
-	private static String mServerURL = "http://158.42.167.41:8181/universaal";
-	private static String mServerUSR = "yo";
-	private static String mServerPWD = "ual";
-	private static String mConfigFolder = "/data/felix/configurations/etc/";
-	private static String mUAALUser = "saied";
-	private static int mSettingRemoteType = AppConstants.REMOTE_TYPE_GW;
-	private static int mSettingRemoteMode = AppConstants.REMOTE_MODE_WIFIOFF;
-	private static boolean mSettingWifiEnabled = true;
-	private static boolean mServiceCoord = true;
-	private static boolean mUIHandler = true;
+	private static String mServerURL = AppConstants.Defaults.CONNURL;
+	private static String mServerUSR = AppConstants.Defaults.CONNUSR;
+	private static String mServerPWD = AppConstants.Defaults.CONNPWD;
+	private static String mConfigFolder = AppConstants.Defaults.CFOLDER;
+	private static String mUAALUser = AppConstants.Defaults.USER;
+	private static int mSettingRemoteType = AppConstants.Defaults.CONNTYPE;
+	private static int mSettingRemoteMode = AppConstants.Defaults.CONNMODE;
+	private static boolean mSettingWifiEnabled = AppConstants.Defaults.CONNWIFI;
+	private static boolean mServiceCoord = AppConstants.Defaults.ISCOORD;
+	private static boolean mUIHandler = AppConstants.Defaults.UIHANDLER;
 
 	/**
 	 * Synchronize the Config utility class with the actual saved preferences.
@@ -61,20 +61,18 @@ public class Config {
 	public static void load(Context ctxt) {
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(ctxt);
-		mServerURL = prefs.getString("setting_connurl_key",
-				"http://158.42.167.41:8181/universaal");
-		mServerUSR = prefs.getString("setting_connusr_key", "yo");
-		mServerPWD = prefs.getString("setting_connpwd_key", "ual");
-		mServiceCoord = prefs.getBoolean("setting_iscoord_key", true);
-		mUIHandler = prefs.getBoolean("setting_uihandler_key", true);
-		mSettingWifiEnabled = prefs.getBoolean("setting_connwifi_key", true);
-		mSettingRemoteMode = Integer.parseInt(prefs.getString(
-				"setting_connmode_key", "1"));
-		mSettingRemoteType = Integer.parseInt(prefs.getString(
-				"setting_conntype_key", "0"));
-		mConfigFolder = prefs.getString("setting_cfolder_key",
-				"/data/felix/configurations/etc/");
-		mUAALUser = prefs.getString("setting_user_key", "saied");
+		mServerURL = prefs.getString("setting_connurl_key",	AppConstants.Defaults.CONNURL);
+		mServerUSR = prefs.getString("setting_connusr_key",	AppConstants.Defaults.CONNUSR);
+		mServerPWD = prefs.getString("setting_connpwd_key", AppConstants.Defaults.CONNPWD);
+		mServiceCoord = prefs.getBoolean("setting_iscoord_key",	AppConstants.Defaults.ISCOORD);
+		mUIHandler = prefs.getBoolean("setting_uihandler_key",	AppConstants.Defaults.UIHANDLER);
+		mSettingWifiEnabled = prefs.getBoolean("setting_connwifi_key", AppConstants.Defaults.CONNWIFI);
+		mSettingRemoteMode = Integer.parseInt(prefs.getString("setting_connmode_key",
+				Integer.toString(AppConstants.Defaults.CONNMODE)));
+		mSettingRemoteType = Integer.parseInt(prefs.getString("setting_conntype_key",
+				Integer.toString(AppConstants.Defaults.CONNTYPE)));
+		mConfigFolder = prefs.getString("setting_cfolder_key", AppConstants.Defaults.CFOLDER);
+		mUAALUser = prefs.getString("setting_user_key",	AppConstants.Defaults.USER);
 	}
 
 	/**
@@ -202,7 +200,11 @@ public class Config {
 	 *            Application context
 	 */
 	public static void createFiles(Context ctxt) {
-		String basepath=Environment.getExternalStorageDirectory().getPath()+Config.getConfigDir();
+		String basepath = Environment.getExternalStorageDirectory().getPath() + Config.getConfigDir();
+//		String ontpath = Environment.getExternalStorageDirectory().getPath()
+//				+ PreferenceManager.getDefaultSharedPreferences(ctxt)
+//						.getString("setting_ofolder_key",
+//								AppConstants.Defaults.OFOLDER);
 		Log.d(TAG, "Creating default configuration files");
 		try {
 			createFile(ctxt, R.raw.jgroups, basepath,"mw.connectors.communication.jgroups.core.properties");
@@ -213,6 +215,8 @@ public class Config {
 			createFile(ctxt, R.raw.udp, basepath,"udp.xml");
 			createFile(ctxt, R.raw.aalspace, basepath,"aalspace.xsd");
 			createFile(ctxt, R.raw.home, basepath,"Home.space");
+//			createFile(ctxt, R.raw.onthwo321s, ontpath, "ont.hwo-3.2.1-SNAPSHOT.jar");
+//			createFile(ctxt, R.raw.ontagendamsg321, ontpath, "ont.agenda.messaging-3.2.1-SNAPSHOT.jar");
 		} catch (IOException e) {
 			Log.e(TAG, "Could not create one or more default configuarion files."
 							+ "You will have to place them manually: " + e);

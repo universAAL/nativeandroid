@@ -21,7 +21,9 @@
  */
 package org.universAAL.android.proxies;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
+import java.net.URLEncoder;
 import java.util.Hashtable;
 
 import org.universAAL.android.container.AndroidContainer;
@@ -70,7 +72,7 @@ public class ContextSubscriberProxy extends ContextSubscriber {
 		action=parcel.getAction();
 		category=parcel.getCategory();
 		fillTable(parcel.getLengthOUT(),parcel.getKeysOUT(), parcel.getValuesOUT());
-		grounding = parcel.getGrounding();
+		grounding = prepareGrounding(parcel.getGrounding());
 		// This is for GW or RAPI. RAPI does not need remote tag, but keep using it for coherence
 		remote = parcel.getRemote();
 		sync();
@@ -107,7 +109,38 @@ public class ContextSubscriberProxy extends ContextSubscriber {
 						new Object[] { MessageContentSerializerEx.class
 								.getName() }); //TODO better access to parser
 		ContextEventPattern cep=(ContextEventPattern) parser.deserialize(serial);
+		String tenant=Config.getServerUSR();
+		try {//Get rid of reserved chars
+			tenant=URLEncoder.encode(tenant,"UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		cep.changeURI(cep.getURI()+tenant);//Add tenant ID to URI
 		return new ContextEventPattern[]{cep};
+	}
+	
+	/**
+	 * Modify the serialized grounding to append tenant ID to relevant URIs.
+	 * Equivalent to prepareGrounding but returns it serialized.
+	 * 
+	 * @param serial
+	 *            The serialized form of the pattern, taken from the grounding.
+	 * @return The modified serialized array of patterns.
+	 */
+	private static String prepareGrounding(String serial) {
+		MessageContentSerializerEx parser = (MessageContentSerializerEx) AndroidContainer.THE_CONTAINER
+				.fetchSharedObject(AndroidContext.THE_CONTEXT,
+						new Object[] { MessageContentSerializerEx.class
+								.getName() }); //TODO better access to parser
+		ContextEventPattern cep=(ContextEventPattern) parser.deserialize(serial);
+		String tenant=Config.getServerUSR();
+		try {//Get rid of reserved chars
+			tenant=URLEncoder.encode(tenant,"UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		cep.changeURI(cep.getURI()+tenant);//Add tenant ID to URI
+		return parser.serialize(cep);
 	}
 	
 	/**

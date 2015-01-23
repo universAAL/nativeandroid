@@ -56,6 +56,7 @@ public class RAPIManager {
     //GCM Connection details
     private static final String PROPERTY_REG_ID = "registration_id";
     private static final String PROPERTY_APP_VERSION = "appVersion";
+    private static int STATIC_APP_VERSION = Integer.MIN_VALUE;
     
     // --------------The following is for connecting to GCM to receive callbacks from R API--------------
     //(from http://developer.android.com/google/gcm/client.html)
@@ -77,7 +78,7 @@ public class RAPIManager {
 	            	GoogleCloudMessaging mGCM = GoogleCloudMessaging.getInstance(ctxt);
 					String serverId = PreferenceManager
 							.getDefaultSharedPreferences(ctxt).getString(
-									"setting_conngcm_key", "1036878524725");
+									"setting_conngcm_key", AppConstants.Defaults.CONNGCM);
 					String mRegID = mGCM.register(serverId);
 	                // You should send the registration ID to your server over HTTP,
 	                // so it can use GCM/HTTP or CCS to send messages to your app.
@@ -126,14 +127,16 @@ public class RAPIManager {
 	 * @return Application's version code from the {@code PackageManager}.
 	 */
 	private static int getAppVersion(Context context) {
-	    try {
-	        PackageInfo packageInfo = context.getPackageManager()
-	                .getPackageInfo(context.getPackageName(), 0);
-	        return packageInfo.versionCode;
-	    } catch (NameNotFoundException e) {
-	        // should never happen
-	        throw new RuntimeException("Could not get package name: " + e);
-	    }
+		if (STATIC_APP_VERSION == Integer.MIN_VALUE) { // If still default
+			try {
+				PackageInfo packageInfo = context.getPackageManager()
+						.getPackageInfo(context.getPackageName(), 0);
+				STATIC_APP_VERSION = packageInfo.versionCode; // This way we need to call the manager only once
+			} catch (NameNotFoundException e) { // should never happen
+				throw new RuntimeException("Could not get package name: " + e);
+			}
+		}
+		return STATIC_APP_VERSION;
 	}
 	
 	/**
@@ -189,10 +192,17 @@ public class RAPIManager {
 	}
 	
 	public static String invoke(int method, String param){
+		if (Config.getServerUSR().equals(AppConstants.Defaults.CONNUSR)) {
+			Log.w(TAG, "Still using default user. " +
+					"Calls to R API are disabled until a correct user is set up and may lead to error messages.");
+			return null;
+		}
 		Log.d(TAG, "Sending R API request to uAAL server: "+getStringMethod(method));	
 		StringBuilder strb = new StringBuilder();
-		strb.append("method=").append(getStringMethod(method)).append("&").append("param=").append(param);
-		final String str=strb.toString();
+		strb.append("method=").append(getStringMethod(method))
+				.append("&param=").append(param).append("&v=").append("AND-")
+				.append(STATIC_APP_VERSION); //Add app version for managing purposes
+		final String str = strb.toString();
 
 		HttpURLConnection conn = null;
 		String result="";

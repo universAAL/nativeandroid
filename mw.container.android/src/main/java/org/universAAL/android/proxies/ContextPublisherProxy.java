@@ -21,7 +21,9 @@
  */
 package org.universAAL.android.proxies;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
+import java.net.URLEncoder;
 import java.util.Hashtable;
 
 import org.universAAL.android.container.AndroidContainer;
@@ -72,7 +74,7 @@ public class ContextPublisherProxy extends ContextPublisher {
 		contextRef=new WeakReference<Context>(context);
 		action=parcel.getAction();
 		category=parcel.getCategory();
-		grounding=parcel.getGrounding();
+		grounding=parcel.getGrounding();//prepareGrounding(parcel);
 		fillTable(parcel.getLengthIN(),parcel.getKeysIN(), parcel.getValuesIN());
 		receiver=new ContextPublisherProxyReceiver();
 		IntentFilter filter=new IntentFilter(this.action);
@@ -99,6 +101,13 @@ public class ContextPublisherProxy extends ContextPublisher {
 								.getName() });//TODO throw ex if error
 		ContextEvent event=(ContextEvent) parser.deserialize(VariableSubstitution.cleanContextEvent(parcel.getGrounding()));
 		ContextProvider prov=event.getProvider();
+		String tenant=Config.getServerUSR();
+		try {//Get rid of reserved chars
+			tenant=URLEncoder.encode(tenant,"UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		prov.changeURI(prov.getURI()+tenant);//Add tenant ID to URI
 		// This is for identifying the origin of the event, to avoid duplications in csub later
 		prov.setProperty(AppConstants.UAAL_META_PROP_FROMACTION, parcel.getAction()); 
 		prov.setProperty(AppConstants.UAAL_META_PROP_FROMCATEGORY, parcel.getCategory());
@@ -161,11 +170,14 @@ public class ContextPublisherProxy extends ContextPublisher {
 									.getName() });
 			if(extraKEYtoEventVAL!=null && !extraKEYtoEventVAL.isEmpty()){
 				String turtleReplaced=VariableSubstitution.putIntentExtrasAsEventValues(intent, grounding, extraKEYtoEventVAL);
+				if(turtleReplaced==null)return;//Null when substitution failed: do not send event with defaults.
 				event=(ContextEvent) parser.deserialize(turtleReplaced);
 			}else{
 				event=(ContextEvent) parser.deserialize(grounding);
 			}
-			// Cant Improve this. Must make a copy of the event so that URI is new. Timestamp and Provider are set by bus
+			// Cant Improve this. Must make a copy of the event so that URI is
+			// new. Timestamp and Provider are set by bus (which is good because
+			// the Provider in the grounding does not have the tenant id)
 			ContextEvent cev = new ContextEvent(event.getRDFSubject(),
 					event.getRDFPredicate());
 			cev.setConfidence(event.getConfidence());

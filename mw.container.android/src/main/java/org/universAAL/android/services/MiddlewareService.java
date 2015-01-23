@@ -241,16 +241,25 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 		//TODO Call to unreg onts? really?
 		mPercentage=0;
 		notifyPercent();
-		// ScanService ran and tried to stop in parallel while MiddlewareService
-		// has already finished (next lines) AND also sent intents to it which
-		// restarted it. Instead of ACTION_PCK_UNREG_ALL intent I made a method
-		// for this in Registry, since unreg all is a special case (we already
-		// know what to unreg, no need to scan)
-		AndroidRegistry.unregisterAll();
-		stopGateway();
-		stopHandler();
-		stopMiddleware();
-		stopConnector();
+		try{
+			// ScanService ran and tried to stop in parallel while MiddlewareService
+			// has already finished (next lines) AND also sent intents to it which
+			// restarted it. Instead of ACTION_PCK_UNREG_ALL intent I made a method
+			// for this in Registry, since unreg all is a special case (we already
+			// know what to unreg, no need to scan)
+			AndroidRegistry.unregisterAll();
+			stopGateway();
+			stopHandler();
+			stopMiddleware();
+			stopConnector();
+		} catch (Exception e) {
+			// HACK: Currently there are bugs in busses stop. Ignoring is not
+			// enough since threads started from the service will not disappear
+			// when the service is killed. Temporary solution is to kill the
+			// whole app process.
+			Log.e(TAG, "Error while destroying service. Will destroy the whole process", e);
+			android.os.Process.killProcess(android.os.Process.myPid());
+		}
 		Log.v(TAG, "Destroyed");
 	}
 
@@ -261,7 +270,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 		// HACK: Set user type for AndroidHandler. Prevents NPE at startup when activity is not visible
 		mUserType = Integer.parseInt(PreferenceManager
 				.getDefaultSharedPreferences(MiddlewareService.this).getString(
-						"setting_type_key", "0"));
+						"setting_type_key", Integer.toString(AppConstants.Defaults.TYPE)));
 		new Thread(new Runnable() {
 			public void run() {
 				if (intent != null) {
@@ -641,7 +650,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 	 */
 	private synchronized void stopMiddleware(){		
 		// _________________UI BUS_________________________
-		UIBusImpl.stopModule(); //TODO will it work if not started?
+		UIBusImpl.stopModule(); //will it work if not started? Looks like it does
 		// _________________CONTEXT BUS_________________________
 		ContextBusImpl.stopModule();
 		// _________________SERVICE BUS_________________________
@@ -755,7 +764,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 				}
 			}else{
 				//TODO show error
-				Toast.makeText(getApplicationContext(),	R.string.warning_gplay, Toast.LENGTH_LONG).show();
+//				Toast.makeText(getApplicationContext(),	R.string.warning_gplay, Toast.LENGTH_LONG).show();
 			}
 			break;
 		default:
@@ -798,7 +807,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 				}
 			}else{
 				//TODO show error better
-				Toast.makeText(getApplicationContext(),	R.string.warning_gplay, Toast.LENGTH_LONG).show();
+//				Toast.makeText(getApplicationContext(),	R.string.warning_gplay, Toast.LENGTH_LONG).show();
 			}
 			break;
 		default:

@@ -61,6 +61,12 @@ public class AppConstants {
 	// Used to update the percentage of the progress bar
 	public static final String ACTION_UI_PROGRESS = ACTION_PREFIX + "UI_PROGRESS";
 	
+	// Sent from external apps to remote control the start/stop of MW service
+	// TODO: Not needed once bus stop bug is solved
+	public static final String ACTION_SYS_START = ACTION_PREFIX + "SYS_START";
+	public static final String ACTION_SYS_STOP = ACTION_PREFIX + "SYS_STOP";
+	public static final String ACTION_SYS_RESTART = ACTION_PREFIX + "SYS_RESTART";
+	
 	// Hidden extras used by app to tell where it wants a reply
 	public static final String ACTION_META_REPLYTOACT = ACTION_PREFIX + "META_REPLYTOACT";
 	public static final String ACTION_META_REPLYTOCAT = ACTION_PREFIX + "META_REPLYTOCAT";
@@ -101,4 +107,20 @@ public class AppConstants {
 	public static final String FIRST = "is_first";
 	public static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
+	public static class Defaults {
+		public static final boolean ISCOORD = true;
+	    public static final boolean UIHANDLER = false;
+	    public static final boolean CONNWIFI = false;
+	    public static final String CFOLDER = "/data/felix/configurations/etc/";
+	    public static final String OFOLDER = "/data/felix/ontologies/";//
+	    public static final String IFOLDER = "/data/felix/configurations/etc/images/";//
+	    public static final String USER = "saied";
+	    public static final int TYPE = USER_TYPE_AP;//
+	    public static final int CONNMODE = REMOTE_MODE_ALWAYS;
+	    public static final int CONNTYPE = REMOTE_TYPE_RAPI;
+	    public static final String CONNURL = "http://158.42.167.41:8181/universaal";
+	    public static final String CONNGCM = "1036878524725";//
+	    public static final String CONNUSR = "defaultusr";
+	    public static final String CONNPWD = "defaultpwd";
+	}
 }

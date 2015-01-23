@@ -88,7 +88,7 @@ import android.widget.TextView;
  */
 public class AndroidHandler extends UIHandler {
 	private static final String TAG = "AndroidHandler";
-	private static final String IMAGE_FOLDER = "/data/felix/configurations/etc/images/";// this is just the default
+//	private static final String IMAGE_FOLDER = "/data/felix/configurations/etc/images/";// this is just the default
 	//"Constants." are not constant! Constants.uAAL_MIDDLEWARE_LOCAL_ID_PREFIX + "saied" does not have value until MW inits
 	private String mUserURI=null;
     //TODO Change to WeakRefs?
@@ -393,7 +393,7 @@ public class AndroidHandler extends UIHandler {
 		renderLabel(currentView, mediaObject);
 		ImageView img = new ImageView(mActivity);
 		String confHome = PreferenceManager.getDefaultSharedPreferences(
-				mActivity).getString("setting_ifolder_key", IMAGE_FOLDER);
+				mActivity).getString("setting_ifolder_key", AppConstants.Defaults.IFOLDER);
 		Drawable draw = Drawable.createFromPath(confHome
 				+ mediaObject.getContentURL());
 		if (draw != null){

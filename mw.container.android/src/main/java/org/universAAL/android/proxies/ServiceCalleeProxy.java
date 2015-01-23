@@ -21,12 +21,15 @@
  */
 package org.universAAL.android.proxies;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
+import java.net.URLEncoder;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
+import org.apache.http.client.utils.URLEncodedUtils;
 import org.universAAL.android.container.AndroidContainer;
 import org.universAAL.android.container.AndroidContext;
 import org.universAAL.android.services.MiddlewareService;
@@ -45,6 +48,7 @@ import org.universAAL.middleware.service.ServiceCall;
 import org.universAAL.middleware.service.ServiceCallee;
 import org.universAAL.middleware.service.ServiceResponse;
 import org.universAAL.middleware.service.impl.ServiceRealization;
+import org.universAAL.middleware.service.owl.Service;
 import org.universAAL.middleware.service.owls.process.ProcessOutput;
 import org.universAAL.middleware.service.owls.profile.ServiceProfile;
 
@@ -84,16 +88,16 @@ public class ServiceCalleeProxy extends ServiceCallee {
 	 *            The Android context.
 	 */
 	public ServiceCalleeProxy(GroundingParcel parcel, Context context) {
-		super(AndroidContext.THE_CONTEXT, prepareProfiles(parcel));
+		super(AndroidContext.THE_CONTEXT, prepareProfiles(parcel.getGrounding()));
 		contextRef=new WeakReference<Context>(context);
 		action=parcel.getAction();
 		category=parcel.getCategory();
 		replyAction=parcel.getReplyAction();
 		replyCategory=parcel.getReplyCategory();
-		grounding=parcel.getGrounding();
+		grounding=prepareGrounding(parcel.getGrounding());
 		fillTableIN(parcel.getLengthIN(),parcel.getKeysIN(), parcel.getValuesIN());
 		fillTableOUT(parcel.getLengthOUT(),parcel.getKeysOUT(), parcel.getValuesOUT());
-		ServiceProfile[] sps = prepareProfiles(parcel);
+		ServiceProfile[] sps = prepareProfiles(parcel.getGrounding());
 		spURI = sps[0].getURI();
 		// This is for RAPI. 
 		sync();
@@ -122,13 +126,66 @@ public class ServiceCalleeProxy extends ServiceCallee {
 	 *            The parcelable from of the grounding of the metadata.
 	 * @return The uAAL Service Profile.
 	 */
-	private static ServiceProfile[] prepareProfiles(GroundingParcel parcel) {
+	private static ServiceProfile[] prepareProfiles(String grounding) {
 		MessageContentSerializerEx parser = (MessageContentSerializerEx) AndroidContainer.THE_CONTAINER
 				.fetchSharedObject(AndroidContext.THE_CONTEXT,
 						new Object[] { MessageContentSerializerEx.class
 								.getName() });//TODO throw ex if error
-		ServiceProfile sp=(ServiceProfile)parser.deserialize(parcel.getGrounding());
-		return new ServiceProfile[]{sp};
+		ServiceProfile sp=(ServiceProfile)parser.deserialize(grounding);
+		String tenant=Config.getServerUSR();
+		try {
+			tenant=URLEncoder.encode(tenant,"UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		// Matchmaking uses SP URI and Process URI (which is built from Service
+		// URI) to distinguish callees, so these must be made unique for each
+		// tenant despite being the same profile in each of them.
+		sp.changeURI(sp.getURI() + tenant);// Add tenant ID to SP URI
+		Service serv = sp.getTheService();
+		String servURI=serv.getURI();
+		serv.changeURI(servURI + tenant);// Add tenant ID to Service URI
+		sp.setProperty(Service.PROP_OWLS_PRESENTED_BY, serv);
+		String process = sp.getProcessURI();// Process URI = Service URI + "Process" (but maybe suffix will change in future?)
+		String suffix=process.substring(servURI.length());// Get the "Process" suffix of the Process URI
+		sp.changeProperty(ServiceProfile.PROP_OWLS_PROFILE_HAS_PROCESS, null);// Remove first cause doesnt work well
+		sp.setProperty(ServiceProfile.PROP_OWLS_PROFILE_HAS_PROCESS, servURI + tenant + suffix);// Add tenant ID in Process URI
+		return new ServiceProfile[] { sp };
+	}
+	
+	/**
+	 * Modify the serialized grounding to append tenant ID to relevant URIs.
+	 * Equivalent to prepareGrounding but returns it serialized.
+	 * 
+	 * @param serial
+	 *            The grounding of the metadata.
+	 * @return The modified uAAL Service Profile.
+	 */
+	private static String prepareGrounding(String grounding) {
+		MessageContentSerializerEx parser = (MessageContentSerializerEx) AndroidContainer.THE_CONTAINER
+				.fetchSharedObject(AndroidContext.THE_CONTEXT,
+						new Object[] { MessageContentSerializerEx.class
+								.getName() });//TODO throw ex if error
+		ServiceProfile sp=(ServiceProfile)parser.deserialize(grounding);
+		String tenant=Config.getServerUSR();
+		try {
+			tenant=URLEncoder.encode(tenant,"UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		// Matchmaking uses SP URI and Process URI (which is built from Service
+				// URI) to distinguish callees, so these must be made unique for each
+				// tenant despite being the same profile in each of them.
+		sp.changeURI(sp.getURI() + tenant);// Add tenant ID to SP URI
+		Service serv = sp.getTheService();
+		String servURI=serv.getURI();
+		serv.changeURI(servURI + tenant);// Add tenant ID to Service URI
+		sp.setProperty(Service.PROP_OWLS_PRESENTED_BY, serv);
+		String process = sp.getProcessURI();// Process URI = Service URI + "Process" (but maybe suffix will change in future?)
+		String suffix=process.substring(servURI.length());// Get the "Process" suffix of the Process URI
+		sp.changeProperty(ServiceProfile.PROP_OWLS_PROFILE_HAS_PROCESS, null);// Remove first cause doesnt work well
+		sp.setProperty(ServiceProfile.PROP_OWLS_PROFILE_HAS_PROCESS, servURI + tenant + suffix);// Add tenant ID in Process URI
+		return parser.serialize(sp);
 	}
 	
 	/**

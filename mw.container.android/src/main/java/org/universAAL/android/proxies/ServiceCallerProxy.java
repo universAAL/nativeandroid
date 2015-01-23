@@ -199,6 +199,7 @@ public class ServiceCallerProxy extends ServiceCaller {
 			ServiceRequest sr;
 			if(extraKEYtoInputURI!=null && !extraKEYtoInputURI.isEmpty()){
 				String turtleReplaced=VariableSubstitution.putIntentExtrasAsRequestInputs(intent, grounding, extraKEYtoInputURI);
+				if(turtleReplaced==null)return;//Null if error substituting. Do not send default request.
 				sr=(ServiceRequest)parser.deserialize(turtleReplaced);
 			}else{
 				sr=(ServiceRequest)parser.deserialize(grounding);

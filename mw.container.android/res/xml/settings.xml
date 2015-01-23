@@ -3,15 +3,15 @@
     <CheckBoxPreference
         android:key="setting_iscoord_key"
         android:summary="@string/setting_iscoord_text"
-        android:title="@string/setting_iscoord_title" android:defaultValue="true"/>
+        android:title="@string/setting_iscoord_title" android:defaultValue="@bool/setting_iscoord_def"/>
     <CheckBoxPreference
             android:key="setting_uihandler_key"
             android:summary="@string/setting_uihandler_text"
-            android:title="@string/setting_uihandler_title" android:defaultValue="true"/>
+            android:title="@string/setting_uihandler_title" android:defaultValue="@bool/setting_uihandler_def"/>
     <CheckBoxPreference
             android:key="setting_connwifi_key"
             android:summary="@string/setting_connwifi_text"
-            android:title="@string/setting_connwifi_title"  android:defaultValue="true"/>
+            android:title="@string/setting_connwifi_title"  android:defaultValue="@bool/setting_connwifi_def"/>
 	<Preference
             android:key="setting_resetwifi_key"
             android:summary="@string/setting_resetwifi_text"
@@ -19,19 +19,19 @@
 
     <PreferenceCategory android:title="@string/folder_settings" >
         <EditTextPreference
-            android:defaultValue="/data/felix/configurations/etc/"
+            android:defaultValue="@string/setting_cfolder_def"
             android:dialogMessage="@string/setting_cfolder_instr"
             android:key="setting_cfolder_key"
             android:summary="@string/setting_cfolder_text"
             android:title="@string/setting_cfolder_title" />
         <EditTextPreference
-            android:defaultValue="/data/felix/ontologies/"
+            android:defaultValue="@string/setting_ofolder_def"
             android:dialogMessage="@string/setting_ofolder_instr"
             android:key="setting_ofolder_key"
             android:summary="@string/setting_ofolder_text"
             android:title="@string/setting_ofolder_title" />
         <EditTextPreference
-            android:defaultValue="/data/felix/configurations/etc/images/"
+            android:defaultValue="@string/setting_ifolder_def"
             android:dialogMessage="@string/setting_ifolder_instr"
             android:key="setting_ifolder_key"
             android:summary="@string/setting_ifolder_text"
@@ -40,13 +40,13 @@
 
     <PreferenceCategory android:title="@string/user_settings" >
         <EditTextPreference
-            android:defaultValue="saied"
+            android:defaultValue="@string/setting_user_def"
             android:dialogMessage="@string/setting_user_instr"
             android:key="setting_user_key"
             android:summary="@string/setting_user_text"
             android:title="@string/setting_user_title" />
         <ListPreference
-            android:defaultValue="0"
+            android:defaultValue="@integer/setting_type_def"
             android:entries="@array/setting_type_entries"
             android:entryValues="@array/setting_type_values"
             android:key="setting_type_key"
@@ -60,15 +60,15 @@
             android:entryValues="@array/setting_connmode_values"
             android:key="setting_connmode_key"
             android:summary="@string/setting_connmode_text"
-            android:title="@string/setting_connmode_title" />
+            android:title="@string/setting_connmode_title" android:defaultValue="@integer/setting_connmode_def"/>
         <ListPreference
             android:entries="@array/setting_conntype_entries"
             android:entryValues="@array/setting_conntype_values"
             android:key="setting_conntype_key"
             android:summary="@string/setting_conntype_text"
-            android:title="@string/setting_conntype_title" />
+            android:title="@string/setting_conntype_title" android:defaultValue="@integer/setting_conntype_def"/>
         <EditTextPreference
-            android:defaultValue="http://158.42.167.41:8181/universaal"
+            android:defaultValue="@string/setting_connurl_def"
             android:dialogMessage="@string/setting_connurl_instr"
             android:key="setting_connurl_key"
             android:summary="@string/setting_connurl_text"
@@ -80,13 +80,13 @@
             android:summary="@string/setting_conngcm_text"
             android:title="@string/setting_conngcm_title" />
         <EditTextPreference
-            android:defaultValue="yo"
+            android:defaultValue="@string/setting_connusr_def"
             android:dialogMessage="@string/setting_connusr_instr"
             android:key="setting_connusr_key"
             android:summary="@string/setting_connusr_text"
             android:title="@string/setting_connusr_title" />
         <EditTextPreference
-            android:defaultValue="ual"
+            android:defaultValue="@string/setting_connpwd_def"
             android:dialogMessage="@string/setting_connpwd_instr"
             android:key="setting_connpwd_key"
             android:summary="@string/setting_connpwd_text"

@@ -77,6 +77,7 @@
 	managers.aalspace (modified to run on android with hardcoded config) - find it in MW SVN: branches/android
 	mw.schemas (modified to run with modified managers.aalspace) - find it in MW SVN: branches/android
 	bus.tracker (modified to get rid of UI) - find it in MW SVN: branches/android
+	data.representation (modified to allow change of Resources URI) - find it in MW SVN: branches/android
 	data.serialization (modified to fix bug - if > 2.0.1) - find it in MW SVN: branches/android
 	GW.multitenant (modified to run on android) - find it in RI SVN: branches/android
 	bcprov-jdk13-140 (if not added by maven transient deps, put it manuallly) - find it maven repository
@@ -100,6 +101,10 @@
 			    <exclusion>
 			        <groupId>org.universAAL.middleware</groupId>
 					<artifactId>mw.schemas</artifactId>
+			    </exclusion>
+			    <exclusion>
+			        <groupId>org.universAAL.middleware</groupId>
+					<artifactId>mw.data.representation.core</artifactId>
 			    </exclusion>
 			</exclusions>
 		</dependency>
@@ -193,49 +198,92 @@
 		</dependency>
 		<dependency>
 			<groupId>org.universAAL.middleware</groupId>
-			<artifactId>mw.data.representation.core</artifactId>
-			<version>3.2.1-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>org.universAAL.middleware</groupId>
 			<artifactId>mw.bus.model.core</artifactId>
 			<version>3.2.1-SNAPSHOT</version>
+			<exclusions><!-- for using modified data.rep -->
+			    <exclusion>
+			        <groupId>org.universAAL.middleware</groupId>
+					<artifactId>mw.data.representation.core</artifactId>
+			    </exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.universAAL.middleware</groupId>
 			<artifactId>mw.bus.service.core</artifactId>
 			<version>3.2.1-SNAPSHOT</version>
+			<exclusions><!-- for using modified data.rep -->
+			    <exclusion>
+			        <groupId>org.universAAL.middleware</groupId>
+					<artifactId>mw.data.representation.core</artifactId>
+			    </exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.universAAL.middleware</groupId>
 			<artifactId>mw.bus.context.core</artifactId>
 			<version>3.2.1-SNAPSHOT</version>
+			<exclusions><!-- for using modified data.rep -->
+			    <exclusion>
+			        <groupId>org.universAAL.middleware</groupId>
+					<artifactId>mw.data.representation.core</artifactId>
+			    </exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.universAAL.middleware</groupId>
 			<artifactId>mw.bus.ui.core</artifactId>
 			<version>3.2.1-SNAPSHOT</version>
+			<exclusions><!-- for using modified data.rep -->
+			    <exclusion>
+			        <groupId>org.universAAL.middleware</groupId>
+					<artifactId>mw.data.representation.core</artifactId>
+			    </exclusion>
+			</exclusions>
 		</dependency>
 		<!-- Set of official base ontologies -->
 		<dependency>
 			<groupId>org.universAAL.ontology</groupId>
 			<artifactId>ont.phWorld</artifactId>
 			<version>3.2.1-SNAPSHOT</version>
+			<exclusions><!-- for using modified data.rep -->
+			    <exclusion>
+			        <groupId>org.universAAL.middleware</groupId>
+					<artifactId>mw.data.representation.core</artifactId>
+			    </exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.universAAL.ontology</groupId>
 			<artifactId>ont.profile</artifactId>
 			<version>3.2.1-SNAPSHOT</version>
+			<exclusions><!-- for using modified data.rep -->
+			    <exclusion>
+			        <groupId>org.universAAL.middleware</groupId>
+					<artifactId>mw.data.representation.core</artifactId>
+			    </exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.universAAL.ontology</groupId>
 			<artifactId>ont.unit</artifactId>
 			<version>3.2.1-SNAPSHOT</version>
+			<exclusions><!-- for using modified data.rep -->
+			    <exclusion>
+			        <groupId>org.universAAL.middleware</groupId>
+					<artifactId>mw.data.representation.core</artifactId>
+			    </exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.universAAL.ontology</groupId>
 			<artifactId>ont.measurement</artifactId>
 			<version>3.2.1-SNAPSHOT</version>
+			<exclusions><!-- for using modified data.rep -->
+			    <exclusion>
+			        <groupId>org.universAAL.middleware</groupId>
+					<artifactId>mw.data.representation.core</artifactId>
+			    </exclusion>
+			</exclusions>
 		</dependency>
 	</dependencies>
 
