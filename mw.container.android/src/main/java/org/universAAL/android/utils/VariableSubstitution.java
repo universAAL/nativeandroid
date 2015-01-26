@@ -94,13 +94,13 @@ public class VariableSubstitution {
 				if(extrakey.contains("{")){
 					int start=extrakey.indexOf("{");
 					int end=extrakey.indexOf("}");
-					extrakey=extrakey.substring(start+1,end);
 					for(int i=0; i<listinput.size(); i++){
 						String valueUri = listinput.get(i).getURI();
 						int startUri=start;
 						int endUri=valueUri.length()-(extrakey.length()-end);
 						vals[i]=valueUri.substring(startUri, endUri+1);
 					}
+					extrakey=extrakey.substring(start+1,end);
 				}else{
 					for(int i=0; i<listinput.size(); i++){
 						vals[i]=listinput.get(i).getURI();
