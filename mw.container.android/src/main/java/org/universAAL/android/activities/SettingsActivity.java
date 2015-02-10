@@ -87,6 +87,25 @@ public class SettingsActivity extends PreferenceActivity {
 				}
 			});
 		}
+		
+		//_______MANAGE START AND STOP___________
+		Preference start = (Preference) findPreference("setting_start_key");
+		start.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+			public boolean onPreferenceClick(Preference preference) {
+				Intent startServiceIntent = new Intent(SettingsActivity.this, MiddlewareService.class);
+				SettingsActivity.this.startService(startServiceIntent);
+				return true;
+			}
+		});
+		Preference stop = (Preference) findPreference("setting_stop_key");
+		stop.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+			public boolean onPreferenceClick(Preference preference) {
+				Intent stopServiceIntent = new Intent(SettingsActivity.this, MiddlewareService.class);
+				SettingsActivity.this.stopService(stopServiceIntent);
+				return true;
+			}
+		});
+			
 		// Manage the registration on Google Play Services GCM when selecting R-API conn type
 		ListPreference connType = (ListPreference) findPreference("setting_conntype_key");
 		setRAPIOptionsEnabled(connType.getValue()!=null && connType.getValue().equals("1"));

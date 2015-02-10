@@ -140,17 +140,19 @@ public class HandlerActivity extends Activity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.action_start:
-			Intent startServiceIntent = new Intent(this,
-					MiddlewareService.class);
-			this.startService(startServiceIntent);
-			return true;
-		case R.id.action_stop:
-			Intent stopServiceIntent = new Intent(this, MiddlewareService.class);
-			this.stopService(stopServiceIntent);
-			return true;
-		case R.id.action_settings:
+//		switch (item.getItemId()) {
+//		case R.id.action_start:
+//			Intent startServiceIntent = new Intent(this,
+//					MiddlewareService.class);
+//			this.startService(startServiceIntent);
+//			return true;
+//		case R.id.action_stop:
+//			Intent stopServiceIntent = new Intent(this, MiddlewareService.class);
+//			this.stopService(stopServiceIntent);
+//			return true;
+//		case R.id.action_settings:
+		// To be used as a library, it cannot use switch{} with R.id
+		if(R.id.action_settings==item.getItemId()){
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			LayoutInflater inflater = getLayoutInflater();
 			View view = inflater.inflate(R.layout.pin, null);
@@ -176,10 +178,10 @@ public class HandlerActivity extends Activity {
 									}
 								}
 							}).create().show();
-			return true;
-		default:
+			return true;}
+//		default:
 			return super.onOptionsItemSelected(item);
-		}
+//		}
 	}
 
 	/**

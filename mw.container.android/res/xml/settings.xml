@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    <Preference
+            android:key="setting_start_key"
+            android:summary="@string/setting_start_text"
+            android:title="@string/action_start" />
+    <Preference
+            android:key="setting_stop_key"
+            android:summary="@string/setting_stop_text"
+            android:title="@string/action_stop" />
+    
     <CheckBoxPreference
         android:key="setting_iscoord_key"
         android:summary="@string/setting_iscoord_text"
