@@ -293,7 +293,12 @@ public class ServiceCalleeProxy extends ServiceCallee {
 				// Flag to avoid feeding back the intent to bus when intent is the same in app and in callerproxy 
 				serv.putExtra(AppConstants.ACTION_META_FROMPROXY, true);
 				// Send the intent to Android grounded service
-				ComponentName started=ctxt.startService(serv);//Not allowed in Android 5.0 (fall back to broadcast)
+				ComponentName started;
+				try{
+					started=ctxt.startService(serv);//In 5.0 preview it returned null, in API 21, it throws exception
+				}catch(IllegalArgumentException e){
+					started=null;//Set to null and act as if there is no service: try with broadcast
+				}
 				if(started==null){
 					// No android service was there, try with broadcast. Before, here it used to send failure response
 					ctxt.sendBroadcast(serv); // No way to know if received. If no response, bus will timeout (?)
