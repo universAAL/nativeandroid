@@ -1,6 +1,7 @@
 package org.universAAL.android.receivers;
 
 import org.universAAL.android.services.MiddlewareService;
+import org.universAAL.android.utils.AppConstants;
 import org.universAAL.android.utils.Config;
 
 import android.content.BroadcastReceiver;
@@ -67,6 +68,9 @@ public class SettingsReceiver extends BroadcastReceiver {
 			// MW when closed, but here settings are changed without going through SettingsActivity
 			Config.load(context); // Sync Preferences in Config util now that they are changed
 			Intent stopServiceIntent = new Intent(context, MiddlewareService.class);
+			// Notify whoever listens that we are configured. Do it before messing with the service
+			Intent notifConfig = new Intent(AppConstants.ACTION_NOTIF_CONFIG);
+			context.sendBroadcast(notifConfig);
 			boolean stopped = context.stopService(stopServiceIntent);
 			if (stopped) {// The service was running, restart it
 				Intent startServiceIntent = new Intent(context, MiddlewareService.class);

@@ -61,6 +61,10 @@ public class AppConstants {
 	// Used to update the percentage of the progress bar
 	public static final String ACTION_UI_PROGRESS = ACTION_PREFIX + "UI_PROGRESS";
 	
+	// Sent by this app to notify about its status
+	public static final String ACTION_NOTIF_STARTED = ACTION_PREFIX + "NOTIF_STARTED";
+	public static final String ACTION_NOTIF_CONFIG = ACTION_PREFIX + "NOTIF_CONFIG";
+	
 	// Sent from external apps to remote control the start/stop of MW service
 	// TODO: Not needed once bus stop bug is solved
 	public static final String ACTION_SYS_START = ACTION_PREFIX + "SYS_START";
