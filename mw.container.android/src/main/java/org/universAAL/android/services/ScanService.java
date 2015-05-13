@@ -95,7 +95,7 @@ public class ScanService extends Service{
 						}else if(action.equals(AppConstants.ACTION_PCK_REG_ALL)){ // This is called by MW when started
 							Log.v(TAG, "Action is REGISTER ALL");
 							scanAllApps(true);
-							Intent notifStarted = new Intent(AppConstants.ACTION_NOTIF_CONFIG);
+							Intent notifStarted = new Intent(AppConstants.ACTION_NOTIF_STARTED);
 							sendBroadcast(notifStarted);
 						}else if(action.equals(AppConstants.ACTION_PCK_UNREG_ALL)){ // This is called by MW when stopped
 							Log.v(TAG, "Action is UNREGISTER ALL");
