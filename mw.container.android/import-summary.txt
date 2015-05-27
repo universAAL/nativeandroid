@@ -1,0 +1,96 @@
+ECLIPSE ANDROID PROJECT IMPORT SUMMARY
+======================================
+
+Manifest Merging:
+-----------------
+Your project uses libraries that provide manifests, and your Eclipse
+project did not explicitly turn on manifest merging. In Android Gradle
+projects, manifests are always merged (meaning that contents from your
+libraries' manifests will be merged into the app manifest. If you had
+manually copied contents from library manifests into your app manifest
+you may need to remove these for the app to build correctly.
+
+Ignored Files:
+--------------
+The following files were *not* copied into the new Gradle project; you
+should evaluate whether these are still needed in your project and if
+so manually move them:
+
+* ASL2.0.txt
+* BSD-JSLP.txt
+* MITX.txt
+* NOTICE.txt
+* pom.xml
+* target\
+* target\classes\
+* target\classes\META-INF\
+* target\classes\META-INF\device_description.xml
+
+Replaced Jars with Dependencies:
+--------------------------------
+The importer recognized the following .jar files as third party
+libraries and replaced them with Gradle dependencies instead. This has
+the advantage that more explicit version information is known, and the
+libraries can be updated automatically. However, it is possible that
+the .jar file in your project was of an older version than the
+dependency we picked, which could render the project not compileable.
+You can disable the jar replacement in the import wizard and try again:
+
+android-support-v4.jar => com.android.support:support-v4:22.1.1
+
+Replaced Libraries with Dependencies:
+-------------------------------------
+The importer recognized the following library projects as third party
+libraries and replaced them with Gradle dependencies instead. This has
+the advantage that more explicit version information is known, and the
+libraries can be updated automatically. However, it is possible that
+the source files in your project were of an older version than the
+dependency we picked, which could render the project not compileable.
+You can disable the library replacement in the import wizard and try
+again:
+
+google-play-services_lib => [com.google.android.gms:play-services:+]
+
+Moved Files:
+------------
+Android Gradle projects use a different directory structure than ADT
+Eclipse projects. Here's how the projects were restructured:
+
+* AndroidManifest.xml => mwcontainerandroid\src\main\AndroidManifest.xml
+* libs\bcprov-jdk13-140.jar => mwcontainerandroid\libs\bcprov-jdk13-140.jar
+* libs\jgroups-3.4.1.Final.jar => mwcontainerandroid\libs\jgroups-3.4.1.Final.jar
+* libs\jslp.core-3.3.1-SNAPSHOT.jar => mwcontainerandroid\libs\jslp.core-3.3.1-SNAPSHOT.jar
+* libs\mw.bus.tracker.core-3.3.1-SNAPSHOT.jar => mwcontainerandroid\libs\mw.bus.tracker.core-3.3.1-SNAPSHOT.jar
+* libs\mw.data.representation.core-3.3.1-SNAPSHOT.jar => mwcontainerandroid\libs\mw.data.representation.core-3.3.1-SNAPSHOT.jar
+* libs\mw.data.serialization.core-3.3.1-SNAPSHOT.jar => mwcontainerandroid\libs\mw.data.serialization.core-3.3.1-SNAPSHOT.jar
+* libs\mw.managers.aalspace.core-3.3.1-SNAPSHOT.jar => mwcontainerandroid\libs\mw.managers.aalspace.core-3.3.1-SNAPSHOT.jar
+* libs\mw.schemas-3.3.1-SNAPSHOT.jar => mwcontainerandroid\libs\mw.schemas-3.3.1-SNAPSHOT.jar
+* libs\ri.gateway.multitenant-3.2.1-SNAPSHOT.jar => mwcontainerandroid\libs\ri.gateway.multitenant-3.2.1-SNAPSHOT.jar
+* res\ => mwcontainerandroid\src\main\res\
+* src\main\java\ => mwcontainerandroid\src\main\java\
+* src\main\java\org\universAAL\android\activities\package.html => mwcontainerandroid\src\main\resources\org\universAAL\android\activities\package.html
+* src\main\java\org\universAAL\android\container\package.html => mwcontainerandroid\src\main\resources\org\universAAL\android\container\package.html
+* src\main\java\org\universAAL\android\handler\package.html => mwcontainerandroid\src\main\resources\org\universAAL\android\handler\package.html
+* src\main\java\org\universAAL\android\proxies\package.html => mwcontainerandroid\src\main\resources\org\universAAL\android\proxies\package.html
+* src\main\java\org\universAAL\android\receivers\system\package.html => mwcontainerandroid\src\main\resources\org\universAAL\android\receivers\system\package.html
+* src\main\java\org\universAAL\android\services\package.html => mwcontainerandroid\src\main\resources\org\universAAL\android\services\package.html
+* src\main\java\org\universAAL\android\utils\package.html => mwcontainerandroid\src\main\resources\org\universAAL\android\utils\package.html
+* src\main\java\org\universAAL\android\wrappers\package.html => mwcontainerandroid\src\main\resources\org\universAAL\android\wrappers\package.html
+* src\main\resources\ => mwcontainerandroid\src\main\java\
+* src\main\resources\META-INF\device_description.xml => mwcontainerandroid\src\main\resources\META-INF\device_description.xml
+* src\test\java\ => mwcontainerandroid\src\main\java\
+
+Next Steps:
+-----------
+You can now build the project. The Gradle project needs network
+connectivity to download dependencies.
+
+Bugs:
+-----
+If for some reason your project does not build, and you determine that
+it is due to a bug or limitation of the Eclipse to Gradle importer,
+please file a bug at http://b.android.com with category
+Component-Tools.
+
+(This import summary is for your information only, and can be deleted
+after import once you are satisfied with the results.)

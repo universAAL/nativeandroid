@@ -10,7 +10,6 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name">
         
-        <meta-data android:name="org.universAAL.middleware.service.android.contextPublisherGrounding" android:resource="@raw/lighting_server_context_publisher_grounding"/>
         <meta-data android:name="org.universAAL.android.metadata" android:resource="@raw/uaal"/>
         
         <activity
@@ -34,8 +33,7 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".service.LightService">
-            <meta-data android:name="org.universAAL.middleware.service.android.serviceGrounding" android:resource="@raw/lighting_server_service_grounding"/> 
+        <service android:name=".service.LightService"> 
             <intent-filter>
                 <action android:name="org.universaal.nativeandroid.lightserver.TURN_ON" />
                 <category android:name="android.intent.category.DEFAULT" />

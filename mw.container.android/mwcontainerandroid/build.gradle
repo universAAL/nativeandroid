@@ -1,0 +1,78 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 22
+    buildToolsVersion "22.0.1"
+
+    defaultConfig {
+        applicationId "org.universAAL.android"
+        minSdkVersion 10
+        targetSdkVersion 22
+        compileOptions {
+            sourceCompatibility JavaVersion.VERSION_1_5
+            targetCompatibility JavaVersion.VERSION_1_5
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven { url 'http://depot.universaal.org/nexus/content/repositories/releases' }
+    maven { url 'http://depot.universaal.org/nexus/content/repositories/snapshots/' }
+    maven { url 'http://depot.universaal.org/maven-repo/thirdparty/' }
+    maven { url 'http://depot.universaal.org/maven-repo/thirdparty-snapshots/' }
+    maven { url 'http://nexus.aaloa.org/content/repositories/releases/' }
+    maven { url 'http://nexus.aaloa.org/content/repositories/snapshots/' }
+    maven { url 'http://repository.apache.org/snapshots' }
+}
+
+configurations {
+    all*.exclude group: 'org.jgroups', module: 'jgroups'
+    all*.exclude group: 'org.bouncycastle', module: 'jce.jdk13'
+    all*.exclude group: 'org.universAAL.thirdparty', module: 'jslp.core'
+    all*.exclude group: 'net.lingala.zip4j', module: 'zip4j'
+    all*.exclude group: 'org.universAAL.middleware', module: 'mw.schemas'
+    all*.exclude group: 'org.universAAL.middleware', module: 'mw.data.representation.core'
+}
+
+dependencies {
+    compile 'com.android.support:support-v4:22.1.1'
+    compile 'com.google.android.gms:play-services-gcm:+'
+//    compile 'com.google.android.gms:play-services:+'
+    compile 'org.universAAL.middleware:mw.container.xfaces.core:3.3.1-SNAPSHOT'
+    compile 'org.universAAL.middleware:mw.interfaces.core:3.3.1-SNAPSHOT'
+    compile 'org.universAAL.middleware:mw.connectors.api.core:3.3.1-SNAPSHOT'
+    compile 'org.universAAL.middleware:mw.connectors.communication.jgroups.core:3.3.1-SNAPSHOT'
+    compile 'org.universAAL.middleware:mw.connectors.discovery.slp.core:3.3.1-SNAPSHOT'
+    compile 'org.universAAL.middleware:mw.modules.api.core:3.3.1-SNAPSHOT'
+    compile 'org.universAAL.middleware:mw.modules.communication.core:3.3.1-SNAPSHOT'
+    compile 'org.universAAL.middleware:mw.modules.aalspace.core:3.3.1-SNAPSHOT'
+    compile 'org.universAAL.middleware:mw.brokers.api.core:3.3.1-SNAPSHOT'
+    compile 'org.universAAL.middleware:mw.brokers.control.core:3.3.1-SNAPSHOT'
+    compile 'org.universAAL.middleware:mw.managers.api.core:3.3.1-SNAPSHOT'
+    compile 'org.universAAL.middleware:mw.managers.deploy.core:3.3.1-SNAPSHOT'
+    compile 'org.universAAL.middleware:mw.bus.model.core:3.3.1-SNAPSHOT'
+    compile 'org.universAAL.middleware:mw.bus.service.core:3.3.1-SNAPSHOT'
+    compile 'org.universAAL.middleware:mw.bus.context.core:3.3.1-SNAPSHOT'
+    compile 'org.universAAL.middleware:mw.bus.ui.core:3.3.1-SNAPSHOT'
+    compile 'org.universAAL.ontology:ont.phWorld:3.3.1-SNAPSHOT'
+    compile 'org.universAAL.ontology:ont.profile:3.3.1-SNAPSHOT'
+    compile 'org.universAAL.ontology:ont.unit:3.3.1-SNAPSHOT'
+    compile 'org.universAAL.ontology:ont.measurement:3.3.1-SNAPSHOT'
+    compile files('libs/bcprov-jdk13-140.jar')
+    compile files('libs/jgroups-3.4.1.Final.jar')
+    compile files('libs/jslp.core-3.3.1-SNAPSHOT.jar')
+    compile files('libs/mw.bus.tracker.core-3.3.1-SNAPSHOT.jar')
+    compile files('libs/mw.data.representation.core-3.3.1-SNAPSHOT.jar')
+    compile files('libs/mw.data.serialization.core-3.3.1-SNAPSHOT.jar')
+    compile files('libs/mw.managers.aalspace.core-3.3.1-SNAPSHOT.jar')
+    compile files('libs/mw.schemas-3.3.1-SNAPSHOT.jar')
+    compile files('libs/ri.gateway.multitenant-3.2.1-SNAPSHOT.jar')
+}
