@@ -32,6 +32,7 @@ import org.universAAL.middleware.context.DefaultContextPublisher;
 import org.universAAL.middleware.serialization.MessageContentSerializerEx;
 import org.universAAL.middleware.service.ServiceCall;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.WakefulBroadcastReceiver;
@@ -83,7 +84,7 @@ public class GCMReceiver extends WakefulBroadcastReceiver {
 				if (serial != null && spuri != null) {
 					ServiceCall scall = (ServiceCall) parser
 							.deserialize(serial);
-					if (scall != null) {
+					if (scall != null) { //TODO Use wakeful service calling?
 						ServiceCalleeProxy calleeProxy = AndroidRegistry
 								.getCallee(spuri);
 						if (calleeProxy != null) {
@@ -96,6 +97,7 @@ public class GCMReceiver extends WakefulBroadcastReceiver {
 		} else {
 			// Received something unexpected from server. What to do?
 		}
+		setResultCode(Activity.RESULT_OK); //This is to tell GCM we did get the message, although not mandatory
 	}
 
 }
