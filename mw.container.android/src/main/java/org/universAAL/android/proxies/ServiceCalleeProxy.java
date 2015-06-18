@@ -362,7 +362,13 @@ public class ServiceCalleeProxy extends ServiceCallee {
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			ServiceResponse resp = new ServiceResponse(CallStatus.succeeded);
+			ServiceResponse resp;
+			CallStatus status = CallStatus.valueOf(intent.getStringExtra(CallStatus.MY_URI));
+			if(status!=null){
+				resp = new ServiceResponse(status);
+			}else{
+				resp = new ServiceResponse(CallStatus.succeeded);
+			}
 			if (extraKEYtoOutputURI!=null && !extraKEYtoOutputURI.isEmpty()){
 				VariableSubstitution.putIntentExtrasAsResponseOutputs(intent,resp,extraKEYtoOutputURI);
 			}

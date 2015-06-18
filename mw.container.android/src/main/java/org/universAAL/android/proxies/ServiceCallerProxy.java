@@ -34,6 +34,7 @@ import org.universAAL.android.utils.RAPIManager;
 import org.universAAL.android.utils.VariableSubstitution;
 import org.universAAL.middleware.rdf.Resource;
 import org.universAAL.middleware.serialization.MessageContentSerializerEx;
+import org.universAAL.middleware.service.CallStatus;
 import org.universAAL.middleware.service.ServiceCaller;
 import org.universAAL.middleware.service.ServiceRequest;
 import org.universAAL.middleware.service.ServiceResponse;
@@ -170,6 +171,10 @@ public class ServiceCallerProxy extends ServiceCaller {
 			if(outputURItoExtraKEY!=null && !outputURItoExtraKEY.isEmpty()){
 				VariableSubstitution.putResponseOutputsAsIntentExtras(response, start, outputURItoExtraKEY);
 			}
+			CallStatus status = response.getCallStatus();
+			if(status!=null){
+				start.putExtra(CallStatus.MY_URI, status.name());
+			}
 			ctxt.sendBroadcast(start);
 			//TODO Send to replyact/cat that the app said at first (embed into sreq, then in sresp in callee and then read here)
 		}
@@ -226,7 +231,7 @@ public class ServiceCallerProxy extends ServiceCaller {
 				// I have to add this flag metadata because otherwise callee doesnt know if an output is really needed
 			}
 			sendRequest(srmeta);
-			// If RAPI, send it to server. If GW it is automatic by the running GW
+			// If RAPI, send it to server. If GW it is automatic by the running GW TODO Sent twice (no matching above)
 			if (MiddlewareService.isGWrequired() && Config.getRemoteType() == AppConstants.REMOTE_TYPE_RAPI
 					&& remote != null && !remote.isEmpty()) {
 				new Thread() {
