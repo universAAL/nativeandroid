@@ -86,6 +86,10 @@ public class VariableSubstitution {
 			intent.putExtra(extrakey, (Long)value);
 		}else if(value instanceof Double){
 			intent.putExtra(extrakey, (Double)value);
+		}else if(value instanceof Float){
+			intent.putExtra(extrakey, (Float)value);
+		}else if(value instanceof Short){
+			intent.putExtra(extrakey, (Short)value);
 		}else if(value instanceof List){
 			Object first=((List)value).get(0);
 			if(first instanceof Resource){
