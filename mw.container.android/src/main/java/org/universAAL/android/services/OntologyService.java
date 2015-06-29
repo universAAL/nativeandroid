@@ -225,6 +225,7 @@ public class OntologyService extends Service{
 			while(scan.hasNext()){
 				String activator=scan.next();
 				activator=activator.replace(",", "");
+				activator=activator.replace(" ", "");
 				if (!activator.trim().isEmpty()){//Avoid empty spaces in the end of the list
 					if(!activator.startsWith("org.universAAL.ontology.")){
 						activator="org.universAAL.ontology."+activator;
@@ -268,6 +269,7 @@ public class OntologyService extends Service{
 			while(scan.hasNext()){
 				String ontology=scan.next();
 				ontology=ontology.replace(",", "");
+				ontology=ontology.replace(" ", "");
 				if (!ontology.trim().isEmpty()){//Avoid empty spaces in the end of the list
 					try {
 						Ontology ontologyclass = (Ontology) Class.forName(ontology, true, cl).newInstance();
