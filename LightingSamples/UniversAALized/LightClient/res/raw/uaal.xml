@@ -5,13 +5,13 @@
          <requirement>
             <title>Get all light sources</title>
             <description>SERVICE CALLER REQUEST: Get a list of all light sources.</description>
-            <action>org.universaal.nativeandroid.lightclient.GET_CONTROLLED_LAMPS</action>
+            <action>org.universaal.nativeandroid.light.CALL_GETLAMPS</action>
             <category>android.intent.category.DEFAULT</category>
-            <replyAction>org.universaal.nativeandroid.lightclient.LightClientActivity$1</replyAction>
+            <replyAction>org.universaal.nativeandroid.light.REPLY_GETLAMPS</replyAction>
             <replyCategory>android.intent.category.DEFAULT</replyCategory>
             <output>
                 <key>http://ontology.igd.fhg.de/LightingConsumer.owl#controlledLamps</key>
-                <value>lamp_number_array</value>
+                <value>http://ontology.igd.fhg.de/LightingServer.owl#{lamps}</value>
             </output>
             <serialization>
                <![CDATA[
@@ -43,11 +43,11 @@ ns:controlledLamps a :Output .
          <requirement>
             <title>Turn light source on</title>
             <description>SERVICE CALLER REQUEST: Turn on a specific light source.</description>
-            <action>org.universaal.nativeandroid.lightclient.TURN_ON</action>
+            <action>org.universaal.nativeandroid.light.CALL_ON</action>
             <category>android.intent.category.DEFAULT</category>
             <input>
                 <key>var1</key>
-                <value>lamp_number</value>
+                <value>lamp</value>
             </input>
             <serialization>
                <![CDATA[
@@ -77,13 +77,13 @@ _:BN000000 a pvn:ServiceRequest ;
   pvn:requestedService [
     a ns2:Lighting ;
     pvn:instanceLevelRestrictions [
-        owl:hasValue <&var1;http://ontology.igd.fhg.de/LightingServer.owl#controlledLamp0&var1;> ;
+        owl:hasValue <http://ontology.igd.fhg.de/LightingServer.owl#&var1;controlledLamp0&var1;> ;
         a owl:Restriction ;
         owl:onProperty ns2:controls
       ] ;
     pvn:numberOfValueRestrictions "1"^^xsd:int
   ] .
-<&var1;http://ontology.igd.fhg.de/LightingServer.owl#controlledLamp0&var1;> a ns2:LightSource ,
+<http://ontology.igd.fhg.de/LightingServer.owl#&var1;controlledLamp0&var1;> a ns2:LightSource ,
     ns:Device ,
     ns:PhysicalThing .
 ]]>
@@ -92,11 +92,11 @@ _:BN000000 a pvn:ServiceRequest ;
          <requirement>
             <title>Turn light source off</title>
             <description>SERVICE CALLER REQUEST: Turn off a specific light source.</description>
-            <action>org.universaal.nativeandroid.lightclient.TURN_OFF</action>
+            <action>org.universaal.nativeandroid.light.CALL_OFF</action>
             <category>android.intent.category.DEFAULT</category>
             <input>
                 <key>var1</key>
-                <value>lamp_number</value>
+                <value>lamp</value>
             </input>
             <serialization>
                <![CDATA[
@@ -126,13 +126,13 @@ _:BN000000 a pvn:ServiceRequest ;
   pvn:requestedService [
     a ns2:Lighting ;
     pvn:instanceLevelRestrictions [
-        owl:hasValue <&var1;http://ontology.igd.fhg.de/LightingServer.owl#controlledLamp0&var1;> ;
+        owl:hasValue <http://ontology.igd.fhg.de/LightingServer.owl#&var1;controlledLamp0&var1;> ;
         a owl:Restriction ;
         owl:onProperty ns2:controls
       ] ;
     pvn:numberOfValueRestrictions "1"^^xsd:int
   ] .
-<&var1;http://ontology.igd.fhg.de/LightingServer.owl#controlledLamp0&var1;> a ns2:LightSource ,
+<http://ontology.igd.fhg.de/LightingServer.owl#&var1;controlledLamp0&var1;> a ns2:LightSource ,
     ns:Device ,
     ns:PhysicalThing .
 ]]>
@@ -141,17 +141,17 @@ _:BN000000 a pvn:ServiceRequest ;
       </mw.bus.service>
       <mw.bus.context>
          <requirement>
-            <title>light sources</title>
-            <description>CONTEXT SUBSCRIBER PATTERN: All changes for light sources.</description>
-            <action>org.universaal.nativeandroid.lighting.LAMP_STATE_CHANGED</action>
+            <title>Subscribe to light sources</title>
+            <description>CONTEXT SUBSCRIBER PATTERN: Receive all changes of light source brightness</description>
+            <action>org.universaal.nativeandroid.light.EVENT_LIGHTCHANGE</action>
             <category>android.intent.category.DEFAULT</category>
             <output>
                 <key>http://www.w3.org/1999/02/22-rdf-syntax-ns#subject</key>
-                <value>http://ontology.igd.fhg.de/LightingServer.owl#controlledLamp{lamp_number}</value>
+                <value>http://ontology.igd.fhg.de/LightingServer.owl#{lamp}</value>
             </output>
             <output>
                 <key>http://www.w3.org/1999/02/22-rdf-syntax-ns#object</key>
-                <value>lamp_brightness</value>
+                <value>brightness</value>
             </output>
             <serialization>
                <![CDATA[

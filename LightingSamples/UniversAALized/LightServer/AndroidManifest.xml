@@ -4,51 +4,49 @@
     android:versionCode="1"
     android:versionName="1.0" >
 
-    <uses-sdk android:minSdkVersion="8" />
+    <uses-sdk
+        android:minSdkVersion="10"
+        android:targetSdkVersion="22" />
 
     <application
+        android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name">
-        
-        <meta-data android:name="org.universAAL.middleware.service.android.contextPublisherGrounding" android:resource="@raw/lighting_server_context_publisher_grounding"/>
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
         <meta-data android:name="org.universAAL.android.metadata" android:resource="@raw/uaal"/>
-        
         <activity
             android:name=".LightServerActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:launchMode="singleTask" >
+            
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <intent-filter>
-                <action android:name="org.universaal.nativeandroid.lightserver.TURN_ON" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="org.universaal.nativeandroid.lightserver.TURN_OFF" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="org.universaal.nativeandroid.lightserver.GET_CONTROLLED_LAMPS" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
         </activity>
-
-        <service android:name=".service.LightService">
-            <meta-data android:name="org.universAAL.middleware.service.android.serviceGrounding" android:resource="@raw/lighting_server_service_grounding"/> 
+        
+        <receiver
+            android:name=".LightCallTurnReceiver"
+            android:enabled="true"
+            android:exported="true" >
             <intent-filter>
-                <action android:name="org.universaal.nativeandroid.lightserver.TURN_ON" />
+                <action android:name="org.universaal.nativeandroid.light.CALL_ON" />
+                <action android:name="org.universaal.nativeandroid.light.CALL_OFF" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+        </receiver>
+        
+        <receiver
+            android:name=".LightCallGetReceiver"
+            android:enabled="true"
+            android:exported="true" >
             <intent-filter>
-                <action android:name="org.universaal.nativeandroid.lightserver.TURN_OFF" />
+                <action android:name="org.universaal.nativeandroid.light.CALL_GETLAMPS" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-            <intent-filter>
-                <action android:name="org.universaal.nativeandroid.lightserver.GET_CONTROLLED_LAMPS" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </service>
+        </receiver>
+        
     </application>
 
 </manifest>

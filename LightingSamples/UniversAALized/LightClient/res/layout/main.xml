@@ -1,108 +1,58 @@
-<?xml version="1.0" encoding="utf-8"?>
-    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/tableLayout1"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".LightClientActivity" >
+
+    <Button
+        android:id="@+id/button1"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" 
-        android:background="@color/White">
+        android:layout_height="wrap_content"
+        android:text="GET LAMPS"
+        android:onClick="onButtonGetLampsClicked" />
 
-        <TableRow
-            android:id="@+id/tableRow1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/button1"
+        android:layout_below="@+id/button1" >
 
-            <FrameLayout android:id="@+id/spaceCol1" android:layout_width="64dp" android:layout_height="50dp"></FrameLayout>
-            <FrameLayout android:id="@+id/spaceCol2" android:layout_width="64dp" android:layout_height="50dp"></FrameLayout>
-            <FrameLayout android:id="@+id/spaceCol3" android:layout_width="64dp" android:layout_height="50dp"></FrameLayout>
-            <FrameLayout android:id="@+id/spaceCol4" android:layout_width="64dp" android:layout_height="50dp"></FrameLayout>
-            <FrameLayout android:id="@+id/spaceCol5" android:layout_width="64dp" android:layout_height="50dp"></FrameLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
 
-        </TableRow>
-        <TableRow
-            android:id="@+id/tableTurnOnOffRowButtons"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-
-            <Button
-                android:id="@+id/btnOn"
+            <RadioGroup
+                android:id="@+id/radioGroup1"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/on"
-                android:layout_column="1"
-                android:onClick="onButtonOnClicked"/>
-            
-            <Button
-                android:id="@+id/btnOff"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/off" 
-                android:layout_column="3"
-                android:onClick="onButtonOffClicked"/>
-        </TableRow>
+                android:layout_height="wrap_content" >
+            </RadioGroup>
+        </LinearLayout>
+    </ScrollView>
+    
+    <Button
+        android:id="@+id/button2"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:text="ON" 
+        android:onClick="onButtonOnClicked" />
 
-        <TableRow
-            android:id="@+id/tableRowSpan1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
+    <Button
+        android:id="@+id/button3"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/button2"
+        android:text="OFF" 
+        android:onClick="onButtonOffClicked" />
 
-            <FrameLayout android:id="@+id/rowSpan1"  android:layout_height="50dp"></FrameLayout>
-
-        </TableRow>
-        <TableRow
-            android:id="@+id/tableRowScale"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-
-            <EditText
-                android:id="@+id/editTextScalePercents"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:inputType="number"
-                android:layout_column="1" 
-                android:text="@string/defaultScale">
-
-                <requestFocus />
-            </EditText>
-
-            <Button
-                android:id="@+id/btnScale"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/scale" 
-                android:layout_column="3"/>
-
-        </TableRow>
-        
-        <TableRow
-            android:id="@+id/tableRowSpan2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-
-            <FrameLayout android:id="@+id/rowSpan2"  android:layout_height="50dp"></FrameLayout>
-
-        </TableRow>
-        
-        <TableRow
-            android:id="@+id/tableGetControlledLampsRowButtons"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-
-            <Button
-                android:id="@+id/btnGetLamps"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/getLamps" 
-                android:layout_column="0"
-                android:onClick="onButtonGetLampsClicked"/>
-        </TableRow>
-        
-        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    				android:layout_width="fill_parent"
-    				android:layout_height="fill_parent">
-	        <RadioGroup
-	       		android:id="@+id/groupLamps"
-	        	android:layout_width="fill_parent"
-	        	android:layout_height="wrap_content"
-	        	android:orientation="vertical" >
-	    	</RadioGroup>
-    	</ScrollView>
-    </TableLayout>
+</RelativeLayout>

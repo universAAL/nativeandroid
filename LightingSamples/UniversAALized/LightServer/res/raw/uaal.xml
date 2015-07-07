@@ -5,13 +5,13 @@
          <advertisement>
             <title>Get controlled lamps</title>
             <description>SERVICE CALLEE PROFILE: Get controlled lamps</description>
-            <action>org.universaal.nativeandroid.lightserver.GET_CONTROLLED_LAMPS</action>
+            <action>org.universaal.nativeandroid.light.CALL_GETLAMPS</action>
             <category>android.intent.category.DEFAULT</category>
-            <replyAction>org.universaal.nativeandroid.lightserver.REPLY_GET_CONTROLLED_LAMPS</replyAction>
+            <replyAction>org.universaal.nativeandroid.light.REPLY_GETLAMPS</replyAction>
             <replyCategory>android.intent.category.DEFAULT</replyCategory>
             <output>
                 <key>http://ontology.igd.fhg.de/LightingServer.owl#controlledLamps</key>
-                <value>http://ontology.igd.fhg.de/LightingServer.owl#controlledLamp{lamp_number_array}@http://ontology.universaal.org/Lighting.owl#LightSource</value>
+                <value>http://ontology.igd.fhg.de/LightingServer.owl#{lamps}@http://ontology.universaal.org/Lighting.owl#LightSource</value>
             </output>
             <serialization>
                <![CDATA[
@@ -48,11 +48,13 @@
          <advertisement>
             <title>Turn light off</title>
             <description>SERVICE CALLEE PROFILE: Turn off a specific light source.</description>
-            <action>org.universaal.nativeandroid.lightserver.TURN_OFF</action>
+            <action>org.universaal.nativeandroid.light.CALL_OFF</action>
 			<category>android.intent.category.DEFAULT</category>
+			<replyAction>org.universaal.nativeandroid.light.REPLY_OFF</replyAction>
+            <replyCategory>android.intent.category.DEFAULT</replyCategory>
 			<input>
 			    <key>http://ontology.igd.fhg.de/LightingServer.owl#lampURI</key>
-			    <value>http://ontology.igd.fhg.de/LightingServer.owl#controlledLamp{lamp_number}</value>
+			    <value>http://ontology.igd.fhg.de/LightingServer.owl#{lamp}</value>
 			</input>
             <serialization>
                <![CDATA[
@@ -106,11 +108,13 @@ ns1:lampURI psn:parameterCardinality "1"^^xsd:int ;
          <advertisement>
             <title>Turn light on</title>
             <description>SERVICE CALLEE PROFILE: Turn on a specific light source.</description>
-            <action>org.universaal.nativeandroid.lightserver.TURN_ON</action>
+            <action>org.universaal.nativeandroid.light.CALL_ON</action>
+            <replyAction>org.universaal.nativeandroid.light.REPLY_ON</replyAction>
+            <replyCategory>android.intent.category.DEFAULT</replyCategory>
             <category>android.intent.category.DEFAULT</category>
             <input>
 			    <key>http://ontology.igd.fhg.de/LightingServer.owl#lampURI</key>
-			    <value>http://ontology.igd.fhg.de/LightingServer.owl#controlledLamp{lamp_number}</value>
+			    <value>http://ontology.igd.fhg.de/LightingServer.owl#{lamp}</value>
 			</input>
             <serialization>
                <![CDATA[
@@ -164,17 +168,17 @@ ns1:lampURI psn:parameterCardinality "1"^^xsd:int ;
       </mw.bus.service>
       <mw.bus.context>
          <advertisement>
-            <title>Light source brightness</title>
-            <description>CONTEXT PUBLISHER EVENT: Changes in the brightness of a light source.</description>
-            <action>org.universaal.nativeandroid.lighting.LAMP_STATE_CHANGED</action>
+            <title>Publish light source brightness</title>
+            <description>CONTEXT PUBLISHER EVENT: Publish changes in brightness of a light source.</description>
+            <action>org.universaal.nativeandroid.light.EVENT_LIGHTCHANGE</action>
             <category>android.intent.category.DEFAULT</category>
             <input>
                 <key>var1</key>
-                <value>lamp_number</value>
+                <value>lamp</value>
             </input>
             <input>
                 <key>var2</key>
-                <value>lamp_brightness</value>
+                <value>brightness</value>
             </input>
             <serialization>
                <![CDATA[
@@ -182,17 +186,17 @@ ns1:lampURI psn:parameterCardinality "1"^^xsd:int ;
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix tst: <http://ontology.igd.fhg.de/LightingServer.owl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix light: <http://ontology.universAAL.org/Lighting.owl#> .
+@prefix light: <http://ontology.universaal.org/Lighting.owl#> .
 @prefix ctxt: <http://ontology.universAAL.org/Context.owl#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 
 <urn:org.universAAL.middleware.context.rdf:ContextEvent#_:c043cf9e99c148f8:be9> ctxt:hasProvider tst:LightServer ;
   a ctxt:ContextEvent ;
-  rdf:subject tst:controlledLamp&var1;1&var1; ;
+  rdf:subject tst:&var1;controlledLamp1&var1; ;
   ctxt:hasTimestamp "1384864157846"^^xsd:long ;
   rdf:predicate light:srcBrightness ;
   rdf:object "&var2;100&var2;"^^xsd:int .
-tst:controlledLamp&var1;1&var1; a light:LightSource ,
+tst:&var1;controlledLamp1&var1; a light:LightSource ,
     ph:Device ,
     ph:PhysicalThing ;
   light:srcBrightness "&var2;100&var2;"^^xsd:int .
