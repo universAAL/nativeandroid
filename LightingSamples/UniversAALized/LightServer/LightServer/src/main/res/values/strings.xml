@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Light Server</string>
+    
+    <string name="lamp_1">controlledLamp1</string>
+    <string name="lamp_2">controlledLamp2</string>
+    <string name="lamp_3">controlledLamp3</string>
+    <string name="lamp_4">controlledLamp4</string>
+
+</resources>
