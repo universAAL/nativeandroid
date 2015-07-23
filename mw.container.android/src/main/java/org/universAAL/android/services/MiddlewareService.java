@@ -139,6 +139,13 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 		super.onCreate();
 		Log.v(TAG, "Create");
 		mPercentage=0;
+		// Because now this service can be started by other apps, make sure files are created here, not just in activity
+		Config.load(this); //Sync Preferences in Config util
+		if(PreferenceManager.getDefaultSharedPreferences(this).getBoolean(AppConstants.FIRST, true)){
+			// first time we run the app (or app data has been cleared)
+			PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean(AppConstants.FIRST, false).commit();
+			Config.createFiles(this);
+		}// No need to do the Play Services check cause its done everytime it is attempted too
 		
 		// Ongoing notification is mandatory after Android 4.0
 		Intent notificationIntent = new Intent(this, HandlerActivity.class);
