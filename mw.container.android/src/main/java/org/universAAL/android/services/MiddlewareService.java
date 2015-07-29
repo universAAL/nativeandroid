@@ -276,8 +276,8 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 		Log.v(TAG, "Start command: ");
 		// HACK: Set user type for AndroidHandler. Prevents NPE at startup when activity is not visible
 		mUserType = Integer.parseInt(PreferenceManager
-				.getDefaultSharedPreferences(MiddlewareService.this).getString(
-						"setting_type_key", Integer.toString(AppConstants.Defaults.TYPE)));
+				.getDefaultSharedPreferences(MiddlewareService.this).getString(AppConstants.Keys.TYPE
+						, Integer.toString(AppConstants.Defaults.TYPE)));
 		new Thread(new Runnable() {
 			public void run() {
 				if (intent != null) {

@@ -61,18 +61,18 @@ public class Config {
 	public static void load(Context ctxt) {
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(ctxt);
-		mServerURL = prefs.getString("setting_connurl_key",	AppConstants.Defaults.CONNURL);
-		mServerUSR = prefs.getString("setting_connusr_key",	AppConstants.Defaults.CONNUSR);
-		mServerPWD = prefs.getString("setting_connpwd_key", AppConstants.Defaults.CONNPWD);
-		mServiceCoord = prefs.getBoolean("setting_iscoord_key",	AppConstants.Defaults.ISCOORD);
-		mUIHandler = prefs.getBoolean("setting_uihandler_key",	AppConstants.Defaults.UIHANDLER);
-		mSettingWifiEnabled = prefs.getBoolean("setting_connwifi_key", AppConstants.Defaults.CONNWIFI);
-		mSettingRemoteMode = Integer.parseInt(prefs.getString("setting_connmode_key",
+		mServerURL = prefs.getString(AppConstants.Keys.CONNURL,	AppConstants.Defaults.CONNURL);
+		mServerUSR = prefs.getString(AppConstants.Keys.CONNUSR,	AppConstants.Defaults.CONNUSR);
+		mServerPWD = prefs.getString(AppConstants.Keys.CONNPWD, AppConstants.Defaults.CONNPWD);
+		mServiceCoord = prefs.getBoolean(AppConstants.Keys.ISCOORD, AppConstants.Defaults.ISCOORD);
+		mUIHandler = prefs.getBoolean(AppConstants.Keys.UIHANDLER, AppConstants.Defaults.UIHANDLER);
+		mSettingWifiEnabled = prefs.getBoolean(AppConstants.Keys.CONNWIFI, AppConstants.Defaults.CONNWIFI);
+		mSettingRemoteMode = Integer.parseInt(prefs.getString(AppConstants.Keys.CONNMODE,
 				Integer.toString(AppConstants.Defaults.CONNMODE)));
-		mSettingRemoteType = Integer.parseInt(prefs.getString("setting_conntype_key",
+		mSettingRemoteType = Integer.parseInt(prefs.getString(AppConstants.Keys.CONNTYPE,
 				Integer.toString(AppConstants.Defaults.CONNTYPE)));
-		mConfigFolder = prefs.getString("setting_cfolder_key", AppConstants.Defaults.CFOLDER);
-		mUAALUser = prefs.getString("setting_user_key",	AppConstants.Defaults.USER);
+		mConfigFolder = prefs.getString(AppConstants.Keys.CFOLDER, AppConstants.Defaults.CFOLDER);
+		mUAALUser = prefs.getString(AppConstants.Keys.USER, AppConstants.Defaults.USER);
 	}
 
 	/**
@@ -203,7 +203,7 @@ public class Config {
 		String basepath = Environment.getExternalStorageDirectory().getPath() + Config.getConfigDir();
 //		String ontpath = Environment.getExternalStorageDirectory().getPath()
 //				+ PreferenceManager.getDefaultSharedPreferences(ctxt)
-//						.getString("setting_ofolder_key",
+//						.getString(AppConstants.Keys.OFOLDER,
 //								AppConstants.Defaults.OFOLDER);
 		Log.d(TAG, "Creating default configuration files");
 		try {

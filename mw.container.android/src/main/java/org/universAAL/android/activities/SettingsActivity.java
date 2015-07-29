@@ -107,7 +107,7 @@ public class SettingsActivity extends PreferenceActivity {
 		});
 			
 		// Manage the registration on Google Play Services GCM when selecting R-API conn type
-		ListPreference connType = (ListPreference) findPreference("setting_conntype_key");
+		ListPreference connType = (ListPreference) findPreference(AppConstants.Keys.CONNTYPE);
 		setRAPIOptionsEnabled(connType.getValue()!=null && connType.getValue().equals("1"));
 		connType.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
 			public boolean onPreferenceChange(Preference preference,
@@ -138,7 +138,7 @@ public class SettingsActivity extends PreferenceActivity {
 			}
 		});
 		// Manage the registration on Google Play Services GCM when changing project API key
-		EditTextPreference connKey = (EditTextPreference) findPreference("setting_conngcm_key");
+		EditTextPreference connKey = (EditTextPreference) findPreference(AppConstants.Keys.CONNGCM);
 		connKey.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
 			public boolean onPreferenceChange(Preference preference,
 					Object newValue) {
@@ -162,13 +162,13 @@ public class SettingsActivity extends PreferenceActivity {
 	}
 	
 	private void setRAPIOptionsEnabled(boolean enable){
-		Preference pref = (Preference) findPreference("setting_connurl_key");
+		Preference pref = (Preference) findPreference(AppConstants.Keys.CONNURL);
 		pref.setEnabled(enable);
-		pref = (Preference) findPreference("setting_conngcm_key");
+		pref = (Preference) findPreference(AppConstants.Keys.CONNGCM);
 		pref.setEnabled(enable);
-		pref = (Preference) findPreference("setting_connusr_key");
+		pref = (Preference) findPreference(AppConstants.Keys.CONNUSR);
 		pref.setEnabled(enable);
-		pref = (Preference) findPreference("setting_connpwd_key");
+		pref = (Preference) findPreference(AppConstants.Keys.CONNPWD);
 		pref.setEnabled(enable);
 	}
 

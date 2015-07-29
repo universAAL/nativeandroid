@@ -79,7 +79,7 @@ public class HandlerActivity extends Activity {
 		// Check device for Play Services APK. ONLY IF R-API MODE
 		Integer remoteType = Integer.parseInt(PreferenceManager
 				.getDefaultSharedPreferences(this).getString(
-						"setting_conntype_key", "0"));
+						AppConstants.Keys.CONNTYPE, "0"));
 		if (remoteType == AppConstants.REMOTE_TYPE_RAPI) {
 			if (checkPlayServices()) {
 				String mRegID = RAPIManager.getRegistrationId(mContext);
@@ -88,7 +88,7 @@ public class HandlerActivity extends Activity {
 				}
 			} else {
 				Toast.makeText(getApplicationContext(), R.string.warning_gplay,
-						Toast.LENGTH_LONG).show();// TODO manage text
+						Toast.LENGTH_LONG).show();
 				// Do not block the app from running if Play Services is not available
 			}
 		}

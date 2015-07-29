@@ -125,7 +125,7 @@ public class OntologyService extends Service{
 		// Scan all the JAR files in the ont folder, but dont register yet
 		File ontFolder = new File(Environment.getExternalStorageDirectory(),
 				PreferenceManager.getDefaultSharedPreferences(ctxt).getString(
-						"setting_ofolder_key", AppConstants.Defaults.OFOLDER));
+					AppConstants.Keys.OFOLDER, AppConstants.Defaults.OFOLDER));
 		if (!ontFolder.exists()) {
 			Log.w(TAG, "The ontology folder does not exist."
 					+ "Make sure the value is correct in the settings");

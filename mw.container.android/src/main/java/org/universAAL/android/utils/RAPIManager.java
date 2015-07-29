@@ -78,7 +78,7 @@ public class RAPIManager {
 	            	GoogleCloudMessaging mGCM = GoogleCloudMessaging.getInstance(ctxt);
 					String serverId = PreferenceManager
 							.getDefaultSharedPreferences(ctxt).getString(
-									"setting_conngcm_key", AppConstants.Defaults.CONNGCM);
+									AppConstants.Keys.CONNGCM, AppConstants.Defaults.CONNGCM);
 					String mRegID = mGCM.register(serverId);
 	                // You should send the registration ID to your server over HTTP,
 	                // so it can use GCM/HTTP or CCS to send messages to your app.
@@ -257,7 +257,6 @@ public class RAPIManager {
 				rd.close();
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			// close the connection and set all objects to null

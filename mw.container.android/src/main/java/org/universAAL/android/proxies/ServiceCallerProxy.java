@@ -238,6 +238,9 @@ public class ServiceCallerProxy extends ServiceCaller {
 					@Override
 					public void run() {
 						String result = RAPIManager.invoke(RAPIManager.CALLS, parser.serialize(srmeta));
+                        			if (result == null) {//If problems with remote server
+                        			    result = NO_MATCHING;
+                        			}
 						handleResponse(null, (ServiceResponse) parser.deserialize(result));
 					}
 				}.start();
@@ -245,25 +248,8 @@ public class ServiceCallerProxy extends ServiceCaller {
 		}
 	}
 	
-	//For the old GW
-/*	public void sharedObjectAdded(Object sharedObj, Object removeHook) {
-		if(remote!=null && !remote.isEmpty() && sharedObj!=null && sharedObj instanceof RemoteSpacesManager){
-			try {
-				String[] uris=remote.split("@");
-				entry=((RemoteSpacesManager)sharedObj).importRemoteService(this, uris[0], uris[1]);
-			} catch (Exception e) {
-				System.out.println("Could not import remote services");
-			}
-		}
-	}
-
-	public void sharedObjectRemoved(Object removeHook) {
-		if(entry!=null && removeHook!=null && removeHook instanceof RemoteSpacesManager){
-			try {
-				((RemoteSpacesManager)removeHook).unimportRemoteService(entry);
-			} catch (Exception e) {
-				System.out.println("Could not unimport remote services");
-			}
-		}
-	}*/
+	private static final String NO_MATCHING="@prefix : <http://ontology.universAAL.org/uAAL.owl#> . "
+		+ "_:BN000000 a :ServiceResponse ; "
+		+ "  :callStatus :no_matching_service_found . "
+		+ ":no_matching_service_found a :CallStatus . ";
 }

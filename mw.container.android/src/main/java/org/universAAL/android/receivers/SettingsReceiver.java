@@ -20,47 +20,47 @@ public class SettingsReceiver extends BroadcastReceiver {
 			SharedPreferences prefs = PreferenceManager
 					.getDefaultSharedPreferences(context);
 			SharedPreferences.Editor editor = prefs.edit();
-			if(extras.containsKey("setting_connusr_key")){
-				    editor.putString("setting_connusr_key", extras.getString("setting_connusr_key"));
+			if(extras.containsKey(AppConstants.Keys.CONNUSR)){
+				    editor.putString(AppConstants.Keys.CONNUSR, extras.getString(AppConstants.Keys.CONNUSR));
 			}
-			if(extras.containsKey("setting_connpwd_key")){
-				    editor.putString("setting_connpwd_key", extras.getString("setting_connpwd_key"));
+			if(extras.containsKey(AppConstants.Keys.CONNPWD)){
+				    editor.putString(AppConstants.Keys.CONNPWD, extras.getString(AppConstants.Keys.CONNPWD));
 			}
-			if(extras.containsKey("setting_iscoord_key")){
-				editor.putBoolean("setting_iscoord_key", extras.getBoolean("setting_iscoord_key"));
+			if(extras.containsKey(AppConstants.Keys.ISCOORD)){
+				editor.putBoolean(AppConstants.Keys.ISCOORD, extras.getBoolean(AppConstants.Keys.ISCOORD));
 			}
-			if(extras.containsKey("setting_uihandler_key")){
-				editor.putBoolean("setting_uihandler_key", extras.getBoolean("setting_uihandler_key"));
+			if(extras.containsKey(AppConstants.Keys.UIHANDLER)){
+				editor.putBoolean(AppConstants.Keys.UIHANDLER, extras.getBoolean(AppConstants.Keys.UIHANDLER));
 			}
-			if(extras.containsKey("setting_connwifi_key")){
-				editor.putString("setting_connwifi_key", extras.getString("setting_connwifi_key"));
+			if(extras.containsKey(AppConstants.Keys.CONNWIFI)){
+				editor.putString(AppConstants.Keys.CONNWIFI, extras.getString(AppConstants.Keys.CONNWIFI));
 			}
-			if(extras.containsKey("setting_cfolder_key")){
-				editor.putString("setting_cfolder_key", extras.getString("setting_cfolder_key"));
+			if(extras.containsKey(AppConstants.Keys.CFOLDER)){
+				editor.putString(AppConstants.Keys.CFOLDER, extras.getString(AppConstants.Keys.CFOLDER));
 			}
-			if(extras.containsKey("setting_ofolder_key")){
-				editor.putString("setting_ofolder_key", extras.getString("setting_ofolder_key"));
+			if(extras.containsKey(AppConstants.Keys.OFOLDER)){
+				editor.putString(AppConstants.Keys.OFOLDER, extras.getString(AppConstants.Keys.OFOLDER));
 			}
-			if(extras.containsKey("setting_ifolder_key")){
-				editor.putString("setting_ifolder_key", extras.getString("setting_ifolder_key"));
+			if(extras.containsKey(AppConstants.Keys.IFOLDER)){
+				editor.putString(AppConstants.Keys.IFOLDER, extras.getString(AppConstants.Keys.IFOLDER));
 			}
-			if(extras.containsKey("setting_user_key")){
-				editor.putString("setting_user_key", extras.getString("setting_user_key"));
+			if(extras.containsKey(AppConstants.Keys.USER)){
+				editor.putString(AppConstants.Keys.USER, extras.getString(AppConstants.Keys.USER));
 			}
-			if(extras.containsKey("setting_type_key")){
-				editor.putString("setting_type_key", Integer.toString(extras.getInt("setting_type_key")));
+			if(extras.containsKey(AppConstants.Keys.TYPE)){
+				editor.putString(AppConstants.Keys.TYPE, Integer.toString(extras.getInt(AppConstants.Keys.TYPE)));
 			}
-			if(extras.containsKey("setting_connmode_key")){
-				editor.putString("setting_connmode_key", Integer.toString(extras.getInt("setting_connmode_key")));
+			if(extras.containsKey(AppConstants.Keys.CONNMODE)){
+				editor.putString(AppConstants.Keys.CONNMODE, Integer.toString(extras.getInt(AppConstants.Keys.CONNMODE)));
 			}
-			if(extras.containsKey("setting_conntype_key")){
-				editor.putString("setting_conntype_key", Integer.toString(extras.getInt("setting_conntype_key")));
+			if(extras.containsKey(AppConstants.Keys.CONNTYPE)){
+				editor.putString(AppConstants.Keys.CONNTYPE, Integer.toString(extras.getInt(AppConstants.Keys.CONNTYPE)));
 			}
-			if(extras.containsKey("setting_connurl_key")){
-				editor.putString("setting_connurl_key", extras.getString("setting_connurl_key"));
+			if(extras.containsKey(AppConstants.Keys.CONNURL)){
+				editor.putString(AppConstants.Keys.CONNURL, extras.getString(AppConstants.Keys.CONNURL));
 			}
-			if(extras.containsKey("setting_conngcm_key")){
-				editor.putString("setting_conngcm_key", extras.getString("setting_conngcm_key"));
+			if(extras.containsKey(AppConstants.Keys.CONNGCM)){
+				editor.putString(AppConstants.Keys.CONNGCM, extras.getString(AppConstants.Keys.CONNGCM));
 			}
 			// permission with "signatureOrSystem"?
 			editor.commit();

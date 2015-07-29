@@ -183,26 +183,6 @@ public class ScanService extends Service{
 			ApplicationInfo appInfo = pm.getApplicationInfo(packageName, PackageManager.GET_META_DATA);
 			componentNameString = packageName;
 			scanMetadata(packageName, appInfo.metaData, componentNameString, appInfo, register);
-			// Scan all Activities sections NO, NOT EVEN ACTIVITIES ANYMORE to reduce intents
-//			PackageInfo packInfo = pm.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES);
-//			if (packInfo.activities != null) {
-//				for (int i = 0; i < packInfo.activities.length; i++) {
-//					componentNameString = packInfo.activities[i].name;
-//					componentName = new ComponentName(packageName,componentNameString);
-//					ActivityInfo ai = pm.getActivityInfo(componentName,	PackageManager.GET_META_DATA);
-//					scanMetadata(packageName, ai.metaData, componentNameString, appInfo, register);
-//				}
-//			}
-			// Scan all Services sections, scan receivers too? NO, NOT EVEN SERVICES ANYMORE to reduce intents
-//			packInfo = pm.getPackageInfo(packageName, PackageManager.GET_SERVICES);
-//			if (packInfo.services != null) {
-//				for (int i = 0; i < packInfo.services.length; i++) {
-//					componentNameString = packInfo.services[i].name;
-//					componentName = new ComponentName(packageName,componentNameString);
-//					ServiceInfo si = pm.getServiceInfo(componentName,PackageManager.GET_META_DATA);
-//					scanMetadata(packageName, si.metaData,componentNameString, appInfo, register); //TODO AndroidServiceType.SERVICE I dont use this
-//				}
-//			}
 		} catch (NameNotFoundException e) {
 			Log.w(TAG, "Error when scanning package [" +packageName+ "]; Error [" + e.getMessage() + "]");
 		}
