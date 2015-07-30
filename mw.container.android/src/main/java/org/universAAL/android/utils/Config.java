@@ -217,6 +217,8 @@ public class Config {
 			createFile(ctxt, R.raw.home, basepath,"Home.space");
 //			createFile(ctxt, R.raw.onthwo321s, ontpath, "ont.hwo-3.2.1-SNAPSHOT.jar");
 //			createFile(ctxt, R.raw.ontagendamsg321, ontpath, "ont.agenda.messaging-3.2.1-SNAPSHOT.jar");
+			File folder = new File(basepath+"mw.managers.aalspace.osgi/");
+			folder.mkdirs(); //This is so that AALSpace manager can place peers.id
 		} catch (IOException e) {
 			Log.e(TAG, "Could not create one or more default configuarion files."
 							+ "You will have to place them manually: " + e);
