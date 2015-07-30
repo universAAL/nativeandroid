@@ -119,7 +119,7 @@ public class SettingsActivity extends PreferenceActivity {
 								.getRegistrationId(getApplicationContext());
 						if (mRegID.isEmpty()) {
 							RAPIManager
-									.registerInThread(getApplicationContext());
+									.registerInThread(getApplicationContext(), null);
 						}
 						setRAPIOptionsEnabled(true);//Enable RAPI options only if RAPI selected
 						return true;
@@ -143,12 +143,8 @@ public class SettingsActivity extends PreferenceActivity {
 			public boolean onPreferenceChange(Preference preference,
 					Object newValue) {
 				if (checkPlayServices()) {
-					String mRegID = RAPIManager
-							.getRegistrationId(getApplicationContext());
-					if (!mRegID.equals((String) newValue)) {
-						// API Key of GCM project changed
-						RAPIManager.registerInThread(getApplicationContext());
-					}
+					//Lets assume newValue has changed
+					RAPIManager.registerInThread(getApplicationContext(), (String) newValue);
 					return true;
 				} else {
 					Toast.makeText(getApplicationContext(),

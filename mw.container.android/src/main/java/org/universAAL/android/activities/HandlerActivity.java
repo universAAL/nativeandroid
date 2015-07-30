@@ -84,7 +84,7 @@ public class HandlerActivity extends Activity {
 			if (checkPlayServices()) {
 				String mRegID = RAPIManager.getRegistrationId(mContext);
 				if (mRegID.isEmpty()) {
-					RAPIManager.registerInThread(getApplicationContext());
+					RAPIManager.registerInThread(getApplicationContext(),null);
 				}
 			} else {
 				Toast.makeText(getApplicationContext(), R.string.warning_gplay,

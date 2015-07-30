@@ -765,7 +765,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 			if (RAPIManager.checkPlayServices(getApplicationContext())) {
 				String mRegID = RAPIManager.getRegistrationId(getApplicationContext());
 				if (mRegID.isEmpty()) {
-					RAPIManager.registerInThread(getApplicationContext());
+					RAPIManager.registerInThread(getApplicationContext(), null);
 				}else{//Already registered in GCM, but maybe not in uAAL yet
 					RAPIManager.invoke(RAPIManager.REGISTER, mRegID);
 				}
@@ -808,7 +808,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 			if (RAPIManager.checkPlayServices(getApplicationContext())) {
 				String mRegID = RAPIManager.getRegistrationId(getApplicationContext());
 				if (mRegID.isEmpty()) {
-					RAPIManager.registerInThread(getApplicationContext());
+					RAPIManager.registerInThread(getApplicationContext(), null);
 				}else{//mRegID not really needed, but just in case in the future...
 					RAPIManager.invokeInThread(RAPIManager.UNREGISTER, mRegID);
 				}
