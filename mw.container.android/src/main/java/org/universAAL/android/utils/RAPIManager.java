@@ -243,7 +243,7 @@ public class RAPIManager {
 			}
 
 			if (method == RAPIManager.CALLS) {
-				BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+				BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream(),"UTF-8"));
 				String line = rd.readLine();
 				// Do nothing (keep reading) until we reach TURTLE
 				while (line != null && !line.equals("TURTLE")) {
