@@ -52,7 +52,7 @@
         <!-- This launches scan for universaalized apps -->
         <receiver
             android:name="org.universAAL.android.receivers.system.PackageReceiver"
-            android:enabled="false"
+            android:enabled="true"
             android:exported="false" ><!-- TODO enable -->
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_ADDED" />

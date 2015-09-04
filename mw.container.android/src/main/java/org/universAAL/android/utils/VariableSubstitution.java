@@ -127,10 +127,13 @@ public class VariableSubstitution {
 				List<Double> listinput=(List<Double>)value;
 				intent.putExtra(extrakey, listinput.toArray(new Double[listinput.size()]));
 			}else{
-				Log.e(TAG,"Unrecognized value type of one item of an array value, for key: "+extrakey);
+				Log.w(TAG, "Unrecognized value type of one item of an array value, for key: "
+                				+ extrakey + ". Using its .toString()");
+				intent.putExtra(extrakey, value.toString());
 			}
 		}else {
-			Log.e(TAG,"Unrecognized value type of value, for key: "+extrakey);
+			Log.w(TAG,"Unrecognized value type of value, for key: "+extrakey+". Using its .toString()");
+			intent.putExtra(extrakey, value.toString());
 		}
 		return intent;
 	}
