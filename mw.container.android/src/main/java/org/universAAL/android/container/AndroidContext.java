@@ -219,4 +219,29 @@ public class AndroidContext implements ModuleContext, PlatformAbstraction {
 		return null;
 	}
 
+	public boolean isLogErrorEnabled() {
+	    // TODO Auto-generated method stub
+	    return false;
+	}
+
+	public boolean isLogWarnEnabled() {
+	    // TODO Auto-generated method stub
+	    return false;
+	}
+
+	public boolean isLogInfoEnabled() {
+	    // TODO Auto-generated method stub
+	    return false;
+	}
+
+	public boolean isLogDebugEnabled() {
+	    // TODO Auto-generated method stub
+	    return false;
+	}
+
+	public boolean isLogTraceEnabled() {
+	    // TODO Auto-generated method stub
+	    return false;
+	}
+
 }
