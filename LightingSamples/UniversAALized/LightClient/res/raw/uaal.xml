@@ -9,6 +9,7 @@
             <category>android.intent.category.DEFAULT</category>
             <replyAction>org.universaal.nativeandroid.light.REPLY_GETLAMPS</replyAction>
             <replyCategory>android.intent.category.DEFAULT</replyCategory>
+            <remote>true</remote>
             <output>
                 <key>http://ontology.igd.fhg.de/LightingConsumer.owl#controlledLamps</key>
                 <value>http://ontology.igd.fhg.de/LightingServer.owl#{lamps}</value>
@@ -45,6 +46,7 @@ ns:controlledLamps a :Output .
             <description>SERVICE CALLER REQUEST: Turn on a specific light source.</description>
             <action>org.universaal.nativeandroid.light.CALL_ON</action>
             <category>android.intent.category.DEFAULT</category>
+            <remote>true</remote>
             <input>
                 <key>var1</key>
                 <value>lamp</value>
@@ -94,6 +96,7 @@ _:BN000000 a pvn:ServiceRequest ;
             <description>SERVICE CALLER REQUEST: Turn off a specific light source.</description>
             <action>org.universaal.nativeandroid.light.CALL_OFF</action>
             <category>android.intent.category.DEFAULT</category>
+            <remote>true</remote>
             <input>
                 <key>var1</key>
                 <value>lamp</value>
@@ -145,6 +148,7 @@ _:BN000000 a pvn:ServiceRequest ;
             <description>CONTEXT SUBSCRIBER PATTERN: Receive all changes of light source brightness</description>
             <action>org.universaal.nativeandroid.light.EVENT_LIGHTCHANGE</action>
             <category>android.intent.category.DEFAULT</category>
+            <remote>true</remote>
             <output>
                 <key>http://www.w3.org/1999/02/22-rdf-syntax-ns#subject</key>
                 <value>http://ontology.igd.fhg.de/LightingServer.owl#{lamp}</value>

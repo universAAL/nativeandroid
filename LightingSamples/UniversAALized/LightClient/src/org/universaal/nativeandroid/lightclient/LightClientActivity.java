@@ -112,6 +112,10 @@ public class LightClientActivity extends AppCompatActivity {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			String[] lampsArr = intent.getStringArrayExtra(EXTRA_LAMPS);
+			if(lampsArr==null){
+			    Log.e("LightCientAcitvity", "The list of lamps is empty!!! Something went wrong...");
+			    return;
+			}
 			RadioGroup lampsGroup = (RadioGroup) findViewById(R.id.radioGroup1);
 			lampsGroup.removeAllViews();
 			mSelectedLamp=null;

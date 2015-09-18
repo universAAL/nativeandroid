@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.universAAL</groupId>
 		<artifactId>uAAL.pom</artifactId>
-		<version>3.3.1-SNAPSHOT</version>
+		<version>3.4.0</version>
 	</parent>
 	
 	<groupId>org.universAAL.middleware</groupId>
@@ -91,12 +91,12 @@
 		<dependency>
 			<groupId>org.universAAL.middleware</groupId>
 			<artifactId>mw.container.xfaces.core</artifactId>
-			<version>3.3.1-SNAPSHOT</version>
+			<version>3.4.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.universAAL.middleware</groupId>
 			<artifactId>mw.interfaces.core</artifactId>
-			<version>3.3.1-SNAPSHOT</version>
+			<version>3.4.0</version>
 			<exclusions><!-- for using modified mw.schemas -->
 			    <exclusion>
 			        <groupId>org.universAAL.middleware</groupId>
@@ -111,12 +111,12 @@
 		<dependency>
 			<groupId>org.universAAL.middleware</groupId>
 			<artifactId>mw.connectors.api.core</artifactId>
-			<version>3.3.1-SNAPSHOT</version>
+			<version>3.4.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.universAAL.middleware</groupId>
 			<artifactId>mw.connectors.communication.jgroups.core</artifactId>
-			<version>3.3.1-SNAPSHOT</version>
+			<version>3.4.0</version>
 			<exclusions><!-- for manually adding JGroups android port -->
 			    <exclusion>
 			        <groupId>org.jgroups</groupId>
@@ -131,7 +131,7 @@
 		<dependency>
 			<groupId>org.universAAL.middleware</groupId>
 			<artifactId>mw.connectors.discovery.slp.core</artifactId>
-			<version>3.3.1-SNAPSHOT</version>
+			<version>3.4.0</version>
 			<exclusions><!-- for manually adding mod jslp, not trunk, cause its bugged -->
 			    <exclusion>
 			        <groupId>org.universAAL.thirdparty</groupId>
@@ -142,27 +142,27 @@
 		<dependency>
 			<groupId>org.universAAL.middleware</groupId>
 			<artifactId>mw.modules.api.core</artifactId>
-			<version>3.3.1-SNAPSHOT</version>
+			<version>3.4.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.universAAL.middleware</groupId>
 			<artifactId>mw.modules.communication.core</artifactId>
-			<version>3.3.1-SNAPSHOT</version>
+			<version>3.4.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.universAAL.middleware</groupId>
 			<artifactId>mw.modules.aalspace.core</artifactId>
-			<version>3.3.1-SNAPSHOT</version>
+			<version>3.4.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.universAAL.middleware</groupId>
 			<artifactId>mw.brokers.api.core</artifactId>
-			<version>3.3.1-SNAPSHOT</version>
+			<version>3.4.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.universAAL.middleware</groupId>
 			<artifactId>mw.brokers.control.core</artifactId>
-			<version>3.3.1-SNAPSHOT</version>
+			<version>3.4.0</version>
 			<exclusions><!-- for using modified mw.schemas -->
 			    <exclusion>
 			        <groupId>org.universAAL.middleware</groupId>
@@ -173,7 +173,7 @@
 		<dependency>
 			<groupId>org.universAAL.middleware</groupId>
 			<artifactId>mw.managers.api.core</artifactId>
-			<version>3.3.1-SNAPSHOT</version>
+			<version>3.4.0</version>
 			<exclusions><!-- for using modified mw.schemas -->
 			    <exclusion>
 			        <groupId>org.universAAL.middleware</groupId>
@@ -184,7 +184,7 @@
 		<dependency>
 			<groupId>org.universAAL.middleware</groupId>
 			<artifactId>mw.managers.deploy.core</artifactId>
-			<version>3.3.1-SNAPSHOT</version>
+			<version>3.4.0</version>
 			<exclusions><!-- for using modified mw.schemas -->
 			    <exclusion>
 			        <groupId>org.universAAL.middleware</groupId>
@@ -199,7 +199,7 @@
 		<dependency>
 			<groupId>org.universAAL.middleware</groupId>
 			<artifactId>mw.bus.model.core</artifactId>
-			<version>3.3.1-SNAPSHOT</version>
+			<version>3.4.0</version>
 			<exclusions><!-- for using modified data.rep -->
 			    <exclusion>
 			        <groupId>org.universAAL.middleware</groupId>
@@ -210,7 +210,7 @@
 		<dependency>
 			<groupId>org.universAAL.middleware</groupId>
 			<artifactId>mw.bus.service.core</artifactId>
-			<version>3.3.1-SNAPSHOT</version>
+			<version>3.4.0</version>
 			<exclusions><!-- for using modified data.rep -->
 			    <exclusion>
 			        <groupId>org.universAAL.middleware</groupId>
@@ -221,7 +221,7 @@
 		<dependency>
 			<groupId>org.universAAL.middleware</groupId>
 			<artifactId>mw.bus.context.core</artifactId>
-			<version>3.3.1-SNAPSHOT</version>
+			<version>3.4.0</version>
 			<exclusions><!-- for using modified data.rep -->
 			    <exclusion>
 			        <groupId>org.universAAL.middleware</groupId>
@@ -232,7 +232,7 @@
 		<dependency>
 			<groupId>org.universAAL.middleware</groupId>
 			<artifactId>mw.bus.ui.core</artifactId>
-			<version>3.3.1-SNAPSHOT</version>
+			<version>3.4.0</version>
 			<exclusions><!-- for using modified data.rep -->
 			    <exclusion>
 			        <groupId>org.universAAL.middleware</groupId>
@@ -244,7 +244,7 @@
 		<dependency>
 			<groupId>org.universAAL.ontology</groupId>
 			<artifactId>ont.phWorld</artifactId>
-			<version>3.3.1-SNAPSHOT</version>
+			<version>3.4.0</version>
 			<exclusions><!-- for using modified data.rep -->
 			    <exclusion>
 			        <groupId>org.universAAL.middleware</groupId>
@@ -255,7 +255,7 @@
 		<dependency>
 			<groupId>org.universAAL.ontology</groupId>
 			<artifactId>ont.profile</artifactId>
-			<version>3.3.1-SNAPSHOT</version>
+			<version>3.4.0</version>
 			<exclusions><!-- for using modified data.rep -->
 			    <exclusion>
 			        <groupId>org.universAAL.middleware</groupId>
@@ -266,7 +266,7 @@
 		<dependency>
 			<groupId>org.universAAL.ontology</groupId>
 			<artifactId>ont.unit</artifactId>
-			<version>3.3.1-SNAPSHOT</version>
+			<version>3.4.0</version>
 			<exclusions><!-- for using modified data.rep -->
 			    <exclusion>
 			        <groupId>org.universAAL.middleware</groupId>
@@ -277,7 +277,7 @@
 		<dependency>
 			<groupId>org.universAAL.ontology</groupId>
 			<artifactId>ont.measurement</artifactId>
-			<version>3.3.1-SNAPSHOT</version>
+			<version>3.4.0</version>
 			<exclusions><!-- for using modified data.rep -->
 			    <exclusion>
 			        <groupId>org.universAAL.middleware</groupId>

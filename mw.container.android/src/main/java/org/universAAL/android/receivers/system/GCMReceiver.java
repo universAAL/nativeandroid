@@ -28,7 +28,9 @@ import org.universAAL.android.proxies.ServiceCalleeProxy;
 import org.universAAL.android.utils.Config;
 import org.universAAL.android.utils.AppConstants;
 import org.universAAL.middleware.context.ContextEvent;
+import org.universAAL.middleware.context.ContextEventPattern;
 import org.universAAL.middleware.context.DefaultContextPublisher;
+import org.universAAL.middleware.context.owl.ContextProvider;
 import org.universAAL.middleware.serialization.MessageContentSerializerEx;
 import org.universAAL.middleware.service.ServiceCall;
 
@@ -52,13 +54,16 @@ public class GCMReceiver extends WakefulBroadcastReceiver {
 		if (Config.getRemoteType() != AppConstants.REMOTE_TYPE_RAPI) {
 			return;// For now, double check. TODO make sure not needed
 		}
-
 		String method = intent.getStringExtra("method");
+		if(method==null){
+		    // This may happen if trying to connect to bad R-API server
+		    setResultCode(Activity.RESULT_OK);
+		    return;
+		}
 		MessageContentSerializerEx parser = (MessageContentSerializerEx) AndroidContainer.THE_CONTAINER
 				.fetchSharedObject(AndroidContext.THE_CONTEXT,
 						new Object[] { MessageContentSerializerEx.class
 								.getName() });
-
 		if (method.equals("SENDC")) {
 			if (parser != null) {
 				String serial = intent.getStringExtra("param");
@@ -66,11 +71,16 @@ public class GCMReceiver extends WakefulBroadcastReceiver {
 					ContextEvent cev = (ContextEvent) parser
 							.deserialize(serial);
 					if (cev != null) {
+					    ContextProvider cprov = cev.getProvider();
+					    if (cprov.getProvidedEvents()==null){
+						cprov.setProvidedEvents(new ContextEventPattern[] { new ContextEventPattern() });
+					    }
 						DefaultContextPublisher cp = new DefaultContextPublisher(
-								AndroidContext.THE_CONTEXT, cev.getProvider());
+								AndroidContext.THE_CONTEXT, cprov);
 						cp.publish(cev); // Cheat: Deliver the context event as an impostor. The receiver will get it.
 						cp.close();
 						cp = null;
+						cprov = null;
 						// TODO check performance of creating a publisher per call (it eases the reuse of providerinfo)
 					}
 				}

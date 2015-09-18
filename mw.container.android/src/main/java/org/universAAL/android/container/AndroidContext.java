@@ -30,7 +30,7 @@ import org.universAAL.middleware.container.ModuleContext;
 
 import ch.ethz.iks.slp.impl.PlatformAbstraction;
 import ch.ethz.iks.slp.impl.filter.Filter;
-
+import android.os.Environment;
 import android.util.Log;
 
 /**
@@ -210,7 +210,7 @@ public class AndroidContext implements ModuleContext, PlatformAbstraction {
 
 	public File getConfigHome() {
 		// Used only by GW
-		return new File(Config.getConfigDir()+id+"/");
+		return new File(Environment.getExternalStorageDirectory().getPath() + Config.getConfigDir()+id+"/");
 	}
 
 	public File getDataFolder() {
