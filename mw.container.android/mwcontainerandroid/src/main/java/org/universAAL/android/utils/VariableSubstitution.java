@@ -86,6 +86,10 @@ public class VariableSubstitution {
 			intent.putExtra(extrakey, (Long)value);
 		}else if(value instanceof Double){
 			intent.putExtra(extrakey, (Double)value);
+		}else if(value instanceof Float){
+			intent.putExtra(extrakey, (Float)value);
+		}else if(value instanceof Short){
+			intent.putExtra(extrakey, (Short)value);
 		}else if(value instanceof List){
 			Object first=((List)value).get(0);
 			if(first instanceof Resource){
@@ -123,10 +127,13 @@ public class VariableSubstitution {
 				List<Double> listinput=(List<Double>)value;
 				intent.putExtra(extrakey, listinput.toArray(new Double[listinput.size()]));
 			}else{
-				Log.w(TAG,"Unrecognized value type of one item of an array value, for key: "+extrakey);
+				Log.w(TAG, "Unrecognized value type of one item of an array value, for key: "
+                				+ extrakey + ". Using its .toString()");
+				intent.putExtra(extrakey, value.toString());
 			}
 		}else {
-			Log.w(TAG,"Unrecognized value type of value, for key: "+extrakey);
+			Log.w(TAG,"Unrecognized value type of value, for key: "+extrakey+". Using its .toString()");
+			intent.putExtra(extrakey, value.toString());
 		}
 		return intent;
 	}
@@ -208,7 +215,7 @@ public class VariableSubstitution {
 
 			}
 		} catch (Exception e) {
-			Log.w(TAG,"Unexpected error placing values in outputs. Some or all outputs will not be added.", e);
+			Log.e(TAG,"Unexpected error placing values in outputs. Some or all outputs will not be added.", e);
 		}
 	}
 	
@@ -230,7 +237,7 @@ public class VariableSubstitution {
 				putAnyExtra(intent, table.get(inputURI), call.getInputValue(inputURI));
 			}
 		} catch (Exception e) {
-			Log.w(TAG,"Unexpected error putting extras from inputs. Some or all extras will be empty or not present.", e);
+			Log.e(TAG,"Unexpected error putting extras from inputs. Some or all extras will be empty or not present.", e);
 		}
 	}
 	
@@ -261,7 +268,7 @@ public class VariableSubstitution {
 				}
 			}
 		} catch (Exception e) {
-			Log.w(TAG,"Unexpected error putting extras from outputs. Some or all extras will be empty or not present.", e);
+			Log.e(TAG,"Unexpected error putting extras from outputs. Some or all extras will be empty or not present.", e);
 		}
 	}
 	 
@@ -348,10 +355,25 @@ public class VariableSubstitution {
 			Intent intent, Hashtable<String, String> table) {
 		try {
 			for (String inputURI : table.keySet()) {// TODO Allow pre-variable uri substitution with { }
-				putAnyExtra(intent, table.get(inputURI), event.getProperty(inputURI));// TODO Allow ppaths into event?
+				Object obj=event;
+				if (inputURI.contains(" ")) { // It is a ppath: "property property property"
+					String[] steps = inputURI.split(" ");
+					for (String step : steps) {
+						try {
+							obj = ((Resource) obj).getProperty(step);
+						} catch (Exception e) {
+							Log.e(TAG,
+									"Invalid value following the property path defined in serialization: " + step
+									+ "Some or all extras will be empty or not present.", e);
+						}
+					}
+				}else{ // It is not a ppath, just one property (an event property)
+					obj=((Resource) obj).getProperty(inputURI);
+				}
+				putAnyExtra(intent, table.get(inputURI), obj);
 			}
 		} catch (Exception e) {
-			Log.w(TAG,"Unexpected error putting extras from event. Some or all extras will be empty or not present.", e);
+			Log.e(TAG,"Unexpected error putting extras from event. Some or all extras will be empty or not present.", e);
 		}
 	}
 

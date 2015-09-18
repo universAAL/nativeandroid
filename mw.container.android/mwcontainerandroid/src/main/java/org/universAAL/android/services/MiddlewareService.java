@@ -139,6 +139,13 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 		super.onCreate();
 		Log.v(TAG, "Create");
 		mPercentage=0;
+		// Because now this service can be started by other apps, make sure files are created here, not just in activity
+		Config.load(this); //Sync Preferences in Config util
+		if(PreferenceManager.getDefaultSharedPreferences(this).getBoolean(AppConstants.FIRST, true)){
+			// first time we run the app (or app data has been cleared)
+			PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean(AppConstants.FIRST, false).commit();
+			Config.createFiles(this);
+		}// No need to do the Play Services check cause its done everytime it is attempted too
 		
 		// Ongoing notification is mandatory after Android 4.0
 		Intent notificationIntent = new Intent(this, HandlerActivity.class);
@@ -269,8 +276,8 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 		Log.v(TAG, "Start command: ");
 		// HACK: Set user type for AndroidHandler. Prevents NPE at startup when activity is not visible
 		mUserType = Integer.parseInt(PreferenceManager
-				.getDefaultSharedPreferences(MiddlewareService.this).getString(
-						"setting_type_key", Integer.toString(AppConstants.Defaults.TYPE)));
+				.getDefaultSharedPreferences(MiddlewareService.this).getString(AppConstants.Keys.TYPE
+						, Integer.toString(AppConstants.Defaults.TYPE)));
 		new Thread(new Runnable() {
 			public void run() {
 				if (intent != null) {
@@ -758,7 +765,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 			if (RAPIManager.checkPlayServices(getApplicationContext())) {
 				String mRegID = RAPIManager.getRegistrationId(getApplicationContext());
 				if (mRegID.isEmpty()) {
-					RAPIManager.registerInThread(getApplicationContext());
+					RAPIManager.registerInThread(getApplicationContext(), null);
 				}else{//Already registered in GCM, but maybe not in uAAL yet
 					RAPIManager.invoke(RAPIManager.REGISTER, mRegID);
 				}
@@ -801,7 +808,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 			if (RAPIManager.checkPlayServices(getApplicationContext())) {
 				String mRegID = RAPIManager.getRegistrationId(getApplicationContext());
 				if (mRegID.isEmpty()) {
-					RAPIManager.registerInThread(getApplicationContext());
+					RAPIManager.registerInThread(getApplicationContext(), null);
 				}else{//mRegID not really needed, but just in case in the future...
 					RAPIManager.invokeInThread(RAPIManager.UNREGISTER, mRegID);
 				}

@@ -332,6 +332,7 @@ public class ServiceCalleeProxy extends ServiceCallee {
 		if (ctxt != null) {
 			if (receiver != null) {
 				ctxt.unregisterReceiver(receiver);
+				//this method was called from the receiver, so its unregistering itself. Dirty but it works...
 				receiver = null;
 			}
 		}
@@ -362,7 +363,13 @@ public class ServiceCalleeProxy extends ServiceCallee {
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			ServiceResponse resp = new ServiceResponse(CallStatus.succeeded);
+			ServiceResponse resp;
+			CallStatus status = CallStatus.valueOf(intent.getStringExtra(CallStatus.MY_URI));
+			if(status!=null){
+				resp = new ServiceResponse(status);
+			}else{
+				resp = new ServiceResponse(CallStatus.succeeded);
+			}
 			if (extraKEYtoOutputURI!=null && !extraKEYtoOutputURI.isEmpty()){
 				VariableSubstitution.putIntentExtrasAsResponseOutputs(intent,resp,extraKEYtoOutputURI);
 			}
@@ -459,6 +466,15 @@ public class ServiceCalleeProxy extends ServiceCallee {
 	 *            The ServiceCall URI that originated this response in the server
 	 */
 	private void sendResponseGCM(final ServiceResponse sresp, final String callURI) {
+		// First, since we already have the response (good or bad), remove the receiver
+		Context ctxt = contextRef.get();
+		if (ctxt != null) {
+			if (receiver != null) {
+				ctxt.unregisterReceiver(receiver);
+				//this method was called from the receiver, so its unregistering itself. Dirty but it works...
+				receiver = null;
+			}
+		}
 		StringBuilder strb = new StringBuilder();
 		List outputs = sresp.getOutputs();
 		if (outputs != null && outputs.size() > 0) {

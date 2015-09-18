@@ -393,7 +393,7 @@ public class AndroidHandler extends UIHandler {
 		renderLabel(currentView, mediaObject);
 		ImageView img = new ImageView(mActivity);
 		String confHome = PreferenceManager.getDefaultSharedPreferences(
-				mActivity).getString("setting_ifolder_key", AppConstants.Defaults.IFOLDER);
+				mActivity).getString(AppConstants.Keys.IFOLDER, AppConstants.Defaults.IFOLDER);
 		Drawable draw = Drawable.createFromPath(confHome
 				+ mediaObject.getContentURL());
 		if (draw != null){
@@ -550,7 +550,7 @@ public class AndroidHandler extends UIHandler {
 		renderHintAndHelp(currentView, inputField);
 	}
 
-	private void renderHintAndHelp(LinearLayout currentView, FormControl ctrl) {//TODO
+	private void renderHintAndHelp(LinearLayout currentView, FormControl ctrl) {
 		if (ctrl.getHelpString() != null) {
 			TextView help = new TextView(mActivity);
 			help.setText(ctrl.getHelpString());

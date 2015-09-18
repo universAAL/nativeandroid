@@ -116,15 +116,32 @@ public class AppConstants {
 	    public static final boolean UIHANDLER = false;
 	    public static final boolean CONNWIFI = false;
 	    public static final String CFOLDER = "/data/felix/configurations/etc/";
-	    public static final String OFOLDER = "/data/felix/ontologies/";//
-	    public static final String IFOLDER = "/data/felix/configurations/etc/images/";//
+	    public static final String OFOLDER = "/data/felix/ontologies/";
+	    public static final String IFOLDER = "/data/felix/configurations/etc/images/";
 	    public static final String USER = "saied";
 	    public static final int TYPE = USER_TYPE_AP;//
 	    public static final int CONNMODE = REMOTE_MODE_ALWAYS;
 	    public static final int CONNTYPE = REMOTE_TYPE_RAPI;
 	    public static final String CONNURL = "http://158.42.167.41:8181/universaal";
-	    public static final String CONNGCM = "1036878524725";//
+	    public static final String CONNGCM = "1036878524725";
 	    public static final String CONNUSR = "defaultusr";
 	    public static final String CONNPWD = "defaultpwd";
+	}
+	
+	public static class Keys {
+		public static final String ISCOORD = "setting_iscoord_key";
+	    public static final String UIHANDLER = "setting_uihandler_key";
+	    public static final String CONNWIFI = "setting_connwifi_key";
+	    public static final String CFOLDER = "setting_cfolder_key";
+	    public static final String OFOLDER = "setting_ofolder_key";
+	    public static final String IFOLDER = "setting_ifolder_key";
+	    public static final String USER = "setting_user_key";
+	    public static final String TYPE = "setting_type_key";
+	    public static final String CONNMODE = "setting_connmode_key";
+	    public static final String CONNTYPE = "setting_conntype_key";
+	    public static final String CONNURL = "setting_connurl_key";
+	    public static final String CONNGCM = "setting_conngcm_key";
+	    public static final String CONNUSR = "setting_connusr_key";
+	    public static final String CONNPWD = "setting_connpwd_key";
 	}
 }

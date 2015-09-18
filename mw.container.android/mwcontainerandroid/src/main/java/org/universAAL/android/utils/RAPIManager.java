@@ -61,25 +61,34 @@ public class RAPIManager {
     // --------------The following is for connecting to GCM to receive callbacks from R API--------------
     //(from http://developer.android.com/google/gcm/client.html)
 	/**
-	 * Registers the application with GCM servers asynchronously.
-	 * <p>
-	 * Stores the registration ID and app versionCode in the application's
-	 * shared preferences.
+
 	 */
 	// No need to use AsyncTask because that only works for UI thread, and we
 	// call also from Service, and when calling from UI thread we dont need
 	// return value (only register)
-	public static void registerInThread(final Context ctxt) {
+	/** Registers the application with GCM servers asynchronously.
+	 * <p>
+	 * Stores the registration ID and app versionCode in the application's
+	 * shared preferences.
+	 * @param ctxt Android context
+	 * @param serverId Server GCM ID to register with - set to null to get it from preferences
+	 */
+	public static void registerInThread(final Context ctxt, final String serverId) {
 		Log.d(TAG, "Registering GCM key in GCM server, then in uAAL server");
 	    new Thread() {
 			@Override
 			public void run() {
 	            try {
 	            	GoogleCloudMessaging mGCM = GoogleCloudMessaging.getInstance(ctxt);
-					String serverId = PreferenceManager
-							.getDefaultSharedPreferences(ctxt).getString(
-									"setting_conngcm_key", AppConstants.Defaults.CONNGCM);
-					String mRegID = mGCM.register(serverId);
+	            	String currentServerId;
+	            	if(serverId!=null){
+	            	    currentServerId = serverId;
+	            	}else{ 
+	            	    currentServerId = PreferenceManager
+	            		    .getDefaultSharedPreferences(ctxt).getString(
+	            			    AppConstants.Keys.CONNGCM, AppConstants.Defaults.CONNGCM);
+	            	}
+	            	String mRegID = mGCM.register(currentServerId);
 	                // You should send the registration ID to your server over HTTP,
 	                // so it can use GCM/HTTP or CCS to send messages to your app.
 	                // The request to your server should be authenticated if your app
@@ -234,7 +243,7 @@ public class RAPIManager {
 			}
 
 			if (method == RAPIManager.CALLS) {
-				BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+				BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream(),"UTF-8"));
 				String line = rd.readLine();
 				// Do nothing (keep reading) until we reach TURTLE
 				while (line != null && !line.equals("TURTLE")) {
@@ -257,7 +266,6 @@ public class RAPIManager {
 				rd.close();
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			// close the connection and set all objects to null
