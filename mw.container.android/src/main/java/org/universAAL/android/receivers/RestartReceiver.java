@@ -18,10 +18,10 @@ public class RestartReceiver extends BroadcastReceiver {
 				context.stopService(serviceIntent);
 			} else if (action.equals(AppConstants.ACTION_SYS_START)) {
 				context.startService(serviceIntent);
-			} else if (action.equals(AppConstants.ACTION_SYS_RESTART)) {
+			} /*else if (action.equals(AppConstants.ACTION_SYS_RESTART)) {
 				context.stopService(serviceIntent);
 				context.startService(serviceIntent);
-			}
+			}*/
 		}
 	}
 

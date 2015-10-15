@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
     <Preference
+            android:key="setting_warning"
+            android:summary="@string/warning_restart" android:selectable="false"/>
+    <Preference
             android:key="setting_start_key"
             android:summary="@string/setting_start_text"
             android:title="@string/action_start" />

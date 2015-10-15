@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.universAAL.android"
-    android:versionCode="2015091802"
+    android:versionCode="2015101501"
     android:versionName="3.4.1-SNAPSHOT" >
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -140,7 +140,7 @@
             <intent-filter>
                 <action android:name="org.universAAL.android.action.SYS_START" />
                 <action android:name="org.universAAL.android.action.SYS_STOP" />
-                <action android:name="org.universAAL.android.action.SYS_RESTART" />
+                <!-- <action android:name="org.universAAL.android.action.SYS_RESTART" />-->
             </intent-filter>
         </receiver>
     </application>

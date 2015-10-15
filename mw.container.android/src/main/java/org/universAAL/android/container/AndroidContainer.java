@@ -289,11 +289,12 @@ public class AndroidContainer implements Container {
 
 	/**
 	 * Auxiliary method to remove object from the container.
+	 * The referenced instance is set to null.
 	 * 
 	 * @param xface
 	 *            Interface implemented by the object to remove.
 	 * @param obj
-	 *            Object to remove.
+	 *            Object to remove - not really used
 	 */
 	public void unshareObject(String xface, Object obj) {
 		WeakReference<Object> weak = services.remove(xface);
@@ -301,6 +302,7 @@ public class AndroidContainer implements Container {
 			// TODO I can do this because there is just 1 reference per xface.
 			// Otherwise notify on obj directly
 			notifyListeners(xface, weak.get(), EVENT_SERV_UNREGISTER);
+			weak.clear();
 		}
 	}
 

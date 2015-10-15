@@ -63,13 +63,14 @@ public class AppConstants {
 	
 	// Sent by this app to notify about its status
 	public static final String ACTION_NOTIF_STARTED = ACTION_PREFIX + "NOTIF_STARTED";
+	public static final String ACTION_NOTIF_STOPPED = ACTION_PREFIX + "NOTIF_STOPPED";
 	public static final String ACTION_NOTIF_CONFIG = ACTION_PREFIX + "NOTIF_CONFIG";
 	
 	// Sent from external apps to remote control the start/stop of MW service
 	// TODO: Not needed once bus stop bug is solved
 	public static final String ACTION_SYS_START = ACTION_PREFIX + "SYS_START";
 	public static final String ACTION_SYS_STOP = ACTION_PREFIX + "SYS_STOP";
-	public static final String ACTION_SYS_RESTART = ACTION_PREFIX + "SYS_RESTART";
+//	public static final String ACTION_SYS_RESTART = ACTION_PREFIX + "SYS_RESTART";
 	
 	// Hidden extras used by app to tell where it wants a reply
 	public static final String ACTION_META_REPLYTOACT = ACTION_PREFIX + "META_REPLYTOACT";

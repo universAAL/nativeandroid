@@ -12,6 +12,7 @@
     <string name="action_stop">Stop</string>
     <string name="menu_settings">Settings</string>
     <string name="warning_gplay">Google Play Services is not available</string>
+    <string name="warning_restart">Changes in settings require a restart to take effect</string>
     <string name="ok">OK</string>
     <string name="pinTitle">Insert security PIN to modify settings</string>
     <string name="pinError">Incorrect PIN</string>
