@@ -15,7 +15,11 @@ public class RestartReceiver extends BroadcastReceiver {
 			String action = intent.getAction();
 			Intent serviceIntent = new Intent(context, MiddlewareService.class);
 			if (action.equals(AppConstants.ACTION_SYS_STOP)) {
-				context.stopService(serviceIntent);
+				if(!context.stopService(serviceIntent)){
+				    // If already stopped, send notif anyway
+				    Intent notifStopped = new Intent(AppConstants.ACTION_NOTIF_STOPPED);
+				    context.sendBroadcast(notifStopped);
+				}
 			} else if (action.equals(AppConstants.ACTION_SYS_START)) {
 				context.startService(serviceIntent);
 			} /*else if (action.equals(AppConstants.ACTION_SYS_RESTART)) {
