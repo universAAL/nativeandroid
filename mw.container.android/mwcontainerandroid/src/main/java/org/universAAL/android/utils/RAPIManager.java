@@ -89,13 +89,13 @@ public class RAPIManager {
 	            			    AppConstants.Keys.CONNGCM, AppConstants.Defaults.CONNGCM);
 	            	}
 	            	String mRegID = mGCM.register(currentServerId);
+	            	// Persist the regID - no need to register again.
+	                storeRegistrationId(ctxt, mRegID);
 	                // You should send the registration ID to your server over HTTP,
 	                // so it can use GCM/HTTP or CCS to send messages to your app.
 	                // The request to your server should be authenticated if your app
 	                // is using accounts.
 	                RAPIManager.invoke(RAPIManager.REGISTER, mRegID);
-	                // Persist the regID - no need to register again.
-	                storeRegistrationId(ctxt, mRegID);
 	            } catch (IOException ex) {
 	                // TODO If there is an error, don't just keep trying to register.
 	                // Require the user to click a button again, or perform

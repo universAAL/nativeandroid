@@ -174,12 +174,12 @@ public class SettingsActivity extends PreferenceActivity {
 		if (changed) {// There was a change in settings, restart MW service
 			changed=false; // for the next time
 			Config.load(getApplicationContext()); // Sync Preferences in Config util now that they are changed
-			Intent stopServiceIntent = new Intent(this, MiddlewareService.class);
-			boolean stopped = stopService(stopServiceIntent);
-			if (stopped) {// The service was running, restart it
-				Intent startServiceIntent = new Intent(this, MiddlewareService.class);
-				this.startService(startServiceIntent);
-			}
+//			Intent stopServiceIntent = new Intent(this, MiddlewareService.class);
+//			boolean stopped = stopService(stopServiceIntent);
+//			if (stopped) {// The service was running, restart it
+//				Intent startServiceIntent = new Intent(this, MiddlewareService.class);
+//				this.startService(startServiceIntent);
+//			}
 		}
 	}
 

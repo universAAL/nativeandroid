@@ -96,7 +96,6 @@ import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-//import android.widget.Toast;
 
 /**
  * Central class and service of the application. It takes care of starting and
@@ -245,10 +244,10 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 		// Stop and release everything instantiated in onCreate an die. Unshare everything.
 		super.onDestroy();
 		Log.v(TAG, "Destroy");
-		//TODO Call to unreg onts? really?
-		mPercentage=0;
-		notifyPercent();
 		try{
+			mPercentage=0;
+			notifyPercent();
+			//TODO Call to unreg onts
 			// ScanService ran and tried to stop in parallel while MiddlewareService
 			// has already finished (next lines) AND also sent intents to it which
 			// restarted it. Instead of ACTION_PCK_UNREG_ALL intent I made a method
@@ -265,7 +264,14 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 			// when the service is killed. Temporary solution is to kill the
 			// whole app process.
 			Log.e(TAG, "Error while destroying service. Will destroy the whole process", e);
-			android.os.Process.killProcess(android.os.Process.myPid());
+		} finally {
+		    // HACK: Currently it is unfeasible to clear all instances created
+		    // starting the MW. Ignoring is not enough since threads started 
+		    // from the service will not disappear when the service is killed. 
+		    //Temporary solution is to kill the whole app process.
+		    Intent notifStopped = new Intent(AppConstants.ACTION_NOTIF_STOPPED);
+		    sendBroadcast(notifStopped);
+		    android.os.Process.killProcess(android.os.Process.myPid());
 		}
 		Log.v(TAG, "Destroyed");
 	}
@@ -657,13 +663,18 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 	 */
 	private synchronized void stopMiddleware(){		
 		// _________________UI BUS_________________________
-		UIBusImpl.stopModule(); //will it work if not started? Looks like it does
+		UIBusImpl.stopModule(); //These Impl were hiding a shareObject
+		AndroidContainer.THE_CONTAINER.unshareObject( IUIBus.class.getName() , null);//instance not needed
+		AndroidContainer.THE_CONTAINER.unshareObject( IUIBus.class.getName() , null);//instance not needed
 		// _________________CONTEXT BUS_________________________
-		ContextBusImpl.stopModule();
+		ContextBusImpl.stopModule(); //These Impl were hiding a shareObject
+		AndroidContainer.THE_CONTAINER.unshareObject( ContextBus.class.getName() , null);//instance not needed
 		// _________________SERVICE BUS_________________________
-		ServiceBusImpl.stopModule();
+		ServiceBusImpl.stopModule(); //These Impl were hiding a shareObject
+		AndroidContainer.THE_CONTAINER.unshareObject( CallInjector.class.getName() , null);//instance not needed
+		AndroidContainer.THE_CONTAINER.unshareObject( ServiceBusImpl.class.getName() , null);//instance not needed
 		// _________________BUS MODEL_________________________
-		//BusModel -> Nothing
+		//BusModel -> Nothing TODO Actually, something, but it is not visible to cancel... KILL
 		// _________________/DATA SERIALIZATION_________________
 		//DataSerialization -> Nothing TODO check if dont need to unshare
 		if (mModSERIALIZER != null) {
@@ -687,20 +698,21 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 		if (mModCONTROLBROKER != null) {
 			mModCONTROLBROKER.dispose();
 			AndroidContainer.THE_CONTAINER.removeSharedObjectListener(mModCONTROLBROKER);
-			AndroidContainer.THE_CONTAINER.unshareObject(AALSpaceManager.class.getName(), mModCONTROLBROKER);
+			AndroidContainer.THE_CONTAINER.unshareObject(ControlBroker.class.getName(), mModCONTROLBROKER);
 			mModCONTROLBROKER = null;
 		}
 		// _________________AALSPACE MODULE_____________________
 		if (mModSPACEMODULE != null) {
 			mModSPACEMODULE.dispose();
 			AndroidContainer.THE_CONTAINER.removeSharedObjectListener(mModSPACEMODULE);
-			AndroidContainer.THE_CONTAINER.unshareObject(AALSpaceManager.class.getName(), mModSPACEMODULE);
+			AndroidContainer.THE_CONTAINER.unshareObject(AALSpaceModule.class.getName(), mModSPACEMODULE);
 			mModSPACEMODULE = null;
 		}
 		// _________________COMMUNICATION MODULE_________________
 		if(mModCOMMUNICATION!=null){
 			mModCOMMUNICATION.dispose();
 			AndroidContainer.THE_CONTAINER.unshareObject(CommunicationModule.class.getName(),mModCOMMUNICATION);
+			mModCOMMUNICATION = null; //Why wasnt this here before?
 		}
 	}
 	
