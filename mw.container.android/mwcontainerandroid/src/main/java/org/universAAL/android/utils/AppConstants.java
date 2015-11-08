@@ -65,6 +65,7 @@ public class AppConstants {
 	public static final String ACTION_NOTIF_STARTED = ACTION_PREFIX + "NOTIF_STARTED";
 	public static final String ACTION_NOTIF_STOPPED = ACTION_PREFIX + "NOTIF_STOPPED";
 	public static final String ACTION_NOTIF_CONFIG = ACTION_PREFIX + "NOTIF_CONFIG";
+	public static final String ACTION_NOTIF_KEY_IGNORE = "ignore";
 	
 	// Sent from external apps to remote control the start/stop of MW service
 	// TODO: Not needed once bus stop bug is solved
@@ -105,12 +106,21 @@ public class AppConstants {
 	public static final int TYPE_CSUBSCRIBER = 2;
 	public static final int TYPE_SCALLEE = 3;
 	public static final int TYPE_SCALLER = 4;
+
+	public static final int STATUS_STOPPED = 0;
+	public static final int STATUS_STARTING = 1;
+	public static final int STATUS_STARTED = 2;
+	public static final int STATUS_STOPPING = 3;
 	
 	// Some defaults
 	public static final String MY_WIFI = "home_wifi";
 	public static final String NO_WIFI = "uAALGhostWifi";
 	public static final String FIRST = "is_first";
 	public static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+
+	public static final String SENT_TOKEN_TO_SERVER = "sentTokenToServer";
+	public static final String REGISTRATION_COMPLETE = "registrationComplete";
+	public static final String GCM_PROJECT_ID = "gcmProjectId";
 
 	public static class Defaults {
 		public static final boolean ISCOORD = true;

@@ -22,6 +22,7 @@
 package org.universAAL.android.receivers.system;
 
 import org.universAAL.android.services.MiddlewareService;
+import org.universAAL.android.utils.AppConstants;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -39,6 +40,10 @@ public class WifiReceiver extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
+		//Ignore connectivity changes if MW is not started, to avoid being started when it shouldnt
+		//This is however a design decision - allowing this would ensure the MW is running more often
+		// - at the expense of the above (being started when it shouldnt)
+		if(MiddlewareService.mStatus != AppConstants.STATUS_STARTED) return;
 		// A change in Wifi happened. Whether its ON or OFF send the right command to MWService, Do not start/stop from here.
 		Log.v("WifiReceiver", "Received Broadcast: " + intent.getAction());
 		Intent start = new Intent(intent);

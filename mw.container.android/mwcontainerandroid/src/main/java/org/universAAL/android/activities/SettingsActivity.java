@@ -26,6 +26,7 @@ import org.universAAL.android.services.MiddlewareService;
 import org.universAAL.android.utils.Config;
 import org.universAAL.android.utils.AppConstants;
 import org.universAAL.android.utils.RAPIManager;
+import org.universAAL.android.utils.gcm.RegistrationService;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -114,13 +115,16 @@ public class SettingsActivity extends PreferenceActivity {
 					Object newValue) {
 				if (newValue.equals("1")) {
 					// Set to R-API -> Check Play Services
-					if (checkPlayServices()) {
-						String mRegID = RAPIManager
-								.getRegistrationId(getApplicationContext());
-						if (mRegID.isEmpty()) {
-							RAPIManager
-									.registerInThread(getApplicationContext(), null);
-						}
+					if (RAPIManager.checkPlayServices(getApplicationContext())) {
+//						String mRegID = RAPIManager
+//								.getRegistrationId(getApplicationContext());
+//						if (mRegID.isEmpty()) {
+//							RAPIManager
+//									.registerInThread(getApplicationContext(), null);
+//						}
+						//Intent intent = new Intent(getApplicationContext(), RegistrationService.class);
+						//startService(intent);
+						RAPIManager.performRegistration(getApplicationContext(),null);
 						setRAPIOptionsEnabled(true);//Enable RAPI options only if RAPI selected
 						return true;
 					} else {
@@ -142,9 +146,12 @@ public class SettingsActivity extends PreferenceActivity {
 		connKey.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
 			public boolean onPreferenceChange(Preference preference,
 					Object newValue) {
-				if (checkPlayServices()) {
+				if (RAPIManager.checkPlayServices(getApplicationContext())) {
 					//Lets assume newValue has changed
-					RAPIManager.registerInThread(getApplicationContext(), (String) newValue);
+//					RAPIManager.registerInThread(getApplicationContext(), (String) newValue);
+					//Intent intent = new Intent(getApplicationContext(), RegistrationService.class);
+					//startService(intent);
+					RAPIManager.performRegistration(getApplicationContext(),(String) newValue);
 					return true;
 				} else {
 					Toast.makeText(getApplicationContext(),
@@ -185,25 +192,25 @@ public class SettingsActivity extends PreferenceActivity {
 
 	// The following is from http://developer.android.com/google/gcm/client.html
 
-	/**
-	 * Check the device to make sure it has the Google Play Services APK. If it
-	 * doesn't, display a dialog that allows users to download the APK from the
-	 * Google Play Store or enable it in the device's system settings.
-	 */
-	private boolean checkPlayServices() {
-		int resultCode = GooglePlayServicesUtil
-				.isGooglePlayServicesAvailable(this);
-		if (resultCode != ConnectionResult.SUCCESS) {
-			if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
-				GooglePlayServicesUtil.getErrorDialog(resultCode, this,
-						AppConstants.PLAY_SERVICES_RESOLUTION_REQUEST)
-						.show();
-			} else {
-				Log.i(TAG, "This device does not support Google Play Services");
-				// finish(); // Do not close app if it does not have Play Services
-			}
-			return false;
-		}
-		return true;
-	}
+//	/**
+//	 * Check the device to make sure it has the Google Play Services APK. If it
+//	 * doesn't, display a dialog that allows users to download the APK from the
+//	 * Google Play Store or enable it in the device's system settings.
+//	 */
+//	private boolean checkPlayServices() {
+//		int resultCode = GooglePlayServicesUtil
+//				.isGooglePlayServicesAvailable(this);
+//		if (resultCode != ConnectionResult.SUCCESS) {
+//			if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
+//				GooglePlayServicesUtil.getErrorDialog(resultCode, this,
+//						AppConstants.PLAY_SERVICES_RESOLUTION_REQUEST)
+//						.show();
+//			} else {
+//				Log.i(TAG, "This device does not support Google Play Services");
+//				// finish(); // Do not close app if it does not have Play Services
+//			}
+//			return false;
+//		}
+//		return true;
+//	}
 }

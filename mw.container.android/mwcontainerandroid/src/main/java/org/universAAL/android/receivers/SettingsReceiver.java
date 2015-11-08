@@ -10,11 +10,15 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 public class SettingsReceiver extends BroadcastReceiver {
 
+	private static final String TAG="SettingsReceiver";
+
 	@Override
 	public void onReceive(Context context, Intent intent) {
+		Log.d(TAG, "Received Config Intent");
 		Bundle extras = intent.getExtras();
 		if(extras!=null && !extras.isEmpty()){
 			SharedPreferences prefs = PreferenceManager
@@ -69,6 +73,7 @@ public class SettingsReceiver extends BroadcastReceiver {
 			Config.load(context); // Sync Preferences in Config util now that they are changed
 //			Intent stopServiceIntent = new Intent(context, MiddlewareService.class);
 			// Notify whoever listens that we are configured. Do it before messing with the service
+			Log.d(TAG, "Notify caller");
 			Intent notifConfig = new Intent(AppConstants.ACTION_NOTIF_CONFIG);
 			context.sendBroadcast(notifConfig);
 //			boolean stopped = context.stopService(stopServiceIntent);

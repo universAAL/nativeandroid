@@ -34,6 +34,7 @@ import org.universAAL.android.utils.Config;
 import org.universAAL.android.utils.GroundingParcel;
 import org.universAAL.android.utils.AppConstants;
 import org.universAAL.android.utils.RAPIManager;
+import org.universAAL.android.utils.gcm.RegistrationService;
 import org.universAAL.android.wrappers.CommunicationConnectorWrapper;
 import org.universAAL.android.wrappers.DiscoveryConnectorWrapper;
 import org.universAAL.middleware.brokers.control.ControlBroker;
@@ -117,6 +118,8 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 	private static int mCurrentWIFI = AppConstants.WIFI_OFF; // This is for the previous state of WIFI
 	public static int mUserType = AppConstants.USER_TYPE_AP; // Just default but it is here to get it from AndroidHandler
 	public static int mPercentage = 0; // This is for the progress bar
+	// This is for the state machine, for ignoring conflicting start/stops
+	public static int mStatus = AppConstants.STATUS_STOPPED;
 	private MulticastLock mLock;
 	// MW modules stay in memory in this service class (Container holds only WeakRefs)
 	private Advertiser mJSLPadvertiser;
@@ -136,6 +139,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 	public void onCreate() {
 		// This is where MW is created as it is called once when service is instantiated. Make sure it runs forever.
 		super.onCreate();
+		mStatus=AppConstants.STATUS_STARTING;
 		Log.v(TAG, "Create");
 		mPercentage=0;
 		// Because now this service can be started by other apps, make sure files are created here, not just in activity
@@ -148,7 +152,8 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 		
 		// Ongoing notification is mandatory after Android 4.0
 		Intent notificationIntent = new Intent(this, HandlerActivity.class);
-		PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, Intent.FLAG_ACTIVITY_NEW_TASK );
+		notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
 		NotificationCompat.Builder builder =
 		        new NotificationCompat.Builder(this)
 		        .setSmallIcon(R.drawable.ic_notif)
@@ -243,6 +248,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 	public void onDestroy() {
 		// Stop and release everything instantiated in onCreate an die. Unshare everything.
 		super.onDestroy();
+		mStatus=AppConstants.STATUS_STOPPING;
 		Log.v(TAG, "Destroy");
 		try{
 			mPercentage=0;
@@ -269,6 +275,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 		    // starting the MW. Ignoring is not enough since threads started 
 		    // from the service will not disappear when the service is killed. 
 		    //Temporary solution is to kill the whole app process.
+			mStatus=AppConstants.STATUS_STOPPED;
 		    Intent notifStopped = new Intent(AppConstants.ACTION_NOTIF_STOPPED);
 		    sendBroadcast(notifStopped);
 		    android.os.Process.killProcess(android.os.Process.myPid());
@@ -775,12 +782,15 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 		case AppConstants.REMOTE_TYPE_RAPI:
 			// Check Play Services and register in GCM if not already
 			if (RAPIManager.checkPlayServices(getApplicationContext())) {
-				String mRegID = RAPIManager.getRegistrationId(getApplicationContext());
-				if (mRegID.isEmpty()) {
-					RAPIManager.registerInThread(getApplicationContext(), null);
-				}else{//Already registered in GCM, but maybe not in uAAL yet
-					RAPIManager.invoke(RAPIManager.REGISTER, mRegID);
-				}
+//				String mRegID = RAPIManager.getRegistrationId(getApplicationContext());
+//				if (mRegID.isEmpty()) {
+//					RAPIManager.registerInThread(getApplicationContext(), null);
+//				}else{//Already registered in GCM, but maybe not in uAAL yet
+//					RAPIManager.invoke(RAPIManager.REGISTER, mRegID);
+//				}
+				//Intent intent = new Intent(this, RegistrationService.class);
+				//startService(intent);
+				RAPIManager.performRegistration(getApplicationContext(),null);
 			}else{
 				//TODO show error
 //				Toast.makeText(getApplicationContext(),	R.string.warning_gplay, Toast.LENGTH_LONG).show();
@@ -816,18 +826,20 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 			Log.d(TAG, "Stopped GATEWAY");
 			break;
 		case AppConstants.REMOTE_TYPE_RAPI:
-			// Check Play Services and register in GCM if not already
-			if (RAPIManager.checkPlayServices(getApplicationContext())) {
-				String mRegID = RAPIManager.getRegistrationId(getApplicationContext());
-				if (mRegID.isEmpty()) {
-					RAPIManager.registerInThread(getApplicationContext(), null);
-				}else{//mRegID not really needed, but just in case in the future...
-					RAPIManager.invokeInThread(RAPIManager.UNREGISTER, mRegID);
-				}
-			}else{
-				//TODO show error better
+			// Check Play Services and UNregister in GCM if not already
+//			if (RAPIManager.checkPlayServices(getApplicationContext())) {
+//				String mRegID = RAPIManager.getRegistrationId(getApplicationContext());
+//				if (mRegID.isEmpty()) {
+//					RAPIManager.registerInThread(getApplicationContext(), null);
+//				}else{//mRegID not really needed, but just in case in the future...
+//					RAPIManager.invokeInThread(RAPIManager.UNREGISTER, mRegID);
+//				}
+//			}else{
+//				//TODO show error better
 //				Toast.makeText(getApplicationContext(),	R.string.warning_gplay, Toast.LENGTH_LONG).show();
-			}
+//			}
+			// Unregister from uAAL, but not GCM, as recommended by doc.
+			RAPIManager.invokeInThread(RAPIManager.UNREGISTER, "");
 			break;
 		default:
 			break;
