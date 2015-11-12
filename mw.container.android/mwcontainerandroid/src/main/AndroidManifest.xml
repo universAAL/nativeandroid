@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.universAAL.android"
-    android:versionCode="2015091803"
+    android:versionCode="2015111201"
     android:versionName="3.4.1-SNAPSHOT" >
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -28,11 +28,11 @@
         android:label="@string/gen_appname" android:theme="@style/_uaal">
         
         <activity android:name="org.universAAL.android.activities.HandlerActivity" >
-            <!--<intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            </intent-filter>
         </activity>
         
         <activity android:name="org.universAAL.android.activities.SettingsActivity" android:launchMode="singleTop"/>
@@ -41,8 +41,7 @@
         <receiver
             android:name="org.universAAL.android.receivers.system.BootReceiver"
             android:enabled="true"
-            android:exported="false"
-            android:process=":uaal" >
+            android:exported="false" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
@@ -52,8 +51,7 @@
         <receiver
             android:name="org.universAAL.android.receivers.system.PackageReceiver"
             android:enabled="true"
-            android:exported="false"
-            android:process=":uaal"  ><!-- TODO enable -->
+            android:exported="false" ><!-- TODO enable -->
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_ADDED" />
                 <action android:name="android.intent.action.PACKAGE_REMOVED" />
@@ -66,8 +64,7 @@
         <receiver
             android:name="org.universAAL.android.receivers.system.WifiReceiver"
             android:enabled="true"
-            android:exported="false"
-            android:process=":uaal"  >
+            android:exported="false" >
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
                 <action android:name="android.net.wifi.STATE_CHANGE" />
@@ -78,8 +75,7 @@
         <service
             android:name="org.universAAL.android.services.MiddlewareService"
             android:enabled="true"
-            android:exported="false"
-            android:process=":uaal"  >
+            android:exported="false" >
             <intent-filter>
                 <action android:name="org.universAAL.android.action.PCK_REGISTER" />
                 <action android:name="org.universAAL.android.action.PCK_UNREGISTER" />
@@ -90,8 +86,7 @@
         <service
             android:name="org.universAAL.android.services.ScanService"
             android:enabled="true"
-            android:exported="false"
-            android:process=":uaal"  >
+            android:exported="false" >
             <intent-filter>
                 <action android:name="org.universAAL.android.action.PCK_REGISTER_ALL" />
                 <action android:name="org.universAAL.android.action.PCK_UNREGISTER_ALL" />
@@ -104,8 +99,7 @@
         <service
             android:name="org.universAAL.android.services.OntologyService"
             android:enabled="true"
-            android:exported="false"
-            android:process=":uaal"  >
+            android:exported="false" >
             <intent-filter>
                 <action android:name="org.universAAL.android.action.ONT_REGISTER" />
                 <action android:name="org.universAAL.android.action.ONT_UNREGISTER" />
@@ -129,8 +123,7 @@
             android:name="org.universAAL.android.receivers.SettingsReceiver"
             android:enabled="true"
             android:exported="true" 
-            android:permission="org.universAAL.android.permission.SETTINGS"
-            android:process=":uaal"  >
+            android:permission="org.universAAL.android.permission.SETTINGS" >
             <intent-filter>
                 <action android:name="org.universAAL.android.action.SETTINGS" />
             </intent-filter>
@@ -141,8 +134,7 @@
             android:name="org.universAAL.android.receivers.RestartReceiver"
             android:enabled="true"
             android:exported="true" 
-            android:permission="org.universAAL.android.permission.SYS"
-            android:process=":uaal" >
+            android:permission="org.universAAL.android.permission.SYS" >
             <intent-filter>
                 <action android:name="org.universAAL.android.action.SYS_START" />
                 <action android:name="org.universAAL.android.action.SYS_STOP" />
@@ -155,8 +147,7 @@
         <receiver
             android:name="com.google.android.gms.gcm.GcmReceiver"
             android:exported="true"
-            android:permission="com.google.android.c2dm.permission.SEND"
-            android:process=":uaal" >
+            android:permission="com.google.android.c2dm.permission.SEND" >
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <category android:name="gcm.play.android.samples.com.gcmquickstart" />
@@ -165,8 +156,7 @@
         <!-- Now a service that will get the messages from the GCMReceiver -->
         <service
             android:name="org.universAAL.android.utils.gcm.MessageReceptionService"
-            android:exported="false"
-            android:process=":uaal" >
+            android:exported="false" >
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
             </intent-filter>
@@ -174,8 +164,7 @@
         <!-- Now a service to get updates on our GCM token from InstanceID-->
         <service
             android:name="org.universAAL.android.utils.gcm.TokenUpdateService"
-            android:exported="false"
-            android:process=":uaal" >
+            android:exported="false" >
             <intent-filter>
                 <action android:name="com.google.android.gms.iid.InstanceID"/>
             </intent-filter>
@@ -183,8 +172,7 @@
         <!-- And a service that triggers the registration to GCM -->
         <!--<service
             android:name="org.universAAL.android.utils.gcm.RegistrationService"
-            android:exported="false"
-            android:process=":uaal" >
+            android:exported="false"  >
         </service>-->
     </application>
 
