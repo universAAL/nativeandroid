@@ -29,8 +29,10 @@ import org.universAAL.android.services.MiddlewareService;
 import org.universAAL.android.utils.Config;
 import org.universAAL.android.utils.RAPIManager;
 import org.universAAL.android.utils.AppConstants;
+import org.universAAL.android.utils.gcm.RegistrationService;
 
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 
 import android.os.Bundle;
@@ -81,11 +83,14 @@ public class HandlerActivity extends Activity {
 				.getDefaultSharedPreferences(this).getString(
 						AppConstants.Keys.CONNTYPE, "0"));
 		if (remoteType == AppConstants.REMOTE_TYPE_RAPI) {
-			if (checkPlayServices()) {
-				String mRegID = RAPIManager.getRegistrationId(mContext);
-				if (mRegID.isEmpty()) {
-					RAPIManager.registerInThread(getApplicationContext(),null);
-				}
+			if (RAPIManager.checkPlayServices(this)) {
+//				String mRegID = RAPIManager.getRegistrationId(mContext);
+//				if (mRegID.isEmpty()) {
+//					RAPIManager.registerInThread(getApplicationContext(),null);
+//				}
+				//Intent intent = new Intent(this, RegistrationService.class);
+				//startService(intent);
+				RAPIManager.performRegistrationInThread(getApplicationContext(),null);
 			} else {
 				Toast.makeText(getApplicationContext(), R.string.warning_gplay,
 						Toast.LENGTH_LONG).show();
@@ -134,7 +139,8 @@ public class HandlerActivity extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.xml.menu, menu);
+//		getMenuInflater().inflate(R.xml.menu, menu);
+		getMenuInflater().inflate(R.menu.menu, menu);
 		return true;
 	}
 
@@ -228,25 +234,26 @@ public class HandlerActivity extends Activity {
 
 	// The following is from http://developer.android.com/google/gcm/client.html
 
-	/**
-	 * Check the device to make sure it has the Google Play Services APK. If it
-	 * doesn't, display a dialog that allows users to download the APK from the
-	 * Google Play Store or enable it in the device's system settings.
-	 */
-	private boolean checkPlayServices() {
-		int resultCode = GooglePlayServicesUtil
-				.isGooglePlayServicesAvailable(this);
-		if (resultCode != ConnectionResult.SUCCESS) {
-			if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
-				GooglePlayServicesUtil.getErrorDialog(resultCode, this,
-						AppConstants.PLAY_SERVICES_RESOLUTION_REQUEST)
-						.show();
-			} else {
-				Log.i(TAG, "This device does not support Google Play Services");
-				// finish(); // Do not close app if it does not have Play Services
-			}
-			return false;
-		}
-		return true;
-	}
+//	/**
+//	 * Check the device to make sure it has the Google Play Services APK. If it
+//	 * doesn't, display a dialog that allows users to download the APK from the
+//	 * Google Play Store or enable it in the device's system settings.
+//	 */
+//	private boolean checkPlayServices() {
+//		int resultCode = GooglePlayServicesUtil
+//				.isGooglePlayServicesAvailable(this);
+//		if (resultCode != ConnectionResult.SUCCESS) {
+//			if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
+//				GooglePlayServicesUtil.getErrorDialog(resultCode, this,
+//						AppConstants.PLAY_SERVICES_RESOLUTION_REQUEST)
+//						.show();
+//			} else {
+//				Log.i(TAG, "This device does not support Google Play Services");
+//				// finish(); // Do not close app if it does not have Play Services
+//			}
+//			return false;
+//		}
+//		return true;
+//	}
+
 }

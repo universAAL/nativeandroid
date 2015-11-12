@@ -38,7 +38,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.WakefulBroadcastReceiver;
-
+//TODO REMOVE, NO LONGER USED
 /**
  * Receiver of GCM messages in the system. It is a wakefulBr because it will
  * call the MWService, and device should not sleep when sending the intent

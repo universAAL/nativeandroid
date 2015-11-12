@@ -38,6 +38,7 @@ import javax.xml.xpath.XPathFactory;
 
 import org.universAAL.android.utils.GroundingParcel;
 import org.universAAL.android.utils.AppConstants;
+import org.universAAL.middleware.interfaces.mpa.model.AalMpa;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -94,9 +95,18 @@ public class ScanService extends Service{
 							unregisterPackage(packageName);
 						}else if(action.equals(AppConstants.ACTION_PCK_REG_ALL)){ // This is called by MW when started
 							Log.v(TAG, "Action is REGISTER ALL");
-							scanAllApps(true);
-							Intent notifStarted = new Intent(AppConstants.ACTION_NOTIF_STARTED);
-							sendBroadcast(notifStarted);
+							try {
+								scanAllApps(true);
+							} catch (Exception e) {
+								e.printStackTrace();
+								Log.e(TAG, "Something wrong when registering apps. " +
+										"An app in particular may not be registered, " +
+										"but the MW is started without it. " + e.getMessage());
+							} finally {
+								MiddlewareService.mStatus = AppConstants.STATUS_STARTED; // MW started and apps registered
+								Intent notifStarted = new Intent(AppConstants.ACTION_NOTIF_STARTED);
+								sendBroadcast(notifStarted);
+							}
 						}else if(action.equals(AppConstants.ACTION_PCK_UNREG_ALL)){ // This is called by MW when stopped
 							Log.v(TAG, "Action is UNREGISTER ALL");
 							scanAllApps(false);

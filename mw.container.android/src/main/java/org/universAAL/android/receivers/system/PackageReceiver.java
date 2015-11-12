@@ -21,7 +21,9 @@
  */
 package org.universAAL.android.receivers.system;
 
+import org.universAAL.android.services.MiddlewareService;
 import org.universAAL.android.services.ScanService;
+import org.universAAL.android.utils.AppConstants;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -40,6 +42,8 @@ public class PackageReceiver extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
+		//Ignore app un/installations if MW is not started, because otherwise it will realize when it starts
+		if(MiddlewareService.mStatus!= AppConstants.STATUS_STARTED)return;
 		// A change in packages happened. Relay to ScanService who will know what to do.
 		Log.v("PackageReceiver", "Received Broadcast: " + intent.getAction());
 		Intent start = new Intent(intent);
