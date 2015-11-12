@@ -124,7 +124,7 @@ public class SettingsActivity extends PreferenceActivity {
 //						}
 						//Intent intent = new Intent(getApplicationContext(), RegistrationService.class);
 						//startService(intent);
-						RAPIManager.performRegistration(getApplicationContext(),null);
+						RAPIManager.performRegistrationInThread(getApplicationContext(),null);
 						setRAPIOptionsEnabled(true);//Enable RAPI options only if RAPI selected
 						return true;
 					} else {
@@ -151,7 +151,7 @@ public class SettingsActivity extends PreferenceActivity {
 //					RAPIManager.registerInThread(getApplicationContext(), (String) newValue);
 					//Intent intent = new Intent(getApplicationContext(), RegistrationService.class);
 					//startService(intent);
-					RAPIManager.performRegistration(getApplicationContext(),(String) newValue);
+					RAPIManager.performRegistrationInThread(getApplicationContext(),(String) newValue);
 					return true;
 				} else {
 					Toast.makeText(getApplicationContext(),

@@ -90,7 +90,7 @@ public class HandlerActivity extends Activity {
 //				}
 				//Intent intent = new Intent(this, RegistrationService.class);
 				//startService(intent);
-				RAPIManager.performRegistration(getApplicationContext(),null);
+				RAPIManager.performRegistrationInThread(getApplicationContext(),null);
 			} else {
 				Toast.makeText(getApplicationContext(), R.string.warning_gplay,
 						Toast.LENGTH_LONG).show();

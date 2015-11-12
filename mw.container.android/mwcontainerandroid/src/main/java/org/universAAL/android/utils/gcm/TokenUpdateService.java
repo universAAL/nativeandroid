@@ -24,7 +24,7 @@ public class TokenUpdateService extends InstanceIDListenerService {
         // Fetch updated Instance ID token and notify our app's server of any changes (if applicable).
         //Intent intent = new Intent(this, RegistrationService.class);
         //startService(intent);
-        RAPIManager.performRegistration(getApplicationContext(), null);
+        RAPIManager.performRegistrationInThread(getApplicationContext(), null);
     }
     // [END refresh_token]
 }

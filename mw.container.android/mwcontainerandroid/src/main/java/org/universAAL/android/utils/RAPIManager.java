@@ -191,6 +191,15 @@ public class RAPIManager {
 //	    return true;
 //	}
 
+	public static void performRegistrationInThread(final Context context, final String newserverId){
+		new Thread() {
+			@Override
+			public void run() {
+				performRegistration(context,newserverId);
+			}
+		}.start();
+	}
+
 	public static void performRegistration(Context context, String newserverId){
 		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 		try {
