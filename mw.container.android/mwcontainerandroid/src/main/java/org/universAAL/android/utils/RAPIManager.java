@@ -324,10 +324,10 @@ public class RAPIManager {
 					}
 				}
 				String serialized = strb.toString();
+				rd.close();
 				if (serialized.length() > 1) {
 					return serialized;
 				}
-				rd.close();
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
