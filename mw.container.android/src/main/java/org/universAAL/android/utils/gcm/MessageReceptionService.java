@@ -21,7 +21,10 @@
  */
 package org.universAAL.android.utils.gcm;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.google.android.gms.gcm.GcmListenerService;
 
@@ -31,6 +34,7 @@ import org.universAAL.android.container.AndroidRegistry;
 import org.universAAL.android.proxies.ServiceCalleeProxy;
 import org.universAAL.android.utils.AppConstants;
 import org.universAAL.android.utils.Config;
+import org.universAAL.android.utils.CryptUtil;
 import org.universAAL.middleware.context.ContextEvent;
 import org.universAAL.middleware.context.ContextEventPattern;
 import org.universAAL.middleware.context.DefaultContextPublisher;
@@ -60,6 +64,18 @@ public class MessageReceptionService extends GcmListenerService {
             // This may happen if trying to connect to bad R-API server
             return;
         }
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        boolean encrypted=sharedPreferences.getBoolean(AppConstants.GCM_ENCRYPTED, false);
+        if(encrypted){
+	    if (!CryptUtil.isInit()) {
+		try {
+		    CryptUtil.init(getApplicationContext());
+		} catch (Exception e) {
+		    e.printStackTrace();
+		    Log.e(TAG, "Encryption is not properly initialized. Logout and restart.");
+		}
+	    }
+        }
         MessageContentSerializerEx parser = (MessageContentSerializerEx) AndroidContainer.THE_CONTAINER
                 .fetchSharedObject(AndroidContext.THE_CONTEXT,
                         new Object[] { MessageContentSerializerEx.class
@@ -67,6 +83,14 @@ public class MessageReceptionService extends GcmListenerService {
         if (method.equals("SENDC")) {
             if (parser != null) {
                 String serial = data.getString("param");
+		if (encrypted) {
+		    try {
+			serial = CryptUtil.decrypt(serial);
+		    } catch (Exception e) {
+			e.printStackTrace();
+			Log.e(TAG, "Decryption failed!");
+		    }
+		}
                 if (serial != null) {
                     ContextEvent cev = (ContextEvent) parser
                             .deserialize(serial);
@@ -91,6 +115,16 @@ public class MessageReceptionService extends GcmListenerService {
                 String serial = data.getString("param");
                 String spuri = data.getString("to");
                 String origincall = data.getString("call");
+		if (encrypted) {
+		    try {
+			spuri = CryptUtil.decrypt(spuri);
+			origincall = CryptUtil.decrypt(origincall);
+			serial = CryptUtil.decrypt(serial);
+		    } catch (Exception e) {
+			e.printStackTrace();
+			Log.e(TAG, "Decryption failed!");
+		    }
+		}
                 if (serial != null && spuri != null) {
                     ServiceCall scall = (ServiceCall) parser
                             .deserialize(serial);

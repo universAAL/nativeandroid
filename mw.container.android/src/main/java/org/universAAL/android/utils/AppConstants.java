@@ -119,6 +119,8 @@ public class AppConstants {
 	public static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
 	public static final String SENT_TOKEN_TO_SERVER = "sentTokenToServer";
+	public static final String GCM_ENCRYPTED = "gcmEncrypted";
+	public static final String GCM_ENCRYPT_KEYFILE = "gcmEncrypt.key";
 	public static final String REGISTRATION_COMPLETE = "registrationComplete";
 	public static final String GCM_PROJECT_ID = "gcmProjectId";
 

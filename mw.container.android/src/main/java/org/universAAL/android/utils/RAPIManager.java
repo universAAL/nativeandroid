@@ -23,6 +23,7 @@ package org.universAAL.android.utils;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -224,7 +225,19 @@ public class RAPIManager {
 			Log.i(TAG, "GCM Registration Token: " + token);
 
 			// Send any registration to your app's servers.
-			invoke(RAPIManager.REGISTER, token);
+			String key=invoke(RAPIManager.REGISTER, token);
+			
+			if(key!=null){
+			    //Server sends GCM messages encrypted, save the key
+			    sharedPreferences.edit().putBoolean(AppConstants.GCM_ENCRYPTED, true).apply();
+			    FileOutputStream fos = context.openFileOutput(AppConstants.GCM_ENCRYPT_KEYFILE, Context.MODE_PRIVATE);
+			    fos.write(key.getBytes("UTF-8"));
+			    fos.close();
+			}else{
+			    //Server DOES NOT sends GCM messages encrypted, remove local key just in case...
+			    sharedPreferences.edit().putBoolean(AppConstants.GCM_ENCRYPTED, false).apply();
+			    context.deleteFile(AppConstants.GCM_ENCRYPT_KEYFILE);
+			}
 
 			// You should store a boolean that indicates whether the generated token has been
 			// sent to your server. If the boolean is false, send the token to your server,
@@ -313,6 +326,22 @@ public class RAPIManager {
 			Log.d(TAG,"SENT TO SERVER: "+url);
 			if (conn.getResponseCode() != HttpURLConnection.HTTP_OK){
 				Log.e(TAG,"ERROR REACHING SERVER "+conn.getResponseCode()+" : "+conn.getResponseMessage());
+			}
+			
+			if (method == RAPIManager.REGISTER) {
+			    //Read the encryption key sent by the server and enable decryption for GCM messages
+				BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream(),"UTF-8"));
+				String line = rd.readLine();
+				strb = new StringBuilder();
+				while (line != null) {
+				    strb.append(line);
+				    line = rd.readLine();
+				}
+				String key = strb.toString();
+				rd.close();
+				if (key!=null && key.length() > 1) {
+					return key;
+				}
 			}
 
 			if (method == RAPIManager.CALLS) {
