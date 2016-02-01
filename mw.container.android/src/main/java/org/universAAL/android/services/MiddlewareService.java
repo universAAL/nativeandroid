@@ -304,42 +304,8 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 								|| action.equals("android.net.wifi.STATE_CHANGE")) {
 							// Only react to meaningful changes
 							Log.v(TAG, "Action is WIFI");
-							int newWifi = checkWifi(); //Dont set mCurrentWifi yet, we have to compare
-							if (Config.isWifiAllowed()) {
-								boolean modeGW = (Config.getRemoteMode() == AppConstants.REMOTE_MODE_WIFIOFF);
-								switch (newWifi) {
-								case AppConstants.WIFI_OFF:
-									if (mCurrentWIFI == AppConstants.WIFI_NOTSET || mCurrentWIFI == AppConstants.WIFI_HOME) {
-										if (modeGW) { stopGateway(); }
-										restartConnector(false); // Shut down jSLP, use GW
-										if (modeGW) { startGateway(); }
-									}
-									break;
-								case AppConstants.WIFI_NOTSET:
-									if (mCurrentWIFI == AppConstants.WIFI_OFF || mCurrentWIFI == AppConstants.WIFI_STRANGER) {
-										if (modeGW) { stopGateway(); }
-										restartConnector(true); // Turn on jSLP, dont use GW
-									}
-									break;
-								case AppConstants.WIFI_STRANGER:
-									if (mCurrentWIFI == AppConstants.WIFI_NOTSET || mCurrentWIFI == AppConstants.WIFI_HOME) {
-										if (modeGW) { stopGateway(); }
-										restartConnector(false); // Shut down jSLP, use GW
-										if (modeGW) { startGateway(); }
-									}
-									break;
-								case AppConstants.WIFI_HOME:
-									if (mCurrentWIFI == AppConstants.WIFI_OFF || mCurrentWIFI == AppConstants.WIFI_STRANGER) {
-										if (modeGW) { stopGateway(); }
-										restartConnector(true); // Turn on jSLP, dont use GW
-									}
-									break;
-								default:
-									// Do nothing, keep using jSLP / GW or not, as previous state
-									break;
-								}
-							}
-							mCurrentWIFI=newWifi;
+							// mCurrentWifi will be set in this sync method
+							shiftWifiState(checkWifi());
 						} else if (action.equals(AppConstants.ACTION_PCK_REG)) {
 							// REGISTER message from scan service
 							Log.v(TAG, "Action is REGISTER");
@@ -372,6 +338,51 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 	public IBinder onBind(Intent arg0) {
 		// Called each time someone asks for our binder to perform operations. I dont use binders anymore.
 		return null;
+	}
+	
+	/**
+	 * Shift the WiFi state machine to new state, in a synchronized method to
+	 * prevent multiple incoming "network changed" intents.
+	 * 
+	 * @param newWifi
+	 *            The type of the new WiFi
+	 */
+	private synchronized void shiftWifiState(int newWifi){
+	    if (Config.isWifiAllowed()) {
+		boolean modeGW = (Config.getRemoteMode() == AppConstants.REMOTE_MODE_WIFIOFF);
+		switch (newWifi) {
+		case AppConstants.WIFI_OFF: // From NOTSET or HOME to OFF
+		    if (mCurrentWIFI == AppConstants.WIFI_NOTSET || mCurrentWIFI == AppConstants.WIFI_HOME) {
+			if (modeGW) { stopGateway(); }
+			restartConnector(false); // Shut down jSLP, use GW
+			if (modeGW) { startGateway(); }
+		    }
+		    break;
+		case AppConstants.WIFI_NOTSET: // From OFF or STRANGER to NOTSET
+		    if (mCurrentWIFI == AppConstants.WIFI_OFF || mCurrentWIFI == AppConstants.WIFI_STRANGER) {
+			if (modeGW) { stopGateway(); }
+			restartConnector(true); // Turn on jSLP, dont use GW
+		    }
+		    break;
+		case AppConstants.WIFI_STRANGER: // From NOTSET or HOME to STRANGER
+		    if (mCurrentWIFI == AppConstants.WIFI_NOTSET || mCurrentWIFI == AppConstants.WIFI_HOME) {
+			if (modeGW) { stopGateway(); }
+			restartConnector(false); // Shut down jSLP, use GW
+			if (modeGW) { startGateway(); }
+		    }
+		    break;
+		case AppConstants.WIFI_HOME: // From OFF or STRANGER to HOME
+		    if (mCurrentWIFI == AppConstants.WIFI_OFF || mCurrentWIFI == AppConstants.WIFI_STRANGER) {
+			if (modeGW) { stopGateway(); }
+			restartConnector(true); // Turn on jSLP, dont use GW
+		    }
+		    break;
+		default:
+		    // Do nothing, keep using jSLP / GW or not, as previous state
+		    break;
+		}
+	    }
+	    mCurrentWIFI=newWifi;
 	}
 	
 	/**
