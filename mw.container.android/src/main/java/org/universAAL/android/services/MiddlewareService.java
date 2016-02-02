@@ -23,6 +23,7 @@ package org.universAAL.android.services;
 
 import java.util.Dictionary;
 import java.util.Hashtable;
+import java.util.concurrent.ArrayBlockingQueue;
 
 import org.universAAL.android.R;
 import org.universAAL.android.activities.HandlerActivity;
@@ -77,7 +78,6 @@ import ch.ethz.iks.slp.Locator;
 import ch.ethz.iks.slp.impl.AdvertiserImpl;
 import ch.ethz.iks.slp.impl.LocatorImpl;
 import ch.ethz.iks.slp.impl.SLPCore;
-
 import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -121,6 +121,8 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 	// This is for the state machine, for ignoring conflicting start/stops
 	public static int mStatus = AppConstants.STATUS_STOPPED;
 	private MulticastLock mLock;
+	// "The WiFi change being processed". Incoming Threads block until it is free, then get in, change WiFI, and free it 
+	private ArrayBlockingQueue<Integer> mQueue = new ArrayBlockingQueue<Integer>(1,true);//true: fairness=FIFO
 	// MW modules stay in memory in this service class (Container holds only WeakRefs)
 	private Advertiser mJSLPadvertiser;
 	private Locator mJSLPlocator;
@@ -251,6 +253,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 		mStatus=AppConstants.STATUS_STOPPING;
 		Log.v(TAG, "Destroy");
 		try{
+		    	mQueue.clear(); // just in case, to avoid locks
 			mPercentage=0;
 			notifyPercent();
 			//TODO Call to unreg onts
@@ -304,8 +307,21 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 								|| action.equals("android.net.wifi.STATE_CHANGE")) {
 							// Only react to meaningful changes
 							Log.v(TAG, "Action is WIFI");
-							// mCurrentWifi will be set in this sync method
-							shiftWifiState(checkWifi());
+							int oldWifi=mCurrentWIFI;
+							int newWifi=checkWifi();
+							if(oldWifi!=newWifi){
+							    mCurrentWIFI=newWifi; // must set current before shift
+							    try {
+								// Thread blocks in order until there is space
+								mQueue.put(newWifi);
+								shiftWifiState(newWifi, oldWifi);
+								mQueue.poll();
+								// And clears its execution for others to resume
+							    } catch (Exception e) {
+								mQueue.clear(); // just in case, to avoid locks
+								Log.w(TAG, "Problems handling multiple connectivity changes: "+e);
+							    }
+							}
 						} else if (action.equals(AppConstants.ACTION_PCK_REG)) {
 							// REGISTER message from scan service
 							Log.v(TAG, "Action is REGISTER");
@@ -346,33 +362,35 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 	 * 
 	 * @param newWifi
 	 *            The type of the new WiFi
+	 * @param oldWifi
+	 *            The type of the previous WiFi
 	 */
-	private synchronized void shiftWifiState(int newWifi){
+	private synchronized void shiftWifiState(int newWifi, int oldWifi){
 	    if (Config.isWifiAllowed()) {
 		boolean modeGW = (Config.getRemoteMode() == AppConstants.REMOTE_MODE_WIFIOFF);
 		switch (newWifi) {
 		case AppConstants.WIFI_OFF: // From NOTSET or HOME to OFF
-		    if (mCurrentWIFI == AppConstants.WIFI_NOTSET || mCurrentWIFI == AppConstants.WIFI_HOME) {
+		    if (oldWifi == AppConstants.WIFI_NOTSET || oldWifi == AppConstants.WIFI_HOME) {
 			if (modeGW) { stopGateway(); }
 			restartConnector(false); // Shut down jSLP, use GW
 			if (modeGW) { startGateway(); }
 		    }
 		    break;
 		case AppConstants.WIFI_NOTSET: // From OFF or STRANGER to NOTSET
-		    if (mCurrentWIFI == AppConstants.WIFI_OFF || mCurrentWIFI == AppConstants.WIFI_STRANGER) {
+		    if (oldWifi == AppConstants.WIFI_OFF || oldWifi == AppConstants.WIFI_STRANGER) {
 			if (modeGW) { stopGateway(); }
 			restartConnector(true); // Turn on jSLP, dont use GW
 		    }
 		    break;
 		case AppConstants.WIFI_STRANGER: // From NOTSET or HOME to STRANGER
-		    if (mCurrentWIFI == AppConstants.WIFI_NOTSET || mCurrentWIFI == AppConstants.WIFI_HOME) {
+		    if (oldWifi == AppConstants.WIFI_NOTSET || oldWifi == AppConstants.WIFI_HOME) {
 			if (modeGW) { stopGateway(); }
 			restartConnector(false); // Shut down jSLP, use GW
 			if (modeGW) { startGateway(); }
 		    }
 		    break;
 		case AppConstants.WIFI_HOME: // From OFF or STRANGER to HOME
-		    if (mCurrentWIFI == AppConstants.WIFI_OFF || mCurrentWIFI == AppConstants.WIFI_STRANGER) {
+		    if (oldWifi == AppConstants.WIFI_OFF || oldWifi == AppConstants.WIFI_STRANGER) {
 			if (modeGW) { stopGateway(); }
 			restartConnector(true); // Turn on jSLP, dont use GW
 		    }
@@ -382,7 +400,6 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 		    break;
 		}
 	    }
-	    mCurrentWIFI=newWifi;
 	}
 	
 	/**
