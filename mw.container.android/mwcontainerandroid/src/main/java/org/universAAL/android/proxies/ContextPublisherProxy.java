@@ -37,6 +37,7 @@ import org.universAAL.android.utils.VariableSubstitution;
 import org.universAAL.middleware.context.ContextEvent;
 import org.universAAL.middleware.context.ContextPublisher;
 import org.universAAL.middleware.context.owl.ContextProvider;
+import org.universAAL.middleware.rdf.Resource;
 import org.universAAL.middleware.serialization.MessageContentSerializerEx;
 
 import android.content.BroadcastReceiver;
@@ -176,9 +177,11 @@ public class ContextPublisherProxy extends ContextPublisher {
 				event=(ContextEvent) parser.deserialize(grounding);
 			}
 			// Cant Improve this. Must make a copy of the event so that URI is
-			// new. Timestamp and Provider are set by bus (which is good because
-			// the Provider in the grounding does not have the tenant id)
-			ContextEvent cev = new ContextEvent(event.getRDFSubject(),
+			// new. Timestamp and Provider are set by bus. Other metadata is copied.
+			// Make sure the predicate value of the subject is the full one.
+			Resource sub = event.getRDFSubject();
+			sub.changeProperty(event.getRDFPredicate(), event.getRDFObject());
+			ContextEvent cev = new ContextEvent(sub,
 					event.getRDFPredicate());
 			cev.setConfidence(event.getConfidence());
 			cev.setExpirationTime(event.getExpirationTime());
