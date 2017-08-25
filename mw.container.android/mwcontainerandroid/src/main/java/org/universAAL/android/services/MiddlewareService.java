@@ -34,7 +34,6 @@ import org.universAAL.android.utils.Config;
 import org.universAAL.android.utils.GroundingParcel;
 import org.universAAL.android.utils.AppConstants;
 import org.universAAL.android.utils.RAPIManager;
-import org.universAAL.android.utils.gcm.RegistrationService;
 import org.universAAL.android.wrappers.CommunicationConnectorWrapper;
 import org.universAAL.android.wrappers.DiscoveryConnectorWrapper;
 import org.universAAL.middleware.brokers.control.ControlBroker;
@@ -196,7 +195,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 		}
 		
 		// Create (dont use yet) the multicast lock. Make it not counted: this app only uses one lock
-		WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+		WifiManager wifi = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
 		mLock = wifi.createMulticastLock("uaal_multicast");
 		mLock.setReferenceCounted(false);
 
@@ -901,7 +900,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 	 */
 	private void thisIsOurWifi() {
 //		if (isWifiOn()) {
-			WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+			WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
 			WifiInfo wifiInfo = wifiManager.getConnectionInfo();
 			String networkId = wifiInfo.getSSID();
 			PreferenceManager.getDefaultSharedPreferences(this).edit().putString(AppConstants.MY_WIFI, networkId).commit();
@@ -916,7 +915,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 	 */
 	private int checkWifi(){
 //		if (isWifiOn()) {
-			WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+			WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
 			WifiInfo wifiInfo = wifiManager.getConnectionInfo();
 			if(wifiInfo.getNetworkId()==-1){ //No network actually
 				Log.i(TAG, "WIFI CHECK: Wifi is not on");

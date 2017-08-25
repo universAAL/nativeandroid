@@ -29,7 +29,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-import org.apache.http.client.utils.URLEncodedUtils;
+//import org.apache.http.client.utils.URLEncodedUtils;
 import org.universAAL.android.container.AndroidContainer;
 import org.universAAL.android.container.AndroidContext;
 import org.universAAL.android.services.MiddlewareService;
@@ -122,7 +122,7 @@ public class ServiceCalleeProxy extends ServiceCallee {
 	/**
 	 * Extract the Service Profile information from the grounding.
 	 * 
-	 * @param parcel
+	 * @param grounding
 	 *            The parcelable from of the grounding of the metadata.
 	 * @return The uAAL Service Profile.
 	 */
@@ -157,7 +157,7 @@ public class ServiceCalleeProxy extends ServiceCallee {
 	 * Modify the serialized grounding to append tenant ID to relevant URIs.
 	 * Equivalent to prepareGrounding but returns it serialized.
 	 * 
-	 * @param serial
+	 * @param grounding
 	 *            The grounding of the metadata.
 	 * @return The modified uAAL Service Profile.
 	 */

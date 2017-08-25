@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.universAAL.android"
-    android:versionCode="2015111201"
+    android:versionCode="2017082301"
     android:versionName="3.4.1-SNAPSHOT" >
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -19,7 +19,6 @@
     <permission android:name="org.universAAL.android.permission.SYS" android:protectionLevel="normal" />
     <permission android:name="org.universAAL.android.permission.SETTINGS" android:protectionLevel="normal" />
 
-    <uses-sdk android:minSdkVersion="10" android:targetSdkVersion="22"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
