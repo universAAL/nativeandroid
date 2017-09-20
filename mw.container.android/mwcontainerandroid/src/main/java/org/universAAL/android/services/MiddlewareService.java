@@ -769,7 +769,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 			Log.d(TAG, "Started BUS TRACKER");
 			// _________________GATEWAY_________________________
 			ModuleContext c8 = new AndroidContext("ri.gateway.multitenant");
-			Dictionary gatewayProps = Config.getProperties("ri.gateway.communicator.core");
+//			Dictionary gatewayProps = Config.getProperties("ri.gateway.communicator.core");
 			try {
 				mModGATEWAY = new Gateway();
 				mModGATEWAY.start(c8);

@@ -39,7 +39,9 @@ configurations {
     all*.exclude group: 'org.universAAL.thirdparty', module: 'jslp.core'
     all*.exclude group: 'net.lingala.zip4j', module: 'zip4j'
     all*.exclude group: 'org.universAAL.middleware', module: 'mw.schemas'
+    all*.exclude group: 'org.universAAL.middleware', module: 'mw.bus.tracker.core'
     all*.exclude group: 'org.universAAL.middleware', module: 'mw.data.representation.core'
+    all*.exclude group: 'org.apache.karaf.shell', module: 'org.apache.karaf.shell.console'
 }
 
 dependencies {
@@ -72,7 +74,7 @@ dependencies {
 //    compile 'org.universAAL.middleware:mw.managers.configuration.core:3.4.1-SNAPSHOT'     // Not used in Android ???
 //    compile 'org.universAAL.middleware:mw.managers.tenant.core:3.4.1-SNAPSHOT'            // Not used in Android ???
 //    compile 'org.universAAL.middleware:mw.data.representation.core:3.4.2-SNAPSHOT'        // Replaced by modded lib
-//    compile 'org.universAAL.middleware:mw.data.serialization.turtle.core:3.4.2-SNAPSHOT'  // Replaced by modded lib
+    compile 'org.universAAL.middleware:mw.data.serialization.core:3.4.1-SNAPSHOT'           // Replaced by modded lib
     compile 'org.universAAL.middleware:mw.bus.model.core:3.4.1-SNAPSHOT'
     compile 'org.universAAL.middleware:mw.bus.service.core:3.4.1-SNAPSHOT'
     compile 'org.universAAL.middleware:mw.bus.context.core:3.4.1-SNAPSHOT'
@@ -84,9 +86,9 @@ dependencies {
     compile 'org.universAAL.ontology:ont.profile:3.4.1-SNAPSHOT'
     compile 'org.universAAL.ontology:ont.unit:3.4.1-SNAPSHOT'
     compile 'org.universAAL.ontology:ont.measurement:3.4.1-SNAPSHOT'
-//    compile 'org.universAAL.ontology:ont.sysinfo:3.4.2-SNAPSHOT'          // Only used if using non-modded multitenant GW below
-//    compile 'org.universAAL.support:utilities.ioc:3.4.2-SNAPSHOT'         // Only used if using non-modded multitenant GW below
-//    compile 'org.universAAL.remote:ri.gateway.multitenant:3.4.2-SNAPSHOT' // Replaced by modded lib
+    compile 'org.universAAL.ontology:ont.sysinfo:3.4.1-SNAPSHOT'    // Only used if using non-modded multitenant GW below
+    compile 'org.universAAL.support:utilities.ioc:3.4.1-SNAPSHOT'    // Only used if using non-modded multitenant GW below
+    compile 'org.universAAL.remote:ri.gateway.multitenant:3.4.1-SNAPSHOT'// Replaced by modded lib
 
     // Libraries Modded to be compatible with Android for some reason
     compile files('libs/bcprov-jdk13-140.jar')
@@ -94,8 +96,8 @@ dependencies {
     compile files('libs/jslp.core-3.4.1-SNAPSHOT.jar')
     compile files('libs/mw.bus.tracker.core-3.4.1-SNAPSHOT.jar')
     compile files('libs/mw.data.representation.core-3.4.1-SNAPSHOT.jar')
-    compile files('libs/mw.data.serialization.core-3.4.1-SNAPSHOT.jar')
+//    compile files('libs/mw.data.serialization.core-3.4.1-SNAPSHOT.jar')
     compile files('libs/mw.managers.aalspace.core-3.4.1-SNAPSHOT.jar')
     compile files('libs/mw.schemas-3.4.1-SNAPSHOT.jar')
-    compile files('libs/ri.gateway.multitenant-3.4.1-SNAPSHOT.jar')
+//    compile files('libs/ri.gateway.multitenant-3.4.1-SNAPSHOT.jar')
 }
