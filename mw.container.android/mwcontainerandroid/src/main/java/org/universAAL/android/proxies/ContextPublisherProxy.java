@@ -185,6 +185,11 @@ public class ContextPublisherProxy extends ContextPublisher {
 					event.getRDFPredicate());
 			cev.setConfidence(event.getConfidence());
 			cev.setExpirationTime(event.getExpirationTime());
+			if(event.getInvolvedUser()!=null){
+				cev.setInvolvedUser(event.getInvolvedUser());
+			}else{
+				cev.setInvolvedUser(Config.makeUser());
+			}
 			publish(cev);
 			// If RAPI, send it to server. If GW it is automatic by the running GW
 			if (MiddlewareService.isGWrequired() && Config.getRemoteType() == AppConstants.REMOTE_TYPE_RAPI) {

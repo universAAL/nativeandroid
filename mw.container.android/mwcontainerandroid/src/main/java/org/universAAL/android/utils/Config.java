@@ -9,6 +9,11 @@ import java.util.Dictionary;
 import java.util.Properties;
 
 import org.universAAL.android.R;
+import org.universAAL.android.services.MiddlewareService;
+import org.universAAL.middleware.util.Constants;
+import org.universAAL.ontology.profile.AssistedPerson;
+import org.universAAL.ontology.profile.Caregiver;
+import org.universAAL.ontology.profile.User;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -261,4 +266,14 @@ public class Config {
 		}
 	}
 
+	public static User makeUser(){
+		switch (MiddlewareService.mUserType) {
+			case AppConstants.USER_TYPE_AP:
+				return new AssistedPerson(Constants.uAAL_MIDDLEWARE_LOCAL_ID_PREFIX + getUAALUser());
+			case AppConstants.USER_TYPE_CARE:
+				return new Caregiver(Constants.uAAL_MIDDLEWARE_LOCAL_ID_PREFIX + getUAALUser());
+			default:
+				return new User(Constants.uAAL_MIDDLEWARE_LOCAL_ID_PREFIX + getUAALUser());
+		}
+	}
 }
