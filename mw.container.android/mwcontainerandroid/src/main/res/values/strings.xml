@@ -73,11 +73,13 @@
     <string-array name="setting_conntype_entries">
 		<item>Gateway</item>
 		<item>Remote API (requires Google Play Services)</item>
+        <item>REST API (requires Google Play Services)</item>
 	</string-array>
 	<!-- Reference values. DO NOT CHANGE, DO NOT TRANSLATE -->
 	<string-array name="setting_conntype_values">
 		<item>0</item>
 		<item>1</item>
+        <item>2</item>
 	</string-array>
 	
 	<string name="setting_iscoord_title">Is Service coordinator</string>

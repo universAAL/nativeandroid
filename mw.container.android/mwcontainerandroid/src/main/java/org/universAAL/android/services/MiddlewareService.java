@@ -34,6 +34,7 @@ import org.universAAL.android.utils.Config;
 import org.universAAL.android.utils.GroundingParcel;
 import org.universAAL.android.utils.AppConstants;
 import org.universAAL.android.utils.RAPIManager;
+import org.universAAL.android.utils.RESTManager;
 import org.universAAL.android.wrappers.CommunicationConnectorWrapper;
 import org.universAAL.android.wrappers.DiscoveryConnectorWrapper;
 import org.universAAL.middleware.brokers.control.ControlBroker;
@@ -795,6 +796,14 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 //				Toast.makeText(getApplicationContext(),	R.string.warning_gplay, Toast.LENGTH_LONG).show();
 			}
 			break;
+		case AppConstants.REMOTE_TYPE_RESTAPI:
+			// Check Play Services and register in GCM if not already
+			if (RESTManager.checkPlayServices(getApplicationContext())) {
+				RESTManager.performRegistration(getApplicationContext(),null);
+			}else{
+				//TODO show error
+			}
+			break;
 		default:
 			break;
 		}
@@ -839,6 +848,9 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 //			}
 			// Unregister from uAAL, but not GCM, as recommended by doc.
 			RAPIManager.invokeInThread(RAPIManager.UNREGISTER, "");
+			break;
+		case AppConstants.REMOTE_TYPE_RESTAPI:
+			RESTManager.invokeInThread(RESTManager.UNREGISTER, null, null, null);
 			break;
 		default:
 			break;

@@ -31,6 +31,7 @@ import org.universAAL.android.utils.Config;
 import org.universAAL.android.utils.GroundingParcel;
 import org.universAAL.android.utils.AppConstants;
 import org.universAAL.android.utils.RAPIManager;
+import org.universAAL.android.utils.RESTManager;
 import org.universAAL.android.utils.VariableSubstitution;
 import org.universAAL.middleware.rdf.Resource;
 import org.universAAL.middleware.serialization.MessageContentSerializerEx;
@@ -232,16 +233,26 @@ public class ServiceCallerProxy extends ServiceCaller {
 			}
 			sendRequest(srmeta);
 			// If RAPI, send it to server. If GW it is automatic by the running GW TODO Sent twice (no matching above)
-			if (MiddlewareService.isGWrequired() && Config.getRemoteType() == AppConstants.REMOTE_TYPE_RAPI
+			if (MiddlewareService.isGWrequired() &&
+					(Config.getRemoteType() == AppConstants.REMOTE_TYPE_RAPI
+							|| Config.getRemoteType() == AppConstants.REMOTE_TYPE_RESTAPI)
 					&& remote != null && !remote.isEmpty()) {
 				new Thread() {
 					@Override
 					public void run() {
-						String result = RAPIManager.invoke(RAPIManager.CALLS, parser.serialize(srmeta));
-                        			if (result == null) {//If problems with remote server
-                        			    result = NO_MATCHING;
-                        			}
-						handleResponse(null, (ServiceResponse) parser.deserialize(result));
+						if(Config.getRemoteType() == AppConstants.REMOTE_TYPE_RAPI){
+							String result = RAPIManager.invoke(RAPIManager.CALLS, parser.serialize(srmeta));
+							if (result == null) {//If problems with remote server
+								result = NO_MATCHING;
+							}
+							handleResponse(null, (ServiceResponse) parser.deserialize(result));
+						}else {
+							String result = RESTManager.invoke(RESTManager.CALLS, parser.serialize(srmeta), null, null);
+							if (result == null) {//If problems with remote server
+								result = NO_MATCHING;
+							}
+							handleResponse(null, (ServiceResponse) parser.deserialize(result));
+						}
 					}
 				}.start();
 			}

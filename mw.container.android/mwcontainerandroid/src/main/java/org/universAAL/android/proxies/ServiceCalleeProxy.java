@@ -37,6 +37,7 @@ import org.universAAL.android.utils.Config;
 import org.universAAL.android.utils.GroundingParcel;
 import org.universAAL.android.utils.AppConstants;
 import org.universAAL.android.utils.RAPIManager;
+import org.universAAL.android.utils.RESTManager;
 import org.universAAL.android.utils.VariableSubstitution;
 import org.universAAL.middleware.bus.msg.BusMessage;
 import org.universAAL.middleware.rdf.Resource;
@@ -112,6 +113,9 @@ public class ServiceCalleeProxy extends ServiceCallee {
 			case AppConstants.REMOTE_TYPE_RAPI:
 				//Publish as well in the RAPI TODO What if offline!!!!!!!!?????
 				RAPIManager.invokeInThread(RAPIManager.PROVIDES, grounding);
+				break;
+			case AppConstants.REMOTE_TYPE_RESTAPI:
+				RESTManager.invokeInThread(RESTManager.PROVIDES, grounding, null, null);
 				break;
 			default:
 				break;
@@ -533,7 +537,11 @@ public class ServiceCalleeProxy extends ServiceCallee {
 								.getName() });//TODO throw ex if error
 	    strb.append(parser.serialize(sresp));
 	    //Send callback response to server
-	    RAPIManager.invokeInThread(RAPIManager.RESPONSES, strb.toString());
+		if (Config.getRemoteType() == AppConstants.REMOTE_TYPE_RAPI) {
+			RAPIManager.invokeInThread(RAPIManager.RESPONSES, strb.toString());
+		} else if (Config.getRemoteType() == AppConstants.REMOTE_TYPE_RESTAPI) {
+			RESTManager.invokeInThread(RESTManager.RESPONSES, strb.toString(), Integer.toString(grounding.hashCode()), callURI);
+		}
 	}
 
 	/**

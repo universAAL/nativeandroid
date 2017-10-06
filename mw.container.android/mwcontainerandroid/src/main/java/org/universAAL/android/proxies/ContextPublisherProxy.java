@@ -33,6 +33,7 @@ import org.universAAL.android.utils.Config;
 import org.universAAL.android.utils.GroundingParcel;
 import org.universAAL.android.utils.AppConstants;
 import org.universAAL.android.utils.RAPIManager;
+import org.universAAL.android.utils.RESTManager;
 import org.universAAL.android.utils.VariableSubstitution;
 import org.universAAL.middleware.context.ContextEvent;
 import org.universAAL.middleware.context.ContextPublisher;
@@ -192,12 +193,18 @@ public class ContextPublisherProxy extends ContextPublisher {
 			}
 			publish(cev);
 			// If RAPI, send it to server. If GW it is automatic by the running GW
-			if (MiddlewareService.isGWrequired() && Config.getRemoteType() == AppConstants.REMOTE_TYPE_RAPI) {
+			if (MiddlewareService.isGWrequired() &&
+					(Config.getRemoteType() == AppConstants.REMOTE_TYPE_RAPI
+							|| Config.getRemoteType() == AppConstants.REMOTE_TYPE_RESTAPI)) {
 				ContextEvent cev2=(ContextEvent)cev.deepCopy();//Prevent concurrent change of cev!!!!
 				cev2.changeProperty(ContextEvent.PROP_CONTEXT_PROVIDER, null);//The single publisher in RAPI will send ANY event
 				String serial = parser.serialize(cev2);
-				if (serial != null){
-					RAPIManager.invokeInThread(RAPIManager.SENDC, serial);
+				if (serial != null) {
+					if (Config.getRemoteType() == AppConstants.REMOTE_TYPE_RAPI) {
+						RAPIManager.invokeInThread(RAPIManager.SENDC, serial);
+					} else if (Config.getRemoteType() == AppConstants.REMOTE_TYPE_RESTAPI) {
+						RESTManager.invokeInThread(RESTManager.SENDC, serial, null, null);
+					}
 				}//TODO error
 			}
 		}

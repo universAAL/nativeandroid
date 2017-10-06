@@ -31,7 +31,8 @@ public class MessageReceptionService extends GcmListenerService {
     // [START receive_message]
     @Override
     public void onMessageReceived(String from, Bundle data) {
-        if (Config.getRemoteType() != AppConstants.REMOTE_TYPE_RAPI) {
+        if (Config.getRemoteType() != AppConstants.REMOTE_TYPE_RAPI
+                && Config.getRemoteType() != AppConstants.REMOTE_TYPE_RESTAPI) {
             return;// For now, double check. TODO make sure not needed
         }
         String method = data.getString("method");

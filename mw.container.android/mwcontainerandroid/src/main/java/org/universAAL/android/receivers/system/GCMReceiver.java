@@ -51,7 +51,8 @@ public class GCMReceiver extends WakefulBroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		if (Config.getRemoteType() != AppConstants.REMOTE_TYPE_RAPI) {
+		if (Config.getRemoteType() != AppConstants.REMOTE_TYPE_RAPI
+				&& Config.getRemoteType() != AppConstants.REMOTE_TYPE_RESTAPI) {
 			return;// For now, double check. TODO make sure not needed
 		}
 		String method = intent.getStringExtra("method");
@@ -91,6 +92,7 @@ public class GCMReceiver extends WakefulBroadcastReceiver {
 				String serial = intent.getStringExtra("param");
 				String spuri = intent.getStringExtra("to");
 				String origincall = intent.getStringExtra("call");
+                if(origincall==null)origincall=intent.getStringExtra("o");
 				if (serial != null && spuri != null) {
 					ServiceCall scall = (ServiceCall) parser
 							.deserialize(serial);

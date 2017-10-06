@@ -26,6 +26,7 @@ import org.universAAL.android.services.MiddlewareService;
 import org.universAAL.android.utils.Config;
 import org.universAAL.android.utils.AppConstants;
 import org.universAAL.android.utils.RAPIManager;
+import org.universAAL.android.utils.RESTManager;
 import org.universAAL.android.utils.gcm.RegistrationService;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -109,11 +110,13 @@ public class SettingsActivity extends PreferenceActivity {
 			
 		// Manage the registration on Google Play Services GCM when selecting R-API conn type
 		ListPreference connType = (ListPreference) findPreference(AppConstants.Keys.CONNTYPE);
-		setRAPIOptionsEnabled(connType.getValue()!=null && connType.getValue().equals("1"));
+		setRAPIOptionsEnabled(connType.getValue()!=null
+                && (connType.getValue().equals(String.valueOf(AppConstants.REMOTE_TYPE_RAPI))
+                || connType.getValue().equals(String.valueOf(AppConstants.REMOTE_TYPE_RESTAPI))));
 		connType.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
 			public boolean onPreferenceChange(Preference preference,
 					Object newValue) {
-				if (newValue.equals("1")) {
+				if (newValue.equals(String.valueOf(AppConstants.REMOTE_TYPE_RAPI))) {
 					// Set to R-API -> Check Play Services
 					if (RAPIManager.checkPlayServices(getApplicationContext())) {
 //						String mRegID = RAPIManager
@@ -135,6 +138,20 @@ public class SettingsActivity extends PreferenceActivity {
 						setRAPIOptionsEnabled(false);
 						return false;// just dont allow change
 					}
+				}else if (newValue.equals(String.valueOf(AppConstants.REMOTE_TYPE_RESTAPI)))  {
+					// Set to REST API -> Check Play Services
+					if (RESTManager.checkPlayServices(getApplicationContext())) {
+						RESTManager.performRegistrationInThread(getApplicationContext(),null);
+						setRAPIOptionsEnabled(true);//Enable RAPI options only if RAPI selected
+						return true;
+					} else {
+						Toast.makeText(getApplicationContext(),
+								R.string.warning_gplay, Toast.LENGTH_LONG)
+								.show();
+						// Do not block the app from running if Play Services is not available
+						setRAPIOptionsEnabled(false);
+						return false;// just dont allow change
+					}
 				} else {
 					setRAPIOptionsEnabled(false);
 					return true;// Allow the change
@@ -146,20 +163,33 @@ public class SettingsActivity extends PreferenceActivity {
 		connKey.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
 			public boolean onPreferenceChange(Preference preference,
 					Object newValue) {
-				if (RAPIManager.checkPlayServices(getApplicationContext())) {
-					//Lets assume newValue has changed
+				if(Config.getRemoteType() == AppConstants.REMOTE_TYPE_RAPI){
+					if (RAPIManager.checkPlayServices(getApplicationContext())) {
+						//Lets assume newValue has changed
 //					RAPIManager.registerInThread(getApplicationContext(), (String) newValue);
-					//Intent intent = new Intent(getApplicationContext(), RegistrationService.class);
-					//startService(intent);
-					RAPIManager.performRegistrationInThread(getApplicationContext(),(String) newValue);
-					return true;
-				} else {
-					Toast.makeText(getApplicationContext(),
-							R.string.warning_gplay, Toast.LENGTH_LONG).show();
-					// Do not block the app from running if Play Services is not
-					// available
-					return false;// just dont allow change
+						//Intent intent = new Intent(getApplicationContext(), RegistrationService.class);
+						//startService(intent);
+						RAPIManager.performRegistrationInThread(getApplicationContext(),(String) newValue);
+						return true;
+					} else {
+						Toast.makeText(getApplicationContext(),
+								R.string.warning_gplay, Toast.LENGTH_LONG).show();
+						// Do not block the app from running if Play Services is not
+						// available
+						return false;// just dont allow change
+					}
+				}else if(Config.getRemoteType() == AppConstants.REMOTE_TYPE_RESTAPI){
+					if (RESTManager.checkPlayServices(getApplicationContext())) {
+						RESTManager.performRegistrationInThread(getApplicationContext(),(String) newValue);
+						return true;
+					} else {
+						Toast.makeText(getApplicationContext(),
+								R.string.warning_gplay, Toast.LENGTH_LONG).show();
+						// Do not block the app from running if Play Services is not available
+						return false;// just dont allow change
+					}
 				}
+				return true;
 			}
 		});
 	}

@@ -89,6 +89,7 @@ public class AppConstants {
 	// Assorted enumerations accessed from across the app
 	public static final int REMOTE_TYPE_GW=0;
 	public static final int REMOTE_TYPE_RAPI=1;
+	public static final int REMOTE_TYPE_RESTAPI=2;
 	
 	public static final int USER_TYPE_AP=0;
 	public static final int USER_TYPE_CARE=1;

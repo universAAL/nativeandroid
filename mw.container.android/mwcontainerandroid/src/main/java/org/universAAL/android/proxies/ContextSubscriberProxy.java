@@ -33,6 +33,7 @@ import org.universAAL.android.utils.Config;
 import org.universAAL.android.utils.GroundingParcel;
 import org.universAAL.android.utils.AppConstants;
 import org.universAAL.android.utils.RAPIManager;
+import org.universAAL.android.utils.RESTManager;
 import org.universAAL.android.utils.VariableSubstitution;
 import org.universAAL.middleware.context.ContextEvent;
 import org.universAAL.middleware.context.ContextEventPattern;
@@ -88,6 +89,11 @@ public class ContextSubscriberProxy extends ContextSubscriber {
 				// RAPI only gets 1 pattern at a time, and the grounding is (surprise!) a single pattern
 				if(MiddlewareService.isGWrequired()){
 					RAPIManager.invokeInThread(RAPIManager.SUBSCRIBEC, grounding);
+				}
+				break;
+			case AppConstants.REMOTE_TYPE_RESTAPI:
+				if(MiddlewareService.isGWrequired()){
+					RESTManager.invokeInThread(RESTManager.SUBSCRIBEC, grounding, null, null);
 				}
 				break;
 			default:

@@ -29,6 +29,7 @@ import org.universAAL.android.services.MiddlewareService;
 import org.universAAL.android.utils.Config;
 import org.universAAL.android.utils.RAPIManager;
 import org.universAAL.android.utils.AppConstants;
+import org.universAAL.android.utils.RESTManager;
 import org.universAAL.android.utils.gcm.RegistrationService;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -91,6 +92,14 @@ public class HandlerActivity extends Activity {
 				//Intent intent = new Intent(this, RegistrationService.class);
 				//startService(intent);
 				RAPIManager.performRegistrationInThread(getApplicationContext(),null);
+			} else {
+				Toast.makeText(getApplicationContext(), R.string.warning_gplay,
+						Toast.LENGTH_LONG).show();
+				// Do not block the app from running if Play Services is not available
+			}
+		} else if (remoteType == AppConstants.REMOTE_TYPE_RESTAPI) {
+			if (RESTManager.checkPlayServices(this)) {
+				RESTManager.performRegistrationInThread(getApplicationContext(),null);
 			} else {
 				Toast.makeText(getApplicationContext(), R.string.warning_gplay,
 						Toast.LENGTH_LONG).show();

@@ -10,7 +10,9 @@ import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
 
 import org.universAAL.android.utils.AppConstants;
+import org.universAAL.android.utils.Config;
 import org.universAAL.android.utils.RAPIManager;
+import org.universAAL.android.utils.RESTManager;
 
 public class RegistrationService extends IntentService {
 
@@ -44,8 +46,11 @@ public class RegistrationService extends IntentService {
             Log.i(TAG, "GCM Registration Token: " + token);
 
             // Send any registration to your app's servers.
-            RAPIManager.invoke(RAPIManager.REGISTER, token);
-
+            if (Config.getRemoteType() == AppConstants.REMOTE_TYPE_RAPI) {
+                RAPIManager.invoke(RAPIManager.REGISTER, token);
+            }else if (Config.getRemoteType() == AppConstants.REMOTE_TYPE_RESTAPI) {
+                RESTManager.invoke(RESTManager.REGISTER, token, null, null);
+            }
             // You should store a boolean that indicates whether the generated token has been
             // sent to your server. If the boolean is false, send the token to your server,
             // otherwise your server should have already received the token.
