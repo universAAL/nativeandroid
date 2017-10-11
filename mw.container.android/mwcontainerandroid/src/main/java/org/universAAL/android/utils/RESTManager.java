@@ -298,9 +298,10 @@ public class RESTManager {
             wr.close();
 
             Log.d(TAG, "SENT TO SERVER: " + url);
-            if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
+            if (conn.getResponseCode() < 200 || conn.getResponseCode() > 299) {
                 Log.e(TAG, "ERROR REACHING SERVER " + conn.getResponseCode() + " : " + conn.getResponseMessage());
                 //TODO Error handling
+                return null;
             }
 
             if (expectResponse) {
