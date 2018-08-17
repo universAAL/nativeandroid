@@ -24,8 +24,8 @@ android {
 
 repositories {
     mavenCentral()
-    maven { url 'http://depot.universaal.org/nexus/repository/releases/' }
-    maven { url 'http://depot.universaal.org/nexus/repository/snapshots/' }
+    maven { url 'http://depot.universaal.org/maven-repo/releases/' }
+    maven { url 'http://depot.universaal.org/maven-repo/snapshots/' }
     maven { url 'http://depot.universaal.org/maven-repo/thirdparty/' }
     maven { url 'http://depot.universaal.org/maven-repo/thirdparty-snapshots/' }
     maven { url 'http://nexus.aaloa.org/content/repositories/releases/' }
