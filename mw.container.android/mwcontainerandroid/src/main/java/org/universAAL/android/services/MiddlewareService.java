@@ -49,16 +49,16 @@ import org.universAAL.middleware.context.ContextBus;
 import org.universAAL.middleware.context.impl.ContextBusImpl;
 import org.universAAL.middleware.datarep.SharedResources;
 import org.universAAL.middleware.interfaces.PeerCard;
-import org.universAAL.middleware.interfaces.aalspace.AALSpaceDescriptor;
-import org.universAAL.middleware.interfaces.aalspace.AALSpaceStatus;
-import org.universAAL.middleware.managers.aalspace.AALSpaceManagerImpl;
-import org.universAAL.middleware.managers.api.AALSpaceEventHandler;
-import org.universAAL.middleware.managers.api.AALSpaceListener;
-import org.universAAL.middleware.managers.api.AALSpaceManager;
-import org.universAAL.middleware.modules.AALSpaceModule;
+import org.universAAL.middleware.interfaces.space.SpaceDescriptor;
+import org.universAAL.middleware.interfaces.space.SpaceStatus;
+import org.universAAL.middleware.managers.api.SpaceEventHandler;
+import org.universAAL.middleware.managers.api.SpaceListener;
+import org.universAAL.middleware.managers.api.SpaceManager;
+import org.universAAL.middleware.managers.space.SpaceManagerImpl;
 import org.universAAL.middleware.modules.CommunicationModule;
-import org.universAAL.middleware.modules.aalspace.AALSpaceModuleImpl;
+import org.universAAL.middleware.modules.SpaceModule;
 import org.universAAL.middleware.modules.communication.CommunicationModuleImpl;
+import org.universAAL.middleware.modules.space.SpaceModuleImpl;
 import org.universAAL.middleware.serialization.MessageContentSerializer;
 import org.universAAL.middleware.serialization.MessageContentSerializerEx;
 import org.universAAL.middleware.serialization.turtle.TurtleSerializer;
@@ -108,7 +108,7 @@ import android.util.Log;
  * @author alfiva
  * 
  */
-public class MiddlewareService extends Service implements AALSpaceListener{
+public class MiddlewareService extends Service implements SpaceListener {
 
 	private static final String TAG = "MiddlewareService";
 	private static final String TAG_THREAD_CREATE = "MW Service Create";
@@ -127,8 +127,8 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 	private CommunicationConnector mModJGROUPS;
 	private DiscoveryConnector mModJSLP;
 	private CommunicationModuleImpl mModCOMMUNICATION;
-	private AALSpaceManagerImpl mModSPACEMANAGER;
-	private AALSpaceModuleImpl mModSPACEMODULE;
+	private SpaceManagerImpl mModSPACEMANAGER;
+	private SpaceModuleImpl mModSPACEMODULE;
 	private ControlBroker mModCONTROLBROKER;
 	private TurtleSerializer mModSERIALIZER;
 	private BusMemberRegistryImpl mModTRACKER;
@@ -389,11 +389,11 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 		// First stop everything related to connector: JSLP, JGroups, Advertiser and Locator
 		// I could use stopConnector() but it is sync, I dont want to change it
 		// TODO Check presence in Container rather than not null?
-		// Stop AALSpaceManager (and GW) to later trigger AALSpace creation, only if it was already started!
+		// Stop SpaceManager (and GW) to later trigger Space creation, only if it was already started!
 		if (mModSPACEMANAGER != null) {
 			mModSPACEMANAGER.dispose();
 			AndroidContainer.THE_CONTAINER.removeSharedObjectListener(mModSPACEMANAGER);
-			AndroidContainer.THE_CONTAINER.unshareObject(AALSpaceManager.class.getName(), mModSPACEMANAGER);
+			AndroidContainer.THE_CONTAINER.unshareObject(SpaceManager.class.getName(), mModSPACEMANAGER);
 			mModSPACEMANAGER = null;
 			aalspaceflag=true;
 		}
@@ -492,13 +492,13 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 					new Object[] { DiscoveryConnector.class.getName() });
 			Log.d(TAG, "Starting the FAKE SLPDiscoveryConnector...");
 		}
-		// Restart AALSpaceManager to trigger AALSpace creation, only if it was already started!
+		// Restart SpaceManager to trigger Space creation, only if it was already started!
 		if (aalspaceflag) {
-			// _________________AALSPACE MANAGER_____________________
-			AndroidContext tempCtxt = new AndroidContext("mw.managers.aalspace.osgi");
-			mModSPACEMANAGER = new AALSpaceManagerImpl(tempCtxt, Environment
-					.getExternalStorageDirectory().getPath() + Config.getConfigDir() + "/mw.managers.aalspace.osgi");
-			Dictionary aalSpaceManagerProps = Config.getProperties("mw.managers.aalspace.core");
+			// _________________SPACE MANAGER_____________________
+			AndroidContext tempCtxt = new AndroidContext("mw.managers.space.osgi");
+			mModSPACEMANAGER = new SpaceManagerImpl(tempCtxt, Environment
+					.getExternalStorageDirectory().getPath() + Config.getConfigDir() + "/mw.managers.space.osgi");
+			Dictionary aalSpaceManagerProps = Config.getProperties("mw.managers.space.core");
 			if (aalSpaceManagerProps == null) {
 				aalSpaceManagerProps = new Hashtable<String, String>();
 			} else {
@@ -506,9 +506,9 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 			}
 			mModSPACEMANAGER.init();
 			AndroidContainer.THE_CONTAINER.shareObject(tempCtxt, mModSPACEMANAGER,
-					new String[] { AALSpaceManager.class.getName(),
-							AALSpaceEventHandler.class.getName() });
-			Log.d(TAG, "Started AALSPACE MANAGER again"); //TODO What to do with AbstractBus, which uses aalspacemanager too???
+					new String[] { SpaceManager.class.getName(),
+							SpaceEventHandler.class.getName() });
+			Log.d(TAG, "Started SPACE MANAGER again"); //TODO What to do with AbstractBus, which uses aalspacemanager too???
 		}
 		addPercent(5);
 	}
@@ -565,11 +565,11 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 					new Object[] { CommunicationModule.class.getName() });
 			Log.d(TAG, "Started COMMUNICATION MODULE");
 			addPercent(5);
-			// _________________AALSPACE MODULE_____________________
-			AndroidContext c2=new AndroidContext("mw.modules.aalspace.osgi");
-			mModSPACEMODULE = new AALSpaceModuleImpl(
+			// _________________SPACE MODULE_____________________
+			AndroidContext c2=new AndroidContext("mw.modules.space.osgi");
+			mModSPACEMODULE = new SpaceModuleImpl(
 					c2);
-			Dictionary aalSpaceModuleProp = Config.getProperties("mw.modules.aalspace.core");
+			Dictionary aalSpaceModuleProp = Config.getProperties("mw.modules.space.core");
 			if (aalSpaceModuleProp != null) {
 				mModSPACEMODULE.loadConfigurations(aalSpaceModuleProp);
 			} else {
@@ -577,8 +577,8 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 			}
 			mModSPACEMODULE.init();
 			AndroidContainer.THE_CONTAINER.shareObject(c2, mModSPACEMODULE,
-					new Object[] { AALSpaceModule.class.getName() });
-			Log.d(TAG, "Started AALSPACE MODULE");
+					new Object[] { SpaceModule.class.getName() });
+			Log.d(TAG, "Started SPACE MODULE");
 			addPercent(5);
 			// _________________CONTROL BROKER_____________________
 			AndroidContext c3=new AndroidContext("mw.brokers.control.osgi");
@@ -587,11 +587,11 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 					new Object[] { ControlBroker.class.getName() });
 			Log.d(TAG, "Started CONTROL BROKER");
 			addPercent(5);
-			// _________________AALSPACE MANAGER_____________________
-			AndroidContext c4=new AndroidContext("mw.managers.aalspace.osgi");
-			mModSPACEMANAGER = new AALSpaceManagerImpl(c4, Environment
-					.getExternalStorageDirectory().getPath() + Config.getConfigDir() + "mw.managers.aalspace.osgi");
-			Dictionary aalSpaceManagerProps = Config.getProperties("mw.managers.aalspace.core");
+			// _________________SPACE MANAGER_____________________
+			AndroidContext c4=new AndroidContext("mw.managers.space.osgi");
+			mModSPACEMANAGER = new SpaceManagerImpl(c4, Environment
+					.getExternalStorageDirectory().getPath() + Config.getConfigDir() + "mw.managers.space.osgi");
+			Dictionary aalSpaceManagerProps = Config.getProperties("mw.managers.space.core");
 			if (aalSpaceManagerProps == null) {
 				aalSpaceManagerProps = new Hashtable<String, String>();
 			} else {
@@ -599,10 +599,10 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 			}
 			mModSPACEMANAGER.init();
 			AndroidContainer.THE_CONTAINER.shareObject(c4, mModSPACEMANAGER,
-					new String[] { AALSpaceManager.class.getName(),
-							AALSpaceEventHandler.class.getName() });
-			mModSPACEMANAGER.addAALSpaceListener(this);// For listening to AAL space changes
-			Log.d(TAG, "Started AALSPACE MANAGER");
+					new String[] { SpaceManager.class.getName(),
+							SpaceEventHandler.class.getName() });
+			mModSPACEMANAGER.addSpaceListener(this);// For listening to  space changes
+			Log.d(TAG, "Started SPACE MANAGER");
 			addPercent(5);
 			// _________________DEPLOY MANAGER_______________________
 			// TODO DEPLOY MANAGER
@@ -693,12 +693,12 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 		SharedResources.unloadReasoningEngine();
 		// _________________DEPLOY MANAGER_____________________
 		// TODO DEPLOY MANAGER
-		// _________________AALSPACE MANAGER_____________________
+		// _________________SPACE MANAGER_____________________
 		if (mModSPACEMANAGER != null) {
-			mModSPACEMANAGER.removeAALSpaceListener(this);
+			mModSPACEMANAGER.removeSpaceListener(this);
 			mModSPACEMANAGER.dispose();
 			AndroidContainer.THE_CONTAINER.removeSharedObjectListener(mModSPACEMANAGER);
-			AndroidContainer.THE_CONTAINER.unshareObject(AALSpaceManager.class.getName(), mModSPACEMANAGER);
+			AndroidContainer.THE_CONTAINER.unshareObject(SpaceManager.class.getName(), mModSPACEMANAGER);
 			mModSPACEMANAGER = null;
 		}
 		// _________________CONTROL BROKER_____________________
@@ -708,11 +708,11 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 			AndroidContainer.THE_CONTAINER.unshareObject(ControlBroker.class.getName(), mModCONTROLBROKER);
 			mModCONTROLBROKER = null;
 		}
-		// _________________AALSPACE MODULE_____________________
+		// _________________SPACE MODULE_____________________
 		if (mModSPACEMODULE != null) {
 			mModSPACEMODULE.dispose();
 			AndroidContainer.THE_CONTAINER.removeSharedObjectListener(mModSPACEMODULE);
-			AndroidContainer.THE_CONTAINER.unshareObject(AALSpaceModule.class.getName(), mModSPACEMODULE);
+			AndroidContainer.THE_CONTAINER.unshareObject(SpaceModule.class.getName(), mModSPACEMODULE);
 			mModSPACEMODULE = null;
 		}
 		// _________________COMMUNICATION MODULE_________________
@@ -731,7 +731,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 			public void run() {
 				// _________________UI HANDLER_________________________
 				mModHANDLER = new AndroidHandler(AndroidContext.THE_CONTEXT,
-						Constants.uAAL_MIDDLEWARE_LOCAL_ID_PREFIX + Config.getUAALUser());
+						Constants.MIDDLEWARE_LOCAL_ID_PREFIX + Config.getUAALUser());
 				AndroidContainer.THE_CONTAINER.shareObject(
 						AndroidContext.THE_CONTEXT, mModHANDLER, new String[] {
 								AndroidHandler.class.getName(),
@@ -811,7 +811,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 	}
 	
 	/**
-	 * Stops the modules needed for the RI AAL Space Gateway/R API to stop.
+	 * Stops the modules needed for the RI  Space Gateway/R API to stop.
 	 */
 	private synchronized void stopGateway(){	
 		switch (Config.getRemoteType()) {
@@ -967,7 +967,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 		sendBroadcast(intent);
 	}
 
-	public void aalSpaceJoined(AALSpaceDescriptor spaceDescriptor) {
+	public void spaceJoined(SpaceDescriptor spaceDescriptor) {
 		String home = PreferenceManager.getDefaultSharedPreferences(this)
 				.getString(AppConstants.MY_WIFI, AppConstants.NO_WIFI);
 		if (home.equals(AppConstants.NO_WIFI)) { // This is the first time we connect to a space
@@ -978,7 +978,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 		}
 	}
 
-	public void newPeerJoined(PeerCard peer) {
+	public void peerJoined(PeerCard peer) {
 		String home = PreferenceManager.getDefaultSharedPreferences(this)
 				.getString(AppConstants.MY_WIFI, AppConstants.NO_WIFI);
 		if (home.equals(AppConstants.NO_WIFI)) { // This is the first time we connect to a space
@@ -989,7 +989,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 		}
 	}
 	
-	public void aalSpaceLost(AALSpaceDescriptor spaceDescriptor) {
+	public void spaceLost(SpaceDescriptor spaceDescriptor) {
 		// TODO Auto-generated method stub
 	}
 
@@ -997,7 +997,7 @@ public class MiddlewareService extends Service implements AALSpaceListener{
 		// TODO Auto-generated method stub
 	}
 
-	public void aalSpaceStatusChanged(AALSpaceStatus status) {
+	public void spaceStatusChanged(SpaceStatus status) {
 		// TODO Auto-generated method stub	
 	}
 

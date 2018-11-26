@@ -38,7 +38,6 @@ import javax.xml.xpath.XPathFactory;
 
 import org.universAAL.android.utils.GroundingParcel;
 import org.universAAL.android.utils.AppConstants;
-import org.universAAL.middleware.interfaces.mpa.model.AalMpa;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;

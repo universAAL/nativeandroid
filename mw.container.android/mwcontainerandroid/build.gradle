@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion '25.0.3'
+    compileSdkVersion 26
+    buildToolsVersion '26.0.3'
 
     defaultConfig {
         applicationId "org.universAAL.android"
@@ -47,57 +47,53 @@ configurations {
 dependencies {
     compile 'com.android.support:support-v4:25.3.1'
     compile 'com.google.android.gms:play-services-gcm:11.0.4'
-//    compile 'com.google.android.gms:play-services:+'  // Play Services is now divided into submodules, like gcm above
-
-    // Core universAAL bundles to make it run in Karaf:
-    // (Those commented out are either not used in Android or replaced by modded ones for Android.)
-
-//    compile 'org.bouncycastle:jce.jdk13:144'                          // Replaced by modded lib
-//    compile 'org.universAAL.thirdparty:jslp.core:3.4.2-SNAPSHOT'      // Replaced by modded lib
-//    compile 'org.jgroups:jgroups:3.4.0.Final'                         // Replaced by modded lib
-//    compile 'org.universAAL.middleware:mw.container.xfaces.core:3.4.1-SNAPSHOT'   // At some point in 3.4.1-S replaced by mw.container.core
-//    compile 'org.universAAL.middleware:mw.schemas:3.4.2-SNAPSHOT'     // Replaced by modded lib
-    compile 'org.universAAL.middleware:mw.interfaces.core:3.4.1-SNAPSHOT'
-    compile 'org.universAAL.middleware:mw.connectors.api.core:3.4.1-SNAPSHOT'
-    compile 'org.universAAL.middleware:mw.managers.api.core:3.4.1-SNAPSHOT'
-    compile 'org.universAAL.middleware:mw.modules.api.core:3.4.1-SNAPSHOT'
-    compile 'org.universAAL.middleware:mw.brokers.api.core:3.4.1-SNAPSHOT'
-    compile 'org.universAAL.middleware:mw.container.core:3.4.1-SNAPSHOT'
-    compile 'org.universAAL.middleware:mw.connectors.communication.jgroups.core:3.4.1-SNAPSHOT'
-    compile 'org.universAAL.middleware:mw.connectors.discovery.slp.core:3.4.1-SNAPSHOT'
-//    compile 'org.universAAL.middleware:mw.connectors.deploy.karaf.osgi:3.4.1-SNAPSHOT'    // Not used in Android, only in Karaf
-    compile 'org.universAAL.middleware:mw.modules.communication.core:3.4.1-SNAPSHOT'
-    compile 'org.universAAL.middleware:mw.modules.space.core:3.4.1-SNAPSHOT'
-    compile 'org.universAAL.middleware:mw.brokers.control.core:3.4.1-SNAPSHOT'
-//    compile 'org.universAAL.middleware:mw.managers.space.core:3.4.2-SNAPSHOT'             // Replaced by modded lib
-    compile 'org.universAAL.middleware:mw.managers.deploy.core:3.4.1-SNAPSHOT'
-//    compile 'org.universAAL.middleware:mw.managers.configuration.core:3.4.1-SNAPSHOT'     // Not used in Android ???
-//    compile 'org.universAAL.middleware:mw.managers.tenant.core:3.4.1-SNAPSHOT'            // Not used in Android ???
-//    compile 'org.universAAL.middleware:mw.data.representation.core:3.4.2-SNAPSHOT'        // Replaced by modded lib
-    compile 'org.universAAL.middleware:mw.data.serialization.core:3.4.1-SNAPSHOT'           // Replaced by modded lib
-    compile 'org.universAAL.middleware:mw.bus.model.core:3.4.1-SNAPSHOT'
-    compile 'org.universAAL.middleware:mw.bus.service.core:3.4.1-SNAPSHOT'
-    compile 'org.universAAL.middleware:mw.bus.context.core:3.4.1-SNAPSHOT'
-    compile 'org.universAAL.middleware:mw.bus.ui.core:3.4.1-SNAPSHOT'
-//    compile 'org.universAAL.middleware:mw.karaf.shell.universAAL.osgi:3.4.1-SNAPSHOT'     // Not used in Android, only in Karaf
-//    compile 'org.universAAL.middleware:mw.bus.tracker.core:3.4.2-SNAPSHOT'                // Replaced by modded lib
-//    compile 'org.universAAL.middleware:mw.managers.distributedmw.core:3.4.1-SNAPSHOT'     // Not used in Android ???
-    compile 'org.universAAL.ontology:ont.phWorld:3.4.1-SNAPSHOT'
-    compile 'org.universAAL.ontology:ont.profile:3.4.1-SNAPSHOT'
-    compile 'org.universAAL.ontology:ont.unit:3.4.1-SNAPSHOT'
-    compile 'org.universAAL.ontology:ont.measurement:3.4.1-SNAPSHOT'
-    compile 'org.universAAL.ontology:ont.sysinfo:3.4.1-SNAPSHOT'    // Only used if using non-modded multitenant GW below
-    compile 'org.universAAL.support:utilities.ioc:3.4.1-SNAPSHOT'    // Only used if using non-modded multitenant GW below
-    compile 'org.universAAL.remote:ri.gateway.multitenant:3.4.1-SNAPSHOT'// Replaced by modded lib
-
-    // Libraries Modded to be compatible with Android for some reason
+    // Core universAAL bundles to make it run:
     compile files('libs/bcprov-jdk13-140.jar')
+    compile files('libs/jslp.core-3.4.2-SNAPSHOT.jar')
+    //
     compile files('libs/jgroups-3.4.1.Final.jar')
-    compile files('libs/jslp.core-3.4.1-SNAPSHOT.jar')
-    compile files('libs/mw.bus.tracker.core-3.4.1-SNAPSHOT.jar')
-    compile files('libs/mw.data.representation.core-3.4.1-SNAPSHOT.jar')
-//    compile files('libs/mw.data.serialization.core-3.4.1-SNAPSHOT.jar')
-    compile files('libs/mw.managers.aalspace.core-3.4.1-SNAPSHOT.jar')
-    compile files('libs/mw.schemas-3.4.1-SNAPSHOT.jar')
-//    compile files('libs/ri.gateway.multitenant-3.4.1-SNAPSHOT.jar')
+    // Gson already included
+    compile files('libs/mw.schemas-3.4.2-SNAPSHOT.jar')
+    //
+    compile 'org.universAAL.middleware:mw.interfaces.core:3.4.2-SNAPSHOT'
+    compile 'org.universAAL.middleware:mw.connectors.api.core:3.4.2-SNAPSHOT'
+    compile 'org.universAAL.middleware:mw.managers.api.core:3.4.2-SNAPSHOT'
+    compile 'org.universAAL.middleware:mw.modules.api.core:3.4.2-SNAPSHOT'
+    compile 'org.universAAL.middleware:mw.brokers.api.core:3.4.2-SNAPSHOT'
+    // TODO Commons Lang
+    compile 'org.universAAL.middleware:mw.container.core:3.4.2-SNAPSHOT'
+    compile 'org.universAAL.middleware:mw.connectors.communication.jgroups.core:3.4.2-SNAPSHOT'
+    compile 'org.universAAL.middleware:mw.connectors.discovery.slp.core:3.4.2-SNAPSHOT'
+    //NOT INCLUDED: Deploy Connector Karaf
+    compile 'org.universAAL.middleware:mw.modules.communication.core:3.4.2-SNAPSHOT'
+    compile 'org.universAAL.middleware:mw.modules.space.core:3.4.2-SNAPSHOT'
+    compile 'org.universAAL.middleware:mw.brokers.control.core:3.4.2-SNAPSHOT'
+    compile files('libs/mw.managers.space.core-3.4.2-SNAPSHOT.jar')
+    //
+    compile 'org.universAAL.middleware:mw.managers.deploy.core:3.4.2-SNAPSHOT'
+    //NOT INCLUDED: Manager Configuration
+    //NOT INCLUDED: Manager Tenant
+    compile files('libs/mw.data.representation.core-3.4.2-SNAPSHOT.jar')
+    //
+    compile 'org.universAAL.middleware:mw.data.serialization.turtle.core:3.4.2-SNAPSHOT'
+    //??
+    compile 'org.universAAL.middleware:mw.bus.model.core:3.4.2-SNAPSHOT'
+    compile 'org.universAAL.middleware:mw.bus.service.core:3.4.2-SNAPSHOT'
+    compile 'org.universAAL.middleware:mw.bus.context.core:3.4.2-SNAPSHOT'
+    compile 'org.universAAL.middleware:mw.bus.ui.core:3.4.2-SNAPSHOT'
+    //NOT INCLUDED: Karaf Shell
+    compile files('libs/mw.bus.tracker.core-3.4.2-SNAPSHOT.jar')
+    //
+    //NOT INCLUDED: Manager Distributed Middleware
+    // jp.go.ipa_jgcl_1.0 already included
+    compile 'org.universAAL.ontology:ont.phWorld:3.4.2-SNAPSHOT'
+    compile 'org.universAAL.ontology:ont.profile:3.4.2-SNAPSHOT'
+    compile 'org.universAAL.ontology:ont.unit:3.4.2-SNAPSHOT'
+    compile 'org.universAAL.ontology:ont.measurement:3.4.2-SNAPSHOT'
+    compile 'org.universAAL.ontology:ont.sysinfo:3.4.2-SNAPSHOT'
+    // Only used if using non-modded multitenant GW
+    compile 'org.universAAL.support:utilities.ioc:3.4.2-SNAPSHOT'
+    // Only used if using non-modded multitenant GW
+    compile files('libs/ri.gateway.multitenant-3.4.2-SNAPSHOT.jar')
+    //
 }

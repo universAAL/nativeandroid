@@ -29,7 +29,7 @@ import org.universAAL.middleware.connectors.DiscoveryConnector;
 import org.universAAL.middleware.connectors.ServiceListener;
 import org.universAAL.middleware.connectors.exception.DiscoveryConnectorException;
 import org.universAAL.middleware.container.SharedObjectListener;
-import org.universAAL.middleware.interfaces.aalspace.AALSpaceCard;
+import org.universAAL.middleware.interfaces.space.SpaceCard;
 
 /**
  * A mock up class imitating the jSLP discovery module, but providing a
@@ -73,31 +73,31 @@ public class DiscoveryConnectorWrapper implements DiscoveryConnector,
 		return "";
 	}
 
-	public synchronized List<AALSpaceCard> findAALSpace(
+	public synchronized List<SpaceCard> findSpace(
 			Dictionary<String, String> filters)
 			throws DiscoveryConnectorException {
-		ArrayList<AALSpaceCard> list = new ArrayList<AALSpaceCard>();
+		ArrayList<SpaceCard> list = new ArrayList<SpaceCard>();
 		return list;
 	}
 
-	public synchronized List<AALSpaceCard> findAALSpace()
+	public synchronized List<SpaceCard> findSpace()
 			throws DiscoveryConnectorException {
-		ArrayList<AALSpaceCard> list = new ArrayList<AALSpaceCard>();
+		ArrayList<SpaceCard> list = new ArrayList<SpaceCard>();
 		return list;
 	}
 
-	public synchronized void announceAALSpace(AALSpaceCard spaceCard)
+	public synchronized void announceSpace(SpaceCard spaceCard)
 			throws DiscoveryConnectorException {
 	}
 
-	public synchronized void deregisterAALSpace(AALSpaceCard spaceCard)
+	public synchronized void deregisterSpace(SpaceCard spaceCard)
 			throws DiscoveryConnectorException {
 	}
 
-	public synchronized void addAALSpaceListener(ServiceListener listener) {
+	public synchronized void addSpaceListener(ServiceListener listener) {
 	}
 
-	public synchronized void removeAALSpaceListener(ServiceListener listener) {
+	public synchronized void removeSpaceListener(ServiceListener listener) {
 	}
 
 	public synchronized void sharedObjectAdded(Object sharedObj,

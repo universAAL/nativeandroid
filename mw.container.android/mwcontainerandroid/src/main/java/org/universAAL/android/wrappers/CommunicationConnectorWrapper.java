@@ -40,7 +40,7 @@ import org.universAAL.middleware.connectors.exception.CommunicationConnectorExce
 import org.universAAL.middleware.connectors.util.ChannelMessage;
 import org.universAAL.middleware.interfaces.ChannelDescriptor;
 import org.universAAL.middleware.interfaces.PeerCard;
-import org.universAAL.middleware.managers.api.AALSpaceManager;
+import org.universAAL.middleware.managers.api.SpaceManager;
 
 /**
  * A mock up class imitating the jGroups communication module, but providing a
@@ -102,9 +102,9 @@ public class CommunicationConnectorWrapper implements CommunicationConnector,
 	public synchronized List<String> getGroupMembers(String groupName) {
 		// TODO HACK for returning own ID as member, so it doesnt leave space in
 		// checkpeerthread
-		AALSpaceManager manager = (AALSpaceManager) AndroidContainer.THE_CONTAINER
+		SpaceManager manager = (SpaceManager) AndroidContainer.THE_CONTAINER
 				.fetchSharedObject(AndroidContext.THE_CONTEXT,
-						new Object[] { AALSpaceManager.class.getName()
+						new Object[] { SpaceManager.class.getName()
 								.toString() });
 		ArrayList<String> list = new ArrayList<String>();
 		if (manager.getMyPeerCard() != null) {

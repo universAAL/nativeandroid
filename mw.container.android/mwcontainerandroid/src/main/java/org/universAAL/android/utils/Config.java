@@ -184,7 +184,7 @@ public class Config {
 		Properties prop = new Properties();
 		try {
 			File conf = new File(Environment.getExternalStorageDirectory()
-					.getPath(), getConfigDir() + file + ".properties");
+					.getPath(), getConfigDir() + file + ".cfg");
 			InputStream in = new FileInputStream(conf);
 			prop.load(in);
 			in.close();
@@ -212,17 +212,19 @@ public class Config {
 //								AppConstants.Defaults.OFOLDER);
 		Log.d(TAG, "Creating default configuration files");
 		try {
-			createFile(ctxt, R.raw.jgroups, basepath,"mw.connectors.communication.jgroups.core.properties");
-			createFile(ctxt, R.raw.slp, basepath,"mw.connectors.discovery.slp.core.properties");
-			createFile(ctxt, R.raw.managersaalspace, basepath,"mw.managers.aalspace.core.properties");
-			createFile(ctxt, R.raw.modulesaalspace, basepath,"mw.modules.aalspace.core.properties");
+			createFile(ctxt, R.raw.jgroups, basepath,"mw.connectors.communication.jgroups.core.cfg");
+			createFile(ctxt, R.raw.slp, basepath,"mw.connectors.discovery.slp.core.cfg");
+			createFile(ctxt, R.raw.managersaalspace, basepath,"mw.managers.space.core.cfg");
+			createFile(ctxt, R.raw.modulesaalspace, basepath,"mw.modules.space.core.cfg");
 			createFile(ctxt, R.raw.client, basepath+"ri.gateway.multitenant/","client.properties");
 			createFile(ctxt, R.raw.udp, basepath,"udp.xml");
-			createFile(ctxt, R.raw.aalspace, basepath,"aalspace.xsd");
+			createFile(ctxt, R.raw.space, basepath,"space.xsd");
 			createFile(ctxt, R.raw.home, basepath,"Home.space");
 //			createFile(ctxt, R.raw.onthwo321s, ontpath, "ont.hwo-3.2.1-SNAPSHOT.jar");
 //			createFile(ctxt, R.raw.ontagendamsg321, ontpath, "ont.agenda.messaging-3.2.1-SNAPSHOT.jar");
-			File folder = new File(basepath+"mw.managers.aalspace.osgi/");
+			File folder = new File(basepath+"mw.managers.configuration.osgi/");
+			folder.mkdirs(); //This is so that AALSpace manager can place peers.id
+			folder = new File(basepath+"mw.managers.space.osgi/");
 			folder.mkdirs(); //This is so that AALSpace manager can place peers.id
 		} catch (IOException e) {
 			Log.e(TAG, "Could not create one or more default configuarion files."
@@ -269,11 +271,11 @@ public class Config {
 	public static User makeUser(){
 		switch (MiddlewareService.mUserType) {
 			case AppConstants.USER_TYPE_AP:
-				return new AssistedPerson(Constants.uAAL_MIDDLEWARE_LOCAL_ID_PREFIX + getUAALUser());
+				return new AssistedPerson(Constants.MIDDLEWARE_LOCAL_ID_PREFIX + getUAALUser());
 			case AppConstants.USER_TYPE_CARE:
-				return new Caregiver(Constants.uAAL_MIDDLEWARE_LOCAL_ID_PREFIX + getUAALUser());
+				return new Caregiver(Constants.MIDDLEWARE_LOCAL_ID_PREFIX + getUAALUser());
 			default:
-				return new User(Constants.uAAL_MIDDLEWARE_LOCAL_ID_PREFIX + getUAALUser());
+				return new User(Constants.MIDDLEWARE_LOCAL_ID_PREFIX + getUAALUser());
 		}
 	}
 }

@@ -341,7 +341,7 @@ public class ServiceCalleeProxy extends ServiceCallee {
 			}
 		}
 		// Then send back the response
-		sr.setProperty(ServiceRealization.uAAL_SERVICE_PROVIDER,
+		sr.setProperty(ServiceRealization.SERVICE_PROVIDER,
 			    new Resource(busResourceURI));
 		BusMessage reply = msg.createReply(sr);
 		if (reply != null) {

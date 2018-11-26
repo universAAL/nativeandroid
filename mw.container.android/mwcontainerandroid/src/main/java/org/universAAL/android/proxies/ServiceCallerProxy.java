@@ -220,10 +220,10 @@ public class ServiceCallerProxy extends ServiceCaller {
 					sr.getProperty(ServiceRequest.PROP_REQUESTED_SERVICE));
 			srmeta.setProperty(ServiceRequest.PROP_REQUIRED_PROCESS_RESULT,
 					sr.getProperty(ServiceRequest.PROP_REQUIRED_PROCESS_RESULT));
-			srmeta.setProperty(ServiceRequest.PROP_uAAL_SERVICE_CALLER,
-					sr.getProperty(ServiceRequest.PROP_uAAL_SERVICE_CALLER));
-			srmeta.setProperty(ServiceRequest.PROP_uAAL_INVOLVED_HUMAN_USER, sr
-					.getProperty(ServiceRequest.PROP_uAAL_INVOLVED_HUMAN_USER));
+			srmeta.setProperty(ServiceRequest.PROP_SERVICE_CALLER,
+					sr.getProperty(ServiceRequest.PROP_SERVICE_CALLER));
+			srmeta.setProperty(ServiceRequest.PROP_INVOLVED_HUMAN_USER, sr
+					.getProperty(ServiceRequest.PROP_INVOLVED_HUMAN_USER));
 			srmeta.addInput(AppConstants.UAAL_META_PROP_FROMACTION, action);
 			srmeta.addInput(AppConstants.UAAL_META_PROP_FROMCATEGORY, category);
 			Resource[] outputs=sr.getRequiredOutputs();

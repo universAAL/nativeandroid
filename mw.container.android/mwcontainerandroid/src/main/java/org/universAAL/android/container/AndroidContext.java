@@ -49,7 +49,7 @@ public class AndroidContext implements ModuleContext, PlatformAbstraction {
 	// TODO allow enable/disable the log of jslp
 	private static boolean JSLP_LOG = false;
 	private static final String DEFAULT_TAG = "Default Tag";
-	private String id = "mw.modules.aalspace.osgi";
+	private String id = "mw.modules.space.osgi";
 
 	/**
 	 * Constructor with ID.

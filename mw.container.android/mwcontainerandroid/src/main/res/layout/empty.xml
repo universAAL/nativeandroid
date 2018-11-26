@@ -13,6 +13,6 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:src="@drawable/ic_launch" />
+        android:src="@mipmap/ic_launcher_foreground" />
 
 </RelativeLayout>
