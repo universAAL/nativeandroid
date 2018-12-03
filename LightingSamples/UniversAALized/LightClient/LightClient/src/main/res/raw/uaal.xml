@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<application>
+   <permissions>
+      <mw.bus.service>
+         <requirement>
+            <title>Get all light sources</title>
+            <description>SERVICE CALLER REQUEST: Get a list of all light sources.</description>
+            <action>org.universaal.nativeandroid.light.CALL_GETLAMPS</action>
+            <category>android.intent.category.DEFAULT</category>
+            <replyAction>org.universaal.nativeandroid.light.REPLY_GETLAMPS</replyAction>
+            <replyCategory>android.intent.category.DEFAULT</replyCategory>
+            <output>
+                <key>http://ontology.igd.fhg.de/LightingConsumer.owl#controlledLamps</key>
+                <value>http://ontology.igd.fhg.de/LightingServer.owl#{lamps}</value>
+            </output>
+            <serialization>
+               <![CDATA[
+@prefix ns: <http://ontology.igd.fhg.de/LightingConsumer.owl#> .
+@prefix pvn: <http://ontology.universAAL.org/uAAL.owl#> .
+@prefix : <http://www.daml.org/services/owl-s/1.1/Process.owl#> .
+_:BN000000 a pvn:ServiceRequest ;
+  pvn:requiredResult [
+    :withOutput [
+        a :OutputBinding ;
+        :toParam ns:controlledLamps ;
+        :valueForm """
+          @prefix : <http://ontology.universAAL.org/Service.owl#> .
+          _:BN000000 a :PropertyPath ;
+            :thePath (
+              <http://ontology.universaal.org/Lighting.owl#controls>
+            ) .
+          """^^<http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral>
+      ] ;
+    a :Result
+  ] ;
+  pvn:requestedService [
+    a <http://ontology.universaal.org/Lighting.owl#Lighting>
+  ] .
+ns:controlledLamps a :Output .
+]]>
+            </serialization>
+         </requirement>
+         <requirement>
+            <title>Turn light source on</title>
+            <description>SERVICE CALLER REQUEST: Turn on a specific light source.</description>
+            <action>org.universaal.nativeandroid.light.CALL_ON</action>
+            <category>android.intent.category.DEFAULT</category>
+            <input>
+                <key>var1</key>
+                <value>lamp</value>
+            </input>
+            <serialization>
+               <![CDATA[
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix ns: <http://ontology.universaal.org/PhThing.owl#> .
+@prefix ns1: <http://ontology.igd.fhg.de/LightingServer.owl#> .
+@prefix ns2: <http://ontology.universaal.org/Lighting.owl#> .
+@prefix pvn: <http://ontology.universAAL.org/uAAL.owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix ns3: <http://www.daml.org/services/owl-s/1.1/Process.owl#> .
+@prefix : <http://ontology.universAAL.org/Service.owl#> .
+_:BN000000 a pvn:ServiceRequest ;
+  pvn:requiredResult [
+    a ns3:Result ;
+    ns3:hasEffect [
+        :affectedProperty [
+          a :PropertyPath ;
+          :thePath (
+            ns2:controls
+            ns2:srcBrightness
+          )
+        ] ;
+        a :ChangeEffect ;
+        :propertyValue "100"^^xsd:int
+      ]
+  ] ;
+  pvn:requestedService [
+    a ns2:Lighting ;
+    pvn:instanceLevelRestrictions [
+        owl:hasValue <http://ontology.igd.fhg.de/LightingServer.owl#&var1;controlledLamp0&var1;> ;
+        a owl:Restriction ;
+        owl:onProperty ns2:controls
+      ] ;
+    pvn:numberOfValueRestrictions "1"^^xsd:int
+  ] .
+<http://ontology.igd.fhg.de/LightingServer.owl#&var1;controlledLamp0&var1;> a ns2:LightSource ,
+    ns:Device ,
+    ns:PhysicalThing .
+]]>
+            </serialization>
+         </requirement>
+         <requirement>
+            <title>Turn light source off</title>
+            <description>SERVICE CALLER REQUEST: Turn off a specific light source.</description>
+            <action>org.universaal.nativeandroid.light.CALL_OFF</action>
+            <category>android.intent.category.DEFAULT</category>
+            <input>
+                <key>var1</key>
+                <value>lamp</value>
+            </input>
+            <serialization>
+               <![CDATA[
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix ns: <http://ontology.universaal.org/PhThing.owl#> .
+@prefix ns1: <http://ontology.igd.fhg.de/LightingServer.owl#> .
+@prefix ns2: <http://ontology.universaal.org/Lighting.owl#> .
+@prefix pvn: <http://ontology.universAAL.org/uAAL.owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix ns3: <http://www.daml.org/services/owl-s/1.1/Process.owl#> .
+@prefix : <http://ontology.universAAL.org/Service.owl#> .
+_:BN000000 a pvn:ServiceRequest ;
+  pvn:requiredResult [
+    a ns3:Result ;
+    ns3:hasEffect [
+        :affectedProperty [
+          a :PropertyPath ;
+          :thePath (
+            ns2:controls
+            ns2:srcBrightness
+          )
+        ] ;
+        a :ChangeEffect ;
+        :propertyValue "0"^^xsd:int
+      ]
+  ] ;
+  pvn:requestedService [
+    a ns2:Lighting ;
+    pvn:instanceLevelRestrictions [
+        owl:hasValue <http://ontology.igd.fhg.de/LightingServer.owl#&var1;controlledLamp0&var1;> ;
+        a owl:Restriction ;
+        owl:onProperty ns2:controls
+      ] ;
+    pvn:numberOfValueRestrictions "1"^^xsd:int
+  ] .
+<http://ontology.igd.fhg.de/LightingServer.owl#&var1;controlledLamp0&var1;> a ns2:LightSource ,
+    ns:Device ,
+    ns:PhysicalThing .
+]]>
+            </serialization>
+         </requirement>
+      </mw.bus.service>
+      <mw.bus.context>
+         <requirement>
+            <title>Subscribe to light sources</title>
+            <description>CONTEXT SUBSCRIBER PATTERN: Receive all changes of light source brightness</description>
+            <action>org.universaal.nativeandroid.light.EVENT_LIGHTCHANGE</action>
+            <category>android.intent.category.DEFAULT</category>
+            <output>
+                <key>http://www.w3.org/1999/02/22-rdf-syntax-ns#subject</key>
+                <value>http://ontology.igd.fhg.de/LightingServer.owl#{lamp}</value>
+            </output>
+            <output>
+                <key>http://www.w3.org/1999/02/22-rdf-syntax-ns#object</key>
+                <value>brightness</value>
+            </output>
+            <serialization>
+               <![CDATA[
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix ns: <http://ontology.universaal.org/Lighting.owl#> .
+@prefix : <http://www.w3.org/2002/07/owl#> .
+<http://ontology.igd.fhg.de/LightingServer.owl#cep1> a <http://ontology.universAAL.org/Context.owl#ContextEventPattern> ;
+  <http://www.w3.org/2000/01/rdf-schema#subClassOf> [
+      a :Restriction ;
+      :allValuesFrom ns:LightSource ;
+      :onProperty rdf:subject
+    ] ,
+    [
+      :hasValue ns:srcBrightness ;
+      a :Restriction ;
+      :onProperty rdf:predicate
+    ] ,
+    [
+      a :Restriction ;
+      :allValuesFrom <http://www.w3.org/2001/XMLSchema#int> ;
+      :onProperty rdf:object
+    ] .
+ns:LightSource a :Class .
+]]>
+            </serialization>
+         </requirement>
+      </mw.bus.context>
+   </permissions>
+</application>

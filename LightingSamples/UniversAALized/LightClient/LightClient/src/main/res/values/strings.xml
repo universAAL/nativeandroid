@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Light Client</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="notif_title">Lamp changed</string>
+    <string name="notif_text">{1} brightness set to {2}</string>
+
+</resources>
