@@ -80,6 +80,8 @@ import ch.ethz.iks.slp.impl.SLPCore;
 
 import android.annotation.SuppressLint;
 import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
@@ -114,6 +116,8 @@ public class MiddlewareService extends Service implements SpaceListener {
 	private static final String TAG_THREAD_CREATE = "MW Service Create";
 	private static final String TAG_THREAD_START = "MW Service Start";
 	private static final String TAG_THREAD_UI = "UI Handler Create";
+	private static final String TAG_CHANNEL = "universAALMiddleware";
+	private static final String TAG_CHANNEL_DESC = "universAAL Middleware";
 	private static final int ONGOING_NOTIFICATION = 3948234; // TODO Random one?
 	private static int mCurrentWIFI = AppConstants.WIFI_OFF; // This is for the previous state of WIFI
 	public static int mUserType = AppConstants.USER_TYPE_AP; // Just default but it is here to get it from AndroidHandler
@@ -154,8 +158,15 @@ public class MiddlewareService extends Service implements SpaceListener {
 		Intent notificationIntent = new Intent(this, HandlerActivity.class);
 		notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+			NotificationChannel channel = new NotificationChannel(TAG_CHANNEL, TAG_CHANNEL_DESC,
+					NotificationManager.IMPORTANCE_NONE);
+			channel.setDescription(TAG_CHANNEL_DESC);
+			NotificationManager notificationManager = getSystemService(NotificationManager.class);
+			notificationManager.createNotificationChannel(channel);
+		}
 		NotificationCompat.Builder builder =
-		        new NotificationCompat.Builder(this)
+		        new NotificationCompat.Builder(this, TAG_CHANNEL)
 		        .setSmallIcon(R.drawable.ic_notif)
 		        .setContentTitle(getString(R.string.notif_title))
 		        .setContentText(getString(R.string.notif_text))

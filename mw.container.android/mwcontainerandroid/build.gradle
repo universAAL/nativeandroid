@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion '26.0.3'
+    compileSdkVersion 28
+    buildToolsVersion '28.0.3'
 
     defaultConfig {
         applicationId "org.universAAL.android"
         minSdkVersion 14
-        targetSdkVersion 22
+        targetSdkVersion 28
 //        compileOptions {
 //            sourceCompatibility JavaVersion.VERSION_1_5
 //            targetCompatibility JavaVersion.VERSION_1_5
@@ -45,55 +45,55 @@ configurations {
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:25.3.1'
-    compile 'com.google.android.gms:play-services-gcm:11.0.4'
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.google.android.gms:play-services-gcm:11.0.4'
     // Core universAAL bundles to make it run:
-    compile files('libs/bcprov-jdk13-140.jar')
-    compile files('libs/jslp.core-3.4.2-SNAPSHOT.jar')
+    implementation files('libs/bcprov-jdk13-140.jar')
+    implementation files('libs/jslp.core-3.4.2-SNAPSHOT.jar')
     //
-    compile files('libs/jgroups-3.4.1.Final.jar')
+    implementation files('libs/jgroups-3.4.1.Final.jar')
     // Gson already included
-    compile files('libs/mw.schemas-3.4.2-SNAPSHOT.jar')
+    implementation files('libs/mw.schemas-3.4.2-SNAPSHOT.jar')
     //
-    compile 'org.universAAL.middleware:mw.interfaces.core:3.4.2-SNAPSHOT'
-    compile 'org.universAAL.middleware:mw.connectors.api.core:3.4.2-SNAPSHOT'
-    compile 'org.universAAL.middleware:mw.managers.api.core:3.4.2-SNAPSHOT'
-    compile 'org.universAAL.middleware:mw.modules.api.core:3.4.2-SNAPSHOT'
-    compile 'org.universAAL.middleware:mw.brokers.api.core:3.4.2-SNAPSHOT'
+    implementation 'org.universAAL.middleware:mw.interfaces.core:3.4.2-SNAPSHOT'
+    implementation 'org.universAAL.middleware:mw.connectors.api.core:3.4.2-SNAPSHOT'
+    implementation 'org.universAAL.middleware:mw.managers.api.core:3.4.2-SNAPSHOT'
+    implementation 'org.universAAL.middleware:mw.modules.api.core:3.4.2-SNAPSHOT'
+    implementation 'org.universAAL.middleware:mw.brokers.api.core:3.4.2-SNAPSHOT'
     // TODO Commons Lang
-    compile 'org.universAAL.middleware:mw.container.core:3.4.2-SNAPSHOT'
-    compile 'org.universAAL.middleware:mw.connectors.communication.jgroups.core:3.4.2-SNAPSHOT'
-    compile 'org.universAAL.middleware:mw.connectors.discovery.slp.core:3.4.2-SNAPSHOT'
+    implementation 'org.universAAL.middleware:mw.container.core:3.4.2-SNAPSHOT'
+    implementation 'org.universAAL.middleware:mw.connectors.communication.jgroups.core:3.4.2-SNAPSHOT'
+    implementation 'org.universAAL.middleware:mw.connectors.discovery.slp.core:3.4.2-SNAPSHOT'
     //NOT INCLUDED: Deploy Connector Karaf
-    compile 'org.universAAL.middleware:mw.modules.communication.core:3.4.2-SNAPSHOT'
-    compile 'org.universAAL.middleware:mw.modules.space.core:3.4.2-SNAPSHOT'
-    compile 'org.universAAL.middleware:mw.brokers.control.core:3.4.2-SNAPSHOT'
-    compile files('libs/mw.managers.space.core-3.4.2-SNAPSHOT.jar')
+    implementation 'org.universAAL.middleware:mw.modules.communication.core:3.4.2-SNAPSHOT'
+    implementation 'org.universAAL.middleware:mw.modules.space.core:3.4.2-SNAPSHOT'
+    implementation 'org.universAAL.middleware:mw.brokers.control.core:3.4.2-SNAPSHOT'
+    implementation files('libs/mw.managers.space.core-3.4.2-SNAPSHOT.jar')
     //
-    compile 'org.universAAL.middleware:mw.managers.deploy.core:3.4.2-SNAPSHOT'
+    implementation 'org.universAAL.middleware:mw.managers.deploy.core:3.4.2-SNAPSHOT'
     //NOT INCLUDED: Manager Configuration
     //NOT INCLUDED: Manager Tenant
-    compile files('libs/mw.data.representation.core-3.4.2-SNAPSHOT.jar')
+    implementation files('libs/mw.data.representation.core-3.4.2-SNAPSHOT.jar')
     //
-    compile 'org.universAAL.middleware:mw.data.serialization.turtle.core:3.4.2-SNAPSHOT'
+    implementation 'org.universAAL.middleware:mw.data.serialization.turtle.core:3.4.2-SNAPSHOT'
     //??
-    compile 'org.universAAL.middleware:mw.bus.model.core:3.4.2-SNAPSHOT'
-    compile 'org.universAAL.middleware:mw.bus.service.core:3.4.2-SNAPSHOT'
-    compile 'org.universAAL.middleware:mw.bus.context.core:3.4.2-SNAPSHOT'
-    compile 'org.universAAL.middleware:mw.bus.ui.core:3.4.2-SNAPSHOT'
+    implementation 'org.universAAL.middleware:mw.bus.model.core:3.4.2-SNAPSHOT'
+    implementation 'org.universAAL.middleware:mw.bus.service.core:3.4.2-SNAPSHOT'
+    implementation 'org.universAAL.middleware:mw.bus.context.core:3.4.2-SNAPSHOT'
+    implementation 'org.universAAL.middleware:mw.bus.ui.core:3.4.2-SNAPSHOT'
     //NOT INCLUDED: Karaf Shell
-    compile files('libs/mw.bus.tracker.core-3.4.2-SNAPSHOT.jar')
+    implementation files('libs/mw.bus.tracker.core-3.4.2-SNAPSHOT.jar')
     //
     //NOT INCLUDED: Manager Distributed Middleware
     // jp.go.ipa_jgcl_1.0 already included
-    compile 'org.universAAL.ontology:ont.phWorld:3.4.2-SNAPSHOT'
-    compile 'org.universAAL.ontology:ont.profile:3.4.2-SNAPSHOT'
-    compile 'org.universAAL.ontology:ont.unit:3.4.2-SNAPSHOT'
-    compile 'org.universAAL.ontology:ont.measurement:3.4.2-SNAPSHOT'
-    compile 'org.universAAL.ontology:ont.sysinfo:3.4.2-SNAPSHOT'
+    implementation 'org.universAAL.ontology:ont.phWorld:3.4.2-SNAPSHOT'
+    implementation 'org.universAAL.ontology:ont.profile:3.4.2-SNAPSHOT'
+    implementation 'org.universAAL.ontology:ont.unit:3.4.2-SNAPSHOT'
+    implementation 'org.universAAL.ontology:ont.measurement:3.4.2-SNAPSHOT'
+    implementation 'org.universAAL.ontology:ont.sysinfo:3.4.2-SNAPSHOT'
     // Only used if using non-modded multitenant GW
-    compile 'org.universAAL.support:utilities.ioc:3.4.2-SNAPSHOT'
+    implementation 'org.universAAL.support:utilities.ioc:3.4.2-SNAPSHOT'
     // Only used if using non-modded multitenant GW
-    compile files('libs/ri.gateway.multitenant-3.4.2-SNAPSHOT.jar')
+    implementation files('libs/ri.gateway.multitenant-3.4.2-SNAPSHOT.jar')
     //
 }
