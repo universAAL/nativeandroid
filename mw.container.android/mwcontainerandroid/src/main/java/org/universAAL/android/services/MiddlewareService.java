@@ -147,7 +147,7 @@ public class MiddlewareService extends Service implements SpaceListener {
 		Log.v(TAG, "Create");
 		mPercentage=0;
 		// Because now this service can be started by other apps, make sure files are created here, not just in activity
-		Config.load(this); //Sync Preferences in Config util
+		Config.load(getApplicationContext()); //Sync Preferences in Config util
 		if(PreferenceManager.getDefaultSharedPreferences(this).getBoolean(AppConstants.FIRST, true)){
 			// first time we run the app (or app data has been cleared)
 			PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean(AppConstants.FIRST, false).commit();
